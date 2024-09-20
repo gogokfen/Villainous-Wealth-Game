@@ -5,9 +5,22 @@ using UnityEngine;
 
 public class CharacterControl : MonoBehaviour
 {
+    public bool isTargetDummy = false;
+
+    [SerializeField] PlayerTypes PlayerID;
+
     [SerializeField] GameObject AtaHuHaAmongusPOVCamera;
     [SerializeField] GameObject OriginalCamera;
     bool onOff = false;
+
+    public int hp = 10;
+
+    RaycastHit pickupHit;
+    [SerializeField] LayerMask pickupMask;
+
+    [SerializeField] LayerMask collisionMask;
+    Collider[] wallSearch;
+    Collider[] projSearch;
 
     [SerializeField] float moveSpeed = 2;
     private float startingSpeed;
@@ -15,6 +28,7 @@ public class CharacterControl : MonoBehaviour
     private float deAccelSpeed = 0;
 
     [SerializeField] Animator lArmAnim;
+    [SerializeField] Animator rArmAnim;
     private int animState = 0;
     private float animTimer = 0;
     //0=idle
@@ -32,14 +46,70 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] Animator rFootAnim;
 
     [SerializeField] Transform rArm;
+
     float powerPunchWindup = 0;
+    public enum Weapons
+    {
+        Fist,
+        Gun,
+        Sword,
+        Boomerang,
+        Lazer
+    }
+    public enum PlayerTypes
+    {
+        Red,
+        Green,
+        Blue,
+        Yellow
+    }
+
+    private Weapons equippedWeapon;
+    private Weapons previousWeapon;
+
+    public static int weaponID;
+
+    [SerializeField] GameObject[] weaponList;
+
+    CharacterController CC;
+
     void Start()
     {
+        if (isTargetDummy)
+            return;
+
         startingSpeed = moveSpeed;
+        weaponID = 0;
+
+        CC = GetComponent<CharacterController>();
+
+        for (int i=0;i<weaponList.Length;i++)
+        {
+            weaponList[i].GetComponent<WeaponBase>().playerID = PlayerID;
+        }
     }
 
     void Update()
     {
+        projSearch = Physics.OverlapBox(transform.position, new Vector3(0.5f, 1f, 0.5f), Quaternion.identity, collisionMask);
+        if (projSearch.Length > 0)
+        {
+            for (int i = 0; i < projSearch.Length; i++)
+            {
+                WeaponBase WB = projSearch[i].GetComponent<WeaponBase>();
+
+                TakeDamage(WB.playerID,WB.damage,WB.damageType);
+                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile)
+                {
+                    Destroy(projSearch[i].gameObject);
+                }
+            }
+        }
+
+
+        if (isTargetDummy)
+            return;
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             if (onOff)
@@ -58,7 +128,6 @@ public class CharacterControl : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
         {
-            //anim.SetBool("Moving", true);
             lFootAnim.SetBool("Walk", true);
             rFootAnim.SetBool("Walk", true);
 
@@ -73,35 +142,41 @@ public class CharacterControl : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.A))
                 {
-                    transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 315, 0);
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
-                    transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 45, 0);
                 }
                 else
                 {
-                    transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
                     transform.rotation = Quaternion.Euler(0, 0, 0);
+                    CC.Move(Vector3.forward * moveSpeed * Time.deltaTime);
                 }
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 if (Input.GetKey(KeyCode.W))
                 {
-                    transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 45, 0);
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 135, 0);
                 }
                 else
                 {
-                    transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move(Vector3.right * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 90, 0);
                 }
             }
@@ -109,17 +184,20 @@ public class CharacterControl : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.D))
                 {
-                    transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 135, 0);
                 }
                 else if (Input.GetKey(KeyCode.A))
                 {
-                    transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 225, 0);
                 }
                 else
                 {
-                    transform.Translate(-Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate(-Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move(-Vector3.forward * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 180, 0);
                 }
             }
@@ -127,17 +205,20 @@ public class CharacterControl : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.S))
                 {
-                    transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 225, 0);
                 }
                 else if (Input.GetKey(KeyCode.W))
                 {
-                    transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 315, 0);
                 }
                 else
                 {
-                    transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+                    //transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+                    CC.Move(-Vector3.right * moveSpeed * Time.deltaTime);
                     transform.rotation = Quaternion.Euler(0, 270, 0);
 
                 }
@@ -145,7 +226,6 @@ public class CharacterControl : MonoBehaviour
         }
         else
         {
-            //anim.SetBool("Moving", false);
             lFootAnim.SetBool("Walk", false);
             rFootAnim.SetBool("Walk", false);
 
@@ -166,26 +246,30 @@ public class CharacterControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Attack(0); //random number until implemented
+            if (equippedWeapon != Weapons.Fist) //no punch if other weapon equipped
+                Attack(equippedWeapon, previousWeapon);
+            else
+            {
+                if (animState == 0 || animState == 9)
+                {
+                    animTimer = 0;
+                    animState = 1;
+                    lArmAnim.Play("Punch1");
+                }
+                else if (animState == 2 || animState == 3)
+                {
+                    animTimer = 0;
+                    animState = 4;
+                    lArmAnim.Play("Punch2");
+                }
+                else if (animState == 5 || animState == 6)
+                {
+                    animTimer = 0;
+                    animState = 7;
+                    lArmAnim.Play("Punch3");
+                }
+            }
 
-            if (animState == 0 || animState == 9)
-            {
-                animTimer = 0;
-                animState = 1;
-                lArmAnim.Play("Punch1");
-            }
-            else if (animState == 2 || animState == 3)
-            {
-                animTimer = 0;
-                animState = 4;
-                lArmAnim.Play("Punch2");
-            }
-            else if (animState == 5 || animState == 6)
-            {
-                animTimer = 0;
-                animState = 7;
-                lArmAnim.Play("Punch3");
-            }
         }
         if (animState != 0)
         {
@@ -240,7 +324,7 @@ public class CharacterControl : MonoBehaviour
         {
             if (animState == 0)
             {
-                if (powerPunchWindup<0.75)
+                if (powerPunchWindup < 0.75)
                 {
                     powerPunchWindup += Time.deltaTime;
                     rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
@@ -252,7 +336,9 @@ public class CharacterControl : MonoBehaviour
         {
             if (powerPunchWindup >= 0.75)
             {
-                rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
+                //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
+                rArm.localPosition = new Vector3(0.75f, 0, 0);
+                rArmAnim.Play("StrongPunch");
                 powerPunchWindup = 0;
             }
             else
@@ -263,12 +349,73 @@ public class CharacterControl : MonoBehaviour
         }
 
 
-        ///add raycast code to check pickups, we just need a weapon index, maybe do with with enums so we'll know what the weapons are
+        if (Physics.Raycast(transform.position, transform.forward, out pickupHit, 1f, pickupMask))
+        {
+            if (Enum.TryParse<Weapons>(pickupHit.transform.name, out Weapons weapon))
+            {
+                previousWeapon = equippedWeapon;
+                equippedWeapon = Enum.Parse<Weapons>(pickupHit.transform.name);
+                pickupHit.transform.gameObject.SetActive(false);
+
+                weaponList[(int)previousWeapon].SetActive(false);
+                weaponList[(int)equippedWeapon].SetActive(true);
+                weaponID = (int)equippedWeapon;
+            }
+            else
+            {
+                Debug.Log("Change the object's name to the correct weapon name");
+            }
+        } //pickup raycast
+
+
+        /** // in case of collision check with raycast
+        wallSearch = Physics.OverlapBox(transform.position, new Vector3(0.5f, 1f, 0.5f), Quaternion.identity, collisionMask);
+        if (wallSearch.Length > 0)
+        {
+            for (int i = 0; i < wallSearch.Length; i++)
+            {
+                Debug.Log(wallSearch[i].name);
+                Vector3 direction = wallSearch[i].transform.position - transform.position;
+                direction.Normalize();
+                direction *= 0.1f;
+                Debug.Log(direction);
+                transform.position = new Vector3(transform.position.x - direction.x, transform.position.y, transform.position.z - direction.z);
+            }
+        }
+        */
     }
 
-    private void Attack(int WeaponUsed)
+    private void TakeDamage(PlayerTypes attackingPlayer,int damage, WeaponBase.damageTypes damageType)
     {
-        ///add code for each weapon usage
+        if (attackingPlayer!= PlayerID)
+        {
+            hp = hp - damage;
+            Debug.Log("Ouch!, Player " + attackingPlayer.ToString() + " hurt me!");
+        }
+    }
+
+    private void Attack(Weapons WeaponUsed, Weapons UnusedWeapon)
+    {
+        //weaponList[(int)UnusedWeapon].SetActive(false);
+        //weaponList[(int)WeaponUsed].SetActive(true);
+
+        /*
+        switch (WeaponUsed)
+        {
+            case Weapons.Fist:
+                Debug.Log("Error, check 'Attack' function code");
+                break;
+            case Weapons.Gun:
+                Debug.Log("Pistol!");
+                break;
+            case Weapons.Sword:
+                Debug.Log("Shwinggggggggg!");
+                break;
+            default:
+                // code block
+                break;
+        }
+        */
     }
 }
 
