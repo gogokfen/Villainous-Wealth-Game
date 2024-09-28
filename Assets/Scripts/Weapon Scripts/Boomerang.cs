@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Boomerang : WeaponBase
 {
@@ -13,20 +14,26 @@ public class Boomerang : WeaponBase
     [SerializeField] LayerMask boomerangPickupMask;
     Collider[] boomrangSearch;
     private float catchCD;
+    bool use;
 
     private void Start()
     {
         damageType = damageTypes.IndestructableProjectile;
     }
 
+    public void Thrown(InputAction.CallbackContext context)
+    {
+        use = context.action.triggered;
+    }
+
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && canThrow)
+        if (use && canThrow)
         {
             windup += Time.deltaTime;
         }
-        if (Input.GetMouseButtonUp(0) && canThrow)
+        if (use && canThrow)
         {
             boomerangGFX.SetActive(false);
             canThrow = false;

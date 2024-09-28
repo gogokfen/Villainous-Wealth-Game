@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Gun : WeaponBase
 {
     [SerializeField] float maxAttackCooldown = 0.25f;
     private float attackCooldown;
     [SerializeField] GameObject bullet;
+    bool use;
 
     private void Start()
     {
@@ -15,11 +17,16 @@ public class Gun : WeaponBase
         //damageType = damageTypes.destructableProjectile;
     }
 
+    public void Shot(InputAction.CallbackContext context)
+    {
+        use = context.action.triggered;
+    }
+
     void Update()
     {
         if (attackCooldown > 0)
             attackCooldown -= Time.deltaTime;
-        if (Input.GetMouseButton(0) && attackCooldown<=0)
+        if (use && attackCooldown<=0)
         {
             GameObject tempBullet = Instantiate(bullet,transform.position,transform.rotation);
             tempBullet.GetComponent<WeaponBase>().playerID = playerID;
