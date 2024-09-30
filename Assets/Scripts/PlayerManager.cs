@@ -71,8 +71,9 @@ public class PlayerManager : MonoBehaviour
             AssignPlayers();
             playersSpawned = true;
             cameraParent.SetActive(true);
+            CheckRemainingPlayers();
         }
-        CheckRemainingPlayers();
+        
     }
     private void AssignPlayers()
     {

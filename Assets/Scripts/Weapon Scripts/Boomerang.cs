@@ -29,11 +29,11 @@ public class Boomerang : WeaponBase
 
     void Update()
     {
-        if (use && canThrow)
+        if (Input.GetMouseButton(0)) // use && canThrow
         {
             windup += Time.deltaTime;
         }
-        if (use && canThrow)
+        if (Input.GetMouseButtonUp(0) && canThrow) // use && canThrow
         {
             boomerangGFX.SetActive(false);
             canThrow = false;
