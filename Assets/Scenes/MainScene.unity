@@ -4394,7 +4394,12 @@ PrefabInstance:
     - target: {fileID: 3899225255817299148, guid: f7d5a65f0a81fb949b3113d41c4c674a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5257024873290102291, guid: f7d5a65f0a81fb949b3113d41c4c674a,
+        type: 3}
+      propertyPath: singleplayerTesting
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5597398299775266180, guid: f7d5a65f0a81fb949b3113d41c4c674a,
         type: 3}

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 public class PlayerManager : MonoBehaviour
 {
+    public bool singleplayerTesting;
     [SerializeField] Transform[] startPositions;
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject gamepadDisconnectedUI;
@@ -28,10 +29,10 @@ public class PlayerManager : MonoBehaviour
     private List<PlayerInput> activePlayers;
     private bool playersSpawned;
     private bool winnerAnnounced;
+    
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        //activePlayers = new List<PlayerInput>();
         winnerAnnounced = false;
     }
     private void Start()
@@ -46,7 +47,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Application.isPlaying)
+        if (!Application.isPlaying) return;
         {
             InputSystem.onDeviceChange += (device, change) =>
             {
@@ -65,15 +66,21 @@ public class PlayerManager : MonoBehaviour
                 }
             };
         }
-        if (SceneManager.GetActiveScene().name == "MainScene" && !playersSpawned)
+        if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            activePlayers = new List<PlayerInput>();
-            AssignPlayers();
-            playersSpawned = true;
-            cameraParent.SetActive(true);
-            CheckRemainingPlayers();
+            if (!playersSpawned)
+            {
+                activePlayers = new List<PlayerInput>();
+                AssignPlayers();
+                playersSpawned = true;
+                cameraParent.SetActive(true);
+            }
+            if (playersSpawned)
+            {
+                Debug.Log("Im checking players");
+                CheckRemainingPlayers();
+            }
         }
-        
     }
     private void AssignPlayers()
     {
@@ -93,6 +100,7 @@ public class PlayerManager : MonoBehaviour
                     cameraGroup.AddMember(playerInput.gameObject.transform, 1f, 0f);
                     ChangePlayerMaterial(playerInput.gameObject, assignedPlayerID);
                     activePlayers.Add(playerInput);
+                    Debug.Log(activePlayers);
                     playerIndex++;
                 }
             }
@@ -125,21 +133,20 @@ public class PlayerManager : MonoBehaviour
     }
     private void CheckRemainingPlayers()
     {
-        activePlayers.RemoveAll(player => player == null);
-        if (activePlayers.Count == 1 && !winnerAnnounced)
+        if (!singleplayerTesting)
         {
-            PlayerInput remainingPlayer = activePlayers[0];
-            CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
-            winnerText.text = $"Player {characterControl.PlayerID} Wins!";
-            winnerText.gameObject.SetActive(true);
-            winnerBG.SetActive(true);
-            //Debug.Log($"Player {characterControl.PlayerID} Wins!");
-            winnerAnnounced = true;
+            activePlayers.RemoveAll(player => player == null);
+            if (activePlayers.Count == 1 && !winnerAnnounced)
+            {
+                PlayerInput remainingPlayer = activePlayers[0];
+                CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
+                winnerText.text = $"Player {characterControl.PlayerID} Wins!";
+                winnerText.gameObject.SetActive(true);
+                winnerBG.SetActive(true);
+                Debug.Log($"Player {characterControl.PlayerID} Wins!");
+                winnerAnnounced = true;
+            }
         }
     }
-    [Button]
-    public void LoadGame()
-    {
-        SceneManager.LoadScene("MainScene");
-    }
+
 }
