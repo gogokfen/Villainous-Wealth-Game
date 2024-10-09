@@ -10,8 +10,8 @@ public class MenuManager : MonoBehaviour
 {
     private bool usingMouse = true;
     private bool usingInput = false;
-    private bool backInput;
     [SerializeField] GameObject defaultButton;
+    [SerializeField] GameObject defaultOptionsButton;
     [Foldout("UI Input Images")]
     [SerializeField] Image confirmButton;
     [SerializeField] Image backButton;
@@ -24,9 +24,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite enterButton;
     [SerializeField] Sprite escButton;
     [EndFoldout]
-
     [SerializeField] GameObject optionsMenu;
-    
     void Start()
     {
     }
@@ -38,34 +36,29 @@ public class MenuManager : MonoBehaviour
             {
                 usingMouse = true;
                 usingInput = false;
-                //Cursor.visible = true;
                 EventSystem.current.SetSelectedGameObject(null);
-                //Debug.Log("using mouse");
                 KNMUI();
             }
         }
         if ((Keyboard.current.anyKey.wasPressedThisFrame || (Gamepad.current != null && IsGamepadPressed())) && usingMouse && !usingInput)
         {
-            //Debug.Log("im in");
             if (usingMouse && !usingInput)
             {
-                //Cursor.visible = false;
                 EventSystem.current.SetSelectedGameObject(null);
                 EventSystem.current.SetSelectedGameObject(defaultButton);
-                //Debug.Log("Default Button registered");
                 usingMouse = false;
                 usingInput = true;
-                //KNMUI();
             }
         }
         if (Keyboard.current.anyKey.wasPressedThisFrame)
         {
             KNMUI();
         }
-
-        if (optionsMenu.activeSelf && (Input.GetKeyDown(KeyCode.Escape) || backInput))
+        if (optionsMenu.activeSelf && (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Cancel")))
         {
             optionsMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(defaultButton);
         }
     }
     private bool IsGamepadPressed()
@@ -96,15 +89,8 @@ public class MenuManager : MonoBehaviour
     {
         Application.Quit();
     }
-    [Button]
     public void LoadGame()
     {
         SceneManager.LoadScene("MainScene");
-    }
-
-    public void BackInput(InputAction.CallbackContext context)
-    {
-        backInput = context.action.triggered;
-        Debug.Log("back button pressed");
     }
 }
