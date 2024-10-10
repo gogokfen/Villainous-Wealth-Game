@@ -25,6 +25,8 @@ public class CharacterControl : MonoBehaviour
     Collider[] wallSearch;
     Collider[] projSearch;
 
+    Vector3 hitBoxSize = new Vector3(1, 2f, 1);
+
     [SerializeField] float moveSpeed = 2;
     private float startingSpeed;
     private float accelSpeed = 0;
@@ -60,7 +62,8 @@ public class CharacterControl : MonoBehaviour
         Gun,
         Sword,
         Boomerang,
-        Lazer
+        Lazer,
+        Mine
     }
     public enum PlayerTypes
     {
@@ -75,6 +78,8 @@ public class CharacterControl : MonoBehaviour
 
     public static int weaponID;
 
+    private static bool weaponDiscarded = false;
+
 
     CharacterController CC;
     bool useWeapon;
@@ -85,8 +90,8 @@ public class CharacterControl : MonoBehaviour
     {
         weaponList[0].GetComponent<SphereCollider>().enabled = false;
 
-        if (isTargetDummy)
-            return;
+        //if (isTargetDummy)
+            //return;
 
         startingSpeed = moveSpeed;
         weaponID = 0;
@@ -121,18 +126,20 @@ public class CharacterControl : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        projSearch = Physics.OverlapBox(transform.position, new Vector3(0.5f, 1f, 0.5f), Quaternion.identity, collisionMask);
+        projSearch = Physics.OverlapBox(transform.position, hitBoxSize, Quaternion.identity, collisionMask);
         if (projSearch.Length > 0)
         {
             for (int i = 0; i < projSearch.Length; i++)
             {
-                WeaponBase WB = projSearch[i].GetComponent<WeaponBase>();
+                WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
-                TakeDamage(WB.playerID, WB.damage, WB.damageType);
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile)
+                TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType);
+
+                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
                 {
                     Destroy(projSearch[i].gameObject);
                 }
+                
             }
         }
 
@@ -170,10 +177,11 @@ public class CharacterControl : MonoBehaviour
 
             Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
             CC.Move(moveDirection * moveSpeed * Time.deltaTime);
+
             float targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+
             transform.rotation = Quaternion.Euler(0, targetAngle, 0);
         }
-
         else
         {
             lFootAnim.SetBool("Walk", false);
@@ -191,14 +199,9 @@ public class CharacterControl : MonoBehaviour
         }
 
 
-
-
-
         if (useWeapon)
         {
-            if (equippedWeapon != Weapons.Fist) //no punch if other weapon equipped
-                Attack(equippedWeapon, previousWeapon);
-            else
+            if (equippedWeapon == Weapons.Fist) //no punch if other weapon equipped //Attack(equippedWeapon, previousWeapon);
             {
                 if (animState == 0 || animState == 9)
                 {
@@ -313,7 +316,7 @@ public class CharacterControl : MonoBehaviour
             {
                 previousWeapon = equippedWeapon;
                 equippedWeapon = Enum.Parse<Weapons>(pickupHit.transform.name);
-                pickupHit.transform.gameObject.SetActive(false);
+                pickupHit.transform.gameObject.SetActive(false); //consider destroying instead
 
                 weaponList[(int)previousWeapon].SetActive(false);
                 weaponList[(int)equippedWeapon].SetActive(true);
@@ -324,6 +327,17 @@ public class CharacterControl : MonoBehaviour
                 Debug.Log("Change the object's name to the correct weapon name");
             }
         } //pickup raycast
+
+        if (weaponDiscarded)
+        {
+            weaponDiscarded = false;
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Fist;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+            weaponID = (int)equippedWeapon;
+        }
 
 
         /** // in case of collision check with raycast
@@ -348,10 +362,13 @@ public class CharacterControl : MonoBehaviour
         if (attackingPlayer != PlayerID)
         {
             hp = hp - damage;
-            Debug.Log("Ouch!, Player " + attackingPlayer.ToString() + " hurt me!");
+            Debug.Log("Ouch!, Player " + attackingPlayer.ToString() + " hurt me! I have +"+hp+" Hp!");
+
+
         }
     }
 
+    /**
     private void Attack(Weapons WeaponUsed, Weapons UnusedWeapon)
     {
         //weaponList[(int)UnusedWeapon].SetActive(false);
@@ -373,7 +390,18 @@ public class CharacterControl : MonoBehaviour
                 // code block
                 break;
         }
-        */
+        
+    }
+    */
+    public static void DiscardWeapon()
+    {
+        weaponDiscarded = true;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position, hitBoxSize);
     }
 }
 

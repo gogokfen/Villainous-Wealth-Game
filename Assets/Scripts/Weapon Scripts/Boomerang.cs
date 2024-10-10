@@ -38,6 +38,7 @@ public class Boomerang : WeaponBase
             boomerangGFX.SetActive(false);
             canThrow = false;
             GameObject tempBoomrang = Instantiate(boomerang, transform.position, transform.rotation);
+            tempBoomrang.name = "Boomerang Shot";
             tempBoomrang.GetComponent<WeaponBase>().playerID = playerID;
             tempBoomrang.GetComponent<WeaponBase>().damage = damage;
             tempBoomrang.GetComponent<WeaponBase>().damageType = damageType;
@@ -56,11 +57,18 @@ public class Boomerang : WeaponBase
                 boomrangSearch = Physics.OverlapSphere(transform.position, 1f, boomerangPickupMask);
                 if (boomrangSearch.Length > 0)
                 {
-                    catchCD = 0;
-                    Destroy(boomrangSearch[0].gameObject);
+                    for (int i=0;i<boomrangSearch.Length;i++)
+                    {
+                        if (boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang Shot")
+                        {
+                            catchCD = 0;
+                            Destroy(boomrangSearch[0].gameObject);
 
-                    canThrow = true;
-                    boomerangGFX.SetActive(true);
+                            canThrow = true;
+                            boomerangGFX.SetActive(true);
+                        }
+                    }
+
                 }
             }
         }
