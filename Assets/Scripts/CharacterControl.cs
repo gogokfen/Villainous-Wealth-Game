@@ -83,6 +83,8 @@ public class CharacterControl : MonoBehaviour
 
     void Start()
     {
+        weaponList[0].GetComponent<SphereCollider>().enabled = false;
+
         if (isTargetDummy)
             return;
 
@@ -223,15 +225,19 @@ public class CharacterControl : MonoBehaviour
         {
             animTimer += Time.deltaTime;
 
+            SphereCollider fist = weaponList[0].GetComponent<SphereCollider>();
+
             if (animState == 1 || animState == 2 || animState == 3)
             {
                 if (animTimer >= 0.383f) // 23/60
                 {
                     animState = 3;
+                    fist.enabled = false;
                 }
-                else if (animTimer >= 0.3f) // 18/60
+                else if (animTimer >= 0.3f) // 18/60 active
                 {
                     animState = 2;
+                    fist.enabled = true;
                 }
             }
 
@@ -240,10 +246,12 @@ public class CharacterControl : MonoBehaviour
                 if (animTimer >= 0.4166f) // 25/60
                 {
                     animState = 6;
+                    fist.enabled = false;
                 }
-                else if (animTimer >= 0.333f) // 20/60
+                else if (animTimer >= 0.333f) // 20/60 active
                 {
                     animState = 5;
+                    fist.enabled = true;
                 }
             }
 
@@ -253,10 +261,12 @@ public class CharacterControl : MonoBehaviour
                 if (animTimer >= 0.5166f) // 31/60
                 {
                     animState = 9;
+                    fist.enabled = false;
                 }
-                else if (animTimer >= 0.233f) // 14/60
+                else if (animTimer >= 0.233f) // 14/60 active
                 {
                     animState = 8;
+                    fist.enabled = true;
                 }
             }
 
