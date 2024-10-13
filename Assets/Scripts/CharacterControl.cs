@@ -11,6 +11,7 @@ public class CharacterControl : MonoBehaviour
     public bool isTargetDummy = false;
 
     public PlayerTypes PlayerID;
+    public static PlayerTypes discardingPlayerID;
 
     [SerializeField] GameObject AtaHuHaAmongusPOVCamera;
     [SerializeField] GameObject OriginalCamera;
@@ -332,7 +333,7 @@ public class CharacterControl : MonoBehaviour
             }
         } //pickup raycast
 
-        if (weaponDiscarded)
+        if (weaponDiscarded && discardingPlayerID == PlayerID)
         {
             weaponDiscarded = false;
             previousWeapon = equippedWeapon;
@@ -341,6 +342,7 @@ public class CharacterControl : MonoBehaviour
             weaponList[(int)previousWeapon].SetActive(false);
             weaponList[(int)equippedWeapon].SetActive(true);
             weaponID = (int)equippedWeapon;
+            Debug.Log("actually discarded yo");
         }
 
 
@@ -397,9 +399,11 @@ public class CharacterControl : MonoBehaviour
         
     }
     */
-    public static void DiscardWeapon()
+    public static void DiscardWeapon(PlayerTypes weaponPlayerID)
     {
+        discardingPlayerID = weaponPlayerID;
         weaponDiscarded = true;
+        Debug.Log("weapon discarded");
     }
 
     private void OnDrawGizmosSelected()

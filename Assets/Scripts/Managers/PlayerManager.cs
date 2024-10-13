@@ -47,13 +47,14 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!Application.isPlaying) return;
+        //if (!Application.isPlaying) return;
         {
             InputSystem.onDeviceChange += (device, change) =>
             {
                 switch (change)
                 {
                     case InputDeviceChange.Disconnected:
+                    if (!Application.isPlaying) return;
                         Debug.Log($"Device {device.name} has been disconnected.");
                         gamepadDisconnectedUI.SetActive(true);
                         Time.timeScale = 0f;
