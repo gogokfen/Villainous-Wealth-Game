@@ -316,11 +316,15 @@ public class CharacterControl : MonoBehaviour
             {
                 previousWeapon = equippedWeapon;
                 equippedWeapon = Enum.Parse<Weapons>(pickupHit.transform.name);
-                pickupHit.transform.gameObject.SetActive(false); //consider destroying instead
+                //pickupHit.transform.gameObject.SetActive(false); //consider destroying instead
+                
 
                 weaponList[(int)previousWeapon].SetActive(false);
                 weaponList[(int)equippedWeapon].SetActive(true);
                 weaponID = (int)equippedWeapon;
+
+                Destroy(pickupHit.transform.gameObject);
+                //Destroy(pickupHit.transform);
             }
             else
             {
