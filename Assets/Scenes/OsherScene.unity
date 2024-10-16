@@ -848,6 +848,7 @@ MonoBehaviour:
   rArm: {fileID: 2010879198}
   hpText: {fileID: 0}
   moneyText: {fileID: 0}
+  shieldGFX: {fileID: 0}
 --- !u!114 &162726733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2973,7 +2974,7 @@ Transform:
   m_GameObject: {fileID: 575775923}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40667278, y: 0, z: 0, w: 0.9135739}
-  m_LocalPosition: {x: 0.45324975, y: 13.90876, z: -17.324577}
+  m_LocalPosition: {x: 0, y: 14, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9736,6 +9737,7 @@ MonoBehaviour:
   rArm: {fileID: 9189802834168914178}
   hpText: {fileID: 0}
   moneyText: {fileID: 0}
+  shieldGFX: {fileID: 0}
 --- !u!4 &1554438631218744846
 Transform:
   m_ObjectHideFlags: 0

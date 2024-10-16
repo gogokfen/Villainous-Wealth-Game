@@ -112,6 +112,7 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] TextMeshProUGUI moneyText;
+    [SerializeField] GameObject shieldGFX;
 
 
     void Start()
@@ -185,6 +186,9 @@ public class CharacterControl : MonoBehaviour
 
         speedBuffTimer -= Time.deltaTime;
         shieldBuffTimer -= Time.deltaTime;
+        if (shieldBuffTimer <= 0)
+            shieldGFX.SetActive(false);
+
 
         /**
         if (Input.GetKeyDown(KeyCode.V))
@@ -438,6 +442,7 @@ public class CharacterControl : MonoBehaviour
                 }
                 if (pickupHit.transform.name == "Shield")
                 {
+                    shieldGFX.SetActive(true);
                     shieldBuffTimer = 3.5f;
                     Destroy(pickupHit.transform.gameObject);
                     //Debug.Log("shield");
