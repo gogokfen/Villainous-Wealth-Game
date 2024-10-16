@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PickupManager : MonoBehaviour
 {
+    public bool DropWeapons = false;
+    public bool DropPowerups = false;
+
     [SerializeField] GameObject pickupPrefab;
 
     List<GameObject> pickups = new List<GameObject>();
@@ -11,7 +14,6 @@ public class PickupManager : MonoBehaviour
     [SerializeField] float pickupFrequency = 3;
 
     float timer;
-
 
     [Header("Gizmos")]
     [SerializeField] int gizmosWidth;
@@ -57,36 +59,56 @@ public class PickupManager : MonoBehaviour
         if (Time.time >= timer)
         {
             timer += pickupFrequency; //timer = Time.time + 3
-
-            //////////////////////////////// V1 
-            //generates a random pickup by giving the pickup a random name from the weapon list
-
-            Vector3 tempPos = new Vector3(transform.position.x+Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y+ Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z+ Random.Range(-gizmosLength / 2, gizmosLength / 2));
-            GameObject tempPickup = Instantiate(pickupPrefab, tempPos,Quaternion.identity);
-
-            int nameRandomlyPicked = Random.Range(1, CharacterControl.Weapons.GetNames(typeof(CharacterControl.Weapons)).Length); //starts from 1 cause 0 is fist
-            CharacterControl.Weapons weaponName;
-
-            weaponName = (CharacterControl.Weapons)nameRandomlyPicked;
-            tempPickup.name = weaponName.ToString();
-
-            Destroy(tempPickup, 20); //prevents scene from bloating
-
-            /*
-            foreach (int index in CharacterControl.Weapons.GetValues(typeof(CharacterControl.Weapons))) 
+            if (DropWeapons)
             {
-                weaponName = (CharacterControl.Weapons)index;
+                //////////////////////////////// V1 
+                //generates a random pickup by giving the pickup a random name from the weapon list
+
+                Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+                GameObject tempPickup = Instantiate(pickupPrefab, tempPos, Quaternion.identity);
+
+                int nameRandomlyPicked = Random.Range(1, CharacterControl.Weapons.GetNames(typeof(CharacterControl.Weapons)).Length); //starts from 1 cause 0 is fist
+                CharacterControl.Weapons weaponName;
+
+                weaponName = (CharacterControl.Weapons)nameRandomlyPicked;
                 tempPickup.name = weaponName.ToString();
-                //Debug.Log(index);
+
+                Destroy(tempPickup, 20); //prevents scene from bloating
+
+                /*
+                foreach (int index in CharacterControl.Weapons.GetValues(typeof(CharacterControl.Weapons))) 
+                {
+                    weaponName = (CharacterControl.Weapons)index;
+                    tempPickup.name = weaponName.ToString();
+                    //Debug.Log(index);
+                }
+                */
+
+                //tempPickup.name = pickupPrefab.name;
+
+                pickups.Add(tempPickup);
             }
-            */
 
+            if (DropPowerups)
+            {
+                Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+                GameObject tempPickup = Instantiate(pickupPrefab, tempPos, Quaternion.identity);
 
-            //tempPickup.name = pickupPrefab.name;
+                int nameRandomlyPicked = Random.Range(0, 4);
 
-            pickups.Add(tempPickup);
+                if (nameRandomlyPicked == 0)
+                    tempPickup.name = "Coin";
+                else if (nameRandomlyPicked == 1)
+                    tempPickup.name = "Health";
+                else if (nameRandomlyPicked == 2)
+                    tempPickup.name = "Shield";
+                else if (nameRandomlyPicked == 3)
+                    tempPickup.name = "Speed";
 
-            
+                pickups.Add(tempPickup);
+
+                Destroy(tempPickup, 20);
+            }
         }
     }
 

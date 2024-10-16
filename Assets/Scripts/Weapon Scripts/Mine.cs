@@ -20,7 +20,6 @@ public class Mine : WeaponBase
     private void OnEnable()
     {
         uses = startingAmmo;
-        Debug.Log(startingAmmo);
     }
 
     public void PlacingMine(InputAction.CallbackContext context)
