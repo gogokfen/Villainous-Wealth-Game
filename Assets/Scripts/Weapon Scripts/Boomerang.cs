@@ -18,7 +18,7 @@ public class Boomerang : WeaponBase
 
     private void Start()
     {
-        damageType = damageTypes.IndestructableProjectile;
+        damageType = damageTypes.bounceOffProjectile;
     }
 
     public void Thrown(InputAction.CallbackContext context)

@@ -4,13 +4,14 @@ using UnityEngine;
 
 public abstract class WeaponBase : MonoBehaviour
 {
-    //[HideInInspector]
+    [HideInInspector]
     public CharacterControl.PlayerTypes playerID;
     public enum damageTypes
     {
         melee,
         destructableProjectile,
-        IndestructableProjectile
+        indestructableProjectile,
+        bounceOffProjectile
     }
     public damageTypes damageType;
 

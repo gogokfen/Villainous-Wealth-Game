@@ -15,6 +15,7 @@ public class CharacterControl : MonoBehaviour
 
     public PlayerTypes PlayerID;
     public static PlayerTypes discardingPlayerID;
+    //public static PlayerTypes holdingPlayerID;
 
     //[SerializeField] GameObject AtaHuHaAmongusPOVCamera;
     //[SerializeField] GameObject OriginalCamera;
@@ -31,7 +32,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] LayerMask collisionMask;
     Collider[] projSearch;
     float identicalDamageCD;
-    private  PlayerTypes lastPlayerID;
+    private PlayerTypes lastPlayerID;
 
     Vector3 hitBoxSize = new Vector3(1, 2f, 1);
 
@@ -44,9 +45,11 @@ public class CharacterControl : MonoBehaviour
     private float targetAngle;
     private Vector3 attackDirection;
     private float attackMoveSpeed;
+    private float forwardMomentumDelay;
 
     //private bool holdPos;
     private float holdTimer;
+    //public static float staticHoldTimer;
 
     //private int animState = 0;
     private AS animState;
@@ -55,7 +58,7 @@ public class CharacterControl : MonoBehaviour
     private enum AS //animestate
     {
         idle =           0,
-        Punch1Windup =   1, 
+        Punch1Windup =   1,
         Punch1Active =   2,
         Punch1Recovery = 3,
         Punch2Windup =   4,
@@ -87,7 +90,8 @@ public class CharacterControl : MonoBehaviour
         Sword,
         Boomerang,
         Lazer,
-        Mine
+        Mine,
+        Blunderbuss
     }
     public enum PlayerTypes
     {
@@ -256,12 +260,17 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (animState != 0) //movement from attacking
+        if (animState != 0) //movement from attacking (forward momentum)
         {
-            if (attackMoveSpeed>=0)
-                CC.Move(attackDirection * attackMoveSpeed * Time.deltaTime);
+            forwardMomentumDelay -= Time.deltaTime;
+            if (forwardMomentumDelay <= 0)
+            {
+                if (attackMoveSpeed >= 0)
+                    CC.Move(attackDirection * attackMoveSpeed * Time.deltaTime);
 
-            attackMoveSpeed -= Time.deltaTime * 50;
+                attackMoveSpeed -= Time.deltaTime * 50;
+            }
+
         }
 
         holdTimer -= Time.deltaTime;
@@ -278,7 +287,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 20;
+                    attackMoveSpeed = 16;
+                    forwardMomentumDelay = 0.133f; // 8/60
 
                     animTimer = 0;
                     animState = AS.Punch1Windup;
@@ -288,7 +298,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 20;
+                    attackMoveSpeed = 16;
+                    forwardMomentumDelay = 0.233f; // 14/60
 
                     animTimer = 0;
                     animState = AS.Punch2Windup;
@@ -298,7 +309,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 20;
+                    attackMoveSpeed = 16;
+                    forwardMomentumDelay = 0.233f; // 14/60
 
                     animTimer = 0;
                     animState = AS.Punch3Windup;
@@ -307,7 +319,16 @@ public class CharacterControl : MonoBehaviour
             }
             else //using other weapons
             {
-                holdTimer = 0.15f;  //consider using a per-weapon case stun where we check the stun duration and if there is one needed by the weapon's script
+                Attack(equippedWeapon);
+                //holdTimer = 0.15f;  //consider using a per-weapon case stun where we check the stun duration and if there is one needed by the weapon's script
+                /*
+                if (holdingPlayerID == PlayerID)
+                {
+                    holdTimer = staticHoldTimer;
+                }
+                else
+                    holdTimer = 0.15f;
+                */
             }
         }
         if (animState != AS.idle)
@@ -367,7 +388,7 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1) && holdTimer<=0)
+        if (Input.GetMouseButton(1) && equippedWeapon == Weapons.Fist && holdTimer <= 0)
         {
             if (animState == 0)
             {
@@ -379,14 +400,14 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(1) && equippedWeapon == Weapons.Fist)
         {
             if (powerPunchWindup >= 0.75)
             {
                 animState = AS.StrongPunch;
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = moveDirection;
-                attackMoveSpeed = 35;
+                attackMoveSpeed = 22;
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
                 rArm.localPosition = new Vector3(0.75f, 0, 0);
@@ -435,7 +456,7 @@ public class CharacterControl : MonoBehaviour
                 }
                 if (pickupHit.transform.name == "Speed")
                 {
-                    currentMaxSpeed = startingSpeed *1.5f;
+                    currentMaxSpeed = startingSpeed * 1.5f;
                     speedBuffTimer = 5;
                     Destroy(pickupHit.transform.gameObject);
                     //Debug.Log("speed");
@@ -488,11 +509,11 @@ public class CharacterControl : MonoBehaviour
     {
         if (attackingPlayer != PlayerID)
         {
-            if (!(attackingPlayer == lastPlayerID && 
-                (damageType == WeaponBase.damageTypes.IndestructableProjectile || damageType == WeaponBase.damageTypes.melee) &&
-                identicalDamageCD>=0)) //making sure player is not taking multiple instances of damage from the same attack
+            if (!(attackingPlayer == lastPlayerID &&
+                (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee) &&
+                identicalDamageCD >= 0)) //making sure player is not taking multiple instances of damage from the same attack
             {
-                if (shieldBuffTimer>=0)
+                if (shieldBuffTimer >= 0)
                 {
                     hp = hp - damage;
                     hpText.text = ("HP: " + hp);
@@ -505,6 +526,14 @@ public class CharacterControl : MonoBehaviour
             identicalDamageCD = 0.1f;
         }
     }
+
+    /**
+    public static void Hold(float holdTime, PlayerTypes holdingPlayer)
+    {
+        holdingPlayerID = holdingPlayer;
+        staticHoldTimer = holdTime;
+    }
+    */
 
     /**
     private void Attack(Weapons WeaponUsed, Weapons UnusedWeapon)
@@ -531,6 +560,56 @@ public class CharacterControl : MonoBehaviour
         
     }
     */
+
+    private void Attack(Weapons WeaponUsed)
+    {
+        //holdTimer = 0.15f; //default case if no change
+        switch (WeaponUsed)
+        {
+            case Weapons.Fist:
+                //Debug.Log("0");
+                break;
+            case Weapons.Gun:
+                //Debug.Log("1");
+                holdTimer = 0.15f;
+                break;
+            case Weapons.Sword:
+                //Debug.Log("2");
+                break;
+            case Weapons.Boomerang:
+                //Debug.Log("3");
+                holdTimer = 0.2f;
+                break;
+            case Weapons.Lazer:
+                //Debug.Log("4");
+                holdTimer = 0.15f;
+                break;
+            case Weapons.Mine:
+                //Debug.Log("5");
+                holdTimer = 0.25f;
+                break;
+            case Weapons.Blunderbuss:
+                //Debug.Log("6");
+                if (weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().shoot)
+                {
+                    weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().shoot = false;
+                    animState = AS.StrongPunch;
+                    holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime;
+                    attackDirection = -moveDirection;
+                    attackMoveSpeed = 10;
+                }
+                else if (weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().reloading)
+                {
+                    weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().reloading = false;
+                    holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
+                }
+                break;
+            default:
+                Debug.Log("no");
+                break;
+        }
+
+    }
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)
     {
         discardingPlayerID = weaponPlayerID;
@@ -552,7 +631,7 @@ if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D
 {
     if (moveSpeed < startingSpeed)
     {
-        accelSpeed += Time.deltaTime*5;
+        accelSpeed += Time.deltaTime * 5;
         deAccelSpeed = 0;
         moveSpeed += accelSpeed;
     }
@@ -592,102 +671,102 @@ else
 
 
 
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
+{
+    lFootAnim.SetBool("Walk", true);
+    rFootAnim.SetBool("Walk", true);
+
+    if (moveSpeed < startingSpeed)
+    {
+        accelSpeed += Time.deltaTime * 5;
+        deAccelSpeed = 0;
+        moveSpeed += accelSpeed;
+    }
+
+    if (Input.GetKey(KeyCode.W))
+    {
+        if (Input.GetKey(KeyCode.A))
         {
-            lFootAnim.SetBool("Walk", true);
-            rFootAnim.SetBool("Walk", true);
-
-            if (moveSpeed < startingSpeed)
-            {
-                accelSpeed += Time.deltaTime * 5;
-                deAccelSpeed = 0;
-                moveSpeed += accelSpeed;
-            }
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 315, 0);
-                }
-                else if (Input.GetKey(KeyCode.D))
-                {
-                    //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 45, 0);
-                }
-                else
-                {
-                    //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
-                    CC.Move(Vector3.forward * moveSpeed * Time.deltaTime);
-                }
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                if (Input.GetKey(KeyCode.W))
-                {
-                    //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 45, 0);
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 135, 0);
-                }
-                else
-                {
-                    //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move(Vector3.right * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 90, 0);
-                }
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 135, 0);
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 225, 0);
-                }
-                else
-                {
-                    //transform.Translate(-Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move(-Vector3.forward * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 180, 0);
-                }
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                if (Input.GetKey(KeyCode.S))
-                {
-                    //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 225, 0);
-                }
-                else if (Input.GetKey(KeyCode.W))
-                {
-                    //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 315, 0);
-                }
-                else
-                {
-                    //transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime, Space.World);
-                    CC.Move(-Vector3.right * moveSpeed * Time.deltaTime);
-                    transform.rotation = Quaternion.Euler(0, 270, 0);
-
-                }
-            }
+            //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 315, 0);
         }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 45, 0);
+        }
+        else
+        {
+            //transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            CC.Move(Vector3.forward * moveSpeed * Time.deltaTime);
+        }
+    }
+    else if (Input.GetKey(KeyCode.D))
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            //transform.Translate((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 45, 0);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 135, 0);
+        }
+        else
+        {
+            //transform.Translate(Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move(Vector3.right * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+    }
+    else if (Input.GetKey(KeyCode.S))
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            //transform.Translate((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((-Vector3.forward + Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 135, 0);
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 225, 0);
+        }
+        else
+        {
+            //transform.Translate(-Vector3.forward * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move(-Vector3.forward * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+    }
+    else if (Input.GetKey(KeyCode.A))
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            //transform.Translate((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((-Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 225, 0);
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            //transform.Translate((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move((Vector3.forward - Vector3.right).normalized * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 315, 0);
+        }
+        else
+        {
+            //transform.Translate(-Vector3.right * moveSpeed * Time.deltaTime, Space.World);
+            CC.Move(-Vector3.right * moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 270, 0);
+
+        }
+    }
+}
 */
