@@ -513,7 +513,7 @@ public class CharacterControl : MonoBehaviour
                 (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee) &&
                 identicalDamageCD >= 0)) //making sure player is not taking multiple instances of damage from the same attack
             {
-                if (shieldBuffTimer >= 0)
+                if (shieldBuffTimer <= 0)
                 {
                     hp = hp - damage;
                     hpText.text = ("HP: " + hp);
