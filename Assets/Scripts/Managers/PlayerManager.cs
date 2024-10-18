@@ -28,8 +28,7 @@ public class PlayerManager : MonoBehaviour
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     private List<PlayerInput> activePlayers;
     private bool playersSpawned;
-    private bool winnerAnnounced;
-    
+    public bool winnerAnnounced;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -37,24 +36,17 @@ public class PlayerManager : MonoBehaviour
     }
     private void Start()
     {
-        availablePlayerID = new List<CharacterControl.PlayerTypes>
-        {
-            CharacterControl.PlayerTypes.Red,
-            CharacterControl.PlayerTypes.Green,
-            CharacterControl.PlayerTypes.Blue,
-            CharacterControl.PlayerTypes.Yellow
-        };
+        StartRound();
     }
     private void Update()
     {
-        //if (!Application.isPlaying) return;
         {
             InputSystem.onDeviceChange += (device, change) =>
             {
                 switch (change)
                 {
                     case InputDeviceChange.Disconnected:
-                    if (!Application.isPlaying) return;
+                        if (!Application.isPlaying) return;
                         Debug.Log($"Device {device.name} has been disconnected.");
                         gamepadDisconnectedUI.SetActive(true);
                         Time.timeScale = 0f;
@@ -71,10 +63,6 @@ public class PlayerManager : MonoBehaviour
         {
             if (!playersSpawned)
             {
-                activePlayers = new List<PlayerInput>();
-                AssignPlayers();
-                playersSpawned = true;
-                cameraParent.SetActive(true);
             }
             if (playersSpawned)
             {
@@ -82,6 +70,31 @@ public class PlayerManager : MonoBehaviour
                 CheckRemainingPlayers();
             }
         }
+    }
+    public void StartRound()
+    {
+        if (activePlayers == null)
+        {
+            activePlayers = new List<PlayerInput>();
+        }
+        else
+        {
+            activePlayers.Clear();
+        }
+        AvailablePlayerIDs();
+        AssignPlayers();
+        playersSpawned = true;
+        cameraParent.SetActive(true);
+    }
+    private void AvailablePlayerIDs()
+    {
+        availablePlayerID = new List<CharacterControl.PlayerTypes>
+    {
+        CharacterControl.PlayerTypes.Red,
+        CharacterControl.PlayerTypes.Green,
+        CharacterControl.PlayerTypes.Blue,
+        CharacterControl.PlayerTypes.Yellow
+    };
     }
     private void AssignPlayers()
     {
@@ -142,12 +155,9 @@ public class PlayerManager : MonoBehaviour
                 PlayerInput remainingPlayer = activePlayers[0];
                 CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
                 winnerText.text = $"Player {characterControl.PlayerID} Wins!";
-                winnerText.gameObject.SetActive(true);
-                winnerBG.SetActive(true);
                 Debug.Log($"Player {characterControl.PlayerID} Wins!");
                 winnerAnnounced = true;
             }
         }
     }
-
 }
