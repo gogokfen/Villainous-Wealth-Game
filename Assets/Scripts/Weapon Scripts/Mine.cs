@@ -10,12 +10,11 @@ public class Mine : WeaponBase
     int uses;
     bool placed;
 
-    /*
-    void Start()
+
+    private void Start()
     {
-        uses = startingAmmo;
+        damageType = damageTypes.destructableProjectile;
     }
-    */
 
     private void OnEnable()
     {

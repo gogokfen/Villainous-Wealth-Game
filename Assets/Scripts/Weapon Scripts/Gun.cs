@@ -14,7 +14,7 @@ public class Gun : WeaponBase
     {
         //playerID = CharacterControl.PlayerTypes.Red;
         //damage = 0;
-        //damageType = damageTypes.destructableProjectile;
+        //damageType = damageTypes.destructableProjectile; //also used for the lazer gun
     }
 
     public void Shot(InputAction.CallbackContext context)

@@ -25,6 +25,7 @@ public class Blunderbuss : WeaponBase
     private void OnEnable()
     {
         ammo = maxAmmo;
+        damageType = damageTypes.destructableProjectile;
     }
 
     public void Shot(InputAction.CallbackContext context)
@@ -81,7 +82,7 @@ public class Blunderbuss : WeaponBase
             reloading = true; //changed to false from CharacterControl
             ammo = maxAmmo;
             attackCooldown = 2 * maxAttackCooldown;
-            Debug.Log("reloading!");
+            //Debug.Log("reloading!"); //don't delete this comment
         }
     }
 

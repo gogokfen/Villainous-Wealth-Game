@@ -91,7 +91,8 @@ public class CharacterControl : MonoBehaviour
         Boomerang,
         Lazer,
         Mine,
-        Blunderbuss
+        Blunderbuss,
+        Grenade
     }
     public enum PlayerTypes
     {
@@ -141,6 +142,8 @@ public class CharacterControl : MonoBehaviour
         }
 
         animState = AS.idle;
+
+        hpText.text = ("HP: " + hp);
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -174,7 +177,10 @@ public class CharacterControl : MonoBehaviour
             {
                 WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
-                TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType);
+                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
+                    TakeDamage(attackWB.playerID, attackWB.damage,attackWB.damageType, projSearch[i].transform.position);
+                else
+                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType);
 
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
                 {
@@ -509,8 +515,9 @@ public class CharacterControl : MonoBehaviour
     {
         if (attackingPlayer != PlayerID)
         {
+            
             if (!(attackingPlayer == lastPlayerID &&
-                (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee) &&
+                (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
                 identicalDamageCD >= 0)) //making sure player is not taking multiple instances of damage from the same attack
             {
                 if (shieldBuffTimer <= 0)
@@ -527,39 +534,32 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
-    /**
-    public static void Hold(float holdTime, PlayerTypes holdingPlayer)
+    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType, Vector3 grenadePos) // in case of grenade
     {
-        holdingPlayerID = holdingPlayer;
-        staticHoldTimer = holdTime;
-    }
-    */
-
-    /**
-    private void Attack(Weapons WeaponUsed, Weapons UnusedWeapon)
-    {
-        //weaponList[(int)UnusedWeapon].SetActive(false);
-        //weaponList[(int)WeaponUsed].SetActive(true);
-
-        /*
-        switch (WeaponUsed)
+        if (attackingPlayer != PlayerID)
         {
-            case Weapons.Fist:
-                Debug.Log("Error, check 'Attack' function code");
-                break;
-            case Weapons.Gun:
-                Debug.Log("Pistol!");
-                break;
-            case Weapons.Sword:
-                Debug.Log("Shwinggggggggg!");
-                break;
-            default:
-                // code block
-                break;
+                if (shieldBuffTimer <= 0) //ranges from about 1 to 6
+                {
+                    int damageBasedOnDistance;
+                    if (Vector3.Distance(transform.position, grenadePos) > 4.5f)
+                    {
+                        damageBasedOnDistance = (int)(0.35 * damage);
+                    }
+                    else if ((Vector3.Distance(transform.position, grenadePos) > 2.0f))
+                    {
+                        damageBasedOnDistance = (int)(0.7 * damage);
+                    }
+                    else
+                        damageBasedOnDistance = damage;
+
+                    hp = hp - damageBasedOnDistance;
+                    hpText.text = ("HP: " + hp);
+                }
+
+            lastPlayerID = attackingPlayer;
+            identicalDamageCD = 0.1f;
         }
-        
     }
-    */
 
     private void Attack(Weapons WeaponUsed)
     {
@@ -604,6 +604,10 @@ public class CharacterControl : MonoBehaviour
                     holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
                 }
                 break;
+            case Weapons.Grenade:
+                //Debug.Log("7");
+                holdTimer = 0.25f;
+                break;
             default:
                 Debug.Log("no");
                 break;
@@ -625,6 +629,40 @@ public class CharacterControl : MonoBehaviour
 }
 
 
+
+/**
+public static void Hold(float holdTime, PlayerTypes holdingPlayer)
+{
+    holdingPlayerID = holdingPlayer;
+    staticHoldTimer = holdTime;
+}
+*/
+
+/**
+private void Attack(Weapons WeaponUsed, Weapons UnusedWeapon)
+{
+    //weaponList[(int)UnusedWeapon].SetActive(false);
+    //weaponList[(int)WeaponUsed].SetActive(true);
+
+    /*
+    switch (WeaponUsed)
+    {
+        case Weapons.Fist:
+            Debug.Log("Error, check 'Attack' function code");
+            break;
+        case Weapons.Gun:
+            Debug.Log("Pistol!");
+            break;
+        case Weapons.Sword:
+            Debug.Log("Shwinggggggggg!");
+            break;
+        default:
+            // code block
+            break;
+    }
+    
+}
+*/
 
 /**
 if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A))
