@@ -11,6 +11,14 @@ public class BoomerangShot : WeaponBase
 
     float upTime;
 
+    LayerMask wallMask;
+    RaycastHit wallHit;
+
+    private void Start()
+    {
+        wallMask.value = 1;
+    }
+
     void Update()
     {
         upTime += Time.deltaTime;
@@ -39,5 +47,36 @@ public class BoomerangShot : WeaponBase
             Destroy(gameObject);
         }
         */
+
+
+
+        if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f, wallMask))
+        {
+            float startingAngle;
+            float complementaryAngle;
+            float desiredRotationAngle;
+
+            if (wallHit.normal == Vector3.right || wallHit.normal == Vector3.left)
+            {
+                startingAngle = transform.eulerAngles.y;
+                complementaryAngle = 180 - startingAngle;
+                desiredRotationAngle = (2 * complementaryAngle);
+            }
+            else
+            {
+                startingAngle = transform.eulerAngles.y;
+                complementaryAngle = 90 - startingAngle;
+                desiredRotationAngle = (2 * complementaryAngle);
+            }
+
+            transform.Rotate(0, desiredRotationAngle, 0);
+
+            Vector3 tempDirection = wallHit.transform.position - transform.position;
+            tempDirection.Normalize();
+            tempDirection /= 2;
+
+            transform.position = new Vector3(transform.position.x + tempDirection.x, transform.position.y, transform.position.z + tempDirection.z);
+        }
+
     }
 }

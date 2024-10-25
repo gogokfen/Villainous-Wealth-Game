@@ -12,12 +12,17 @@ public class GrenadeShot : WeaponBase
     private SphereCollider SC;
     private BoxCollider BC;
 
+    [SerializeField] GameObject GFX;
+    float rotationAmount;
 
-    [SerializeField] LayerMask wallMask;
+    LayerMask wallMask; //[SerializeField] 
     RaycastHit wallHit;
 
     void Start()
     {
+        //Debug.Log(wallMask.value); // default layer value is 1
+        wallMask.value = 1;
+
         SC = GetComponent<SphereCollider>();
         BC = GetComponent<BoxCollider>();
         SC.enabled = false;
@@ -27,6 +32,9 @@ public class GrenadeShot : WeaponBase
     void Update()
     {
         transform.Translate(Vector3.forward * throwPower * Time.deltaTime);
+
+
+
 
         if (SC.enabled) //DON"T CHANGE THE ORDER OF THE IFS
         {
@@ -52,6 +60,8 @@ public class GrenadeShot : WeaponBase
 
         maxExplosionTime -= Time.deltaTime;
 
+        rotationAmount = maxExplosionTime * 1000;
+        GFX.transform.Rotate(0, rotationAmount * Time.deltaTime, 0);
 
         if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f,wallMask))
         {

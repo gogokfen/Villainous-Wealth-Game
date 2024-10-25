@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Wall : MonoBehaviour
 {
-    [SerializeField] LayerMask collisionMask;
+    LayerMask collisionMask; //[SerializeField] 
     Collider[] projSearch;
 
     //[SerializeField] Vector3 hitBoxSize;
@@ -13,6 +13,8 @@ public class Wall : MonoBehaviour
     void Start()
     {
         hitBoxSize = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        //Debug.Log(collisionMask.value); //128 is the value of the projectile layer, I guess it works like bit numbers
+        collisionMask.value = 128;
     }
 
     void Update()

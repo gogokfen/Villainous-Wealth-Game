@@ -178,7 +178,7 @@ public class CharacterControl : MonoBehaviour
                 WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
-                    TakeDamage(attackWB.playerID, attackWB.damage,attackWB.damageType, projSearch[i].transform.position);
+                    TakeDamage(attackWB.playerID, attackWB.damage,projSearch[i].transform.position);
                 else
                     TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType);
 
@@ -534,7 +534,7 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
-    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType, Vector3 grenadePos) // in case of grenade
+    private void TakeDamage(PlayerTypes attackingPlayer, int damage, Vector3 grenadePos) // in case of grenade
     {
         if (attackingPlayer != PlayerID)
         {

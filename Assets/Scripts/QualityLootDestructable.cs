@@ -7,12 +7,26 @@ public class QualityLootDestructable : MonoBehaviour
 {
     //projectile layer is 7
 
+    [SerializeField] int hitsNeeded;
+
     [SerializeField] Slider pickupSlider;
 
     [SerializeField] LayerMask collisionMask;
     Collider[] projSearch;
+    float identicalDamageCD;
+    private CharacterControl.PlayerTypes lastPlayerID;
 
-    bool destroyed = false;
+
+    private bool looted = false;
+
+    [SerializeField] bool isTreasureChest = false;
+
+    int coinNumber;
+    Vector3 coinPosition;
+    float coinTimer;
+
+    [SerializeField] GameObject coin;
+    Rigidbody coinRB;
 
     void Start()
     {
@@ -23,26 +37,91 @@ public class QualityLootDestructable : MonoBehaviour
     void Update()
     {
         projSearch = Physics.OverlapBox(transform.position, new Vector3(3f, 3f, 3f), Quaternion.identity, collisionMask);
+        identicalDamageCD -= Time.deltaTime;
 
         if (projSearch.Length > 0)
         {
             for (int i = 0; i < projSearch.Length; i++)
             {
-                pickupSlider.value -= 0.25f;
+                //pickupSlider.value -= (float)(1/(float)hitsNeeded);
+                TakeDamage(projSearch[i].GetComponent<WeaponBase>().playerID, projSearch[i].GetComponent<WeaponBase>().damage, projSearch[i].GetComponent<WeaponBase>().damageType);
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile)
                 {
                     Destroy(projSearch[i].gameObject);
                 }
+
+                if (pickupSlider.value<=0 && !looted)
+                {
+                    looted = true;
+                    if (isTreasureChest)
+                    {
+                        DropCoins();
+                    }
+                    else
+                    {
+                        EnableLoot();
+                    }
+                }
             }
         }
 
-
-        if (pickupSlider.value == 0 && !destroyed)
+        if (coinNumber>0)
         {
-            destroyed = true;
-            gameObject.layer = 6;
-            Destroy(pickupSlider.gameObject);
+            coinTimer -= Time.deltaTime;
+            if (Time.time>=coinTimer)
+            {
+                coinNumber--;
+                coinTimer = Time.time + 0.1f;
+
+                coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
+                GameObject tempCoin = Instantiate(coin, transform.position, transform.rotation);
+                tempCoin.name = coin.name;
+                coinRB = tempCoin.GetComponent<Rigidbody>();
+                coinRB.AddForce(coinPosition, ForceMode.Impulse);
+                Destroy(tempCoin, 10);
+            }
         }
+    }
+
+    private void TakeDamage(CharacterControl.PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType)
+    {
+        if (!(attackingPlayer == lastPlayerID &&
+            (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
+            identicalDamageCD >= 0)) //making sure lootbox is not taking multiple instances of damage from the same attack
+        {
+            pickupSlider.value -= (float)(damage / (float)hitsNeeded);
+        }
+
+
+        lastPlayerID = attackingPlayer;
+        identicalDamageCD = 0.1f;
+        
+    }
+
+    private void EnableLoot()
+    {
+        gameObject.layer = 6;
+        Destroy(pickupSlider.gameObject);
+    }
+
+    private void DropCoins()
+    {
+        coinNumber = Random.Range(5,16);
+        
+
+        /*
+        for (int i=0;i<coinNumber;i++)
+        {
+            coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
+            GameObject tempCoin = Instantiate(coin, transform.position, transform.rotation);
+            tempCoin.name = coin.name;
+            coinRB = tempCoin.GetComponent<Rigidbody>();
+            coinRB.AddForce(coinPosition, ForceMode.Impulse);
+            Destroy(tempCoin, 10);
+        }
+        */
+        Destroy(pickupSlider.gameObject);
+
     }
 
     /* //projectiles don't have rigidbodies, can't detect gunshots
