@@ -79,7 +79,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] Animator lFootAnim;
     [SerializeField] Animator rFootAnim;
     [SerializeField] Transform rArm;
-    [EndFoldout]
+
 
 
     float powerPunchWindup = 0;
@@ -114,12 +114,14 @@ public class CharacterControl : MonoBehaviour
     bool useWeapon;
     private Vector2 moveInput;
 
+    [EndFoldout]
 
     [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] GameObject shieldGFX;
 
-
+    [SerializeField] Slider windUpBar;
+    float reloadTime;
     void Start()
     {
         weaponList[0].GetComponent<SphereCollider>().enabled = false;
@@ -165,6 +167,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (hp <= 0)
         {
+            PickupManager.singleton.SpawnTreasureChestCoin(transform);
             Destroy(gameObject);
         }
 
@@ -280,6 +283,9 @@ public class CharacterControl : MonoBehaviour
         }
 
         holdTimer -= Time.deltaTime;
+        windUpBar.value = Mathf.InverseLerp(reloadTime, 0, holdTimer);
+        if (holdTimer <= 0)
+            windUpBar.gameObject.SetActive(false);
 
 
         if (useWeapon)
@@ -450,7 +456,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     coins++;
                     moneyText.text = "$: " + coins;
-                    Destroy(pickupHit.transform.gameObject);
+                    //Destroy(pickupHit.transform.gameObject); //need to think this through with the pickup manager
+                    pickupHit.transform.gameObject.SetActive(false);
                     //Debug.Log("coin");
                 }
                 if (pickupHit.transform.name == "Health")
@@ -491,6 +498,13 @@ public class CharacterControl : MonoBehaviour
             weaponList[(int)equippedWeapon].SetActive(true);
             weaponID = (int)equippedWeapon;
             //Debug.Log("actually discarded yo");
+        }
+
+        /////////////////// test, delete later
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PickupManager.singleton.SetWinningPlayer(gameObject);
+            CC.enabled = false;
         }
 
 
@@ -602,6 +616,9 @@ public class CharacterControl : MonoBehaviour
                 {
                     weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().reloading = false;
                     holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
+
+                    windUpBar.gameObject.SetActive(true);
+                    reloadTime = holdTimer;
                 }
                 break;
             case Weapons.Grenade:

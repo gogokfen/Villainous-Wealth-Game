@@ -932,6 +932,7 @@ MonoBehaviour:
   hpText: {fileID: 0}
   moneyText: {fileID: 0}
   shieldGFX: {fileID: 0}
+  windUpBar: {fileID: 0}
 --- !u!114 &162726733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5417,7 +5418,7 @@ PrefabInstance:
     - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: hp
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
@@ -5723,6 +5724,8 @@ MonoBehaviour:
   pickupPrefab: {fileID: 8121783589345228088, guid: 0e4c5cbf64ea0184c8ee547c7a47077c,
     type: 3}
   pickupFrequency: 6
+  prefabCoin: {fileID: 2704877087673402510, guid: 97085d53e24721f498ab118c534bc670,
+    type: 3}
   gizmosWidth: 33
   gizmosHight: 10
   gizmosLength: 31
@@ -6745,7 +6748,7 @@ PrefabInstance:
     - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: hp
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
@@ -10753,6 +10756,7 @@ MonoBehaviour:
   hpText: {fileID: 0}
   moneyText: {fileID: 0}
   shieldGFX: {fileID: 0}
+  windUpBar: {fileID: 0}
 --- !u!4 &1554438631218744846
 Transform:
   m_ObjectHideFlags: 0

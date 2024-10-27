@@ -22,7 +22,7 @@ public class QualityLootDestructable : MonoBehaviour
     [SerializeField] bool isTreasureChest = false;
 
     int coinNumber;
-    Vector3 coinPosition;
+    //Vector3 coinPosition;
     float coinTimer;
 
     [SerializeField] GameObject coin;
@@ -73,12 +73,17 @@ public class QualityLootDestructable : MonoBehaviour
                 coinNumber--;
                 coinTimer = Time.time + 0.1f;
 
+                //transferred to pickupManager to have control over all the coins in the scene
+                PickupManager.singleton.SpawnTreasureChestCoin(transform);
+
+                /*
                 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
                 GameObject tempCoin = Instantiate(coin, transform.position, transform.rotation);
                 tempCoin.name = coin.name;
                 coinRB = tempCoin.GetComponent<Rigidbody>();
                 coinRB.AddForce(coinPosition, ForceMode.Impulse);
                 Destroy(tempCoin, 10);
+                */
             }
         }
     }

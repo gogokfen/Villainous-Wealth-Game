@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PickupManager : MonoBehaviour
 {
+    public static PickupManager singleton { get; private set; }
+
     public bool DropWeapons = false;
     public bool DropPowerups = false;
 
@@ -12,6 +14,13 @@ public class PickupManager : MonoBehaviour
     List<GameObject> pickups = new List<GameObject>();
 
     [SerializeField] float pickupFrequency = 3;
+
+    List<GameObject> coins = new List<GameObject>();
+    [SerializeField] GameObject prefabCoin;
+    //public static int uncollectedCoinsAmount = 0;
+    GameObject winningPlayer;
+    bool playerWon = false;
+    float animTimer;
 
     float timer;
 
@@ -22,6 +31,12 @@ public class PickupManager : MonoBehaviour
     void Start()
     {
         timer = Time.time + pickupFrequency;
+        playerWon = false;
+    }
+
+    private void Awake()
+    {
+        singleton = this;
     }
 
     void Update()
@@ -109,6 +124,42 @@ public class PickupManager : MonoBehaviour
 
                 Destroy(tempPickup, 20);
             }
+
+            //GameObject tempCoin = Instantiate(prefabCoin, transform.position, Quaternion.identity);
+            //coins.Add(tempCoin);
+        }
+
+        if (playerWon)
+        {
+            animTimer += Time.deltaTime/3;
+            for (int i=0;i<coins.Count;i++)
+            {
+                coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, winningPlayer.transform.position, animTimer);
+            }
+        }
+
+    }
+
+    public void SpawnTreasureChestCoin(Transform treasureChest)
+    {
+        Vector3 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
+        GameObject tempCoin = Instantiate(prefabCoin, treasureChest.position, treasureChest.rotation);
+        tempCoin.name = prefabCoin.name;
+        Rigidbody coinRB = tempCoin.GetComponent<Rigidbody>();
+        coinRB.AddForce(coinPosition, ForceMode.Impulse);
+
+        coins.Add(tempCoin);
+        //Destroy(tempCoin, 10);
+    }
+
+    public void SetWinningPlayer(GameObject player)
+    {
+        winningPlayer = player;
+        playerWon = true;
+
+        for (int i = 0; i < coins.Count; i++)
+        {
+            Destroy(coins[i].GetComponent<Rigidbody>());
         }
     }
 

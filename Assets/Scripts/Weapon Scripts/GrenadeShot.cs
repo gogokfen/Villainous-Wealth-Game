@@ -7,7 +7,7 @@ public class GrenadeShot : WeaponBase
     public float maxExplosionTime;
     [SerializeField] int explosionDamage = 6;
     [HideInInspector] public float throwPower; //HideInInspector
-    private float deAccel = 0.1f;
+    //private float deAccel = 0.1f;
     private float explosionTime;
     private SphereCollider SC;
     private BoxCollider BC;
@@ -49,7 +49,8 @@ public class GrenadeShot : WeaponBase
             SC.enabled = true;
         }
 
-        //deAccel += Time.deltaTime * 1;
+        //grenade slowdown V1
+        /*
         deAccel *= (1 + Time.deltaTime*5);
         if (throwPower - deAccel >= 0)
         {
@@ -57,13 +58,19 @@ public class GrenadeShot : WeaponBase
         }
         else
             throwPower = 0;
+        */
+
+        //grenade slowdown V2
+
+        throwPower /= (1 + Time.deltaTime*2.5f);
 
         maxExplosionTime -= Time.deltaTime;
 
-        rotationAmount = maxExplosionTime * 1000;
+        //rotationAmount = maxExplosionTime * 1000;
+        rotationAmount = throwPower * 25;
         GFX.transform.Rotate(0, rotationAmount * Time.deltaTime, 0);
 
-        if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f,wallMask))
+        if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f,wallMask)) //wall collisions
         {
 
             float startingAngle;
