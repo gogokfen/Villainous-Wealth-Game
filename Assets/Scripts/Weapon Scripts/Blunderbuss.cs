@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public class Blunderbuss : WeaponBase
 {
-    [HideInInspector]
+    //[HideInInspector]
     public bool shoot = false;
-    [HideInInspector]
+    //[HideInInspector]
     public bool reloading = false;
     //[HideInInspector]
     public float holdTime = 0.35f;
@@ -16,26 +16,36 @@ public class Blunderbuss : WeaponBase
     private float attackCooldown;
     [SerializeField] GameObject bullet;
     [SerializeField] int maxAmmo = 2;
-    private int ammo;
+    private int ammo; 
 
     [SerializeField] float bulletSpreadAngle;
     [SerializeField] float bulletSpreadAmount;
     private Quaternion startingShotPos;
 
+    private bool LosingMyMind = true;
+
     private void OnEnable()
     {
         ammo = maxAmmo;
         damageType = damageTypes.destructableProjectile;
+
+        LosingMyMind = false;
     }
+
+    private void OnDisable()
+    {
+        LosingMyMind = true;
+    }
+
 
     public void Shot(InputAction.CallbackContext context)
     {
         //use = context.action.triggered;
 
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && !LosingMyMind)
         {
+            //Debug.Log("wtf");
             Shoot();
-            //Debug.Log("bnei zonot");
         }
     }
 
@@ -79,6 +89,8 @@ public class Blunderbuss : WeaponBase
         }
         else if (ammo == 0)
         {
+            //Debug.Log("hoe ass nigga");
+
             reloading = true; //changed to false from CharacterControl
             ammo = maxAmmo;
             attackCooldown = 2 * maxAttackCooldown;
