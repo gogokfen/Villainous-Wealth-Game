@@ -55,9 +55,9 @@ public class Wall : MonoBehaviour
                     //projSearch[i].transform.position = Vector3.Reflect(projSearch[i].transform.position, Vector3.right);
 
                     //prevent it from hitting the same wall multiple times
-                    Vector3 tempDirection = projSearch[i].transform.position - transform.position ;
-                    tempDirection.Normalize();
-                    tempDirection /= 2;
+                    //Vector3 tempDirection = projSearch[i].transform.position - transform.position ;
+                    //tempDirection.Normalize();
+                    //tempDirection /= 2;
 
                     //projSearch[i].transform.position = new Vector3(projSearch[i].transform.position.x + tempDirection.x, projSearch[i].transform.position.y, projSearch[i].transform.position.z + tempDirection.z);
 
