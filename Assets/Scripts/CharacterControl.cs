@@ -50,6 +50,9 @@ public class CharacterControl : MonoBehaviour
     //private bool holdPos;
     private float holdTimer;
     //public static float staticHoldTimer;
+    private bool rolling;
+    private Vector3 rollDirection;
+    private float rollCD;
 
     //private int animState = 0;
     private AS animState;
@@ -119,6 +122,9 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] GameObject shieldGFX;
+    [SerializeField] GameObject blockBubble;
+    private float blockDuration;
+    private float blockCD;
 
     [SerializeField] Slider windUpBar;
     float reloadTime;
@@ -248,7 +254,7 @@ public class CharacterControl : MonoBehaviour
 
             targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
 
-            if (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery) //can't rotate whiling using fists
+            if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery) && !rolling) //can't rotate whiling using fists
             {
                 transform.rotation = Quaternion.Euler(0, targetAngle, 0);
             }
@@ -267,6 +273,48 @@ public class CharacterControl : MonoBehaviour
                 if (moveSpeed < 1)
                     moveSpeed = 1;
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl) && blockCD<=0)
+        {
+            blockBubble.SetActive(true);
+            blockDuration = 0.75f;
+            blockCD = 3.5f;
+            holdTimer = 0.75f;
+        }
+
+        rollCD -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && rollCD<=0  && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
+        {
+            rollDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            holdTimer = 0.35f;
+            rolling = true;
+            rollCD = 2.5f;
+        }
+
+        if (rolling)
+        {
+            transform.Rotate(Vector3.right, Time.deltaTime * 1030);
+
+            float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (holdTimer*2.75f)) * 4)));
+            CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
+            if (holdTimer<=0)
+            {
+                rolling = false;
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+            }
+                
+
+        }
+
+
+        blockCD -= Time.deltaTime;
+        if (blockDuration>0)
+        {
+            blockDuration -= Time.deltaTime;
+            if (blockDuration <= 0)
+                blockBubble.SetActive(false);
         }
 
         if (animState != 0) //movement from attacking (forward momentum)
