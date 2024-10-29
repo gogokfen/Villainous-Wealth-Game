@@ -128,6 +128,8 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] Slider windUpBar;
     float reloadTime;
+
+    [SerializeField] ParticleSystem meleeParticleEffect;
     void Start()
     {
         weaponList[0].GetComponent<SphereCollider>().enabled = false;
@@ -189,7 +191,9 @@ public class CharacterControl : MonoBehaviour
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
                     TakeDamage(attackWB.playerID, attackWB.damage,projSearch[i].transform.position);
                 else
-                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType);
+                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType,projSearch[i].transform.position);
+
+
 
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
                 {
@@ -573,7 +577,7 @@ public class CharacterControl : MonoBehaviour
         */
     }
 
-    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType)
+    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType,Vector3 hitPos)
     {
         if (attackingPlayer != PlayerID)
         {
@@ -586,6 +590,19 @@ public class CharacterControl : MonoBehaviour
                 {
                     hp = hp - damage;
                     hpText.text = ("HP: " + hp);
+
+
+
+                    //--------------------test-----------------------
+
+                    if (damageType == WeaponBase.damageTypes.melee)
+                    {
+
+                        //meleeParticleEffect.gameObject.SetActive(true);
+                        meleeParticleEffect.Play();
+                        meleeParticleEffect.transform.position = hitPos;
+                    }
+
                 }
                 //Debug.Log("Ouch!, Player " + attackingPlayer.ToString() + " hurt me! I have +" + hp + " Hp!");
             }
