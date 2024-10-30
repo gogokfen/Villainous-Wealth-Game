@@ -19,7 +19,7 @@ public class Wall : MonoBehaviour
 
     void Update()
     {
-        projSearch = Physics.OverlapBox(transform.position, hitBoxSize/2, Quaternion.identity, collisionMask);
+        projSearch = Physics.OverlapBox(transform.position, hitBoxSize/2, transform.rotation, collisionMask);
         if (projSearch.Length > 0)
         {
             for (int i = 0; i < projSearch.Length; i++)

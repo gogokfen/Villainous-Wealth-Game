@@ -557,6 +557,8 @@ public class CharacterControl : MonoBehaviour
         {
             PickupManager.singleton.SetWinningPlayer(gameObject);
             CC.enabled = false;
+
+            //PickupManager.singleton.SetWinningPlayer(activePlayers[0].gameObject); // put in player manager CheckRemainingPlayers
         }
 
 
