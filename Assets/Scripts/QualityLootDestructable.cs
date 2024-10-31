@@ -12,6 +12,7 @@ public class QualityLootDestructable : MonoBehaviour
     [SerializeField] Slider pickupSlider;
 
     [SerializeField] LayerMask collisionMask;
+    [SerializeField] Animator animator;
     Collider[] projSearch;
     float identicalDamageCD;
     private CharacterControl.PlayerTypes lastPlayerID;
@@ -112,6 +113,7 @@ public class QualityLootDestructable : MonoBehaviour
     private void DropCoins()
     {
         coinNumber = Random.Range(5,16);
+        animator.SetTrigger("Open");
         
 
         /*

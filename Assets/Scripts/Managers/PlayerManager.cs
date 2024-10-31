@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using VInspector;
 using Cinemachine;
 using UnityEngine.SceneManagement;
@@ -28,15 +29,17 @@ public class PlayerManager : MonoBehaviour
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     private List<PlayerInput> activePlayers;
     private bool playersSpawned;
-    public bool winnerAnnounced;
+    public static bool roundOver;
+    public static int playerCount;
+    int playerIndex = 0;
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        winnerAnnounced = false;
+        roundOver = false;
     }
     private void Start()
     {
-        StartRound();
+        //StartRound();
     }
     private void Update()
     {
@@ -67,7 +70,7 @@ public class PlayerManager : MonoBehaviour
             if (playersSpawned)
             {
                 Debug.Log("Im checking players");
-                CheckRemainingPlayers();
+                //CheckRemainingPlayers();
             }
         }
     }
@@ -96,9 +99,9 @@ public class PlayerManager : MonoBehaviour
         CharacterControl.PlayerTypes.Yellow
     };
     }
-    private void AssignPlayers()
+    public void AssignPlayers()
     {
-        int playerIndex = 0;
+        //int playerIndex = 0;
         foreach (var device in InputSystem.devices)
         {
             if (device is Gamepad || device is Keyboard)
@@ -116,13 +119,32 @@ public class PlayerManager : MonoBehaviour
                     activePlayers.Add(playerInput);
                     Debug.Log(activePlayers);
                     playerIndex++;
+                    playerCount++;
                 }
             }
         }
     }
+
+    public void PlayersNextRound()
+    {
+        playerCount = playerIndex;
+        playerIndex = 0;
+        foreach (PlayerInput playerInput in activePlayers)
+        {
+            playerInput.transform.position = startPositions[playerIndex].position;
+            CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();
+            if (characterControl != null)
+            {
+                characterControl.NextRound();
+            }
+
+            playerIndex++;
+        }
+    }
+
     private void ChangePlayerMaterial(GameObject player, CharacterControl.PlayerTypes playerType)
     {
-        Transform bodyGFXTransform = player.transform.Find("Body/BodyGFX");
+        Transform bodyGFXTransform = player.transform.Find("charParent/Body/BodyGFX");
         if (bodyGFXTransform != null)
         {
             Renderer renderer = bodyGFXTransform.GetComponent<Renderer>();
@@ -145,19 +167,27 @@ public class PlayerManager : MonoBehaviour
             renderer.material = newMaterial;
         }
     }
-    private void CheckRemainingPlayers()
+    // public void CheckRemainingPlayers()
+    // {
+    //     if (!singleplayerTesting)
+    //     {
+    //         activePlayers.RemoveAll(player => player == null);
+    //         if (activePlayers.Count == 1 && !roundOver)
+    //         {
+    //             PlayerInput remainingPlayer = activePlayers[0];
+    //             CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
+    //             winnerText.text = $"Player {characterControl.PlayerID} Wins!";
+    //             Debug.Log($"Player {characterControl.PlayerID} Wins!");
+    //             roundOver = true;
+    //         }
+    //     }
+    // }
+    public static void PlayerCheck()
     {
-        if (!singleplayerTesting)
+        playerCount--;
+        if (playerCount == 1)
         {
-            activePlayers.RemoveAll(player => player == null);
-            if (activePlayers.Count == 1 && !winnerAnnounced)
-            {
-                PlayerInput remainingPlayer = activePlayers[0];
-                CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
-                winnerText.text = $"Player {characterControl.PlayerID} Wins!";
-                Debug.Log($"Player {characterControl.PlayerID} Wins!");
-                winnerAnnounced = true;
-            }
+            roundOver = true;
         }
     }
 }

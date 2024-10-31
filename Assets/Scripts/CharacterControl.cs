@@ -60,17 +60,17 @@ public class CharacterControl : MonoBehaviour
 
     private enum AS //animestate
     {
-        idle =           0,
-        Punch1Windup =   1,
-        Punch1Active =   2,
+        idle = 0,
+        Punch1Windup = 1,
+        Punch1Active = 2,
         Punch1Recovery = 3,
-        Punch2Windup =   4,
-        Punch2Active =   5,
+        Punch2Windup = 4,
+        Punch2Active = 5,
         Punch2Recovery = 6,
-        Punch3Windup =   7,
-        Punch3Active =   8,
+        Punch3Windup = 7,
+        Punch3Active = 8,
         Punch3Recovery = 9,
-        StrongPunch =    10
+        StrongPunch = 10
     }
 
     [SerializeField] GameObject[] weaponList;
@@ -115,6 +115,10 @@ public class CharacterControl : MonoBehaviour
 
     CharacterController CC;
     bool useWeapon;
+    bool rollInput;
+    bool shieldInput;
+    bool rightPunchInput;
+    bool dead;
     private Vector2 moveInput;
 
     [EndFoldout]
@@ -130,6 +134,7 @@ public class CharacterControl : MonoBehaviour
     float reloadTime;
 
     [SerializeField] ParticleSystem meleeParticleEffect;
+    [SerializeField] GameObject characterGFX;
     void Start()
     {
         weaponList[0].GetComponent<SphereCollider>().enabled = false;
@@ -171,12 +176,51 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
+    public void Roll(InputAction.CallbackContext context)
+    {
+        rollInput = context.action.triggered;
+    }
+    public void Shield(InputAction.CallbackContext context)
+    {
+        shieldInput = context.action.triggered;
+    }
+
+    public void RightPunch(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            rightPunchInput = true;
+        }
+        else if (context.canceled)
+        {
+            rightPunchInput = false;
+        }
+    }
+
+    public void OutTheRound()
+    {
+        PickupManager.singleton.SpawnTreasureChestCoin(transform);
+        CC.enabled = false;
+        characterGFX.SetActive(false);
+        PlayerManager.PlayerCheck();
+        dead = true;
+    }
+    public void NextRound()
+    {
+        hp = 10;
+        hpText.text = "HP: " + hp;
+        CC.enabled = true;
+        characterGFX.SetActive(true);
+        dead = false;
+    }
+
     void Update()
     {
-        if (hp <= 0)
+        if (hp <= 0 & !dead)
         {
-            PickupManager.singleton.SpawnTreasureChestCoin(transform);
-            Destroy(gameObject);
+            //PickupManager.singleton.SpawnTreasureChestCoin(transform);
+            //Destroy(gameObject);
+            OutTheRound();
         }
 
         identicalDamageCD -= Time.deltaTime;
@@ -189,9 +233,9 @@ public class CharacterControl : MonoBehaviour
                 WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
-                    TakeDamage(attackWB.playerID, attackWB.damage,projSearch[i].transform.position);
+                    TakeDamage(attackWB.playerID, attackWB.damage, projSearch[i].transform.position);
                 else
-                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType,projSearch[i].transform.position);
+                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType, projSearch[i].transform.position);
 
 
 
@@ -279,7 +323,7 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && blockCD<=0)
+        if (shieldInput && blockCD <= 0)
         {
             blockBubble.SetActive(true);
             blockDuration = 0.75f;
@@ -289,7 +333,7 @@ public class CharacterControl : MonoBehaviour
 
         rollCD -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) && rollCD<=0  && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
+        if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
         {
             rollDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
             holdTimer = 0.35f;
@@ -301,20 +345,20 @@ public class CharacterControl : MonoBehaviour
         {
             transform.Rotate(Vector3.right, Time.deltaTime * 1030);
 
-            float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (holdTimer*2.75f)) * 4)));
+            float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (holdTimer * 2.75f)) * 4)));
             CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
-            if (holdTimer<=0)
+            if (holdTimer <= 0)
             {
                 rolling = false;
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             }
-                
+
 
         }
 
 
         blockCD -= Time.deltaTime;
-        if (blockDuration>0)
+        if (blockDuration > 0)
         {
             blockDuration -= Time.deltaTime;
             if (blockDuration <= 0)
@@ -452,7 +496,7 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(1) && equippedWeapon == Weapons.Fist && holdTimer <= 0)
+        if (rightPunchInput && equippedWeapon == Weapons.Fist && holdTimer <= 0)
         {
             if (animState == 0)
             {
@@ -464,7 +508,7 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonUp(1) && equippedWeapon == Weapons.Fist)
+        if (!rightPunchInput && equippedWeapon == Weapons.Fist)
         {
             if (powerPunchWindup >= 0.75)
             {
@@ -579,11 +623,11 @@ public class CharacterControl : MonoBehaviour
         */
     }
 
-    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType,Vector3 hitPos)
+    private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType, Vector3 hitPos)
     {
         if (attackingPlayer != PlayerID)
         {
-            
+
             if (!(attackingPlayer == lastPlayerID &&
                 (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
                 identicalDamageCD >= 0)) //making sure player is not taking multiple instances of damage from the same attack
@@ -619,23 +663,23 @@ public class CharacterControl : MonoBehaviour
     {
         if (attackingPlayer != PlayerID)
         {
-                if (shieldBuffTimer <= 0) //ranges from about 1 to 6
+            if (shieldBuffTimer <= 0) //ranges from about 1 to 6
+            {
+                int damageBasedOnDistance;
+                if (Vector3.Distance(transform.position, grenadePos) > 4.5f)
                 {
-                    int damageBasedOnDistance;
-                    if (Vector3.Distance(transform.position, grenadePos) > 4.5f)
-                    {
-                        damageBasedOnDistance = (int)(0.35 * damage);
-                    }
-                    else if ((Vector3.Distance(transform.position, grenadePos) > 2.0f))
-                    {
-                        damageBasedOnDistance = (int)(0.7 * damage);
-                    }
-                    else
-                        damageBasedOnDistance = damage;
-
-                    hp = hp - damageBasedOnDistance;
-                    hpText.text = ("HP: " + hp);
+                    damageBasedOnDistance = (int)(0.35 * damage);
                 }
+                else if ((Vector3.Distance(transform.position, grenadePos) > 2.0f))
+                {
+                    damageBasedOnDistance = (int)(0.7 * damage);
+                }
+                else
+                    damageBasedOnDistance = damage;
+
+                hp = hp - damageBasedOnDistance;
+                hpText.text = ("HP: " + hp);
+            }
 
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;

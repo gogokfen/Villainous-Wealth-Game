@@ -13,7 +13,8 @@ public class RoundManager : MonoBehaviour
     public static bool roundActive = false;
 
     [Header("Round Management")]
-    public UnityEvent roundStart;
+    public UnityEvent gameStart;
+    //public UnityEvent roundStart;
     public UnityEvent roundEnd;
     public UnityEvent gameEnd;
     [SerializeField] PlayerManager playerManager;
@@ -21,6 +22,8 @@ public class RoundManager : MonoBehaviour
     private void Awake() 
     {
         //playerManager = FindAnyObjectByType<PlayerManager>();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         
     }
 
@@ -28,20 +31,27 @@ public class RoundManager : MonoBehaviour
     {
         StartCoroutine(RoundLoop());
     }
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            DebugEndRound();
+        }
+    }
 
     private IEnumerator RoundLoop()
     {
+        gameStart.Invoke();
         while (currentRound != totalRounds)
         {
             Debug.Log($"Round {currentRound} start");
-            yield return new WaitUntil(() => playerManager.winnerAnnounced == true);
+            yield return new WaitUntil(() => PlayerManager.roundOver == true);
             roundEnd.Invoke();
             shopManager.Shopping();
             yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false);
             currentRound++;
-            playerManager.winnerAnnounced = false; 
-            KillAllClones.KillAllCharacters();           
-            roundStart.Invoke();
+            PlayerManager.roundOver = false;
+            playerManager.PlayersNextRound();
+            NextRound();         
         }
         gameEnd.Invoke();
     }
@@ -49,6 +59,15 @@ public class RoundManager : MonoBehaviour
     [Button]
     private void DebugEndRound()
     {
-        playerManager.winnerAnnounced = true;
+        PlayerManager.roundOver = true;
+    }
+
+    public static void NextRound()
+    {
+        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
+        foreach (CharacterControl character in characters)
+        {
+            character.NextRound();
+        }
     }
 }

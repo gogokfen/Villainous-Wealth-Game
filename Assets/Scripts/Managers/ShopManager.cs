@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 public class ShopManager : MonoBehaviour
 {
-    public GameObject defaultButton;
+    public GameObject[] defaultButtons;
+    int defaultButtonIndex = 0;
     public GameObject shopUI;
     public float shopTimer;
     public void Shopping()
@@ -14,13 +16,15 @@ public class ShopManager : MonoBehaviour
         Debug.Log("we shopping");
         shopUI.SetActive(true);
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
+        defaultButtonIndex = 0;
         foreach (PlayerInput player in playerInputs)
         {
             EventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
             if (playerEventSystem != null)
             {
                 playerEventSystem.SetSelectedGameObject(null);
-                playerEventSystem.SetSelectedGameObject(defaultButton);
+                playerEventSystem.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
+                defaultButtonIndex++;
             }
         }
         StartCoroutine(TimerCloseShop(shopTimer));
