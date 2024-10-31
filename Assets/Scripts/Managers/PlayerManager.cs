@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 public class PlayerManager : MonoBehaviour
 {
+    public static PlayerManager instance;
     public bool singleplayerTesting;
     [SerializeField] Transform[] startPositions;
     [SerializeField] GameObject playerPrefab;
@@ -32,6 +33,8 @@ public class PlayerManager : MonoBehaviour
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
+    public GameObject[] playerList;
+
 
     //static bool checkWinner = false;
 
@@ -39,6 +42,7 @@ public class PlayerManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         roundOver = false;
+        instance = this;
     }
     private void Start()
     {
@@ -122,12 +126,14 @@ public class PlayerManager : MonoBehaviour
     }
     public void AssignPlayers()
     {
+        playerList = new GameObject[InputSystem.devices.Count];
         //int playerIndex = 0;
         foreach (var device in InputSystem.devices)
         {
             if (device is Gamepad || device is Keyboard)
             {
                 var playerInput = PlayerInput.Instantiate(playerPrefab, controlScheme: null, pairWithDevice: device);
+                playerList[playerInput.playerIndex] = playerInput.gameObject;
                 playerInput.transform.position = startPositions[playerIndex].position;
                 CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();
                 if (availablePlayerID.Count > 0)

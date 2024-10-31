@@ -1,12 +1,10 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;// Required when using Event data.
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
-public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler// required interface when using the OnSelect method.
+public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler
 {
-    //Do this when the selectable UI object is selected.
     public void OnSelect(BaseEventData eventData)
     {
         Debug.Log(this.gameObject.name + " was selected");
