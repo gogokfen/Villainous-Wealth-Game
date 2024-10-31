@@ -45,6 +45,8 @@ public class RoundManager : MonoBehaviour
         {
             Debug.Log($"Round {currentRound} start");
             yield return new WaitUntil(() => PlayerManager.roundOver == true);
+            AssignWinner();
+            yield return new WaitForSeconds(3.5f);
             roundEnd.Invoke();
             shopManager.Shopping();
             yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false);
@@ -65,9 +67,31 @@ public class RoundManager : MonoBehaviour
     public static void NextRound()
     {
         CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
+        /*
+        for (int i=0;i<characters.Length;i++)
+        {
+            if (characters[i].dead == false)
+            {
+                PickupManager.singleton.SetWinningPlayer(characters[i].gameObject);
+            }
+        }
+        */
         foreach (CharacterControl character in characters)
         {
             character.NextRound();
+        }
+    }
+
+    public void AssignWinner()
+    {
+        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
+        for (int i = 0; i < characters.Length; i++)
+        {
+            if (characters[i].dead == false)
+            {
+                PickupManager.singleton.SetWinningPlayer(characters[i].gameObject);
+                characters[i].gameObject.GetComponent<CharacterController>().enabled = false;
+            }
         }
     }
 }

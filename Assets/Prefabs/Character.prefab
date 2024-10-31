@@ -11278,7 +11278,7 @@ MonoBehaviour:
   m_Actions: {fileID: -944628639613478452, guid: eff0920cce794fd44a442fbb70115884,
     type: 3}
   m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 7336068768491834155}
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -11524,6 +11524,7 @@ MonoBehaviour:
   lFootAnim: {fileID: 5658318454564814485}
   rFootAnim: {fileID: 6247391081991122040}
   rArm: {fileID: 2091557827255850583}
+  dead: 0
   hpText: {fileID: 6885798901711164548}
   moneyText: {fileID: 8259261304245846262}
   shieldGFX: {fileID: 1761991222998316758}
@@ -11707,7 +11708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 0
   damageType: 2
-  damage: 1
+  damage: 3
   maxAttackCooldown: 0.5
   bullet: {fileID: 2745302255475450468, guid: b27fc148a6f2a8d42bc4cdd84d24cb99, type: 3}
 --- !u!1 &3421728509353429272
@@ -11757,7 +11758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 0
   damageType: 1
-  damage: 3
+  damage: 4
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
   startingAmmo: 5
@@ -14488,13 +14489,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 0
   damageType: 2
-  damage: 2
+  damage: 4
   boomerang: {fileID: 4670712718768357648, guid: 2dbd800d88cf62d49bb8f66bf6e67b68,
     type: 3}
   boomerangGFX: {fileID: 6591095069540481903}
   boomerangPickupMask:
     serializedVersion: 2
     m_Bits: 128
+  windUpSlider: {fileID: 9064931124114560755}
 --- !u!65 &7652959578229797136
 BoxCollider:
   m_ObjectHideFlags: 0

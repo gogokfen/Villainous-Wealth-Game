@@ -32,6 +32,9 @@ public class PlayerManager : MonoBehaviour
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
+
+    //static bool checkWinner = false;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -43,25 +46,23 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
+        InputSystem.onDeviceChange += (device, change) =>
         {
-            InputSystem.onDeviceChange += (device, change) =>
+            switch (change)
             {
-                switch (change)
-                {
-                    case InputDeviceChange.Disconnected:
-                        if (!Application.isPlaying) return;
-                        Debug.Log($"Device {device.name} has been disconnected.");
-                        gamepadDisconnectedUI.SetActive(true);
-                        Time.timeScale = 0f;
-                        break;
-                    case InputDeviceChange.Reconnected:
-                        Debug.Log($"Device {device.name} has been reconnected.");
-                        gamepadDisconnectedUI.SetActive(false);
-                        Time.timeScale = 1f;
-                        break;
-                }
-            };
-        }
+                case InputDeviceChange.Disconnected:
+                    if (!Application.isPlaying) return;
+                    Debug.Log($"Device {device.name} has been disconnected.");
+                    gamepadDisconnectedUI.SetActive(true);
+                    Time.timeScale = 0f;
+                    break;
+                case InputDeviceChange.Reconnected:
+                    Debug.Log($"Device {device.name} has been reconnected.");
+                    gamepadDisconnectedUI.SetActive(false);
+                    Time.timeScale = 1f;
+                    break;
+            }
+        };
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
             if (!playersSpawned)
@@ -73,6 +74,26 @@ public class PlayerManager : MonoBehaviour
                 //CheckRemainingPlayers();
             }
         }
+
+        //osher
+        /*
+        if (checkWinner)
+        {
+            if (activePlayers!= null)
+            {
+                //Debug.Log(activePlayers.Count);
+                for (int i = 0; i < activePlayers.Count; i++)
+                {
+                    if (activePlayers[i].gameObject.GetComponent<CharacterControl>().dead == false)
+                    {
+                        PickupManager.singleton.SetWinningPlayer(activePlayers[i].gameObject);
+                    }
+                }
+            }
+            checkWinner = false;
+            roundOver = true;
+        }
+        */
     }
     public void StartRound()
     {
@@ -185,8 +206,10 @@ public class PlayerManager : MonoBehaviour
     public static void PlayerCheck()
     {
         playerCount--;
+
         if (playerCount == 1)
         {
+            //checkWinner = true; //osher
             roundOver = true;
         }
     }

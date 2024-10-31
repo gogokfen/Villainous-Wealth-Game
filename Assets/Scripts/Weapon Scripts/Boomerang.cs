@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Boomerang : WeaponBase
 {
@@ -14,27 +15,52 @@ public class Boomerang : WeaponBase
     [SerializeField] LayerMask boomerangPickupMask;
     Collider[] boomrangSearch;
     private float catchCD;
-    bool use;
+
+    [SerializeField] Slider windUpSlider;
+
+    int attackState = 0;
 
     private void Start()
     {
         damageType = damageTypes.bounceOffProjectile;
     }
 
+    private void OnEnable()
+    {
+        attackState = 0;
+    }
+
     public void Thrown(InputAction.CallbackContext context)
     {
-        use = context.action.triggered;
+        if (context.started)
+        {
+            attackState = 1;
+        }
+        else if (context.canceled)
+        {
+            if (attackState == 1)
+                attackState = -1;
+            else
+                attackState = 0;
+        }
     }
 
 
     void Update()
     {
-        if (Input.GetMouseButton(0)) // use && canThrow
+        if (attackState == 1 && canThrow) // use && canThrow
         {
             windup += Time.deltaTime;
+
+            windUpSlider.gameObject.SetActive(true);
+            windUpSlider.value = Mathf.InverseLerp(0, 25, windup * 37.5f);
         }
-        if (use && canThrow) // use && canThrow
+        if (attackState == -1 && canThrow) // use && canThrow
         {
+            attackState = 0;
+
+            windUpSlider.gameObject.SetActive(false);
+
             boomerangGFX.SetActive(false);
             canThrow = false;
             GameObject tempBoomrang = Instantiate(boomerang, transform.position, transform.rotation);
@@ -44,8 +70,8 @@ public class Boomerang : WeaponBase
             tempBoomrang.GetComponent<WeaponBase>().damageType = damageType;
 
             tempBoomrang.GetComponent<BoomerangShot>().lookAtTarget = transform;
-            tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 15 + windup * 5;
-            if ((15+windup*5)>40)
+            tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 15 + windup * 37.5f;
+            if ((15+windup*37.5f)>40)
                 tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 40;
             windup = 0;
         }

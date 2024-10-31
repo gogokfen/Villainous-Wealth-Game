@@ -117,8 +117,8 @@ public class CharacterControl : MonoBehaviour
     bool useWeapon;
     bool rollInput;
     bool shieldInput;
-    bool rightPunchInput;
-    bool dead;
+    int rightPunchAttackState;
+    public bool dead;
     private Vector2 moveInput;
 
     [EndFoldout]
@@ -158,6 +158,8 @@ public class CharacterControl : MonoBehaviour
 
         animState = AS.idle;
 
+        useWeapon = false;
+
         hpText.text = ("HP: " + hp);
     }
 
@@ -189,11 +191,14 @@ public class CharacterControl : MonoBehaviour
     {
         if (context.started)
         {
-            rightPunchInput = true;
+            rightPunchAttackState = 1;
         }
         else if (context.canceled)
         {
-            rightPunchInput = false;
+            if (rightPunchAttackState == 1)
+                rightPunchAttackState = -1;
+            else
+                rightPunchAttackState = 0;
         }
     }
 
@@ -202,8 +207,9 @@ public class CharacterControl : MonoBehaviour
         PickupManager.singleton.SpawnTreasureChestCoin(transform);
         CC.enabled = false;
         characterGFX.SetActive(false);
-        PlayerManager.PlayerCheck();
         dead = true;
+
+        PlayerManager.PlayerCheck();
     }
     public void NextRound()
     {
@@ -496,7 +502,7 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (rightPunchInput && equippedWeapon == Weapons.Fist && holdTimer <= 0)
+        if (rightPunchAttackState == 1 && equippedWeapon == Weapons.Fist && holdTimer <= 0)
         {
             if (animState == 0)
             {
@@ -508,8 +514,10 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (!rightPunchInput && equippedWeapon == Weapons.Fist)
+        if (rightPunchAttackState == -1 && equippedWeapon == Weapons.Fist)
         {
+            rightPunchAttackState = 0;
+
             if (powerPunchWindup >= 0.75)
             {
                 animState = AS.StrongPunch;
@@ -596,14 +604,6 @@ public class CharacterControl : MonoBehaviour
             //Debug.Log("actually discarded yo");
         }
 
-        /////////////////// test, delete later
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            PickupManager.singleton.SetWinningPlayer(gameObject);
-            CC.enabled = false;
-
-            //PickupManager.singleton.SetWinningPlayer(activePlayers[0].gameObject); // put in player manager CheckRemainingPlayers
-        }
 
 
         /** // in case of collision check with raycast

@@ -13,16 +13,31 @@ public class Grenade : WeaponBase
 
     [SerializeField] Slider windUpSlider;
 
-    bool use;
+    int attackState = 0;
 
     private void Start()
     {
         damageType = damageTypes.bounceOffProjectile;
     }
 
+    private void OnEnable()
+    {
+        attackState = 0;
+    }
+
     public void Shot(InputAction.CallbackContext context)
     {
-        use = context.action.triggered;
+        if (context.started)
+        {
+            attackState = 1;
+        }
+        else if (context.canceled)
+        {
+            if (attackState == 1)
+                attackState = -1;
+            else
+                attackState = 0;  
+        }
     }
 
     void Update()
@@ -30,15 +45,17 @@ public class Grenade : WeaponBase
         if (attackCooldown > 0)
             attackCooldown -= Time.deltaTime;
 
-        if (Input.GetMouseButton(0) && attackCooldown<=0) 
+        if (attackState ==1 && attackCooldown<=0) 
         {
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);
             windUpSlider.value = Mathf.InverseLerp(0, 50,windup *75);
         }
-        if (Input.GetMouseButtonUp(0) && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
+        if (attackState == -1 && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
         {
+            attackState = 0;
+
             windUpSlider.gameObject.SetActive(false);
 
             GameObject tempGrenade = Instantiate(grenade, transform.position, transform.rotation);

@@ -136,6 +136,11 @@ public class PickupManager : MonoBehaviour
             {
                 coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, winningPlayer.transform.position, animTimer);
             }
+            if (animTimer>=3.5f)
+            {
+                playerWon = false;
+                animTimer = 0;
+            }
         }
 
     }
