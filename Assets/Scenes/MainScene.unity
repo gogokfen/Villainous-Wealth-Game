@@ -1820,6 +1820,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2695088240420533790, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2695088240420533790, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_Navigation.m_Mode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4145746880293255358, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2015,7 +2025,7 @@ MonoBehaviour:
   - {fileID: 966861639}
   - {fileID: 292991739}
   shopUI: {fileID: 356778355}
-  shopTimer: 3
+  shopTimer: 100
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3622,7 +3632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16c6f78230fa4964a222622d8aae332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 527340413}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
   m_PlayerRoot: {fileID: 1743116652}
