@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ShopManager : MonoBehaviour
 {
@@ -18,7 +19,14 @@ public class ShopManager : MonoBehaviour
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         defaultButtonIndex = 0;
 
-        foreach (PlayerInput player in playerInputs)
+        
+
+        for (int i=0;i<defaultButtons.Length;i++) //osher for loop for resetting bought items
+        {
+            defaultButtons[i].GetComponent<Button>().interactable = true;
+        }
+
+            foreach (PlayerInput player in playerInputs)
         {
             // Find the EventSystem attached to this player
             MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
@@ -49,7 +57,24 @@ public class ShopManager : MonoBehaviour
 
             if (selectedButton != null)
             {
-                Debug.Log(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID);
+                //Debug.Log("Player "+PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID + " Bought "+selectedButton.name+"!");
+
+                int itemPrice = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice; //checking & buying items
+                if (PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().coins>= itemPrice)
+                {
+                    PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().coins -= itemPrice;
+                    PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
+
+                    selectedButton.GetComponent<Button>().interactable = false;
+                    playerEventSystem.SetSelectedGameObject(null);
+                }
+
+
+
+                //PlayerManager.instance.playerList[player.playerIndex].GetComponent<InputSystemUIInputModule>().enabled = false;
+
+
+
                 //Debug.Log($"Player {player.playerIndex} pressed the submit button on {selectedButton.name}");
                 // Handle the player's selection logic here, e.g., purchasing an item
             }

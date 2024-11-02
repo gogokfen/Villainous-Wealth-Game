@@ -224,6 +224,8 @@ public class CharacterControl : MonoBehaviour
 
     void Update()
     {
+        moneyText.text = "$: " + coins; //delete
+
         if (hp <= 0 & !dead)
         {
             //PickupManager.singleton.SpawnTreasureChestCoin(transform);
@@ -749,6 +751,25 @@ public class CharacterControl : MonoBehaviour
         }
 
     }
+
+    public void BuyWeapon(string shopWeaponName)
+    {
+        if (Enum.TryParse<Weapons>(shopWeaponName, out Weapons weapon))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Enum.Parse<Weapons>(shopWeaponName);
+
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+            weaponID = (int)equippedWeapon;
+        }
+        else
+        {
+            Debug.Log("Change the object's name to the correct weapon");
+        }
+    }
+
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)
     {
         discardingPlayerID = weaponPlayerID;
