@@ -22,19 +22,21 @@ public class Blunderbuss : WeaponBase
     [SerializeField] float bulletSpreadAmount;
     private Quaternion startingShotPos;
 
-    private bool LosingMyMind = true;
+    private bool weaponActive = false;
+
+    [SerializeField] ParticleSystem gunShotEffect;
 
     private void OnEnable()
     {
         ammo = maxAmmo;
         damageType = damageTypes.destructableProjectile;
 
-        LosingMyMind = false;
+        weaponActive = true;
     }
 
     private void OnDisable()
     {
-        LosingMyMind = true;
+        weaponActive = false;
     }
 
 
@@ -42,9 +44,8 @@ public class Blunderbuss : WeaponBase
     {
         //use = context.action.triggered;
 
-        if (context.phase == InputActionPhase.Performed && !LosingMyMind)
+        if (context.phase == InputActionPhase.Performed && weaponActive)
         {
-            //Debug.Log("wtf");
             Shoot();
         }
     }
@@ -55,6 +56,8 @@ public class Blunderbuss : WeaponBase
         {
             ammo--;
             shoot = true; //changed to false from CharacterControl
+
+            gunShotEffect.Play();
 
             /////////////////////////V1
             /*
@@ -89,8 +92,6 @@ public class Blunderbuss : WeaponBase
         }
         else if (ammo == 0)
         {
-            //Debug.Log("hoe ass nigga");
-
             reloading = true; //changed to false from CharacterControl
             ammo = maxAmmo;
             attackCooldown = 2 * maxAttackCooldown;

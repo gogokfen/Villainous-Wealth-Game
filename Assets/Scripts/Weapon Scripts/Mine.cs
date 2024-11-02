@@ -8,7 +8,11 @@ public class Mine : WeaponBase
     [SerializeField] GameObject minePrefab;
     [SerializeField] int startingAmmo;
     int uses;
+    [SerializeField] float mineCD = 2.5f;
+    private float mineTimer;
     bool placed;
+
+    bool weaponActive = false;
 
 
     private void Start()
@@ -19,11 +23,17 @@ public class Mine : WeaponBase
     private void OnEnable()
     {
         uses = startingAmmo;
+        weaponActive = true;
+    }
+
+    private void OnDisable()
+    {
+        weaponActive = false;
     }
 
     public void PlacingMine(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Performed && weaponActive)
         {
 
             //placed = context.action.triggered;
@@ -33,8 +43,9 @@ public class Mine : WeaponBase
 
     private void PlaceMine()
     {
-        if (uses > 0)
+        if (uses > 0 && mineTimer<=0)
         {
+            mineTimer = mineCD;
             uses--;
             GameObject tempMine = Instantiate(minePrefab, new Vector3(transform.position.x, 0, transform.position.z), Quaternion.identity, null);
             tempMine.GetComponent<WeaponBase>().playerID = playerID;
@@ -50,6 +61,7 @@ public class Mine : WeaponBase
 
     void Update()
     {
+        mineTimer -= Time.deltaTime;
         //if (placed)
         //{
         //placed = false;

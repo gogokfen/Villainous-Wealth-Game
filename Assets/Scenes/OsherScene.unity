@@ -3806,6 +3806,7 @@ MonoBehaviour:
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
   startingAmmo: 5
+  mineCD: 2.5
 --- !u!1 &673445809
 GameObject:
   m_ObjectHideFlags: 0
@@ -6365,7 +6366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DropWeapons: 0
-  DropPowerups: 0
+  DropPowerups: 1
   pickupPrefab: {fileID: 8121783589345228088, guid: 0e4c5cbf64ea0184c8ee547c7a47077c,
     type: 3}
   pickupFrequency: 6
@@ -10440,6 +10441,7 @@ MonoBehaviour:
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
   startingAmmo: 5
+  mineCD: 2.5
 --- !u!1 &1864752923
 GameObject:
   m_ObjectHideFlags: 0

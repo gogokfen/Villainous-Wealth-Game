@@ -5,9 +5,17 @@ using UnityEngine;
 public class MineShot : WeaponBase
 {
     //[SerializeField] GameObject mineBaseColor;
+    [SerializeField] GameObject mineHeadGFX;
+    [SerializeField] float timeToArm = 2;
+    [SerializeField] GameObject radiusGFX;
+    CapsuleCollider CC;
     void Start()
     {
-        Destroy(gameObject, 30);
+        CC = GetComponent<CapsuleCollider>();
+        CC.enabled = false;
+        mineHeadGFX.GetComponent<Renderer>().material.color = Color.grey;
+
+        Destroy(gameObject, 25);
 
         if (playerID == CharacterControl.PlayerTypes.Red)
         {
@@ -30,6 +38,15 @@ public class MineShot : WeaponBase
 
     void Update()
     {
-
+        if (timeToArm>0)
+        {
+            timeToArm -= Time.deltaTime;
+            if (timeToArm<=0)
+            {
+                CC.enabled = true;
+                mineHeadGFX.GetComponent<Renderer>().material.color = Color.red;
+                radiusGFX.SetActive(true);
+            }
+        }
     }
 }

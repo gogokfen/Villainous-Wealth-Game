@@ -53,6 +53,7 @@ public class CharacterControl : MonoBehaviour
     private bool rolling;
     private Vector3 rollDirection;
     private float rollCD;
+    private float rollTimer;
 
     //private int animState = 0;
     private AS animState;
@@ -135,6 +136,7 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] ParticleSystem meleeParticleEffect;
     [SerializeField] GameObject characterGFX;
+
     void Start()
     {
         weaponList[0].GetComponent<SphereCollider>().enabled = false;
@@ -342,24 +344,29 @@ public class CharacterControl : MonoBehaviour
         if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
         {
             rollDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-            holdTimer = 0.35f;
+            if (rollDirection == Vector3.zero)
+            {
+                rollDirection = transform.forward;
+            }
+            rollTimer = 0.35f;
             rolling = true;
             rollCD = 2.5f;
         }
+       
 
         if (rolling)
         {
+            rollTimer -= Time.deltaTime;
+
             transform.Rotate(Vector3.right, Time.deltaTime * 1030);
 
-            float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (holdTimer * 2.75f)) * 4)));
+            float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (rollTimer * 2.75f)) * 4)));
             CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
-            if (holdTimer <= 0)
+            if (rollTimer <= 0)
             {
                 rolling = false;
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             }
-
-
         }
 
 
@@ -601,7 +608,7 @@ public class CharacterControl : MonoBehaviour
             weaponList[(int)previousWeapon].SetActive(false);
             weaponList[(int)equippedWeapon].SetActive(true);
             weaponID = (int)equippedWeapon;
-            //Debug.Log("actually discarded yo");
+            Debug.Log("actually discarded yo");
         }
 
 
