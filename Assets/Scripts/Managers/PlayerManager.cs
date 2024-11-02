@@ -23,10 +23,6 @@ public class PlayerManager : MonoBehaviour
     public Material blueMaterial;
     public Material yellowMaterial;
     [EndFoldout]
-    [Foldout("Winner UI")]
-    [SerializeField] GameObject winnerBG;
-    [SerializeField] TextMeshProUGUI winnerText;
-    [EndFoldout]
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     private List<PlayerInput> activePlayers;
     private bool playersSpawned;
@@ -74,8 +70,6 @@ public class PlayerManager : MonoBehaviour
             }
             if (playersSpawned)
             {
-                Debug.Log("Im checking players");
-                //CheckRemainingPlayers();
             }
         }
 
@@ -194,21 +188,6 @@ public class PlayerManager : MonoBehaviour
             renderer.material = newMaterial;
         }
     }
-    // public void CheckRemainingPlayers()
-    // {
-    //     if (!singleplayerTesting)
-    //     {
-    //         activePlayers.RemoveAll(player => player == null);
-    //         if (activePlayers.Count == 1 && !roundOver)
-    //         {
-    //             PlayerInput remainingPlayer = activePlayers[0];
-    //             CharacterControl characterControl = remainingPlayer.GetComponent<CharacterControl>();
-    //             winnerText.text = $"Player {characterControl.PlayerID} Wins!";
-    //             Debug.Log($"Player {characterControl.PlayerID} Wins!");
-    //             roundOver = true;
-    //         }
-    //     }
-    // }
     public static void PlayerCheck()
     {
         playerCount--;

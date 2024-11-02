@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using VInspector;
+using TMPro;
 
 public class RoundManager : MonoBehaviour
 {
@@ -19,19 +20,25 @@ public class RoundManager : MonoBehaviour
     public UnityEvent gameEnd;
     [SerializeField] PlayerManager playerManager;
     [SerializeField] ShopManager shopManager;
-    private void Awake() 
+
+    [Foldout("Winner UI")]
+    [SerializeField] GameObject winnerBG;
+    [SerializeField] TextMeshProUGUI winnerText;
+    [EndFoldout]
+    private void Awake()
     {
         //playerManager = FindAnyObjectByType<PlayerManager>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
+
     }
 
     void Start()
     {
         StartCoroutine(RoundLoop());
     }
-    private void Update() {
+    private void Update()
+    {
         if (Input.GetKeyDown(KeyCode.T))
         {
             DebugEndRound();
@@ -43,18 +50,22 @@ public class RoundManager : MonoBehaviour
         gameStart.Invoke();
         while (currentRound != totalRounds)
         {
-            Debug.Log($"Round {currentRound} start");
-            yield return new WaitUntil(() => PlayerManager.roundOver == true);
-            AssignWinner();
-            yield return new WaitForSeconds(3.5f);
-            roundEnd.Invoke();
-            shopManager.Shopping();
-            yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false);
-            currentRound++;
-            PlayerManager.roundOver = false;
-            playerManager.PlayersNextRound();
-            NextRound();         
+            Debug.Log($"Round {currentRound + 1} start"); //displays current round
+            yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+            AssignWinner(); //gives winner of round all money dropped
+            yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
+            roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
+            currentRound++; //ups the round counter
+            if (currentRound != totalRounds)
+            {
+                shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
+                yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
+                PlayerManager.roundOver = false; //resets the bool for the next round
+                playerManager.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+            }
+            //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
+        AssignUltimateWinner();
         gameEnd.Invoke();
     }
 
@@ -94,4 +105,30 @@ public class RoundManager : MonoBehaviour
             }
         }
     }
+
+    public void AssignUltimateWinner()
+    {
+        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
+        string playerIDWinner = null;
+        int mostCoins = 0;
+
+        foreach (CharacterControl character in characters)
+        {
+            int coins = character.coins;
+
+            if (coins > mostCoins)
+            {
+                mostCoins = coins;
+                playerIDWinner = character.PlayerID.ToString();
+            }
+        }
+
+        if (playerIDWinner != null)
+        {
+            winnerBG.SetActive(true);
+            if (mostCoins == 1) winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coin!";
+            else winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coins!";
+        }
+    }
+
 }
