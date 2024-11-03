@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
+    int disconnectedPlayers = 0;
     public GameObject[] playerList;
 
 
@@ -54,12 +55,17 @@ public class PlayerManager : MonoBehaviour
                     if (!Application.isPlaying) return;
                     Debug.Log($"Device {device.name} has been disconnected.");
                     gamepadDisconnectedUI.SetActive(true);
+                    disconnectedPlayers++;
                     Time.timeScale = 0f;
                     break;
                 case InputDeviceChange.Reconnected:
                     Debug.Log($"Device {device.name} has been reconnected.");
+                    disconnectedPlayers--;
+                if (disconnectedPlayers == 0)
+                {
                     gamepadDisconnectedUI.SetActive(false);
                     Time.timeScale = 1f;
+                }
                     break;
             }
         };
@@ -135,6 +141,7 @@ public class PlayerManager : MonoBehaviour
                     CharacterControl.PlayerTypes assignedPlayerID = availablePlayerID[0];
                     characterControl.PlayerID = assignedPlayerID;
                     availablePlayerID.Remove(assignedPlayerID);
+                    playerInput.gameObject.name = $"Player_{assignedPlayerID}";
                     cameraGroup.AddMember(playerInput.gameObject.transform, 1f, 0f);
                     ChangePlayerMaterial(playerInput.gameObject, assignedPlayerID);
                     activePlayers.Add(playerInput);

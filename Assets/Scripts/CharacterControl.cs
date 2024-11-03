@@ -124,7 +124,8 @@ public class CharacterControl : MonoBehaviour
 
     [EndFoldout]
 
-    [SerializeField] TextMeshProUGUI hpText;
+    //[SerializeField] TextMeshProUGUI hpText;
+    [SerializeField] Image hpBar;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] GameObject shieldGFX;
     [SerializeField] GameObject blockBubble;
@@ -162,7 +163,8 @@ public class CharacterControl : MonoBehaviour
 
         useWeapon = false;
 
-        hpText.text = ("HP: " + hp);
+        //hpText.text = ("HP: " + hp);
+        hpBar.fillAmount = 1f;
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -216,7 +218,8 @@ public class CharacterControl : MonoBehaviour
     public void NextRound()
     {
         hp = 10;
-        hpText.text = "HP: " + hp;
+        //hpText.text = "HP: " + hp;
+        hpBar.fillAmount = 1f;
         CC.enabled = true;
         characterGFX.SetActive(true);
         dead = false;
@@ -224,7 +227,7 @@ public class CharacterControl : MonoBehaviour
 
     void Update()
     {
-        moneyText.text = "$: " + coins; //delete
+        moneyText.text = coins.ToString(); //delete
 
         if (hp <= 0 & !dead)
         {
@@ -568,7 +571,7 @@ public class CharacterControl : MonoBehaviour
                 if (pickupHit.transform.name == "Coin")
                 {
                     coins++;
-                    moneyText.text = "$: " + coins;
+                    moneyText.text = coins.ToString();
                     //Destroy(pickupHit.transform.gameObject); //need to think this through with the pickup manager
                     pickupHit.transform.gameObject.SetActive(false);
                     //Debug.Log("coin");
@@ -576,7 +579,8 @@ public class CharacterControl : MonoBehaviour
                 if (pickupHit.transform.name == "Health")
                 {
                     hp += 3;
-                    hpText.text = "HP: " + hp;
+                    //hpText.text = "HP: " + hp;
+                    hpBar.fillAmount += 3f / 10f;
                     Destroy(pickupHit.transform.gameObject);
                     //Debug.Log("health");
                 }
@@ -644,7 +648,8 @@ public class CharacterControl : MonoBehaviour
                 if (shieldBuffTimer <= 0)
                 {
                     hp = hp - damage;
-                    hpText.text = ("HP: " + hp);
+                    //hpText.text = ("HP: " + hp);
+                    hpBar.fillAmount = hp / 10f;
 
 
 
@@ -687,7 +692,8 @@ public class CharacterControl : MonoBehaviour
                     damageBasedOnDistance = damage;
 
                 hp = hp - damageBasedOnDistance;
-                hpText.text = ("HP: " + hp);
+                //hpText.text = ("HP: " + hp);
+                hpBar.fillAmount = hp / 10f;
             }
 
             lastPlayerID = attackingPlayer;
