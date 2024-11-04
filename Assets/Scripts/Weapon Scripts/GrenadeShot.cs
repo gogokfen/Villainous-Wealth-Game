@@ -17,6 +17,7 @@ public class GrenadeShot : WeaponBase
 
     LayerMask wallMask; //[SerializeField] 
     RaycastHit wallHit;
+    [SerializeField] ParticleSystem explosionEffect;
 
     void Start()
     {
@@ -41,12 +42,16 @@ public class GrenadeShot : WeaponBase
             Destroy(gameObject);
         }
 
-        if (maxExplosionTime<=0)
+        if (maxExplosionTime<=0 && BC.enabled  == true) //this triggers twice
         {
             damageType = damageTypes.grenade;
             damage = explosionDamage;
             BC.enabled = false;
             SC.enabled = true;
+            Debug.Log("i go boom");
+            explosionEffect.transform.SetParent(null);
+            explosionEffect.Play();
+            Destroy(explosionEffect.gameObject, 3f); 
         }
 
         //grenade slowdown V1
