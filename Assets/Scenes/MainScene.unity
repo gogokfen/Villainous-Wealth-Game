@@ -3038,28 +3038,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalRounds: 4
-  gameStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2142197115}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: StartRound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  roundEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  gameEnd:
-    m_PersistentCalls:
-      m_Calls: []
-  playerManager: {fileID: 2142197115}
   shopManager: {fileID: 779187145}
   winnerBG: {fileID: 437820929}
   winnerText: {fileID: 632676696}
@@ -7789,7 +7767,7 @@ PrefabInstance:
     - target: {fileID: 3899225255817299148, guid: f7d5a65f0a81fb949b3113d41c4c674a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4272426662184808651, guid: f7d5a65f0a81fb949b3113d41c4c674a,
         type: 3}
@@ -8026,18 +8004,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130651853}
   m_CullTransparentMesh: 1
---- !u!114 &2142197115 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5257024873290102291, guid: f7d5a65f0a81fb949b3113d41c4c674a,
-    type: 3}
-  m_PrefabInstance: {fileID: 2087968104}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a06a4764357dc754c992e5ac798c8b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2147313356
 GameObject:
   m_ObjectHideFlags: 0
