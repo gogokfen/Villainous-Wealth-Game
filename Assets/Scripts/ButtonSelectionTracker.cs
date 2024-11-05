@@ -15,12 +15,13 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     public int itemPrice;
 
     [SerializeField] TextMeshProUGUI priceText;
+    [SerializeField] public GameObject soldUI;
 
-    [Foldout("Selection Rectangles")]
-    [SerializeField] GameObject redSelectionRectangle;
-    [SerializeField] GameObject greenSelectionRectangle;
-    [SerializeField] GameObject blueSelectionRectangle;
-    [SerializeField] GameObject yellowSelectionRectangle;
+    [Foldout("Selection Icons")]
+    [SerializeField] public GameObject redSelectionIcon;
+    [SerializeField] public GameObject greenSelectionIcon;
+    [SerializeField] public GameObject blueSelectionIcon;
+    [SerializeField] public GameObject yellowSelectionIcon;
     [EndFoldout]
     private void Start()
     {
@@ -33,25 +34,25 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
         //Debug.Log(eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID);
 
         if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Red)
-            redSelectionRectangle.SetActive(true);
+            redSelectionIcon.SetActive(true);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Green)
-            greenSelectionRectangle.SetActive(true);
+            greenSelectionIcon.SetActive(true);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Blue)
-            blueSelectionRectangle.SetActive(true);
+            blueSelectionIcon.SetActive(true);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Yellow)
-            yellowSelectionRectangle.SetActive(true);
+            yellowSelectionIcon.SetActive(true);
         
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
         if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Red)
-            redSelectionRectangle.SetActive(false);
+            redSelectionIcon.SetActive(false);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Green)
-            greenSelectionRectangle.SetActive(false);
+            greenSelectionIcon.SetActive(false);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Blue)
-            blueSelectionRectangle.SetActive(false);
+            blueSelectionIcon.SetActive(false);
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Yellow)
-            yellowSelectionRectangle.SetActive(false);
+            yellowSelectionIcon.SetActive(false);
     }
 }

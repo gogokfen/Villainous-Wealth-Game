@@ -14,11 +14,11 @@ public class RoundManager : MonoBehaviour
     public static bool roundActive = false;
 
     [Header("Round Management")]
-    public UnityEvent gameStart;
+    //public UnityEvent gameStart;
     //public UnityEvent roundStart;
-    public UnityEvent roundEnd;
-    public UnityEvent gameEnd;
-    [SerializeField] PlayerManager playerManager;
+    //public UnityEvent roundEnd;
+    //public UnityEvent gameEnd;
+    //[SerializeField] PlayerManager playerManager;
     [SerializeField] ShopManager shopManager;
 
     [Foldout("Winner UI")]
@@ -47,26 +47,28 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator RoundLoop()
     {
-        gameStart.Invoke();
+        //gameStart.Invoke();
+        PlayerManager.instance.StartRound();
         while (currentRound != totalRounds)
         {
             Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             AssignWinner(); //gives winner of round all money dropped
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
-            roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
+            //roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
             currentRound++; //ups the round counter
-            if (currentRound != totalRounds)
+            if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 PlayerManager.roundOver = false; //resets the bool for the next round
-                playerManager.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+                PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+                //playerManager.PlayersNextRound(); 
             }
             //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
         AssignUltimateWinner();
-        gameEnd.Invoke();
+        //gameEnd.Invoke();
     }
 
     [Button]
