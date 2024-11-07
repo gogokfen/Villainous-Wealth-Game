@@ -6,12 +6,20 @@ using VInspector;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using TMPro;
 public class MenuManager : MonoBehaviour
 {
     private bool usingMouse = true;
     private bool usingInput = false;
-    [SerializeField] GameObject defaultButton;
+    [Foldout("Menu Buttons")]
+    [SerializeField] GameObject playButton;
+    [SerializeField] GameObject optionsButton;
+    [SerializeField] GameObject quitButton;
+    [EndFoldout]
     [SerializeField] GameObject defaultOptionsButton;
+    [SerializeField] GameObject roundMenu;
+    [SerializeField] GameObject defaultRoundMenuButton;
     [Foldout("UI Input Images")]
     [SerializeField] Image confirmButton;
     [SerializeField] Image backButton;
@@ -25,9 +33,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] Sprite escButton;
     [EndFoldout]
     [SerializeField] GameObject optionsMenu;
-    void Start()
-    {
-    }
+    [SerializeField] TextMeshProUGUI roundText;
     void Update()
     {
         if (Mouse.current.delta.ReadValue() != Vector2.zero)
@@ -45,7 +51,7 @@ public class MenuManager : MonoBehaviour
             if (usingMouse && !usingInput)
             {
                 EventSystem.current.SetSelectedGameObject(null);
-                EventSystem.current.SetSelectedGameObject(defaultButton);
+                EventSystem.current.SetSelectedGameObject(playButton);
                 usingMouse = false;
                 usingInput = true;
             }
@@ -58,7 +64,19 @@ public class MenuManager : MonoBehaviour
         {
             optionsMenu.SetActive(false);
             EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(defaultButton);
+            EventSystem.current.SetSelectedGameObject(playButton);
+            playButton.SetActive(true);
+            optionsButton.SetActive(true);
+            quitButton.SetActive(true);
+        }
+        if (roundMenu.activeSelf && (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Cancel")))
+        {
+            roundMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(playButton);
+            playButton.SetActive(true);
+            optionsButton.SetActive(true);
+            quitButton.SetActive(true);
         }
     }
     private bool IsGamepadPressed()
@@ -85,11 +103,49 @@ public class MenuManager : MonoBehaviour
         confirmButton.sprite = enterButton;
         backButton.sprite = escButton;
     }
-    public void QuitGame()
+    public void AddTotalRounds()
+    {
+        if (CustomizationManager.instance.roundAmount != 7)
+        {
+            CustomizationManager.instance.roundAmount++;
+            roundText.text = CustomizationManager.instance.roundAmount.ToString();
+        }
+        else Debug.Log("Maximum amount of rounds reach");
+    }
+    public void SubTotalRounds()
+    {
+        if (CustomizationManager.instance.roundAmount != 2)
+        {
+            CustomizationManager.instance.roundAmount--;
+            roundText.text = CustomizationManager.instance.roundAmount.ToString();
+        }
+        else Debug.Log("Minimum amount of rounds reach");
+    }
+    public void QuitButton()
     {
         Application.Quit();
     }
-    public void LoadGame()
+    public void PlayButton()
+    {
+        //SceneManager.LoadScene("MainScene");
+        roundMenu.SetActive(true);
+        playButton.SetActive(false);
+        optionsButton.SetActive(false);
+        quitButton.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(defaultRoundMenuButton);
+    }
+    public void OptionsButton()
+    {
+        //SceneManager.LoadScene("MainScene");
+        optionsMenu.SetActive(true);
+        playButton.SetActive(false);
+        optionsButton.SetActive(false);
+        quitButton.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(defaultOptionsButton);
+    }
+    public void StartGameButton()
     {
         SceneManager.LoadScene("MainScene");
     }
