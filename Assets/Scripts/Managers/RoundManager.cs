@@ -35,6 +35,7 @@ public class RoundManager : MonoBehaviour
 
     void Start()
     {
+        totalRounds = CustomizationManager.instance.roundAmount;
         StartCoroutine(RoundLoop());
     }
     private void Update()
