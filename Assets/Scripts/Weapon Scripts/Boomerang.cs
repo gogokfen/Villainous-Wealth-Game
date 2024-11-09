@@ -28,6 +28,11 @@ public class Boomerang : WeaponBase
     private void OnEnable()
     {
         attackState = 0;
+        boomerangGFX.SetActive(true);
+    }
+    private void OnDisable()
+    {
+        boomerangGFX.SetActive(false);
     }
 
     public void Thrown(InputAction.CallbackContext context)

@@ -19,6 +19,9 @@ public class GrenadeShot : WeaponBase
     RaycastHit wallHit;
     [SerializeField] ParticleSystem explosionEffect;
 
+    float upwardforce; //for arc movement, aesthetic
+    private float startingThrowPower;
+
     void Start()
     {
         //Debug.Log(wallMask.value); // default layer value is 1
@@ -28,13 +31,20 @@ public class GrenadeShot : WeaponBase
         BC = GetComponent<BoxCollider>();
         SC.enabled = false;
         explosionTime = maxExplosionTime;
+
+        throwPower /= 2;
+        startingThrowPower = throwPower;
+        //delete
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
 
     void Update()
     {
         transform.Translate(Vector3.forward * throwPower * Time.deltaTime);
 
+        transform.Translate(Vector3.up * upwardforce * Time.deltaTime);
 
+        upwardforce = (0.75f * startingThrowPower) - (Mathf.InverseLerp(explosionTime, 0, maxExplosionTime) * (1.75f * startingThrowPower));
 
 
         if (SC.enabled) //DON"T CHANGE THE ORDER OF THE IFS
@@ -42,13 +52,13 @@ public class GrenadeShot : WeaponBase
             Destroy(gameObject);
         }
 
-        if (maxExplosionTime<=0 && BC.enabled  == true) //this triggers twice
+        if ((maxExplosionTime <= 0 || transform.position.y<=0.5) && BC.enabled  == true) 
         {
+            transform.rotation = Quaternion.identity;
             damageType = damageTypes.grenade;
             damage = explosionDamage;
             BC.enabled = false;
             SC.enabled = true;
-            Debug.Log("i go boom");
             explosionEffect.transform.SetParent(null);
             explosionEffect.Play();
             Destroy(explosionEffect.gameObject, 3f); 
@@ -67,13 +77,13 @@ public class GrenadeShot : WeaponBase
 
         //grenade slowdown V2
 
-        throwPower /= (1 + Time.deltaTime*2.5f);
+        //throwPower /= (1 + Time.deltaTime*2.5f); //bring back after fixing upward force
 
         maxExplosionTime -= Time.deltaTime;
 
         //rotationAmount = maxExplosionTime * 1000;
         rotationAmount = throwPower * 25;
-        GFX.transform.Rotate(0, rotationAmount * Time.deltaTime, 0);
+        GFX.transform.Rotate(rotationAmount * Time.deltaTime,0 , 0);
 
         if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f,wallMask)) //wall collisions
         {

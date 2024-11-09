@@ -17,14 +17,13 @@ public class CharacterControl : MonoBehaviour
     public static PlayerTypes discardingPlayerID;
     //public static PlayerTypes holdingPlayerID;
 
-    //[SerializeField] GameObject AtaHuHaAmongusPOVCamera;
-    //[SerializeField] GameObject OriginalCamera;
     //bool onOff = false;
 
     public int hp = 10;
     public int coins = 0;
 
-    RaycastHit pickupHit;
+    //RaycastHit pickupHit;
+    Collider[] pickupSearch;
     [SerializeField] LayerMask pickupMask;
     private float speedBuffTimer;
     private float shieldBuffTimer;
@@ -77,13 +76,16 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject[] weaponList;
     [SerializeField] GameObject rightArmGFX;
 
+    [SerializeField] Animator charAnim;
+
     [Foldout("Limb Animators")]
+    /* //new animator & animations
     [SerializeField] Animator lArmAnim;
     [SerializeField] Animator rArmAnim;
     [SerializeField] Animator lFootAnim;
     [SerializeField] Animator rFootAnim;
     [SerializeField] Transform rArm;
-
+    */
 
 
     float powerPunchWindup = 0;
@@ -119,7 +121,7 @@ public class CharacterControl : MonoBehaviour
     bool rollInput;
     bool shieldInput;
     int rightPunchAttackState;
-    public bool dead;
+    [HideInInspector] public bool dead;
     private Vector2 moveInput;
 
     [EndFoldout]
@@ -140,8 +142,7 @@ public class CharacterControl : MonoBehaviour
 
     void Start()
     {
-        weaponList[0].GetComponent<SphereCollider>().enabled = false;
-        rightArmGFX.GetComponent<SphereCollider>().enabled = false;
+        //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
 
         //if (isTargetDummy)
         //return;
@@ -152,7 +153,7 @@ public class CharacterControl : MonoBehaviour
 
         CC = GetComponent<CharacterController>();
 
-        rightArmGFX.GetComponent<WeaponBase>().playerID = PlayerID; //special treatment as he does not act like the other hand
+        //REMINDER//rightArmGFX.GetComponent<WeaponBase>().playerID = PlayerID; //special treatment as he does not act like the other hand
 
         for (int i = 0; i < weaponList.Length; i++)
         {
@@ -238,7 +239,7 @@ public class CharacterControl : MonoBehaviour
 
         identicalDamageCD -= Time.deltaTime;
 
-        projSearch = Physics.OverlapBox(transform.position, hitBoxSize, Quaternion.identity, collisionMask);
+        projSearch = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize, Quaternion.identity, collisionMask);
         if (projSearch.Length > 0)
         {
             for (int i = 0; i < projSearch.Length; i++)
@@ -269,23 +270,12 @@ public class CharacterControl : MonoBehaviour
         if (shieldBuffTimer <= 0)
             shieldGFX.SetActive(false);
 
-
-        /**
-        if (Input.GetKeyDown(KeyCode.V))
+        if (equippedWeapon == Weapons.Blunderbuss)
         {
-            if (onOff)
-            {
-                AtaHuHaAmongusPOVCamera.SetActive(true);
-                OriginalCamera.SetActive(false);
-            }
-            else
-            {
-                AtaHuHaAmongusPOVCamera.SetActive(false);
-                OriginalCamera.SetActive(true);
-            }
-            onOff = !onOff;
+            charAnim.SetBool("ShotGun", true);
         }
-        */
+        else
+            charAnim.SetBool("ShotGun", false);
 
         if (moveInput != Vector2.zero)
         {
@@ -303,14 +293,26 @@ public class CharacterControl : MonoBehaviour
             moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
             if (holdTimer <= 0) //can still rotate while shooting
             {
-                lFootAnim.SetBool("Walk", true);
-                rFootAnim.SetBool("Walk", true);
+                //charAnim.Play("Runnig"); //CHANEL I'LL FUCKING MMURDER YOU reminder
+                if (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer)
+                {
+                    charAnim.SetBool("RunGun", true);
+                }
+                else if (equippedWeapon == Weapons.Blunderbuss)
+                {
+                    charAnim.SetBool("RunShotGun", true);
+                }
+                else
+                    charAnim.SetBool("Run", true);
                 CC.Move(moveDirection * moveSpeed * Time.deltaTime);
             }
             else
             {
-                lFootAnim.SetBool("Walk", false);
-                rFootAnim.SetBool("Walk", false);
+                charAnim.SetBool("Run", false);
+                charAnim.SetBool("RunGun", false);
+                charAnim.SetBool("RunShotGun", false);
+                //lFootAnim.SetBool("Walk", false);
+                //rFootAnim.SetBool("Walk", false);
             }
 
             targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
@@ -322,8 +324,12 @@ public class CharacterControl : MonoBehaviour
         }
         else
         {
-            lFootAnim.SetBool("Walk", false);
-            rFootAnim.SetBool("Walk", false);
+            //lFootAnim.SetBool("Walk", false);
+            //rFootAnim.SetBool("Walk", false);
+            //charAnim.Play("Idle"); reminder
+            charAnim.SetBool("Run", false);
+            charAnim.SetBool("RunGun", false);
+            charAnim.SetBool("RunShotGun", false);
 
             if (moveSpeed > 1)
             {
@@ -356,21 +362,24 @@ public class CharacterControl : MonoBehaviour
             rollTimer = 0.35f;
             rolling = true;
             rollCD = 2.5f;
+            //charAnim.Play("SpinDash");
+            charAnim.SetTrigger("Roll");
         }
-       
+
 
         if (rolling)
         {
             rollTimer -= Time.deltaTime;
 
-            transform.Rotate(Vector3.right, Time.deltaTime * 1030);
+            //transform.Rotate(Vector3.right, Time.deltaTime * 1030); //replaced with animation
 
             float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (rollTimer * 2.75f)) * 4)));
             CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
             if (rollTimer <= 0)
             {
                 rolling = false;
-                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                //charAnim.Play("Idle");
+                //transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             }
         }
 
@@ -404,7 +413,7 @@ public class CharacterControl : MonoBehaviour
 
         if (useWeapon)
         {
-            rArm.localPosition = new Vector3(0.75f, 0, 0); //resets strong punch
+            //rArm.localPosition = new Vector3(0.75f, 0, 0); //resets strong punch
             powerPunchWindup = 0;
 
             if (equippedWeapon == Weapons.Fist) //no punch if other weapon equipped //Attack(equippedWeapon, previousWeapon);
@@ -418,7 +427,9 @@ public class CharacterControl : MonoBehaviour
 
                     animTimer = 0;
                     animState = AS.Punch1Windup;
-                    lArmAnim.Play("Punch1");
+                    //lArmAnim.Play("Punch1");
+                    //charAnim.Play("Punching");
+                    charAnim.SetTrigger("Punch1");
                 }
                 else if (animState == AS.Punch1Active || animState == AS.Punch1Recovery)
                 {
@@ -429,7 +440,9 @@ public class CharacterControl : MonoBehaviour
 
                     animTimer = 0;
                     animState = AS.Punch2Windup;
-                    lArmAnim.Play("Punch2");
+                    //lArmAnim.Play("Punch2");
+                    //charAnim.Play("PunchingTwo");
+                    charAnim.SetTrigger("Punch2");
                 }
                 else if (animState == AS.Punch2Active || animState == AS.Punch2Recovery)
                 {
@@ -440,12 +453,19 @@ public class CharacterControl : MonoBehaviour
 
                     animTimer = 0;
                     animState = AS.Punch3Windup;
-                    lArmAnim.Play("Punch3");
+                    //lArmAnim.Play("Punch3");
+                    //charAnim.Play("PunchingThree");
+                    charAnim.SetTrigger("Punch3");
                 }
             }
             else //using other weapons
             {
+                if (holdTimer <= 0 && (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer || equippedWeapon == Weapons.Blunderbuss))
+                    charAnim.SetTrigger("Shoot");
+
                 Attack(equippedWeapon);
+                //charAnim.Play("Shooting");
+
                 //holdTimer = 0.15f;  //consider using a per-weapon case stun where we check the stun duration and if there is one needed by the weapon's script
                 /*
                 if (holdingPlayerID == PlayerID)
@@ -510,7 +530,8 @@ public class CharacterControl : MonoBehaviour
             {
                 animState = 0; //idle
                 animTimer = 0;
-                lArmAnim.Play("Idle");
+                //lArmAnim.Play("Idle");
+                //charAnim.Play("Idle"); reminder
             }
         }
 
@@ -521,7 +542,9 @@ public class CharacterControl : MonoBehaviour
                 if (powerPunchWindup < 0.75)
                 {
                     powerPunchWindup += Time.deltaTime;
-                    rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
+                    //charAnim.Play("StrongPunch");
+                    charAnim.SetBool("StrongPunch", true);
+                    //rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
                 }
             }
         }
@@ -538,19 +561,81 @@ public class CharacterControl : MonoBehaviour
                 attackMoveSpeed = 22;
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
-                rArm.localPosition = new Vector3(0.75f, 0, 0);
-                rArmAnim.Play("StrongPunch");
+                //rArm.localPosition = new Vector3(0.75f, 0, 0);
+                //rArmAnim.Play("StrongPunch");
+                //charAnim.Play("StrongPunchRelease");
+                charAnim.SetTrigger("StrongPunchRelease");
+                charAnim.SetBool("StrongPunch", false);
+
                 powerPunchWindup = 0;
             }
             else
             {
-                rArm.localPosition = new Vector3(0.75f, 0, 0);
+                //charAnim.Play("StrongPunchRelease");
+                //rArm.localPosition = new Vector3(0.75f, 0, 0);
+                charAnim.SetBool("StrongPunch", false);
                 powerPunchWindup = 0;
             }
         }
 
 
-        if (Physics.Raycast(transform.position, transform.forward, out pickupHit, 1f, pickupMask))
+        ///////////////////V2
+
+        pickupSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize * 1.25f, Quaternion.identity, pickupMask));
+        if (pickupSearch.Length > 0)
+        {
+            for (int i = 0; i <= pickupSearch.Length; i++)
+            {
+                if (Enum.TryParse<Weapons>(pickupSearch[i].transform.name, out Weapons weapon))
+                {
+                    previousWeapon = equippedWeapon;
+                    equippedWeapon = Enum.Parse<Weapons>(pickupSearch[i].transform.name);
+
+                    weaponList[(int)previousWeapon].SetActive(false);
+                    weaponList[(int)equippedWeapon].SetActive(true);
+                    weaponID = (int)equippedWeapon;
+
+                    Destroy(pickupSearch[i].transform.gameObject);
+                    return;
+                }
+                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield")
+                {
+                    if (pickupSearch[i].transform.name == "Coin")
+                    {
+                        coins++;
+                        moneyText.text = coins.ToString();
+                        pickupSearch[i].transform.gameObject.SetActive(false);
+                    }
+                    else if (pickupSearch[i].transform.name == "Health")
+                    {
+                        hp += 3;
+                        hpBar.fillAmount += 3f / 10f;
+                        Destroy(pickupSearch[i].transform.gameObject);
+                    }
+                    else if (pickupSearch[i].transform.name == "Speed")
+                    {
+                        currentMaxSpeed = startingSpeed * 1.5f;
+                        speedBuffTimer = 5;
+                        Destroy(pickupSearch[i].transform.gameObject);
+                    }
+                    else if (pickupSearch[i].transform.name == "Shield")
+                    {
+                        shieldGFX.SetActive(true);
+                        shieldBuffTimer = 3.5f;
+                        Destroy(pickupSearch[i].transform.gameObject);
+                    }
+                    return;
+                }
+                else
+                {
+                    Debug.Log("Change the object's name to the correct weapon or pickup name");
+                }
+            }
+        }
+
+        //////////////////V1
+        /**
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), transform.forward, out pickupHit, 1f, pickupMask))
         {
             if (Enum.TryParse<Weapons>(pickupHit.transform.name, out Weapons weapon))
             {
@@ -604,6 +689,7 @@ public class CharacterControl : MonoBehaviour
                 Debug.Log("Change the object's name to the correct weapon or pickup name");
             }
         } //pickup raycast
+        */
 
         if (weaponDiscarded && discardingPlayerID == PlayerID)
         {
@@ -650,6 +736,7 @@ public class CharacterControl : MonoBehaviour
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
                     hpBar.fillAmount = hp / 10f;
+                    charAnim.SetTrigger("DMG");
 
 
 
@@ -786,7 +873,10 @@ public class CharacterControl : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(transform.position, hitBoxSize);
+        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize * 1.25f);
     }
 }
 

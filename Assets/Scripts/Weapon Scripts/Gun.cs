@@ -5,9 +5,10 @@ using UnityEngine.InputSystem;
 
 public class Gun : WeaponBase
 {
+    [SerializeField] GameObject gunGFX;
+    [SerializeField] GameObject bullet;
     [SerializeField] float maxAttackCooldown = 0.25f;
     private float attackCooldown;
-    [SerializeField] GameObject bullet;
     bool use;
 
     private void Start()
@@ -17,6 +18,15 @@ public class Gun : WeaponBase
         //damageType = damageTypes.destructableProjectile; //also used for the lazer gun
     }
 
+    private void OnEnable()
+    {
+        gunGFX.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        gunGFX.SetActive(false);
+    }
     public void Shot(InputAction.CallbackContext context)
     {
         use = context.action.triggered;

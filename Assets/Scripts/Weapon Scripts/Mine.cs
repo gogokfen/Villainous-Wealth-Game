@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
 public class Mine : WeaponBase
 {
+    [SerializeField] GameObject mineGFX;
     [SerializeField] GameObject minePrefab;
     [SerializeField] int startingAmmo;
     int uses;
-    [SerializeField] float mineCD = 2.5f;
+    [SerializeField] float mineCD = 2f;
     private float mineTimer;
     bool placed;
 
     bool weaponActive = false;
+
+    [SerializeField] Slider windUpSlider;
 
 
     private void Start()
@@ -24,11 +28,13 @@ public class Mine : WeaponBase
     {
         uses = startingAmmo;
         weaponActive = true;
+        mineGFX.SetActive(true);
     }
 
     private void OnDisable()
     {
         weaponActive = false;
+        mineGFX.SetActive(false);
     }
 
     public void PlacingMine(InputAction.CallbackContext context)
@@ -61,7 +67,18 @@ public class Mine : WeaponBase
 
     void Update()
     {
-        mineTimer -= Time.deltaTime;
+        
+
+        if (mineTimer>0)
+        {
+            windUpSlider.gameObject.SetActive(true);
+            windUpSlider.value = Mathf.InverseLerp(mineCD, 0, mineTimer);
+
+            mineTimer -= Time.deltaTime;
+            if (mineTimer<=0)
+                windUpSlider.gameObject.SetActive(false);
+        }
+
         //if (placed)
         //{
         //placed = false;

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Grenade : WeaponBase
 {
+    [SerializeField] GameObject GrenadeGFX;
     [SerializeField] float maxAttackCooldown = 4f;
     private float attackCooldown;
     [SerializeField] GameObject grenade;
@@ -23,6 +24,12 @@ public class Grenade : WeaponBase
     private void OnEnable()
     {
         attackState = 0;
+        GrenadeGFX.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        GrenadeGFX.SetActive(false);
     }
 
     public void Shot(InputAction.CallbackContext context)
@@ -43,7 +50,14 @@ public class Grenade : WeaponBase
     void Update()
     {
         if (attackCooldown > 0)
+        {
             attackCooldown -= Time.deltaTime;
+            if (attackCooldown<=0)
+            {
+                GrenadeGFX.SetActive(true);
+            }
+        }
+            
 
         if (attackState ==1 && attackCooldown<=0) 
         {
@@ -69,6 +83,8 @@ public class Grenade : WeaponBase
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 75;
             else
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 25 + windup * 75f;
+
+            GrenadeGFX.SetActive(false);
 
             windup = 0;
         }

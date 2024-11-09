@@ -5,12 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Blunderbuss : WeaponBase
 {
-    //[HideInInspector]
-    public bool shoot = false;
-    //[HideInInspector]
-    public bool reloading = false;
-    //[HideInInspector]
-    public float holdTime = 0.35f;
+    [SerializeField] GameObject blunderbussGFX;
+
+    [HideInInspector] public bool shoot = false;
+    [HideInInspector] public bool reloading = false;
+    [HideInInspector] public float holdTime = 0.35f;
+
 
     [SerializeField] float maxAttackCooldown = 0.75f;
     private float attackCooldown;
@@ -32,11 +32,13 @@ public class Blunderbuss : WeaponBase
         damageType = damageTypes.destructableProjectile;
 
         weaponActive = true;
+        blunderbussGFX.SetActive(true);
     }
 
     private void OnDisable()
     {
         weaponActive = false;
+        blunderbussGFX.SetActive(false);
     }
 
 
