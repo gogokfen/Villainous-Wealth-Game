@@ -1001,6 +1001,7 @@ MonoBehaviour:
   - {fileID: 2097057821}
   - {fileID: 660611990}
   rightArmGFX: {fileID: 82871214}
+  lFist: {fileID: 0}
   charAnim: {fileID: 0}
   dead: 0
   hpBar: {fileID: 0}
@@ -12847,6 +12848,7 @@ MonoBehaviour:
   - {fileID: 5542849682941602575}
   - {fileID: 1852966452}
   rightArmGFX: {fileID: 0}
+  lFist: {fileID: 0}
   charAnim: {fileID: 0}
   dead: 0
   hpBar: {fileID: 0}
@@ -13950,6 +13952,21 @@ PrefabInstance:
     - target: {fileID: 2695088240420533790, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
         type: 3}
       propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145746880293255358, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145746880293255358, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4145746880293255358, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_AnchorMin.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4290428226320495043, guid: 39cc6b7727c6c3c459d821bc73c6fff2,

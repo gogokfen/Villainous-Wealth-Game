@@ -14,7 +14,7 @@ public class Fist : WeaponBase
     private void OnEnable()
     {
         //fistGFX.SetActive(true);
-        transform.GetComponent<SphereCollider>().enabled = true;
+        //transform.GetComponent<SphereCollider>().enabled = true;
     }
 
     private void OnDisable()

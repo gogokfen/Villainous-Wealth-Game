@@ -76,6 +76,9 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject[] weaponList;
     [SerializeField] GameObject rightArmGFX;
 
+    SphereCollider rFist;
+    [SerializeField] SphereCollider lFist;
+
     [SerializeField] Animator charAnim;
 
     [Foldout("Limb Animators")]
@@ -140,6 +143,12 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] ParticleSystem meleeParticleEffect;
     [SerializeField] GameObject characterGFX;
 
+    [SerializeField] GameObject HeadGFX;
+    Color32 headColor = Color.grey;
+
+    private bool paintHead = false;
+    float paintAmount;
+
     void Start()
     {
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
@@ -159,6 +168,10 @@ public class CharacterControl : MonoBehaviour
         {
             weaponList[i].GetComponent<WeaponBase>().playerID = PlayerID;
         }
+
+        rFist = weaponList[0].GetComponent<SphereCollider>();
+
+        lFist.GetComponent<WeaponBase>().playerID = PlayerID;
 
         animState = AS.idle;
 
@@ -261,6 +274,25 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
+        if (paintHead)
+        {
+            paintAmount += Time.deltaTime *500;
+            //headColor = new Color32(headColor.r, (byte)(headColor.g+1000 * Time.deltaTime), (byte)(headColor.b+1000 *Time.deltaTime), headColor.a);
+            if (paintAmount < 127)
+            {
+                headColor = new Color32((byte)(255 - paintAmount), (byte)(paintAmount), (byte)(paintAmount), headColor.a);
+                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
+            }
+            else
+            {
+                paintAmount = 0;
+                headColor = Color.grey;
+                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
+                paintHead = false;
+            }
+
+        }
+
 
         if (isTargetDummy)
             return;
@@ -304,12 +336,18 @@ public class CharacterControl : MonoBehaviour
                 }
                 else
                     charAnim.SetBool("Run", true);
+
+                if (equippedWeapon == Weapons.Fist)
+                {
+                    rFist.enabled = false;
+                }
+
                 CC.Move(moveDirection * moveSpeed * Time.deltaTime);
             }
             else
             {
                 charAnim.SetBool("Run", false);
-                charAnim.SetBool("RunGun", false);
+                //charAnim.SetBool("RunGun", false);
                 charAnim.SetBool("RunShotGun", false);
                 //lFootAnim.SetBool("Walk", false);
                 //rFootAnim.SetBool("Walk", false);
@@ -327,9 +365,7 @@ public class CharacterControl : MonoBehaviour
             //lFootAnim.SetBool("Walk", false);
             //rFootAnim.SetBool("Walk", false);
             //charAnim.Play("Idle"); reminder
-            charAnim.SetBool("Run", false);
-            charAnim.SetBool("RunGun", false);
-            charAnim.SetBool("RunShotGun", false);
+
 
             if (moveSpeed > 1)
             {
@@ -337,8 +373,18 @@ public class CharacterControl : MonoBehaviour
                 deAccelSpeed += Time.deltaTime * 5;
                 moveSpeed -= deAccelSpeed;
 
+                if (moveSpeed<5)
+                {
+                    charAnim.SetBool("Run", false);
+                    charAnim.SetBool("RunGun", false);
+                    charAnim.SetBool("RunShotGun", false);
+                }
+
                 if (moveSpeed < 1)
+                {
                     moveSpeed = 1;
+                }
+
             }
         }
 
@@ -420,10 +466,12 @@ public class CharacterControl : MonoBehaviour
             {
                 if (animState == AS.idle || animState == AS.Punch3Recovery)
                 {
-                    holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
+                    //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
+                    holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = moveDirection;
                     attackMoveSpeed = 16;
-                    forwardMomentumDelay = 0.133f; // 8/60
+                    //forwardMomentumDelay = 0.133f; // 8/60 osher
+                    forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
                     animState = AS.Punch1Windup;
@@ -431,12 +479,13 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
                 }
-                else if (animState == AS.Punch1Active || animState == AS.Punch1Recovery)
+                else if (animState == AS.Punch1Recovery) //animState == AS.Punch1Active ||
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = moveDirection;
                     attackMoveSpeed = 16;
-                    forwardMomentumDelay = 0.233f; // 14/60
+                    //forwardMomentumDelay = 0.233f; // 14/60 osher
+                    forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
                     animState = AS.Punch2Windup;
@@ -444,12 +493,14 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("PunchingTwo");
                     charAnim.SetTrigger("Punch2");
                 }
-                else if (animState == AS.Punch2Active || animState == AS.Punch2Recovery)
+                else if (animState == AS.Punch2Recovery) //animState == AS.Punch2Active || 
                 {
-                    holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
+                    //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
+                    holdTimer = 0.4166f; // 25/60
                     attackDirection = moveDirection;
                     attackMoveSpeed = 16;
-                    forwardMomentumDelay = 0.233f; // 14/60
+                    //forwardMomentumDelay = 0.233f; // 14/60 osher
+                    forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
                     animState = AS.Punch3Windup;
@@ -460,8 +511,10 @@ public class CharacterControl : MonoBehaviour
             }
             else //using other weapons
             {
-                if (holdTimer <= 0 && (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer || equippedWeapon == Weapons.Blunderbuss))
+                /*
+                if (holdTimer <= 0 && (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer )) //|| equippedWeapon == Weapons.Blunderbuss
                     charAnim.SetTrigger("Shoot");
+                */
 
                 Attack(equippedWeapon);
                 //charAnim.Play("Shooting");
@@ -481,52 +534,56 @@ public class CharacterControl : MonoBehaviour
         {
             animTimer += Time.deltaTime;
 
-            SphereCollider fist = weaponList[0].GetComponent<SphereCollider>();
+            
 
             if (animState == AS.Punch1Windup || animState == AS.Punch1Active || animState == AS.Punch1Recovery)
             {
-                if (animTimer >= 0.383f) // 23/60
+                if (animTimer >= 0.4166f) // 23/60 osher 25/60 chanel
                 {
                     animState = AS.Punch1Recovery;
-                    fist.enabled = false;
+                    rFist.enabled = false;
                 }
-                else if (animTimer >= 0.3f) // 18/60 active
+                else if (animTimer >= 0.35f) // 18/60 osher active 21/60 chanel 
                 {
                     animState = AS.Punch1Active;
-                    fist.enabled = true;
+                    rFist.enabled = true;
                 }
             }
 
             if (animState == AS.Punch2Windup || animState == AS.Punch2Active || animState == AS.Punch2Recovery)
             {
-                if (animTimer >= 0.4166f) // 25/60
+                if (animTimer >= 0.4166f) // 25/60 osher 25/60 chanel
                 {
                     animState = AS.Punch2Recovery;
-                    fist.enabled = false;
+                    //rFist.enabled = false;
+                    lFist.enabled = false;
                 }
-                else if (animTimer >= 0.333f) // 20/60 active
+                else if (animTimer >= 0.35f) // 20/60 osher active  21/60 chanel 
                 {
                     animState = AS.Punch2Active;
-                    fist.enabled = true;
+                    //rFist.enabled = true;
+                    lFist.enabled = true;
                 }
             }
 
 
             if (animState == AS.Punch3Windup || animState == AS.Punch3Active || animState == AS.Punch3Recovery)
             {
-                if (animTimer >= 0.5166f) // 31/60
+                if (animTimer >= 0.4166f) // 31/60 25/60 chanel
                 {
                     animState = AS.Punch3Recovery;
-                    fist.enabled = false;
+                    rFist.enabled = false;
+                    lFist.enabled = false;
                 }
-                else if (animTimer >= 0.233f) // 14/60 active
+                else if (animTimer >= 0.166f) // 14/60 active 10/60 chanel 
                 {
                     animState = AS.Punch3Active;
-                    fist.enabled = true;
+                    rFist.enabled = true;
+                    lFist.enabled = true;
                 }
             }
 
-            if (animTimer >= 0.75f) // 45/60
+            if (animTimer >= 0.5833f) // 45/60  35/60 chanel
             {
                 animState = 0; //idle
                 animTimer = 0;
@@ -559,11 +616,13 @@ public class CharacterControl : MonoBehaviour
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = moveDirection;
                 attackMoveSpeed = 22;
+                rFist.enabled = true;
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
                 //rArm.localPosition = new Vector3(0.75f, 0, 0);
                 //rArmAnim.Play("StrongPunch");
                 //charAnim.Play("StrongPunchRelease");
+
                 charAnim.SetTrigger("StrongPunchRelease");
                 charAnim.SetBool("StrongPunch", false);
 
@@ -738,6 +797,9 @@ public class CharacterControl : MonoBehaviour
                     hpBar.fillAmount = hp / 10f;
                     charAnim.SetTrigger("DMG");
 
+                    headColor = Color.red;
+                    paintHead = true;
+
 
 
                     //--------------------test-----------------------
@@ -819,6 +881,7 @@ public class CharacterControl : MonoBehaviour
                 //Debug.Log("6");
                 if (weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().shoot)
                 {
+                    charAnim.SetTrigger("Shoot");
                     weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().shoot = false;
                     animState = AS.StrongPunch;
                     holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime;
