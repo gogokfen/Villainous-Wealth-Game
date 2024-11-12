@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour
     [Foldout("UI Input Images")]
     [SerializeField] Image confirmButton;
     [SerializeField] Image backButton;
+    [SerializeField] Image backButtonMenu;
     [EndFoldout]
     [Foldout("Xbox UI Elements")]
     [SerializeField] Sprite aButton;
@@ -77,6 +78,7 @@ public class MenuManager : MonoBehaviour
             playButton.SetActive(true);
             optionsButton.SetActive(true);
             quitButton.SetActive(true);
+            backButtonMenu.gameObject.SetActive(false);
         }
     }
     private bool IsGamepadPressed()
@@ -97,11 +99,13 @@ public class MenuManager : MonoBehaviour
     {
         confirmButton.sprite = aButton;
         backButton.sprite = bButton;
+        backButtonMenu.sprite = bButton;
     }
     private void KNMUI()
     {
         confirmButton.sprite = enterButton;
         backButton.sprite = escButton;
+        backButtonMenu.sprite = escButton;
     }
     public void AddTotalRounds()
     {
@@ -129,6 +133,7 @@ public class MenuManager : MonoBehaviour
     {
         //SceneManager.LoadScene("MainScene");
         roundMenu.SetActive(true);
+        backButtonMenu.gameObject.SetActive(true);
         playButton.SetActive(false);
         optionsButton.SetActive(false);
         quitButton.SetActive(false);

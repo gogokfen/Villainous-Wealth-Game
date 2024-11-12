@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     public bool singleplayerTesting;
     [SerializeField] Transform[] startPositions;
-    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject[] playerPrefabs;
     [SerializeField] GameObject gamepadDisconnectedUI;
     [Foldout("Camera")]
     [SerializeField] GameObject cameraParent;
@@ -132,7 +132,7 @@ public class PlayerManager : MonoBehaviour
         {
             if (device is Gamepad || device is Keyboard)
             {
-                var playerInput = PlayerInput.Instantiate(playerPrefab, controlScheme: null, pairWithDevice: device);
+                var playerInput = PlayerInput.Instantiate(playerPrefabs[playerIndex], controlScheme: null, pairWithDevice: device);
                 playerList[playerInput.playerIndex] = playerInput.gameObject;
                 playerInput.transform.position = startPositions[playerIndex].position;
                 CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();
@@ -145,7 +145,6 @@ public class PlayerManager : MonoBehaviour
                     cameraGroup.AddMember(playerInput.gameObject.transform, 1f, 0f);
                     ChangePlayerMaterial(playerInput.gameObject, assignedPlayerID);
                     activePlayers.Add(playerInput);
-                    Debug.Log(activePlayers);
                     playerIndex++;
                     playerCount++;
                 }

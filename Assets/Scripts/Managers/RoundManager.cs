@@ -53,7 +53,7 @@ public class RoundManager : MonoBehaviour
         PlayerManager.instance.StartRound();
         while (currentRound != totalRounds)
         {
-            Debug.Log($"Round {currentRound + 1} start"); //displays current round
+            //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             AssignWinner(); //gives winner of round all money dropped
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
@@ -67,6 +67,7 @@ public class RoundManager : MonoBehaviour
                 PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
                 //playerManager.PlayersNextRound(); 
             }
+            MapManager.instance.ResetMap(); //resets map elements, currently only respawns the chest
             //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
         AssignUltimateWinner();

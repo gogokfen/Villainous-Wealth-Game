@@ -92,7 +92,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8940981212853834448
 Transform:
   m_ObjectHideFlags: 0
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -593,7 +593,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 3090904878065746358}
   m_FillRect: {fileID: 4290428226320495043}
   m_HandleRect: {fileID: 4145746880293255358}
@@ -631,7 +631,7 @@ Transform:
   m_GameObject: {fileID: 8058779420345538490}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10.75}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -675,17 +675,17 @@ PrefabInstance:
     - target: {fileID: 5696089237251440853, guid: b54ebdb5066f3d241a3a64f65d78a662,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.16
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5696089237251440853, guid: b54ebdb5066f3d241a3a64f65d78a662,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.78
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5696089237251440853, guid: b54ebdb5066f3d241a3a64f65d78a662,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5696089237251440853, guid: b54ebdb5066f3d241a3a64f65d78a662,
         type: 3}

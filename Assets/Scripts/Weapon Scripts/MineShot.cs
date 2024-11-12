@@ -8,6 +8,7 @@ public class MineShot : WeaponBase
     [SerializeField] GameObject mineHeadGFX;
     [SerializeField] float timeToArm = 2;
     [SerializeField] GameObject radiusGFX;
+    [SerializeField] ParticleSystem explosionEffect;
     CapsuleCollider CC;
     void Start()
     {
@@ -48,5 +49,12 @@ public class MineShot : WeaponBase
                 radiusGFX.SetActive(true);
             }
         }
+    }
+
+    private void OnDestroy() 
+    {
+        explosionEffect.transform.SetParent(null);
+        explosionEffect.Play();
+        Destroy(explosionEffect.gameObject, 2f);
     }
 }

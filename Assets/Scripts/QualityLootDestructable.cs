@@ -127,7 +127,8 @@ public class QualityLootDestructable : MonoBehaviour
             Destroy(tempCoin, 10);
         }
         */
-        Destroy(pickupSlider.gameObject);
+       //Destroy(pickupSlider.gameObject);
+       pickupSlider.gameObject.SetActive(false);
 
     }
 

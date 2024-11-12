@@ -131,15 +131,16 @@ public class PickupManager : MonoBehaviour
 
         if (playerWon)
         {
-            animTimer += Time.deltaTime/3;
+            animTimer += Time.deltaTime;
             for (int i=0;i<coins.Count;i++)
             {
-                coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, winningPlayer.transform.position, animTimer);
+                coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, winningPlayer.transform.position, animTimer/3);
             }
             if (animTimer>=3.5f)
             {
                 playerWon = false;
                 animTimer = 0;
+                Debug.Log("player won");
             }
         }
 
