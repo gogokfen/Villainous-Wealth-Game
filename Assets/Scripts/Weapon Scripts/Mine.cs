@@ -57,6 +57,9 @@ public class Mine : WeaponBase
             tempMine.GetComponent<WeaponBase>().playerID = playerID;
             tempMine.GetComponent<WeaponBase>().damage = damage;
             tempMine.GetComponent<WeaponBase>().damageType = damageType;
+
+            mineGFX.SetActive(false);
+
             if (uses <= 0) //out of mines, refill and discard weapon
             {
                 CharacterControl.DiscardWeapon(playerID);
@@ -67,8 +70,6 @@ public class Mine : WeaponBase
 
     void Update()
     {
-        
-
         if (mineTimer>0)
         {
             windUpSlider.gameObject.SetActive(true);
@@ -76,8 +77,13 @@ public class Mine : WeaponBase
 
             mineTimer -= Time.deltaTime;
             if (mineTimer<=0)
+            {
+                mineGFX.SetActive(true);
                 windUpSlider.gameObject.SetActive(false);
+            }
+                
         }
+
 
         //if (placed)
         //{

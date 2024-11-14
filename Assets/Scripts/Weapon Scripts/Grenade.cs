@@ -34,7 +34,7 @@ public class Grenade : WeaponBase
 
     public void Shot(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && attackCooldown <= 0)
         {
             attackState = 1;
         }

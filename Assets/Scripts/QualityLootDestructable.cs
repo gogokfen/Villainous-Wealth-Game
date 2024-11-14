@@ -37,10 +37,10 @@ public class QualityLootDestructable : MonoBehaviour
     
     void Update()
     {
-        projSearch = Physics.OverlapBox(transform.position, new Vector3(3f, 3f, 3f), Quaternion.identity, collisionMask);
+        projSearch = Physics.OverlapBox(transform.position, new Vector3(1f, 0.75f, 0.75f), Quaternion.identity, collisionMask); //half extents
         identicalDamageCD -= Time.deltaTime;
 
-        if (projSearch.Length > 0)
+        if (projSearch.Length > 0 && !looted)
         {
             for (int i = 0; i < projSearch.Length; i++)
             {
@@ -51,7 +51,7 @@ public class QualityLootDestructable : MonoBehaviour
                     Destroy(projSearch[i].gameObject);
                 }
 
-                if (pickupSlider.value<=0 && !looted)
+                if (pickupSlider.value<=0) //&& !looted
                 {
                     looted = true;
                     if (isTreasureChest)
@@ -75,7 +75,7 @@ public class QualityLootDestructable : MonoBehaviour
                 coinTimer = Time.time + 0.1f;
 
                 //transferred to pickupManager to have control over all the coins in the scene
-                PickupManager.singleton.SpawnTreasureChestCoin(transform);
+                PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));
 
                 /*
                 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MineShot : WeaponBase
 {
-    //[SerializeField] GameObject mineBaseColor;
+    [SerializeField] GameObject mineBaseGFX;
     [SerializeField] GameObject mineHeadGFX;
     [SerializeField] float timeToArm = 2;
     [SerializeField] GameObject radiusGFX;
@@ -20,19 +20,19 @@ public class MineShot : WeaponBase
 
         if (playerID == CharacterControl.PlayerTypes.Red)
         {
-            GetComponent<Renderer>().material.color = Color.red;
+            mineBaseGFX.GetComponent<Renderer>().material.color = Color.red;
         }
         else if (playerID == CharacterControl.PlayerTypes.Blue)
         {
-            GetComponent<Renderer>().material.color = Color.blue;
+            mineBaseGFX.GetComponent<Renderer>().material.color = Color.blue;
         }
         else if (playerID == CharacterControl.PlayerTypes.Green)
         {
-            GetComponent<Renderer>().material.color = Color.green;
+            mineBaseGFX.GetComponent<Renderer>().material.color = Color.green;
         }
         else if (playerID == CharacterControl.PlayerTypes.Yellow)
         {
-            GetComponent<Renderer>().material.color = Color.yellow;
+            mineBaseGFX.GetComponent<Renderer>().material.color = Color.yellow;
         }
 
     }

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VInspector;
@@ -149,6 +147,8 @@ public class CharacterControl : MonoBehaviour
     private bool paintHead = false;
     float paintAmount;
 
+    [SerializeField] GameObject playerIndicator;
+
     void Start()
     {
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
@@ -179,6 +179,23 @@ public class CharacterControl : MonoBehaviour
 
         //hpText.text = ("HP: " + hp);
         hpBar.fillAmount = 1f;
+
+        if (PlayerID == PlayerTypes.Red)
+        {
+            playerIndicator.GetComponent<Renderer>().material.color = Color.red;
+        }
+        else if (PlayerID == PlayerTypes.Blue)
+        {
+            playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
+        }
+        else if (PlayerID == PlayerTypes.Green)
+        {
+            playerIndicator.GetComponent<Renderer>().material.color = Color.green;
+        }
+        else if (PlayerID == PlayerTypes.Yellow)
+        {
+            playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
+        }
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -222,7 +239,11 @@ public class CharacterControl : MonoBehaviour
 
     public void OutTheRound()
     {
-        PickupManager.singleton.SpawnTreasureChestCoin(transform);
+        int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
+        for (int i =0;i<randomMoneyDrop;i++)
+        {
+            PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z));
+        }
         CC.enabled = false;
         characterGFX.SetActive(false);
         dead = true;
@@ -241,6 +262,11 @@ public class CharacterControl : MonoBehaviour
 
     void Update()
     {
+        if (transform.position.y>0)
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything
+        }
+
         moneyText.text = coins.ToString(); //delete
 
         if (hp <= 0 & !dead)
@@ -250,9 +276,12 @@ public class CharacterControl : MonoBehaviour
             OutTheRound();
         }
 
+        if (dead)  //dying only turns out visuals, making sure no unwanted actions happen
+            return;
+
         identicalDamageCD -= Time.deltaTime;
 
-        projSearch = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize, Quaternion.identity, collisionMask);
+        projSearch = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize/2, Quaternion.identity, collisionMask);
         if (projSearch.Length > 0)
         {
             for (int i = 0; i < projSearch.Length; i++)
@@ -640,7 +669,7 @@ public class CharacterControl : MonoBehaviour
 
         ///////////////////V2
 
-        pickupSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize * 1.25f, Quaternion.identity, pickupMask));
+        pickupSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize/2, Quaternion.identity, pickupMask));
         if (pickupSearch.Length > 0)
         {
             for (int i = 0; i <= pickupSearch.Length; i++)
@@ -936,10 +965,10 @@ public class CharacterControl : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize);
+        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize ); // the original is half extents
 
         Gizmos.color = Color.green;
-        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize * 1.25f);
+        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize); // the original is half extents
     }
 }
 

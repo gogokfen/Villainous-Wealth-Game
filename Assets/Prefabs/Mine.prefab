@@ -112,8 +112,8 @@ Transform:
   m_GameObject: {fileID: 5091376595919617967}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.25, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalPosition: {x: 0, y: 0.403, z: 0}
+  m_LocalScale: {x: 0.35, y: 0.07, z: 0.35}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6423865904989000175}
@@ -133,7 +133,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5091376595919617967}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -198,7 +198,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2472343903472576036}
@@ -295,7 +295,8 @@ MonoBehaviour:
   playerID: 0
   damageType: 0
   damage: 0
-  mineHeadGFX: {fileID: 10283534299696162}
+  mineBaseGFX: {fileID: 10283534299696162}
+  mineHeadGFX: {fileID: 5091376595919617967}
   timeToArm: 1.25
   radiusGFX: {fileID: 1167903658951410048}
   explosionEffect: {fileID: 321825542154894677}
@@ -5140,7 +5141,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 038970b9a8362034f877dbae8cbce442,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 038970b9a8362034f877dbae8cbce442,
         type: 3}
@@ -5150,7 +5151,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 038970b9a8362034f877dbae8cbce442,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 038970b9a8362034f877dbae8cbce442,
         type: 3}

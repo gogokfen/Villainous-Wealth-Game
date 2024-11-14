@@ -134,7 +134,7 @@ public class PickupManager : MonoBehaviour
             animTimer += Time.deltaTime;
             for (int i=0;i<coins.Count;i++)
             {
-                coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, winningPlayer.transform.position, animTimer/3);
+                coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, new Vector3 (winningPlayer.transform.position.x, winningPlayer.transform.position.y+1.5f, winningPlayer.transform.position.z), animTimer/3);
             }
             if (animTimer>=3.5f)
             {
@@ -146,10 +146,10 @@ public class PickupManager : MonoBehaviour
 
     }
 
-    public void SpawnTreasureChestCoin(Transform treasureChest)
+    public void SpawnTreasureChestCoin(Vector3 treasureChestPosition)
     {
         Vector3 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
-        GameObject tempCoin = Instantiate(prefabCoin, treasureChest.position, treasureChest.rotation);
+        GameObject tempCoin = Instantiate(prefabCoin, treasureChestPosition,Quaternion.identity);
         tempCoin.name = prefabCoin.name;
         Rigidbody coinRB = tempCoin.GetComponent<Rigidbody>();
         coinRB.AddForce(coinPosition, ForceMode.Impulse);

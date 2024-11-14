@@ -37,7 +37,7 @@ public class Boomerang : WeaponBase
 
     public void Thrown(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if (context.started && canThrow)
         {
             attackState = 1;
         }
