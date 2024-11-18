@@ -61,6 +61,9 @@ public class GrenadeShot : WeaponBase
             SC.enabled = true;
             explosionEffect.transform.SetParent(null);
             explosionEffect.Play();
+
+            SoundManager.singleton.BombExplode();
+
             Destroy(explosionEffect.gameObject, 3f); 
         }
 

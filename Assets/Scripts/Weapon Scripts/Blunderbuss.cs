@@ -61,6 +61,8 @@ public class Blunderbuss : WeaponBase
 
             gunShotEffect.Play();
 
+            SoundManager.singleton.BlunderbussShot();
+
             /////////////////////////V1
             /*
             transform.Rotate(0, -bulletSpreadAngle / 2, 0);
@@ -97,6 +99,8 @@ public class Blunderbuss : WeaponBase
             reloading = true; //changed to false from CharacterControl
             ammo = maxAmmo;
             attackCooldown = 2 * maxAttackCooldown;
+
+            SoundManager.singleton.BlunderbussReload();
             //Debug.Log("reloading!"); //don't delete this comment
         }
     }

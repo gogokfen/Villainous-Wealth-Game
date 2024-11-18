@@ -8,6 +8,8 @@ public class Gun : WeaponBase
     [SerializeField] GameObject gunGFX;
     [SerializeField] GameObject bullet;
     [SerializeField] float maxAttackCooldown = 0.25f;
+    [SerializeField] bool lazerGun;
+
     private float attackCooldown;
     bool use;
 
@@ -43,6 +45,11 @@ public class Gun : WeaponBase
             tempBullet.GetComponent<WeaponBase>().damage = damage;
             tempBullet.GetComponent<WeaponBase>().damageType = damageType;
             attackCooldown = maxAttackCooldown;
+            
+            if (lazerGun)
+                SoundManager.singleton.LazerGunShot();
+            else
+                SoundManager.singleton.GunShot();
         }
     }
 }

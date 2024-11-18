@@ -113,8 +113,8 @@ public class QualityLootDestructable : MonoBehaviour
     {
         coinNumber = Random.Range(5,16);
         animator.SetTrigger("Open");
-        
 
+        SoundManager.singleton.ChestOpen();
         /*
         for (int i=0;i<coinNumber;i++)
         {
@@ -126,8 +126,8 @@ public class QualityLootDestructable : MonoBehaviour
             Destroy(tempCoin, 10);
         }
         */
-       //Destroy(pickupSlider.gameObject);
-       pickupSlider.gameObject.SetActive(false);
+        //Destroy(pickupSlider.gameObject);
+        pickupSlider.gameObject.SetActive(false);
 
     }
 

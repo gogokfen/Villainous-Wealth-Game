@@ -87,6 +87,8 @@ public class Grenade : WeaponBase
             GrenadeGFX.SetActive(false);
 
             windup = 0;
+
+            SoundManager.singleton.BombThrow();
         }
     }
 }

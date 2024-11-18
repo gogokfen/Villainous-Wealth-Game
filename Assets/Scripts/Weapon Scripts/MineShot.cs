@@ -55,6 +55,9 @@ public class MineShot : WeaponBase
     {
         explosionEffect.transform.SetParent(null);
         explosionEffect.Play();
+
+        SoundManager.singleton.MineExplode();
+
         Destroy(explosionEffect.gameObject, 2f);
     }
 }

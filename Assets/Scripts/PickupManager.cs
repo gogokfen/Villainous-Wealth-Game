@@ -18,6 +18,7 @@ public class PickupManager : MonoBehaviour
     List<GameObject> coins = new List<GameObject>();
     [SerializeField] GameObject prefabCoin;
     [SerializeField] GameObject coinShot;
+    [SerializeField] GameObject coinPickupVFX;
     //public static int uncollectedCoinsAmount = 0;
     GameObject winningPlayer;
     bool playerWon = false;
@@ -162,6 +163,11 @@ public class PickupManager : MonoBehaviour
 
         coins.Add(tempCoin);
         //Destroy(tempCoin, 10);
+    }
+
+    public void CoinPickupVFX(Vector3 coinPos)
+    {
+        Instantiate(coinPickupVFX, coinPos, coinPickupVFX.transform.rotation);
     }
 
     public void CoinShot()

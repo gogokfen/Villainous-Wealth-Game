@@ -65,6 +65,8 @@ public class Mine : WeaponBase
                 CharacterControl.DiscardWeapon(playerID);
                 //uses = startingAmmo;
             }
+
+            SoundManager.singleton.MinePlace();
         }
     }
 

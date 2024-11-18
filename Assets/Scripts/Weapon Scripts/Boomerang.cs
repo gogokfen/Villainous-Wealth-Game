@@ -79,6 +79,8 @@ public class Boomerang : WeaponBase
             if ((15+windup*37.5f)>40)
                 tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 40;
             windup = 0;
+
+            SoundManager.singleton.BoomerangThrow();
         }
         if (!canThrow)
         {
@@ -97,6 +99,8 @@ public class Boomerang : WeaponBase
 
                             canThrow = true;
                             boomerangGFX.SetActive(true);
+
+                            SoundManager.singleton.BoomerangCatch();
                         }
                     }
 

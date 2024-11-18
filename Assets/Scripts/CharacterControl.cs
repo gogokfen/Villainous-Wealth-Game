@@ -142,7 +142,8 @@ public class CharacterControl : MonoBehaviour
 
     private bool paintHead = false;
     private float paintAmount;
-    private Vector3 originalPos;
+    private Vector3 desiredPos;
+    private Vector3 knockbackDirection;
 
     [SerializeField] GameObject playerIndicator;
 
@@ -249,6 +250,8 @@ public class CharacterControl : MonoBehaviour
         characterGFX.SetActive(false);
         dead = true;
 
+        SoundManager.singleton.Death();
+
         PlayerManager.PlayerCheck();
     }
     public void NextRound()
@@ -307,6 +310,8 @@ public class CharacterControl : MonoBehaviour
             blockDuration = 0.75f;
             blockCD = 3.5f;
             holdTimer = 0.75f;
+
+            SoundManager.singleton.Shield();
         }
 
         rollCD -= Time.deltaTime;
@@ -323,6 +328,8 @@ public class CharacterControl : MonoBehaviour
             rollCD = 2.5f;
             //charAnim.Play("SpinDash");
             charAnim.SetTrigger("Roll");
+
+            SoundManager.singleton.Roll();
         }
 
 
@@ -418,7 +425,12 @@ public class CharacterControl : MonoBehaviour
                 paintHead = false;
             }
         }
-        characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
+        //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
+
+        transform.position += knockbackDirection;
+        knockbackDirection /= (1 + Time.deltaTime * 10);
+
+
     }
 
     private void Movement()
@@ -527,6 +539,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch1");
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
+                    SoundManager.singleton.Melee1();
                 }
                 else if (animState == AS.Punch1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -541,6 +554,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch2");
                     //charAnim.Play("PunchingTwo");
                     charAnim.SetTrigger("Punch2");
+                    SoundManager.singleton.Melee2();
                 }
                 else if (animState == AS.Punch2Recovery) //animState == AS.Punch2Active || 
                 {
@@ -556,6 +570,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch3");
                     //charAnim.Play("PunchingThree");
                     charAnim.SetTrigger("Punch3");
+                    SoundManager.singleton.Melee3();
                 }
             }
             else //using other weapons
@@ -709,11 +724,13 @@ public class CharacterControl : MonoBehaviour
                 }
                 else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall")
                 {
+                    SoundManager.singleton.Pickup();
                     if (pickupSearch[i].transform.name == "Coin")
                     {
                         coins++;
                         moneyText.text = coins.ToString();
                         pickupSearch[i].transform.gameObject.SetActive(false);
+                        PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
                     else if (pickupSearch[i].transform.name == "Health")
                     {
@@ -789,15 +806,17 @@ public class CharacterControl : MonoBehaviour
 
                     //originalPos = characterGFX.transform.position;
 
-                    originalPos = Vector3.zero;
+                    
 
-                    Vector3 knockbackDirection = transform.position - hitPos;
+                    knockbackDirection = transform.position - hitPos;
                     knockbackDirection.Normalize();
-                    knockbackDirection *=1.5f;
+                    knockbackDirection *=0.1f;
                     knockbackDirection *= (damage/2f);
                     knockbackDirection.y = 0;
 
-                    characterGFX.transform.position += knockbackDirection;
+                    //characterGFX.transform.position += knockbackDirection;
+
+                    //transform.position += knockbackDirection;
 
                     //--------------------test-----------------------
                     /*
@@ -809,9 +828,10 @@ public class CharacterControl : MonoBehaviour
                         meleeParticleEffect.transform.position = hitPos;
                     }
                     */
+
+                    SoundManager.singleton.Damage();
                 }
             }
-
 
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
@@ -839,18 +859,23 @@ public class CharacterControl : MonoBehaviour
                 hp = hp - damageBasedOnDistance;
                 //hpText.text = ("HP: " + hp);
                 hpBar.fillAmount = hp / 10f;
+
+                headColor = Color.red;
+                paintHead = true;
+
+                knockbackDirection = transform.position - grenadePos;
+                knockbackDirection.Normalize();
+                knockbackDirection *= 0.1f;
+                knockbackDirection *= (damage / 2f);
+                knockbackDirection.y = 0;
+
+                SoundManager.singleton.Damage();
+
+
             }
 
-            headColor = Color.red;
-            paintHead = true;
-
-            Vector3 knockbackDirection = transform.position - grenadePos;
-            knockbackDirection.Normalize();
-            knockbackDirection *= 1.5f;
-            knockbackDirection *= (damage / 2f);
-            knockbackDirection.y = 0;
-
-            characterGFX.transform.position += knockbackDirection;
+            //characterGFX.transform.position += knockbackDirection;
+            //transform.position += knockbackDirection;
 
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
