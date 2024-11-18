@@ -17,6 +17,7 @@ public class PickupManager : MonoBehaviour
 
     List<GameObject> coins = new List<GameObject>();
     [SerializeField] GameObject prefabCoin;
+    [SerializeField] GameObject coinShot;
     //public static int uncollectedCoinsAmount = 0;
     GameObject winningPlayer;
     bool playerWon = false;
@@ -134,6 +135,11 @@ public class PickupManager : MonoBehaviour
             animTimer += Time.deltaTime;
             for (int i=0;i<coins.Count;i++)
             {
+                if (coins[i].transform.name == "CoinShot")
+                {
+                    coins[i].GetComponent<BackToZero>().Return();
+                    coins[i].transform.name = "Coin";
+                }
                 coins[i].transform.position = Vector3.Lerp(coins[i].transform.position, new Vector3 (winningPlayer.transform.position.x, winningPlayer.transform.position.y+1.5f, winningPlayer.transform.position.z), animTimer/3);
             }
             if (animTimer>=3.5f)
@@ -156,6 +162,14 @@ public class PickupManager : MonoBehaviour
 
         coins.Add(tempCoin);
         //Destroy(tempCoin, 10);
+    }
+
+    public void CoinShot()
+    {
+        GameObject tempCoinShot = Instantiate(coinShot, Vector3.zero, Quaternion.Euler(0, Random.Range(0, 360f), 0));
+
+        tempCoinShot.name = coinShot.name;
+        coins.Add(tempCoinShot);
     }
 
     public void SetWinningPlayer(GameObject player)

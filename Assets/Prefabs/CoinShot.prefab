@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6274491641765551331}
+  - component: {fileID: 4027003112642217248}
   m_Layer: 0
   m_Name: CoinShot
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 4522173837533877334}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4027003112642217248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8430309303933985351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e6fb9d13eebe949aa3f5f77afda319, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToMove: {fileID: 5470762373252399224}
 --- !u!1001 &7954951259425178870
 PrefabInstance:
   m_ObjectHideFlags: 0

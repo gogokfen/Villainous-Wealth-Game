@@ -47,7 +47,9 @@ public class Cannon : MonoBehaviour
                 coinShotAmount--;
                 coinShotTimer = Time.time + 0.25f;
 
-                Instantiate(coinShot,Vector3.zero,Quaternion.Euler(0,UnityEngine.Random.Range(0,360f),0));
+                PickupManager.singleton.CoinShot();
+
+                //Instantiate(coinShot,Vector3.zero,Quaternion.Euler(0,UnityEngine.Random.Range(0,360f),0));
             }
         }
     }
