@@ -604,6 +604,7 @@ Transform:
   - {fileID: 3113917523151586597}
   - {fileID: 2590804157340471474}
   - {fileID: 3501448862863169185}
+  - {fileID: 2783862202790071217}
   m_Father: {fileID: 2969950310000140246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6421145718724427035
@@ -2211,7 +2212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1102039249708240566
 Transform:
   m_ObjectHideFlags: 0
@@ -2819,11 +2820,11 @@ Transform:
   - {fileID: 8005268385784791388}
   - {fileID: 1102039249708240566}
   - {fileID: 2939236825713545058}
-  - {fileID: 2783862202790071217}
   - {fileID: 7321442858404888036}
   - {fileID: 3985210767479519031}
   - {fileID: 4198891487184805161}
   - {fileID: 9115938184151715734}
+  - {fileID: 5899742981120495699}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &3846904075160001242
@@ -3094,6 +3095,7 @@ MonoBehaviour:
   characterGFX: {fileID: 858879399940756574}
   HeadGFX: {fileID: 8213661146023656113}
   playerIndicator: {fileID: 8153907379080753084}
+  cannonBall: {fileID: 4367939416322508013}
 --- !u!143 &7841318357815598602
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4897,6 +4899,59 @@ Transform:
   - {fileID: 8611334509654154350}
   m_Father: {fileID: 70979799704432232}
   m_LocalEulerAnglesHint: {x: 0, y: 120, z: 0}
+--- !u!1 &4367939416322508013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8008090751371127203}
+  - component: {fileID: 6381032163317677793}
+  m_Layer: 9
+  m_Name: 0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8008090751371127203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367939416322508013}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5899742981120495699}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6381032163317677793
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4367939416322508013}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4409522580429158592
 GameObject:
   m_ObjectHideFlags: 0
@@ -7755,6 +7810,38 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7034142270338837117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5899742981120495699}
+  m_Layer: 8
+  m_Name: CannonBalls
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5899742981120495699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7034142270338837117}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8008090751371127203}
+  m_Father: {fileID: 2969950310000140246}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7045067042267623776
 GameObject:
   m_ObjectHideFlags: 0
@@ -8914,11 +9001,11 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 0.01, z: 2}
+  m_LocalScale: {x: 1.3333334, y: 0.006666667, z: 1.3333334}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1648511594870657484}
-  m_Father: {fileID: 2969950310000140246}
+  m_Father: {fileID: 6023758591330354205}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3933481576207677254
 MeshFilter:

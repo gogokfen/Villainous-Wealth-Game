@@ -68,11 +68,10 @@ public class QualityLootDestructable : MonoBehaviour
 
         if (coinNumber>0)
         {
-            coinTimer -= Time.deltaTime;
             if (Time.time>=coinTimer)
             {
                 coinNumber--;
-                coinTimer = Time.time + 0.1f;
+                coinTimer = Time.time + 0.05f;
 
                 //transferred to pickupManager to have control over all the coins in the scene
                 PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z));

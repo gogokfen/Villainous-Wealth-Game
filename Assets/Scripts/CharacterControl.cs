@@ -20,7 +20,6 @@ public class CharacterControl : MonoBehaviour
     public int hp = 10;
     public int coins = 0;
 
-    //RaycastHit pickupHit;
     Collider[] pickupSearch;
     [SerializeField] LayerMask pickupMask;
     private float speedBuffTimer;
@@ -44,15 +43,12 @@ public class CharacterControl : MonoBehaviour
     private float attackMoveSpeed;
     private float forwardMomentumDelay;
 
-    //private bool holdPos;
     private float holdTimer;
-    //public static float staticHoldTimer;
     private bool rolling;
     private Vector3 rollDirection;
     private float rollCD;
     private float rollTimer;
 
-    //private int animState = 0;
     private AS animState;
     private float animTimer = 0;
 
@@ -145,9 +141,14 @@ public class CharacterControl : MonoBehaviour
     Color32 headColor = Color.grey;
 
     private bool paintHead = false;
-    float paintAmount;
+    private float paintAmount;
+    private Vector3 originalPos;
 
     [SerializeField] GameObject playerIndicator;
+
+    //[HideInInspector] public int cannonBallAmount = 0;
+    private int cannonBallAmount = 0;
+    [SerializeField] GameObject cannonBall;
 
     void Start()
     {
@@ -258,6 +259,7 @@ public class CharacterControl : MonoBehaviour
         CC.enabled = true;
         characterGFX.SetActive(true);
         dead = false;
+        moneyText.text = coins.ToString();
     }
 
     void Update()
@@ -267,12 +269,8 @@ public class CharacterControl : MonoBehaviour
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything
         }
 
-        moneyText.text = coins.ToString(); //delete
-
         if (hp <= 0 & !dead)
         {
-            //PickupManager.singleton.SpawnTreasureChestCoin(transform);
-            //Destroy(gameObject);
             OutTheRound();
         }
 
@@ -281,47 +279,9 @@ public class CharacterControl : MonoBehaviour
 
         identicalDamageCD -= Time.deltaTime;
 
-        projSearch = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize/2, Quaternion.identity, collisionMask);
-        if (projSearch.Length > 0)
-        {
-            for (int i = 0; i < projSearch.Length; i++)
-            {
-                WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
+        AttackScan(); //scanning the area around the character for projectiles & melee attacks - damage intances
 
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
-                    TakeDamage(attackWB.playerID, attackWB.damage, projSearch[i].transform.position);
-                else
-                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType, projSearch[i].transform.position);
-
-
-
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
-                {
-                    Destroy(projSearch[i].gameObject);
-                }
-
-            }
-        }
-
-        if (paintHead)
-        {
-            paintAmount += Time.deltaTime *500;
-            //headColor = new Color32(headColor.r, (byte)(headColor.g+1000 * Time.deltaTime), (byte)(headColor.b+1000 *Time.deltaTime), headColor.a);
-            if (paintAmount < 127)
-            {
-                headColor = new Color32((byte)(255 - paintAmount), (byte)(paintAmount), (byte)(paintAmount), headColor.a);
-                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
-            }
-            else
-            {
-                paintAmount = 0;
-                headColor = Color.grey;
-                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
-                paintHead = false;
-            }
-
-        }
-
+        DamageVisual(); //representing the damage recieved visually for the player to understand
 
         if (isTargetDummy)
             return;
@@ -338,84 +298,8 @@ public class CharacterControl : MonoBehaviour
         else
             charAnim.SetBool("ShotGun", false);
 
-        if (moveInput != Vector2.zero)
-        {
-            if (speedBuffTimer <= 0)
-            {
-                currentMaxSpeed = startingSpeed;
-            }
-            if (moveSpeed < currentMaxSpeed)
-            {
-                accelSpeed += Time.deltaTime * 5;
-                deAccelSpeed = 0;
-                moveSpeed += accelSpeed;
-            }
+        Movement(); //character movement
 
-            moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-            if (holdTimer <= 0) //can still rotate while shooting
-            {
-                //charAnim.Play("Runnig"); //CHANEL I'LL FUCKING MMURDER YOU reminder
-                if (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer)
-                {
-                    charAnim.SetBool("RunGun", true);
-                }
-                else if (equippedWeapon == Weapons.Blunderbuss)
-                {
-                    charAnim.SetBool("RunShotGun", true);
-                }
-                else
-                    charAnim.SetBool("Run", true);
-
-                if (equippedWeapon == Weapons.Fist)
-                {
-                    rFist.enabled = false;
-                }
-
-                CC.Move(moveDirection * moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                charAnim.SetBool("Run", false);
-                //charAnim.SetBool("RunGun", false);
-                charAnim.SetBool("RunShotGun", false);
-                //lFootAnim.SetBool("Walk", false);
-                //rFootAnim.SetBool("Walk", false);
-            }
-
-            targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
-
-            if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery) && !rolling) //can't rotate whiling using fists
-            {
-                transform.rotation = Quaternion.Euler(0, targetAngle, 0);
-            }
-        }
-        else
-        {
-            //lFootAnim.SetBool("Walk", false);
-            //rFootAnim.SetBool("Walk", false);
-            //charAnim.Play("Idle"); reminder
-
-
-            if (moveSpeed > 1)
-            {
-                accelSpeed = 0;
-                deAccelSpeed += Time.deltaTime * 5;
-                moveSpeed -= deAccelSpeed;
-
-                if (moveSpeed<5)
-                {
-                    charAnim.SetBool("Run", false);
-                    charAnim.SetBool("RunGun", false);
-                    charAnim.SetBool("RunShotGun", false);
-                }
-
-                if (moveSpeed < 1)
-                {
-                    moveSpeed = 1;
-                }
-
-            }
-        }
 
         if (shieldInput && blockCD <= 0)
         {
@@ -486,6 +370,142 @@ public class CharacterControl : MonoBehaviour
             windUpBar.gameObject.SetActive(false);
 
 
+        Attack();
+
+        PickupSearch(); //scan the area for pickups
+    }
+
+    private void AttackScan()
+    {
+        projSearch = Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize / 2, Quaternion.identity, collisionMask);
+        if (projSearch.Length > 0)
+        {
+            for (int i = 0; i < projSearch.Length; i++)
+            {
+                WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
+
+                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
+                    TakeDamage(attackWB.playerID, attackWB.damage, projSearch[i].transform.position);
+                else
+                    TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType, projSearch[i].transform.position);
+
+                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
+                {
+                    Destroy(projSearch[i].gameObject);
+                }
+
+            }
+        }
+
+    }
+
+    private void DamageVisual()
+    {
+        if (paintHead)
+        {
+            paintAmount += Time.deltaTime * 500;
+            //headColor = new Color32(headColor.r, (byte)(headColor.g+1000 * Time.deltaTime), (byte)(headColor.b+1000 *Time.deltaTime), headColor.a);
+            if (paintAmount < 127)
+            {
+                headColor = new Color32((byte)(255 - paintAmount), (byte)(paintAmount), (byte)(paintAmount), headColor.a);
+                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
+            }
+            else
+            {
+                paintAmount = 0;
+                headColor = Color.grey;
+                HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
+                paintHead = false;
+            }
+        }
+        characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
+    }
+
+    private void Movement()
+    {
+        if (moveInput != Vector2.zero)
+        {
+            if (speedBuffTimer <= 0)
+            {
+                currentMaxSpeed = startingSpeed;
+            }
+            if (moveSpeed < currentMaxSpeed)
+            {
+                accelSpeed += Time.deltaTime * 5;
+                deAccelSpeed = 0;
+                moveSpeed += accelSpeed;
+            }
+
+            moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            if (holdTimer <= 0) //can still rotate while shooting
+            {
+                //charAnim.Play("Runnig"); //CHANEL I'LL FUCKING MMURDER YOU reminder
+                if (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer)
+                {
+                    charAnim.SetBool("RunGun", true);
+                }
+                else if (equippedWeapon == Weapons.Blunderbuss)
+                {
+                    charAnim.SetBool("RunShotGun", true);
+                }
+                else
+                    charAnim.SetBool("Run", true);
+
+                if (equippedWeapon == Weapons.Fist)
+                {
+                    rFist.enabled = false;
+                }
+
+                CC.Move(moveDirection * moveSpeed * Time.deltaTime);
+            }
+            else
+            {
+                charAnim.SetBool("Run", false);
+                //charAnim.SetBool("RunGun", false);
+                charAnim.SetBool("RunShotGun", false);
+                //lFootAnim.SetBool("Walk", false);
+                //rFootAnim.SetBool("Walk", false);
+            }
+
+            targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+
+            if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery) && !rolling) //can't rotate whiling using fists
+            {
+                transform.rotation = Quaternion.Euler(0, targetAngle, 0);
+            }
+        }
+        else
+        {
+            //lFootAnim.SetBool("Walk", false);
+            //rFootAnim.SetBool("Walk", false);
+            //charAnim.Play("Idle"); reminder
+
+
+            if (moveSpeed > 1)
+            {
+                accelSpeed = 0;
+                deAccelSpeed += Time.deltaTime * 5;
+                moveSpeed -= deAccelSpeed;
+
+                if (moveSpeed < 5)
+                {
+                    charAnim.SetBool("Run", false);
+                    charAnim.SetBool("RunGun", false);
+                    charAnim.SetBool("RunShotGun", false);
+                }
+
+                if (moveSpeed < 1)
+                {
+                    moveSpeed = 1;
+                }
+
+            }
+        }
+
+    }
+
+    private void Attack()
+    {
         if (useWeapon)
         {
             //rArm.localPosition = new Vector3(0.75f, 0, 0); //resets strong punch
@@ -545,7 +565,7 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetTrigger("Shoot");
                 */
 
-                Attack(equippedWeapon);
+                Shoot(equippedWeapon);
                 //charAnim.Play("Shooting");
 
                 //holdTimer = 0.15f;  //consider using a per-weapon case stun where we check the stun duration and if there is one needed by the weapon's script
@@ -563,7 +583,7 @@ public class CharacterControl : MonoBehaviour
         {
             animTimer += Time.deltaTime;
 
-            
+
 
             if (animState == AS.Punch1Windup || animState == AS.Punch1Active || animState == AS.Punch1Recovery)
             {
@@ -666,10 +686,11 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
+    }
 
-        ///////////////////V2
-
-        pickupSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize/2, Quaternion.identity, pickupMask));
+    private void PickupSearch()
+    {
+        pickupSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize / 2, Quaternion.identity, pickupMask));
         if (pickupSearch.Length > 0)
         {
             for (int i = 0; i <= pickupSearch.Length; i++)
@@ -686,7 +707,7 @@ public class CharacterControl : MonoBehaviour
                     Destroy(pickupSearch[i].transform.gameObject);
                     return;
                 }
-                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield")
+                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall")
                 {
                     if (pickupSearch[i].transform.name == "Coin")
                     {
@@ -712,6 +733,14 @@ public class CharacterControl : MonoBehaviour
                         shieldBuffTimer = 3.5f;
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
+                    else if (pickupSearch[i].transform.name == "CannonBall")
+                    {
+                        cannonBallAmount = Int32.Parse(cannonBall.name);
+
+                        cannonBallAmount++;
+                        cannonBall.name = "" + cannonBallAmount;
+                        Destroy(pickupSearch[i].transform.gameObject);
+                    }
                     return;
                 }
                 else
@@ -720,65 +749,6 @@ public class CharacterControl : MonoBehaviour
                 }
             }
         }
-
-        //////////////////V1
-        /**
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), transform.forward, out pickupHit, 1f, pickupMask))
-        {
-            if (Enum.TryParse<Weapons>(pickupHit.transform.name, out Weapons weapon))
-            {
-                previousWeapon = equippedWeapon;
-                equippedWeapon = Enum.Parse<Weapons>(pickupHit.transform.name);
-                //pickupHit.transform.gameObject.SetActive(false); //consider destroying instead
-
-
-                weaponList[(int)previousWeapon].SetActive(false);
-                weaponList[(int)equippedWeapon].SetActive(true);
-                weaponID = (int)equippedWeapon;
-
-                Destroy(pickupHit.transform.gameObject);
-                //Destroy(pickupHit.transform);
-            }
-            else if (pickupHit.transform.name == "Coin" || pickupHit.transform.name == "Speed" || pickupHit.transform.name == "Health" || pickupHit.transform.name == "Shield")
-            {
-                if (pickupHit.transform.name == "Coin")
-                {
-                    coins++;
-                    moneyText.text = coins.ToString();
-                    //Destroy(pickupHit.transform.gameObject); //need to think this through with the pickup manager
-                    pickupHit.transform.gameObject.SetActive(false);
-                    //Debug.Log("coin");
-                }
-                if (pickupHit.transform.name == "Health")
-                {
-                    hp += 3;
-                    //hpText.text = "HP: " + hp;
-                    hpBar.fillAmount += 3f / 10f;
-                    Destroy(pickupHit.transform.gameObject);
-                    //Debug.Log("health");
-                }
-                if (pickupHit.transform.name == "Speed")
-                {
-                    currentMaxSpeed = startingSpeed * 1.5f;
-                    speedBuffTimer = 5;
-                    Destroy(pickupHit.transform.gameObject);
-                    //Debug.Log("speed");
-                }
-                if (pickupHit.transform.name == "Shield")
-                {
-                    shieldGFX.SetActive(true);
-                    shieldBuffTimer = 3.5f;
-                    Destroy(pickupHit.transform.gameObject);
-                    //Debug.Log("shield");
-                }
-            }
-            else
-            {
-                Debug.Log("Change the object's name to the correct weapon or pickup name");
-            }
-        } //pickup raycast
-        */
-
         if (weaponDiscarded && discardingPlayerID == PlayerID)
         {
             weaponDiscarded = false;
@@ -791,23 +761,6 @@ public class CharacterControl : MonoBehaviour
             Debug.Log("actually discarded yo");
         }
 
-
-
-        /** // in case of collision check with raycast
-        wallSearch = Physics.OverlapBox(transform.position, new Vector3(0.5f, 1f, 0.5f), Quaternion.identity, collisionMask);
-        if (wallSearch.Length > 0)
-        {
-            for (int i = 0; i < wallSearch.Length; i++)
-            {
-                Debug.Log(wallSearch[i].name);
-                Vector3 direction = wallSearch[i].transform.position - transform.position;
-                direction.Normalize();
-                direction *= 0.1f;
-                Debug.Log(direction);
-                transform.position = new Vector3(transform.position.x - direction.x, transform.position.y, transform.position.z - direction.z);
-            }
-        }
-        */
     }
 
     private void TakeDamage(PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType, Vector3 hitPos)
@@ -831,8 +784,23 @@ public class CharacterControl : MonoBehaviour
 
 
 
-                    //--------------------test-----------------------
+                    meleeParticleEffect.transform.position = hitPos;
+                    meleeParticleEffect.Play();
 
+                    //originalPos = characterGFX.transform.position;
+
+                    originalPos = Vector3.zero;
+
+                    Vector3 knockbackDirection = transform.position - hitPos;
+                    knockbackDirection.Normalize();
+                    knockbackDirection *=1.5f;
+                    knockbackDirection *= (damage/2f);
+                    knockbackDirection.y = 0;
+
+                    characterGFX.transform.position += knockbackDirection;
+
+                    //--------------------test-----------------------
+                    /*
                     if (damageType == WeaponBase.damageTypes.melee)
                     {
 
@@ -840,9 +808,8 @@ public class CharacterControl : MonoBehaviour
                         meleeParticleEffect.Play();
                         meleeParticleEffect.transform.position = hitPos;
                     }
-
+                    */
                 }
-                //Debug.Log("Ouch!, Player " + attackingPlayer.ToString() + " hurt me! I have +" + hp + " Hp!");
             }
 
 
@@ -874,12 +841,23 @@ public class CharacterControl : MonoBehaviour
                 hpBar.fillAmount = hp / 10f;
             }
 
+            headColor = Color.red;
+            paintHead = true;
+
+            Vector3 knockbackDirection = transform.position - grenadePos;
+            knockbackDirection.Normalize();
+            knockbackDirection *= 1.5f;
+            knockbackDirection *= (damage / 2f);
+            knockbackDirection.y = 0;
+
+            characterGFX.transform.position += knockbackDirection;
+
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
         }
     }
 
-    private void Attack(Weapons WeaponUsed)
+    private void Shoot(Weapons WeaponUsed)
     {
         //holdTimer = 0.15f; //default case if no change
         switch (WeaponUsed)
@@ -973,6 +951,62 @@ public class CharacterControl : MonoBehaviour
 }
 
 
+/**
+if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), transform.forward, out pickupHit, 1f, pickupMask))
+{
+    if (Enum.TryParse<Weapons>(pickupHit.transform.name, out Weapons weapon))
+    {
+        previousWeapon = equippedWeapon;
+        equippedWeapon = Enum.Parse<Weapons>(pickupHit.transform.name);
+        //pickupHit.transform.gameObject.SetActive(false); //consider destroying instead
+
+
+        weaponList[(int)previousWeapon].SetActive(false);
+        weaponList[(int)equippedWeapon].SetActive(true);
+        weaponID = (int)equippedWeapon;
+
+        Destroy(pickupHit.transform.gameObject);
+        //Destroy(pickupHit.transform);
+    }
+    else if (pickupHit.transform.name == "Coin" || pickupHit.transform.name == "Speed" || pickupHit.transform.name == "Health" || pickupHit.transform.name == "Shield")
+    {
+        if (pickupHit.transform.name == "Coin")
+        {
+            coins++;
+            moneyText.text = coins.ToString();
+            //Destroy(pickupHit.transform.gameObject); //need to think this through with the pickup manager
+            pickupHit.transform.gameObject.SetActive(false);
+            //Debug.Log("coin");
+        }
+        if (pickupHit.transform.name == "Health")
+        {
+            hp += 3;
+            //hpText.text = "HP: " + hp;
+            hpBar.fillAmount += 3f / 10f;
+            Destroy(pickupHit.transform.gameObject);
+            //Debug.Log("health");
+        }
+        if (pickupHit.transform.name == "Speed")
+        {
+            currentMaxSpeed = startingSpeed * 1.5f;
+            speedBuffTimer = 5;
+            Destroy(pickupHit.transform.gameObject);
+            //Debug.Log("speed");
+        }
+        if (pickupHit.transform.name == "Shield")
+        {
+            shieldGFX.SetActive(true);
+            shieldBuffTimer = 3.5f;
+            Destroy(pickupHit.transform.gameObject);
+            //Debug.Log("shield");
+        }
+    }
+    else
+    {
+        Debug.Log("Change the object's name to the correct weapon or pickup name");
+    }
+} //pickup raycast
+*/
 
 /**
 public static void Hold(float holdTime, PlayerTypes holdingPlayer)
@@ -1149,6 +1183,22 @@ if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A
             transform.rotation = Quaternion.Euler(0, 270, 0);
 
         }
+    }
+}
+*/
+
+/** // in case of collision check with raycast
+wallSearch = Physics.OverlapBox(transform.position, new Vector3(0.5f, 1f, 0.5f), Quaternion.identity, collisionMask);
+if (wallSearch.Length > 0)
+{
+    for (int i = 0; i < wallSearch.Length; i++)
+    {
+        Debug.Log(wallSearch[i].name);
+        Vector3 direction = wallSearch[i].transform.position - transform.position;
+        direction.Normalize();
+        direction *= 0.1f;
+        Debug.Log(direction);
+        transform.position = new Vector3(transform.position.x - direction.x, transform.position.y, transform.position.z - direction.z);
     }
 }
 */
