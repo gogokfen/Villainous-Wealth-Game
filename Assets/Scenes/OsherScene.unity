@@ -995,6 +995,9 @@ MonoBehaviour:
   pickupMask:
     serializedVersion: 2
     m_Bits: 64
+  characterMask:
+    serializedVersion: 2
+    m_Bits: 0
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
@@ -4407,6 +4410,12 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &755086233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6124199671984280520, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1427841242}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &755593863
 GameObject:
   m_ObjectHideFlags: 0
@@ -6817,9 +6826,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DropWeapons: 0
   DropPowerups: 1
+  pickupFrequency: 6
   pickupPrefab: {fileID: 8121783589345228088, guid: 0e4c5cbf64ea0184c8ee547c7a47077c,
     type: 3}
-  pickupFrequency: 6
+  coinSackPowerup: {fileID: 5624292111329589309, guid: 5d5aac7f7e8c28e46bf24a427bb95ac5,
+    type: 3}
+  healthPowerup: {fileID: 3883626707256395251, guid: cb786602354cc2d44b6e3eaff33dd461,
+    type: 3}
+  shieldPowerup: {fileID: 4855054025748920295, guid: dac9cf469b71b664fb6cfc280774e54a,
+    type: 3}
+  speedPowerup: {fileID: 1508945608445756943, guid: 572224b1a5a9e684581cd990d34ba5bd,
+    type: 3}
   prefabCoin: {fileID: 2704877087673402510, guid: 97085d53e24721f498ab118c534bc670,
     type: 3}
   coinShot: {fileID: 8430309303933985351, guid: 6839fdcb03a95f1409c174f3de3af0e2,
@@ -8295,6 +8312,11 @@ PrefabInstance:
       propertyPath: hpText
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: HeadGFX
+      value: 
+      objectReference: {fileID: 755086233}
     - target: {fileID: 8529768936932577941, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: PlayerID
@@ -13450,6 +13472,9 @@ MonoBehaviour:
   pickupMask:
     serializedVersion: 2
     m_Bits: 64
+  characterMask:
+    serializedVersion: 2
+    m_Bits: 0
   collisionMask:
     serializedVersion: 2
     m_Bits: 128

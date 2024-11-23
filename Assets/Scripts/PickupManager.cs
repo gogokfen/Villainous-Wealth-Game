@@ -9,11 +9,17 @@ public class PickupManager : MonoBehaviour
     public bool DropWeapons = false;
     public bool DropPowerups = false;
 
+    [SerializeField] float pickupFrequency = 3;
+
     [SerializeField] GameObject pickupPrefab;
+
+    [SerializeField] GameObject coinSackPowerup;
+    [SerializeField] GameObject healthPowerup;
+    [SerializeField] GameObject shieldPowerup;
+    [SerializeField] GameObject speedPowerup;
 
     List<GameObject> pickups = new List<GameObject>();
 
-    [SerializeField] float pickupFrequency = 3;
 
     List<GameObject> coins = new List<GameObject>();
     [SerializeField] GameObject prefabCoin;
@@ -108,7 +114,10 @@ public class PickupManager : MonoBehaviour
 
             if (DropPowerups)
             {
-                Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+                //V2
+                SpawnPowerUp();
+
+                /** V1
                 GameObject tempPickup = Instantiate(pickupPrefab, tempPos, Quaternion.identity);
 
                 int nameRandomlyPicked = Random.Range(0, 4);
@@ -121,10 +130,8 @@ public class PickupManager : MonoBehaviour
                     tempPickup.name = "Shield";
                 else if (nameRandomlyPicked == 3)
                     tempPickup.name = "Speed";
+                */
 
-                pickups.Add(tempPickup);
-
-                Destroy(tempPickup, 20);
             }
 
             //GameObject tempCoin = Instantiate(prefabCoin, transform.position, Quaternion.identity);
@@ -163,6 +170,89 @@ public class PickupManager : MonoBehaviour
 
         coins.Add(tempCoin);
         //Destroy(tempCoin, 10);
+    }
+
+    private void SpawnPowerUp()
+    {
+        Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+
+        int randomPowerup = Random.Range(0, 4);
+        if (randomPowerup == 0)
+        {
+            GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
+            tempPowerup.name = "CoinSack";
+
+            pickups.Add(tempPowerup);
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 1)
+        {
+            GameObject tempPowerup = Instantiate(healthPowerup, tempPos, Quaternion.identity);
+            tempPowerup.name = "Health";
+
+            pickups.Add(tempPowerup);
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 2)
+        {
+            GameObject tempPowerup = Instantiate(shieldPowerup, tempPos, Quaternion.identity);
+            tempPowerup.name = "Shield";
+
+            pickups.Add(tempPowerup);
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 3)
+        {
+            GameObject tempPowerup = Instantiate(speedPowerup, tempPos, Quaternion.identity);
+            tempPowerup.name = "Speed";
+
+            pickups.Add(tempPowerup);
+            Destroy(tempPowerup, 20);
+        }
+
+    }
+
+    public void SpawnPowerup(Vector3 powerupPosition)
+    {
+        int randomPowerup = Random.Range(0, 4);
+        if (randomPowerup == 0)
+        {
+            GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
+            tempPowerup.name = "CoinSack";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 1)
+        {
+            GameObject tempPowerup = Instantiate(healthPowerup, powerupPosition, Quaternion.identity);
+            tempPowerup.name = "Health";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 2)
+        {
+            GameObject tempPowerup = Instantiate(shieldPowerup, powerupPosition, Quaternion.identity);
+            tempPowerup.name = "Shield";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            Destroy(tempPowerup, 20);
+        }
+        else if (randomPowerup == 3)
+        {
+            GameObject tempPowerup = Instantiate(speedPowerup, powerupPosition, Quaternion.identity);
+            tempPowerup.name = "Speed";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            Destroy(tempPowerup, 20);
+        }
+
+
+        //tempPowerup.GetComponent<Animator>().enabled = true;
+        //tempPowerup.GetComponent<BoxCollider>().enabled = true;
+
+        //Destroy(tempPowerup, 20);
     }
 
     public void CoinPickupVFX(Vector3 coinPos)

@@ -488,6 +488,7 @@ MonoBehaviour:
   gunGFX: {fileID: 7431332472927946069}
   bullet: {fileID: 5824980284795901388, guid: b76508111efa2bd4bb64e1ff14d20d47, type: 3}
   maxAttackCooldown: 0.25
+  lazerGun: 0
 --- !u!1 &812331942018124633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3067,6 +3068,9 @@ MonoBehaviour:
   pickupMask:
     serializedVersion: 2
     m_Bits: 64
+  characterMask:
+    serializedVersion: 2
+    m_Bits: 256
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
@@ -3091,7 +3095,7 @@ MonoBehaviour:
   windUpBar: {fileID: 6364204213077776542}
   meleeParticleEffect: {fileID: 3645279920044601994}
   characterGFX: {fileID: 858879399940756574}
-  HeadGFX: {fileID: 8213661146023656113}
+  HeadGFX: {fileID: 5918523718598517580}
   playerIndicator: {fileID: 3594455605637212895}
   cannonBall: {fileID: 6324063015806673922}
 --- !u!143 &7841318357815598602
@@ -3715,6 +3719,7 @@ MonoBehaviour:
   gunGFX: {fileID: 3833674078352607681}
   bullet: {fileID: 2745302255475450468, guid: b27fc148a6f2a8d42bc4cdd84d24cb99, type: 3}
   maxAttackCooldown: 0.5
+  lazerGun: 0
 --- !u!1 &3362542306732645308
 GameObject:
   m_ObjectHideFlags: 0
@@ -10927,6 +10932,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boxhead
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 603f15ef9094afe45a747a70c90a16ca,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -10940,6 +10950,12 @@ PrefabInstance:
       addedObject: {fileID: 7882530427693471459}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 603f15ef9094afe45a747a70c90a16ca, type: 3}
+--- !u!1 &5918523718598517580 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 603f15ef9094afe45a747a70c90a16ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 6837511137018568221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6442682230060464630 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 603f15ef9094afe45a747a70c90a16ca,

@@ -25,6 +25,9 @@ public class CharacterControl : MonoBehaviour
     private float speedBuffTimer;
     private float shieldBuffTimer;
 
+    Collider[] characterSearch;
+    [SerializeField] LayerMask characterMask;
+
     [SerializeField] LayerMask collisionMask;
     Collider[] projSearch;
     float identicalDamageCD;
@@ -139,6 +142,7 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] GameObject HeadGFX;
     Color32 headColor = Color.grey;
+    Color startingColor;
 
     private bool paintHead = false;
     private float paintAmount;
@@ -198,6 +202,8 @@ public class CharacterControl : MonoBehaviour
         {
             playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
         }
+
+        startingColor = HeadGFX.GetComponent<Renderer>().material.color;
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -246,6 +252,8 @@ public class CharacterControl : MonoBehaviour
         {
             PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z));
         }
+        PickupManager.singleton.SpawnPowerup(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
+
         CC.enabled = false;
         characterGFX.SetActive(false);
         dead = true;
@@ -302,6 +310,8 @@ public class CharacterControl : MonoBehaviour
             charAnim.SetBool("ShotGun", false);
 
         Movement(); //character movement
+
+        CharacterCollision();
 
 
         if (shieldInput && blockCD <= 0)
@@ -420,7 +430,8 @@ public class CharacterControl : MonoBehaviour
             else
             {
                 paintAmount = 0;
-                headColor = Color.grey;
+                //headColor = Color.grey;
+                headColor = startingColor;
                 HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
                 paintHead = false;
             }
@@ -428,6 +439,8 @@ public class CharacterControl : MonoBehaviour
         //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
 
         transform.position += knockbackDirection;
+        //CC.Move(knockbackDirection);
+        //CC.SimpleMove(knockbackDirection);
         knockbackDirection /= (1 + Time.deltaTime * 10);
 
 
@@ -514,6 +527,29 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
+    }
+
+    private void CharacterCollision()
+    {
+        //characterSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize / 1, transform.rotation, characterMask));
+        characterSearch = Physics.OverlapSphere(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), 1.25f, characterMask);
+        if (characterSearch.Length>0)
+        {
+            for (int i =0; i<characterSearch.Length;i++)
+            {
+                if (moveInput!= Vector2.zero)
+                {
+                    //characterSearch[i].GetComponent<CharacterController>().Move(moveDirection * moveSpeed * Time.deltaTime);
+                    Vector3 pushDirection = characterSearch[i].transform.position - transform.position;
+                    pushDirection.Normalize();
+                    pushDirection /= 15;
+                    pushDirection.y = 0;
+
+                    characterSearch[i].GetComponent<CharacterController>().Move(pushDirection);
+                    //characterSearch[i].transform.position += pushDirection;
+                }
+            }
+        }
     }
 
     private void Attack()
@@ -722,7 +758,7 @@ public class CharacterControl : MonoBehaviour
                     Destroy(pickupSearch[i].transform.gameObject);
                     return;
                 }
-                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall")
+                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall" || pickupSearch[i].transform.name == "CoinSack")
                 {
                     SoundManager.singleton.Pickup();
                     if (pickupSearch[i].transform.name == "Coin")
@@ -732,10 +768,17 @@ public class CharacterControl : MonoBehaviour
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
+                    else if (pickupSearch[i].transform.name == "CoinSack")
+                    {
+                        coins+=5;
+                        moneyText.text = coins.ToString();
+                        pickupSearch[i].transform.gameObject.SetActive(false);
+                        PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
+                    }
                     else if (pickupSearch[i].transform.name == "Health")
                     {
-                        hp += 3;
-                        hpBar.fillAmount += 3f / 10f;
+                        hp += 5;
+                        hpBar.fillAmount += 5f / 10f;
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Speed")
@@ -964,6 +1007,7 @@ public class CharacterControl : MonoBehaviour
         weaponDiscarded = true;
         //Debug.Log("weapon discarded");
     }
+
 
     private void OnDrawGizmosSelected()
     {

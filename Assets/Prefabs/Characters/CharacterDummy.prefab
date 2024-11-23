@@ -572,6 +572,7 @@ MonoBehaviour:
   gunGFX: {fileID: 7431332472927946069}
   bullet: {fileID: 5824980284795901388, guid: b76508111efa2bd4bb64e1ff14d20d47, type: 3}
   maxAttackCooldown: 0.25
+  lazerGun: 0
 --- !u!1 &812331942018124633
 GameObject:
   m_ObjectHideFlags: 0
@@ -3287,6 +3288,9 @@ MonoBehaviour:
   pickupMask:
     serializedVersion: 2
     m_Bits: 64
+  characterMask:
+    serializedVersion: 2
+    m_Bits: 256
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
@@ -3935,6 +3939,7 @@ MonoBehaviour:
   gunGFX: {fileID: 3833674078352607681}
   bullet: {fileID: 2745302255475450468, guid: b27fc148a6f2a8d42bc4cdd84d24cb99, type: 3}
   maxAttackCooldown: 0.5
+  lazerGun: 0
 --- !u!1 &3362542306732645308
 GameObject:
   m_ObjectHideFlags: 0
