@@ -9,7 +9,7 @@ public class Destructable : MonoBehaviour
 
     [SerializeField] LayerMask collisionMask;
     Collider[] projSearch;
-    Vector3 hitBox = new Vector3(0.75f, 1f, 0.75f);
+    Vector3 hitBox = new Vector3(1.25f, 1f, 1.25f);
     float identicalDamageCD;
     private CharacterControl.PlayerTypes lastPlayerID;
 
@@ -53,8 +53,15 @@ public class Destructable : MonoBehaviour
             explosionEffect.transform.SetParent(null);
             for (int i = 0; i<debrisList.Length;i++)
             {
-                debrisList[i].SetActive(true);
-                debrisList[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(5, 15f), Random.Range(-7.5f, 7.5f)), ForceMode.Impulse);
+                if (Random.Range(0, 4) == 0) //randomizing the debris, no need for all of them
+                {
+                    debrisList[i].SetActive(true);
+                    debrisList[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-6f, 6f), Random.Range(6f, 9f), Random.Range(-6f, 6f)), ForceMode.Impulse);
+                    debrisList[i].GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(-7.5f, 7.5f), Random.Range(-7.5f, 7.5f)), ForceMode.Impulse);
+                    //debrisList[i].GetComponent<Rigidbody>().AddTorque(Vector3.up *10, ForceMode.Impulse);
+                }
+
+
                 debrisList[i].transform.SetParent(null);
                 Destroy(debrisList[i], 2);
             }

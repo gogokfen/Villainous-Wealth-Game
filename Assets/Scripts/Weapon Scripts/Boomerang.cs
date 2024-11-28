@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Boomerang : WeaponBase
 {
+    [HideInInspector] public bool charging = false;
+    [HideInInspector] public bool releasing = false;
+
 
     private bool canThrow = true;
     [SerializeField] GameObject boomerang;
@@ -59,6 +62,8 @@ public class Boomerang : WeaponBase
 
             windUpSlider.gameObject.SetActive(true);
             windUpSlider.value = Mathf.InverseLerp(0, 25, windup * 37.5f);
+
+            charging = true;
         }
         if (attackState == -1 && canThrow) // use && canThrow
         {
@@ -81,6 +86,9 @@ public class Boomerang : WeaponBase
             windup = 0;
 
             SoundManager.singleton.BoomerangThrow();
+
+            charging = false;
+            releasing = true;
         }
         if (!canThrow)
         {

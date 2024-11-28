@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Mine : WeaponBase
 {
+    [HideInInspector] public bool placing = false;
+
     [SerializeField] GameObject mineGFX;
     [SerializeField] GameObject minePrefab;
     [SerializeField] int startingAmmo;
@@ -67,6 +69,8 @@ public class Mine : WeaponBase
             }
 
             SoundManager.singleton.MinePlace();
+
+            placing = true;
         }
     }
 

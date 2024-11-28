@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class Grenade : WeaponBase
 {
+    [HideInInspector] public bool charging = false;
+    [HideInInspector] public bool releasing = false;
+
     [SerializeField] GameObject GrenadeGFX;
     [SerializeField] float maxAttackCooldown = 4f;
     private float attackCooldown;
@@ -65,6 +68,8 @@ public class Grenade : WeaponBase
 
             windUpSlider.gameObject.SetActive(true);
             windUpSlider.value = Mathf.InverseLerp(0, 50,windup *75);
+
+            charging = true;
         }
         if (attackState == -1 && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
         {
@@ -89,6 +94,9 @@ public class Grenade : WeaponBase
             windup = 0;
 
             SoundManager.singleton.BombThrow();
+
+            charging = false;
+            releasing = true;
         }
     }
 }

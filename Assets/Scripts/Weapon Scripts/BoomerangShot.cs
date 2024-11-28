@@ -49,9 +49,9 @@ public class BoomerangShot : WeaponBase
         */
 
 
-
         if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f, wallMask))
         {
+            /*
             float startingAngle;
             float complementaryAngle;
             float desiredRotationAngle;
@@ -68,8 +68,14 @@ public class BoomerangShot : WeaponBase
                 complementaryAngle = 90 - startingAngle;
                 desiredRotationAngle = (2 * complementaryAngle);
             }
+            */
+            //transform.Rotate(0, desiredRotationAngle, 0);
 
-            transform.Rotate(0, desiredRotationAngle, 0);
+            Vector3 newDirection = Vector3.Reflect(transform.forward, wallHit.normal);
+
+            newDirection.y = 0;
+
+            transform.forward = newDirection;
 
             Vector3 tempDirection = wallHit.transform.position - transform.position;
             tempDirection.Normalize();

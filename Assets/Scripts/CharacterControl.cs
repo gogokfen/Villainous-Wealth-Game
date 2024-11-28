@@ -67,7 +67,13 @@ public class CharacterControl : MonoBehaviour
         Punch3Windup = 7,
         Punch3Active = 8,
         Punch3Recovery = 9,
-        StrongPunch = 10
+        StrongPunch = 10,
+        Sword1Windup = 11,
+        Sword1Active = 12,
+        Sword1Recovery = 13,
+        Sword2Windup = 14,
+        Sword2Active = 15,
+        Sword2Recovery = 16
     }
 
     [SerializeField] GameObject[] weaponList;
@@ -389,6 +395,7 @@ public class CharacterControl : MonoBehaviour
 
         Attack();
 
+
         PickupSearch(); //scan the area for pickups
     }
 
@@ -554,6 +561,25 @@ public class CharacterControl : MonoBehaviour
 
     private void Attack()
     {
+        if (equippedWeapon == Weapons.Boomerang)
+        {
+            if (weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing)
+            {
+                charAnim.SetTrigger("ThrowRelease");
+                weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing = false;
+                charAnim.SetBool("ThrowCharge", false);
+            }
+        }
+        else if (equippedWeapon == Weapons.Grenade)
+        {
+            if (weaponList[(int)Weapons.Grenade].GetComponent<Grenade>().releasing)
+            {
+                charAnim.SetTrigger("ThrowRelease");
+                weaponList[(int)Weapons.Grenade].GetComponent<Grenade>().releasing = false;
+                charAnim.SetBool("ThrowCharge", false);
+            }
+        }
+
         if (useWeapon)
         {
             //rArm.localPosition = new Vector3(0.75f, 0, 0); //resets strong punch
@@ -609,6 +635,34 @@ public class CharacterControl : MonoBehaviour
                     SoundManager.singleton.Melee3();
                 }
             }
+            else if (equippedWeapon == Weapons.Sword)
+            {
+                if (animState == AS.idle || animState == AS.Sword2Recovery)
+                {
+                    holdTimer = 0.4166f;  // 25/60 chanel
+                    attackDirection = moveDirection;
+                    attackMoveSpeed = 20;
+                    forwardMomentumDelay = 0.166f; // 10/60 chanel
+
+                    animTimer = 0;
+                    animState = AS.Sword1Windup;
+                    charAnim.SetTrigger("Sword1");
+                    SoundManager.singleton.Melee1();
+                }
+                else if (animState == AS.Sword1Recovery) //animState == AS.Punch1Active ||
+                {
+                    holdTimer = 0.4166f;
+                    attackDirection = moveDirection;
+                    attackMoveSpeed = 20;
+                    forwardMomentumDelay = 0.166f; // 10/60 chanel
+
+                    animTimer = 0;
+                    animState = AS.Sword2Windup;
+                    charAnim.SetTrigger("Sword2");
+                    SoundManager.singleton.Melee2();
+                }
+
+            }
             else //using other weapons
             {
                 /*
@@ -617,6 +671,7 @@ public class CharacterControl : MonoBehaviour
                 */
 
                 Shoot(equippedWeapon);
+
                 //charAnim.Play("Shooting");
 
                 //holdTimer = 0.15f;  //consider using a per-weapon case stun where we check the stun duration and if there is one needed by the weapon's script
@@ -633,8 +688,6 @@ public class CharacterControl : MonoBehaviour
         if (animState != AS.idle)
         {
             animTimer += Time.deltaTime;
-
-
 
             if (animState == AS.Punch1Windup || animState == AS.Punch1Active || animState == AS.Punch1Recovery)
             {
@@ -689,6 +742,32 @@ public class CharacterControl : MonoBehaviour
                 animTimer = 0;
                 //lArmAnim.Play("Idle");
                 //charAnim.Play("Idle"); reminder
+            }
+
+            //////////////////////////////////////////
+
+            if (animState == AS.Sword1Windup || animState == AS.Sword1Active || animState == AS.Sword1Recovery)
+            {
+                if (animTimer >= 0.4166f) //25/60 chanel
+                {
+                    animState = AS.Sword1Recovery;
+                }
+                else if (animTimer >= 0.35f) //21/60 chanel 
+                {
+                    animState = AS.Sword1Active;
+                }
+            }
+
+            if (animState == AS.Sword2Windup || animState == AS.Sword2Active || animState == AS.Sword2Recovery)
+            {
+                if (animTimer >= 0.4166f) //25/60 chanel
+                {
+                    animState = AS.Sword2Recovery;
+                }
+                else if (animTimer >= 0.35f) //21/60 chanel 
+                {
+                    animState = AS.Sword2Active;
+                }
             }
         }
 
@@ -930,30 +1009,42 @@ public class CharacterControl : MonoBehaviour
         //holdTimer = 0.15f; //default case if no change
         switch (WeaponUsed)
         {
-            case Weapons.Fist:
-                //Debug.Log("0");
+            case Weapons.Fist:         // 0
                 break;
-            case Weapons.Gun:
-                //Debug.Log("1");
+            case Weapons.Gun:          // 1
+                charAnim.SetTrigger("Shoot");
                 holdTimer = 0.15f;
                 break;
-            case Weapons.Sword:
-                //Debug.Log("2");
+            case Weapons.Sword:        // 2
                 break;
-            case Weapons.Boomerang:
-                //Debug.Log("3");
+            case Weapons.Boomerang:    // 3
+                if (weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().charging)
+                {
+                    charAnim.SetBool("ThrowCharge", true);
+                }
+                
+                /*
+                if (weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing)
+                {
+                    charAnim.SetTrigger("ThrowRelease");
+                    weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing = false;
+                }
+                */
                 holdTimer = 0.2f;
                 break;
-            case Weapons.Lazer:
-                //Debug.Log("4");
+            case Weapons.Lazer:      // 4
+                charAnim.SetTrigger("Shoot");
                 holdTimer = 0.15f;
                 break;
-            case Weapons.Mine:
-                //Debug.Log("5");
+            case Weapons.Mine:       // 5
+                if (weaponList[(int)Weapons.Mine].GetComponent<Mine>().placing)
+                {
+                    weaponList[(int)Weapons.Mine].GetComponent<Mine>().placing = false;
+                    charAnim.SetTrigger("Mine");
+                }
                 holdTimer = 0.25f;
                 break;
-            case Weapons.Blunderbuss:
-                //Debug.Log("6");
+            case Weapons.Blunderbuss:// 6
                 if (weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().shoot)
                 {
                     charAnim.SetTrigger("Shoot");
@@ -972,8 +1063,11 @@ public class CharacterControl : MonoBehaviour
                     reloadTime = holdTimer;
                 }
                 break;
-            case Weapons.Grenade:
-                //Debug.Log("7");
+            case Weapons.Grenade:  // 7
+                if (weaponList[(int)Weapons.Grenade].GetComponent<Grenade>().charging)
+                {
+                    charAnim.SetBool("ThrowCharge", true);
+                }
                 holdTimer = 0.25f;
                 break;
             default:
