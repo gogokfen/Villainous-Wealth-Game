@@ -51,6 +51,7 @@ public class RoundManager : MonoBehaviour
     {
         //gameStart.Invoke();
         PlayerManager.instance.StartRound();
+        PauseMenu.instance.SubToPause();
         while (currentRound != totalRounds)
         {
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round

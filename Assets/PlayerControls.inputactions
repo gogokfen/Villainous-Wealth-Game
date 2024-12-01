@@ -581,11 +581,22 @@
                 },
                 {
                     "name": "",
-                    "id": "6073ce6a-6122-4f1e-b302-1bbe205ec5ae",
-                    "path": "*/{Cancel}",
+                    "id": "a77e48be-d8cd-4f4a-bb33-b55b9c08b74f",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR;Keyboard & Mouse;Controller",
+                    "groups": "",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23837c94-5a28-47c9-82aa-685d77c1e73e",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

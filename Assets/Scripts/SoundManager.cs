@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 public class SoundManager : MonoBehaviour
 {
@@ -8,33 +9,52 @@ public class SoundManager : MonoBehaviour
 
     AudioSource AS;
 
+    [Tab("Melee")]
     [SerializeField] AudioClip melee1;
     [SerializeField] AudioClip melee2;
     [SerializeField] AudioClip melee3;
+
+    [Tab("Gunshots")]
     [SerializeField] AudioClip gunShot;
     [SerializeField] AudioClip lazerGunShot;
     [SerializeField] AudioClip blunderbussShot;
     [SerializeField] AudioClip blunderbussReload;
+
+    [Tab("Boomerang")]
     [SerializeField] AudioClip boomerangThrow;
     [SerializeField] AudioClip boomerangCatch;
+
+    [Tab("Mine")]
     [SerializeField] AudioClip minePlace;
     [SerializeField] AudioClip mineExplode;
+
+    [Tab("Bomb")]
     [SerializeField] AudioClip bombThrow;
     [SerializeField] AudioClip bombExplode;
 
+    [Tab("Taking Damage")]
     [SerializeField] AudioClip takeDamage1;
     [SerializeField] AudioClip takeDamage2;
     [SerializeField] AudioClip takeDamage3;
 
+    [Tab("Death")]
     [SerializeField] AudioClip death;
 
+    [Tab("Coins")]
     [SerializeField] AudioClip coinPickup1;
     [SerializeField] AudioClip coinPickup2;
     [SerializeField] AudioClip coinPickup3;
 
+    [Tab("Menu")]
+    [SerializeField] AudioClip announcerBoxhead;
+    [SerializeField] AudioClip announcerDragon;
+    [SerializeField] AudioClip announcerMonopolyDude;
+    [SerializeField] AudioClip announcerTestDummy;
+
+
+    [Tab("Misc")]
     [SerializeField] AudioClip roll;
     [SerializeField] AudioClip shield;
-
     [SerializeField] AudioClip chestOpen;
     [SerializeField] AudioClip cannonShot;
 
@@ -46,6 +66,22 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         singleton = this;
+    }
+    public void AnnounceBoxhead()
+    {
+        AS.PlayOneShot(announcerBoxhead);
+    }
+    public void AnnounceDragon()
+    {
+        AS.PlayOneShot(announcerDragon);
+    }
+    public void AnnounceTestDummy()
+    {
+        AS.PlayOneShot(announcerTestDummy);
+    }
+    public void AnnounceMonopolyDude()
+    {
+        AS.PlayOneShot(announcerMonopolyDude);
     }
 
     public void Melee1()
