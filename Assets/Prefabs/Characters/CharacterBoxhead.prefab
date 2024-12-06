@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 2030978589227849324}
   - component: {fileID: 9149896101065746476}
   - component: {fileID: 8425086242091235659}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -727,7 +727,7 @@ GameObject:
   - component: {fileID: 5112511007124900737}
   - component: {fileID: 1530432096243594591}
   - component: {fileID: 6131127473832055444}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1493,7 +1493,7 @@ GameObject:
   - component: {fileID: 7321442858404888036}
   - component: {fileID: 3797428055864222196}
   - component: {fileID: 5413549543330392637}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Shield Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1608,7 +1608,7 @@ GameObject:
   - component: {fileID: 3570788133606155981}
   - component: {fileID: 7887033925948659439}
   - component: {fileID: 2426128599575145965}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: CoinAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1931,7 +1931,7 @@ GameObject:
   - component: {fileID: 4913292940811090582}
   - component: {fileID: 7979609460313469589}
   - component: {fileID: 8713348000988638294}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2205,7 +2205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102039249708240566}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: OverlayUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2271,7 +2271,7 @@ GameObject:
   - component: {fileID: 2382269849398995054}
   - component: {fileID: 2297471963291902467}
   - component: {fileID: 2310955281470614113}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HP_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3445,7 +3445,7 @@ GameObject:
   - component: {fileID: 6681745915852172475}
   - component: {fileID: 4598050142896766383}
   - component: {fileID: 6691202462951390948}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3558,7 +3558,7 @@ GameObject:
   - component: {fileID: 7599856469770421487}
   - component: {fileID: 297669594645183199}
   - component: {fileID: 8717478297409011231}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: HP_Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3632,7 +3632,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3985210767479519031}
   - component: {fileID: 6399517003306823190}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Wall/Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3967,6 +3967,7 @@ MonoBehaviour:
   playerID: 0
   damageType: 1
   damage: 4
+  placing: 0
   mineGFX: {fileID: 2375713931560427669}
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
@@ -3983,7 +3984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 205869942084582983}
   - component: {fileID: 6364204213077776542}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: WindUp Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4144,7 +4145,7 @@ GameObject:
   - component: {fileID: 7952706783152007940}
   - component: {fileID: 4417092740418442005}
   - component: {fileID: 6287616484465216838}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: BelowPlayerIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4656,7 +4657,7 @@ GameObject:
   - component: {fileID: 8826638498244120723}
   - component: {fileID: 4962380181734951426}
   - component: {fileID: 5374869666813258485}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5573,7 +5574,7 @@ GameObject:
   - component: {fileID: 5897092636118635203}
   - component: {fileID: 508384773511908426}
   - component: {fileID: 7936205912041897079}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5861,7 +5862,7 @@ GameObject:
   - component: {fileID: 4028768022269524041}
   - component: {fileID: 6378053629178120877}
   - component: {fileID: 4783485125204501461}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Frame_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6089,7 +6090,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2939236825713545058}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: AbovePlayerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6692,7 +6693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7646873832270726189}
   - component: {fileID: 3273742200474496013}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: PlayerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7516,7 +7517,7 @@ GameObject:
   - component: {fileID: 664154341330314895}
   - component: {fileID: 8044364880061328268}
   - component: {fileID: 8848165888772820151}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7741,6 +7742,8 @@ MonoBehaviour:
   playerID: 0
   damageType: 3
   damage: 0
+  charging: 0
+  releasing: 0
   GrenadeGFX: {fileID: 564572359680416009}
   maxAttackCooldown: 2.5
   grenade: {fileID: 2403391348837972392, guid: 6cd4a28c91e43c240a0fc82dc178bba6, type: 3}
@@ -7837,7 +7840,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7104919125829592723}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Handle Slide Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7938,7 +7941,7 @@ GameObject:
   - component: {fileID: 3038019705254302543}
   - component: {fileID: 513667166058612187}
   - component: {fileID: 488825350015797293}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9227,7 +9230,7 @@ GameObject:
   - component: {fileID: 8794452754268968197}
   - component: {fileID: 9215289184289318147}
   - component: {fileID: 2875086544534286974}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9469,7 +9472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 737451926470185619}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9507,7 +9510,7 @@ GameObject:
   - component: {fileID: 5138029462242494705}
   - component: {fileID: 384887140424244158}
   - component: {fileID: 823019903533635233}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9580,7 +9583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2585226467971314241}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9700,7 +9703,7 @@ GameObject:
   - component: {fileID: 2317818140286683946}
   - component: {fileID: 8079082342880259697}
   - component: {fileID: 8252386669755133778}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9839,6 +9842,8 @@ MonoBehaviour:
   playerID: 0
   damageType: 2
   damage: 4
+  charging: 0
+  releasing: 0
   boomerang: {fileID: 4670712718768357648, guid: 2dbd800d88cf62d49bb8f66bf6e67b68,
     type: 3}
   boomerangGFX: {fileID: 5782193259867980903}
@@ -10185,7 +10190,7 @@ GameObject:
   - component: {fileID: 7644183685200092302}
   - component: {fileID: 7139859887854905291}
   - component: {fileID: 1094901994764068500}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 public class GrenadeShot : WeaponBase
 {
-    public float maxExplosionTime;
+    [Foldout("Upgrades")]
+    public bool ExtraBounceUpgrade = false;
+    private bool needToBounce = false;
+
+    [EndFoldout]
+
+    public float currentExplosionTime; //0.875
     [SerializeField] int explosionDamage = 6;
     [HideInInspector] public float throwPower; //HideInInspector
     //private float deAccel = 0.1f;
-    private float explosionTime;
+    private float maxExplosionTime;
     private SphereCollider SC;
     private BoxCollider BC;
 
@@ -30,12 +37,15 @@ public class GrenadeShot : WeaponBase
         SC = GetComponent<SphereCollider>();
         BC = GetComponent<BoxCollider>();
         SC.enabled = false;
-        explosionTime = maxExplosionTime;
+        maxExplosionTime = currentExplosionTime;
 
         throwPower /= 2;
         startingThrowPower = throwPower;
         //delete
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+        if (ExtraBounceUpgrade)
+            needToBounce = true;
     }
 
     void Update()
@@ -44,7 +54,7 @@ public class GrenadeShot : WeaponBase
 
         transform.Translate(Vector3.up * upwardforce * Time.deltaTime);
 
-        upwardforce = (0.75f * startingThrowPower) - (Mathf.InverseLerp(explosionTime, 0, maxExplosionTime) * (1.75f * startingThrowPower));
+        upwardforce = (0.75f * startingThrowPower) - (Mathf.InverseLerp(maxExplosionTime, 0, currentExplosionTime) * (1.75f * startingThrowPower));
 
 
         if (SC.enabled) //DON"T CHANGE THE ORDER OF THE IFS
@@ -52,19 +62,30 @@ public class GrenadeShot : WeaponBase
             Destroy(gameObject);
         }
 
-        if ((maxExplosionTime <= 0 || transform.position.y<=0.5) && BC.enabled  == true) 
+        if ((currentExplosionTime <= 0 || transform.position.y<=0) && BC.enabled  == true)  //currentExplosionTime <= 0 || transform.position.y<=0.5
         {
-            transform.rotation = Quaternion.identity;
-            damageType = damageTypes.grenade;
-            damage = explosionDamage;
-            BC.enabled = false;
-            SC.enabled = true;
-            explosionEffect.transform.SetParent(null);
-            explosionEffect.Play();
+            if (needToBounce)
+            {
+                currentExplosionTime = maxExplosionTime;
+                needToBounce = false;
+                transform.position += Vector3.up / 2;
+            }
+            else
+            {
+                transform.rotation = Quaternion.identity;
+                damageType = damageTypes.grenade;
+                damage = explosionDamage;
+                BC.enabled = false;
+                SC.enabled = true;
+                explosionEffect.transform.SetParent(null);
+                explosionEffect.transform.position += Vector3.up/4; //making sure the effect is visble
+                explosionEffect.Play();
 
-            SoundManager.singleton.BombExplode();
+                SoundManager.singleton.BombExplode();
 
-            Destroy(explosionEffect.gameObject, 3f); 
+                Destroy(explosionEffect.gameObject, 3f);
+            }
+
         }
 
         //grenade slowdown V1
@@ -82,15 +103,16 @@ public class GrenadeShot : WeaponBase
 
         //throwPower /= (1 + Time.deltaTime*2.5f); //bring back after fixing upward force
 
-        maxExplosionTime -= Time.deltaTime;
+        currentExplosionTime -= Time.deltaTime;
 
         //rotationAmount = maxExplosionTime * 1000;
         rotationAmount = throwPower * 25;
         GFX.transform.Rotate(rotationAmount * Time.deltaTime,0 , 0);
 
+        
         if (Physics.Raycast(transform.position, transform.forward, out wallHit, 1f,wallMask)) //wall collisions
         {
-
+            /*
             float startingAngle;
             float complementaryAngle;
             float desiredRotationAngle;
@@ -113,11 +135,17 @@ public class GrenadeShot : WeaponBase
                 desiredRotationAngle = (2 * complementaryAngle);
             }
             
-
+            
 
 
             transform.Rotate(0, desiredRotationAngle, 0);
+            */
+            Vector3 newDirection = Vector3.Reflect(transform.forward, wallHit.normal);
 
+            //newDirection.y = 0;
+
+            transform.forward = newDirection;
+            
             Vector3 tempDirection = wallHit.transform.position - transform.position;
             tempDirection.Normalize();
             tempDirection /= 2;
@@ -126,6 +154,6 @@ public class GrenadeShot : WeaponBase
 
 
         }
-
+        
     }
 }

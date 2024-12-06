@@ -9,6 +9,24 @@ using TMPro;
 
 public class CharacterControl : MonoBehaviour
 {
+    [Foldout("Upgrades")]
+    public bool Ghost = false; //movespeed + go through obstacles
+    [SerializeField] ParticleSystem ghostVFX;
+    //private float ghostMoveSpeed;
+    //private float ghostBuffDuration;
+    private float ghostCD;
+    public bool Teleport = false; //move instantly in the direction character is facing
+    [SerializeField] ParticleSystem teleportVFXStart;
+    [SerializeField] ParticleSystem teleportVFXEnd;
+    private float teleportDistance = 6;
+    private float teleportCD;
+    public bool Invisibility = false; //self explanatory
+    [SerializeField] GameObject[] bodyPartsGFX;
+    private float invisibilityduration;
+    private float invisibilityCD;
+
+    [EndFoldout]
+
     public bool isTargetDummy = false;
 
     public PlayerTypes PlayerID;
@@ -160,6 +178,8 @@ public class CharacterControl : MonoBehaviour
     //[HideInInspector] public int cannonBallAmount = 0;
     private int cannonBallAmount = 0;
     [SerializeField] GameObject cannonBall;
+
+    [SerializeField] ParticleSystem leaderGlow;
 
     void Start()
     {
@@ -366,6 +386,58 @@ public class CharacterControl : MonoBehaviour
         }
 
 
+        if (Teleport)
+        {
+            //teleportCD -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time>teleportCD)
+            {
+                Instantiate(teleportVFXStart, transform.position, transform.rotation);
+                //transform.Translate(Vector3.forward * teleportDistance);
+
+                CC.excludeLayers = 1;
+                CC.Move(transform.forward * teleportDistance);
+                CC.excludeLayers = 0;
+                CC.Move(transform.forward * 0.1f);
+
+
+                Instantiate(teleportVFXEnd, transform.position, transform.rotation);
+                teleportCD = Time.time + 4;
+            }
+        }
+
+        if (Ghost)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > ghostCD)
+            {
+                Instantiate(ghostVFX, transform.position,transform.rotation);
+                CC.excludeLayers = 1;
+                currentMaxSpeed = startingSpeed * 1.25f;
+                speedBuffTimer = 5;
+                ghostCD = Time.time + 12;
+            }
+        }
+
+        if (Invisibility)
+        {
+            invisibilityduration -= Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > invisibilityCD)
+            {
+                for (int i=0;i<bodyPartsGFX.Length;i++)
+                {
+                    bodyPartsGFX[i].SetActive(false);
+                }
+                invisibilityduration = 5;
+                invisibilityCD = Time.time + 11;
+            }
+            if (invisibilityduration<=0)
+            {
+                for (int i = 0; i < bodyPartsGFX.Length; i++)
+                {
+                    bodyPartsGFX[i].SetActive(true); ;
+                }
+            }
+        }
+
         blockCD -= Time.deltaTime;
         if (blockDuration > 0)
         {
@@ -460,6 +532,9 @@ public class CharacterControl : MonoBehaviour
             if (speedBuffTimer <= 0)
             {
                 currentMaxSpeed = startingSpeed;
+                if (moveSpeed > currentMaxSpeed)
+                    moveSpeed = currentMaxSpeed;
+                CC.excludeLayers = 0;
             }
             if (moveSpeed < currentMaxSpeed)
             {
@@ -501,7 +576,7 @@ public class CharacterControl : MonoBehaviour
 
             targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
 
-            if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery) && !rolling) //can't rotate whiling using fists
+            if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery || animState == AS.Sword1Recovery || animState == AS.Sword2Recovery) && !rolling) //can't rotate whiling using fists
             {
                 transform.rotation = Quaternion.Euler(0, targetAngle, 0);
             }
@@ -637,6 +712,7 @@ public class CharacterControl : MonoBehaviour
             }
             else if (equippedWeapon == Weapons.Sword)
             {
+                weaponList[(int)Weapons.Sword].GetComponent<Sword>().desiredRotation = transform.rotation;
                 if (animState == AS.idle || animState == AS.Sword2Recovery)
                 {
                     holdTimer = 0.4166f;  // 25/60 chanel
@@ -744,17 +820,19 @@ public class CharacterControl : MonoBehaviour
                 //charAnim.Play("Idle"); reminder
             }
 
-            //////////////////////////////////////////
+            ////////////////////////////////////////// sword attack states
 
             if (animState == AS.Sword1Windup || animState == AS.Sword1Active || animState == AS.Sword1Recovery)
             {
                 if (animTimer >= 0.4166f) //25/60 chanel
                 {
                     animState = AS.Sword1Recovery;
+                    weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = false;
                 }
                 else if (animTimer >= 0.35f) //21/60 chanel 
                 {
                     animState = AS.Sword1Active;
+                    weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = true;
                 }
             }
 
@@ -763,10 +841,12 @@ public class CharacterControl : MonoBehaviour
                 if (animTimer >= 0.4166f) //25/60 chanel
                 {
                     animState = AS.Sword2Recovery;
+                    weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = false;
                 }
                 else if (animTimer >= 0.35f) //21/60 chanel 
                 {
                     animState = AS.Sword2Active;
+                    weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = true;
                 }
             }
         }
@@ -842,14 +922,16 @@ public class CharacterControl : MonoBehaviour
                     SoundManager.singleton.Pickup();
                     if (pickupSearch[i].transform.name == "Coin")
                     {
-                        coins++;
+                        coins++; //change later
+                        MoneyManager.singleton.ModifyMoney(PlayerID, 1);
                         moneyText.text = coins.ToString();
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
-                        coins+=5;
+                        coins+=5; //change later
+                        MoneyManager.singleton.ModifyMoney(PlayerID, 5);
                         moneyText.text = coins.ToString();
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1093,6 +1175,14 @@ public class CharacterControl : MonoBehaviour
         {
             Debug.Log("Change the object's name to the correct weapon");
         }
+    }
+
+    public void SetLeader(PlayerTypes newLeader)
+    {
+        if (newLeader == PlayerID)
+            leaderGlow.Play();
+        else
+            leaderGlow.Stop();
     }
 
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)

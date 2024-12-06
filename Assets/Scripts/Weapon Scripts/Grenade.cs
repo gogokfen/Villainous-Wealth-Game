@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using VInspector;
 
 public class Grenade : WeaponBase
 {
     [HideInInspector] public bool charging = false;
     [HideInInspector] public bool releasing = false;
+
+    [Foldout("Upgrades")]
+    public bool ExtraBounceUpgrade = false;
+
+    [EndFoldout]
 
     [SerializeField] GameObject GrenadeGFX;
     [SerializeField] float maxAttackCooldown = 4f;
@@ -88,6 +94,9 @@ public class Grenade : WeaponBase
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 75;
             else
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 25 + windup * 75f;
+
+            if (ExtraBounceUpgrade)
+                tempGrenade.GetComponent<GrenadeShot>().ExtraBounceUpgrade = true;
 
             GrenadeGFX.SetActive(false);
 
