@@ -181,6 +181,8 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] ParticleSystem leaderGlow;
 
+    [HideInInspector] public bool winner;
+
     void Start()
     {
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
@@ -281,7 +283,11 @@ public class CharacterControl : MonoBehaviour
         PickupManager.singleton.SpawnPowerup(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
 
         CC.enabled = false;
-        characterGFX.SetActive(false);
+
+        //characterGFX.SetActive(false);
+
+        charAnim.Play("Death");
+
         dead = true;
 
         SoundManager.singleton.Death();
@@ -297,10 +303,42 @@ public class CharacterControl : MonoBehaviour
         characterGFX.SetActive(true);
         dead = false;
         moneyText.text = coins.ToString();
+
+
+        charAnim.Play("Idle");
+        winner = false;
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Ghost = true;
+            Invisibility = false;
+            Teleport = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            Ghost = false;
+            Invisibility = true;
+            Teleport = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            Ghost = false;
+            Invisibility = false;
+            Teleport = true;
+        }
+
+        if (winner)
+        {
+            charAnim.Play("Victory");
+            winner = false;
+        }
+            
+
         if (transform.position.y>0)
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything

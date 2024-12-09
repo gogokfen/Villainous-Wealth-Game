@@ -270,6 +270,8 @@ public class PickupManager : MonoBehaviour
 
     public void SetWinningPlayer(GameObject player)
     {
+        player.GetComponent<CharacterControl>().winner = true; //transfer after
+
         winningPlayer = player;
         playerWon = true;
 

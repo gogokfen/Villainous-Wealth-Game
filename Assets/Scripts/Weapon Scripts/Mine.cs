@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using VInspector;
 
 public class Mine : WeaponBase
 {
-    [HideInInspector] public bool placing = false;
+    [Foldout("Upgrades")]
+    public bool GasCloudUpgrade = false;
+    [EndFoldout]
 
     [SerializeField] GameObject mineGFX;
     [SerializeField] GameObject minePrefab;
@@ -14,7 +17,9 @@ public class Mine : WeaponBase
     int uses;
     [SerializeField] float mineCD = 2f;
     private float mineTimer;
-    bool placed;
+    //bool placed;
+
+    [HideInInspector] public bool placing = false;
 
     bool weaponActive = false;
 
@@ -59,6 +64,9 @@ public class Mine : WeaponBase
             tempMine.GetComponent<WeaponBase>().playerID = playerID;
             tempMine.GetComponent<WeaponBase>().damage = damage;
             tempMine.GetComponent<WeaponBase>().damageType = damageType;
+
+            if (GasCloudUpgrade)
+                tempMine.GetComponent<MineShot>().GasCloudUpgrade = true;
 
             mineGFX.SetActive(false);
 

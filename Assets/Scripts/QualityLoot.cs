@@ -25,12 +25,12 @@ public class QualityLoot : MonoBehaviour
     {
         if (playersStandingCount == 1)
         {
-            pickupChannel.value += Time.deltaTime / 5;
+            pickupChannel.value += Time.deltaTime / 3;
             
         }
         else if (playersStandingCount == 0)
         {
-            pickupChannel.value -= Time.deltaTime / 5;
+            pickupChannel.value -= Time.deltaTime / 3;
         }
 
         if (playerInControl == CharacterControl.PlayerTypes.Red)

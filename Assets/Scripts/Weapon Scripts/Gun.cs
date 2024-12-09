@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VInspector;
 
 public class Gun : WeaponBase
 {
+    [Foldout("Upgrades")]
+    public bool GunRicochetUpgrade = false;
+    [EndFoldout]
+
     [SerializeField] GameObject gunGFX;
     [SerializeField] GameObject bullet;
     [SerializeField] float maxAttackCooldown = 0.25f;
@@ -45,6 +50,9 @@ public class Gun : WeaponBase
             tempBullet.GetComponent<WeaponBase>().damage = damage;
             tempBullet.GetComponent<WeaponBase>().damageType = damageType;
             attackCooldown = maxAttackCooldown;
+
+            if (GunRicochetUpgrade)
+                tempBullet.GetComponent<GunShot>().GunRicochetUpgrade = true;
             
             if (lazerGun)
                 SoundManager.singleton.LazerGunShot();

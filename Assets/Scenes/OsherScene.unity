@@ -1110,6 +1110,7 @@ MonoBehaviour:
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
   leaderGlow: {fileID: 0}
+  winner: 0
 --- !u!114 &162726733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3626,7 +3627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &562735912
 Transform:
   m_ObjectHideFlags: 0
@@ -4198,12 +4199,13 @@ MonoBehaviour:
   playerID: 0
   damageType: 0
   damage: 1
-  placing: 0
+  GasCloudUpgrade: 0
   mineGFX: {fileID: 0}
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
   startingAmmo: 5
   mineCD: 2.5
+  placing: 0
   windUpSlider: {fileID: 0}
 --- !u!1 &673445809
 GameObject:
@@ -4740,6 +4742,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Destructable Crate
       objectReference: {fileID: 0}
+    - target: {fileID: 2983674290256700193, guid: 53387826a4f79e347a01790e8b23a617,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5033,6 +5040,7 @@ MonoBehaviour:
   playerID: 0
   damageType: 1
   damage: 1
+  GunRicochetUpgrade: 0
   gunGFX: {fileID: 0}
   bullet: {fileID: 5824980284795901388, guid: b76508111efa2bd4bb64e1ff14d20d47, type: 3}
   maxAttackCooldown: 0.25
@@ -6053,7 +6061,7 @@ PrefabInstance:
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: -3.82
       objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
@@ -6063,7 +6071,7 @@ PrefabInstance:
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.74
+      value: -13.13
       objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
@@ -6312,7 +6320,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1131076127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6643,7 +6651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!136 &1159759779
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8567,10 +8575,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Destructable (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2983674290256700193, guid: 9c33f5a0e088da9478ebed8c53f78203,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 9c33f5a0e088da9478ebed8c53f78203,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.25
+      value: 13.11
       objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 9c33f5a0e088da9478ebed8c53f78203,
         type: 3}
@@ -8753,7 +8766,7 @@ PrefabInstance:
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.75
+      value: -13.5
       objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
@@ -8763,7 +8776,7 @@ PrefabInstance:
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.49
+      value: 8.55
       objectReference: {fileID: 0}
     - target: {fileID: 7911378940632116017, guid: 53387826a4f79e347a01790e8b23a617,
         type: 3}
@@ -9228,6 +9241,16 @@ PrefabInstance:
       propertyPath: ExtraBounce
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1028425750602651232, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: ExtraBounceUpgrade
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1324484729020997645, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: GunRicochetUpgrade
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2039181132323984567, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: m_IsActive
@@ -9252,6 +9275,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472961230525425723, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: TripleBoomerangUpgrade
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2939225391973353246, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
@@ -9318,15 +9346,30 @@ PrefabInstance:
       propertyPath: windSlash
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3388984747207862868, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: GunRicochetUpgrade
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4151321526674676525, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4172478530152494743, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: WindSlashUpgrade
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4188418022356097707, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5025790507443570304, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: BlunderbussShotUpgrade
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6260485839043315739, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
@@ -9342,6 +9385,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6770467643748140188, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
+        type: 3}
+      propertyPath: GasCloudUpgrade
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6854256356503591279, guid: cfe5a35bb53ba244c8e7ce07f15f3dea,
         type: 3}
@@ -9879,7 +9927,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1447074809
 Transform:
   m_ObjectHideFlags: 0
@@ -10878,7 +10926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1648767856
 Transform:
   m_ObjectHideFlags: 0
@@ -12347,12 +12395,13 @@ MonoBehaviour:
   playerID: 0
   damageType: 0
   damage: 1
-  placing: 0
+  GasCloudUpgrade: 0
   mineGFX: {fileID: 0}
   minePrefab: {fileID: 5824980284795901388, guid: e911275d4aa966446bbeece9b128fa1a,
     type: 3}
   startingAmmo: 5
   mineCD: 2.5
+  placing: 0
   windUpSlider: {fileID: 0}
 --- !u!1 &1864752923
 GameObject:
@@ -13581,6 +13630,7 @@ MonoBehaviour:
   playerID: 0
   damageType: 2
   damage: 1
+  GunRicochetUpgrade: 0
   gunGFX: {fileID: 0}
   bullet: {fileID: 2745302255475450468, guid: b27fc148a6f2a8d42bc4cdd84d24cb99, type: 3}
   maxAttackCooldown: 0.5
@@ -14486,6 +14536,7 @@ MonoBehaviour:
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
   leaderGlow: {fileID: 0}
+  winner: 0
 --- !u!4 &1554438631218744846
 Transform:
   m_ObjectHideFlags: 0
@@ -15886,6 +15937,7 @@ MonoBehaviour:
   playerID: 0
   damageType: 1
   damage: 1
+  GunRicochetUpgrade: 0
   gunGFX: {fileID: 0}
   bullet: {fileID: 5824980284795901388, guid: b76508111efa2bd4bb64e1ff14d20d47, type: 3}
   maxAttackCooldown: 0.25
@@ -16595,6 +16647,7 @@ MonoBehaviour:
   playerID: 0
   damageType: 2
   damage: 1
+  GunRicochetUpgrade: 0
   gunGFX: {fileID: 0}
   bullet: {fileID: 2745302255475450468, guid: b27fc148a6f2a8d42bc4cdd84d24cb99, type: 3}
   maxAttackCooldown: 0.5

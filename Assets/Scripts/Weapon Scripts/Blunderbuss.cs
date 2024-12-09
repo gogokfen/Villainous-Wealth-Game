@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VInspector;
 
 public class Blunderbuss : WeaponBase
 {
+    [Foldout("Upgrades")]
+    public bool BlunderbussShotUpgrade = false;
+    [EndFoldout]
+
     [SerializeField] GameObject blunderbussGFX;
 
     [HideInInspector] public bool shoot = false;
@@ -19,7 +24,7 @@ public class Blunderbuss : WeaponBase
     private int ammo; 
 
     [SerializeField] float bulletSpreadAngle;
-    [SerializeField] float bulletSpreadAmount;
+    [SerializeField] int bulletSpreadAmount;
     private Quaternion startingShotPos;
 
     private bool weaponActive = false;
@@ -33,6 +38,13 @@ public class Blunderbuss : WeaponBase
 
         weaponActive = true;
         blunderbussGFX.SetActive(true);
+
+    }
+
+    private void Start()
+    {
+        if (BlunderbussShotUpgrade)
+            bulletSpreadAmount = (int)(bulletSpreadAmount * 1.5);
     }
 
     private void OnDisable()

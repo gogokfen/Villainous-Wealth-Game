@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VInspector;
 
 public class MineShot : WeaponBase
 {
+    [Foldout("Upgrades")]
+    [HideInInspector] public bool GasCloudUpgrade = false;
+    [SerializeField] GameObject gasCloud;
+    [EndFoldout]
+
     [SerializeField] GameObject mineBaseGFX;
     [SerializeField] GameObject mineHeadGFX;
     [SerializeField] float timeToArm = 2;
@@ -57,6 +63,14 @@ public class MineShot : WeaponBase
         explosionEffect.Play();
 
         SoundManager.singleton.MineExplode();
+
+        if (GasCloudUpgrade)
+        {
+            GameObject tempGasCloud = Instantiate(gasCloud, transform.position, transform.rotation);
+            tempGasCloud.GetComponent<WeaponBase>().playerID = playerID;
+            //tempGasCloud.GetComponent<WeaponBase>().damage = damage;
+            //tempGasCloud.GetComponent<WeaponBase>().damageType = damageType;
+        }
 
         Destroy(explosionEffect.gameObject, 2f);
     }
