@@ -20,12 +20,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] CinemachineTargetGroup cameraGroup;
     [EndFoldout]
 
-    [Foldout("Player Materials")]
-    public Material redMaterial;
-    public Material greenMaterial;
-    public Material blueMaterial;
-    public Material yellowMaterial;
-    [EndFoldout]
 
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
@@ -46,6 +40,18 @@ public class PlayerManager : MonoBehaviour
     public int[] characterPicks;
     public int pickingPlayer = 1;
 
+    [Foldout("Player Materials")]
+    public Material redMaterial;
+    public Material greenMaterial;
+    public Material blueMaterial;
+    public Material yellowMaterial;
+    [EndFoldout]
+
+    public float holdDuration = 1.5f;
+    private float holdTime = 0f;
+    public Image holdImage;
+    
+
     [Button("Go To Main Scene")]
     public void MainScene()
     {
@@ -61,15 +67,35 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKey(KeyCode.Escape) && characterSelectionScreen.activeInHierarchy == true)
+        {
+            holdTime += Time.deltaTime;
+            holdImage.fillAmount = holdTime / holdDuration;
+            Debug.Log(holdTime);
+            if (holdTime >= holdDuration)
+            {
+                characterSelectionScreen.SetActive(false);
+            }
+        }
+        else 
+        {
+            holdTime = 0f;
+            holdImage.fillAmount = 0f;
+        }
+
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             if (characterSelectionScreen.activeInHierarchy == true)
             {
+                //characterScreenOn = true;
+                
                 DetectPlayerJoin();
             }
             if (characterSelectionScreen.activeInHierarchy == false)
             {
                 //kill all fake players
+                holdImage.fillAmount = 0f;
+                //characterScreenOn = false;
             }
         }
         InputSystem.onDeviceChange += (device, change) =>
