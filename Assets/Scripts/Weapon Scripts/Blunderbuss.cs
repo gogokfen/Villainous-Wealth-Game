@@ -73,7 +73,7 @@ public class Blunderbuss : WeaponBase
 
             gunShotEffect.Play();
 
-            SoundManager.singleton.BlunderbussShot();
+            SoundManager.singleton.BlunderbussShot(transform.position);
 
             /////////////////////////V1
             /*
@@ -112,7 +112,7 @@ public class Blunderbuss : WeaponBase
             ammo = maxAmmo;
             attackCooldown = 2 * maxAttackCooldown;
 
-            SoundManager.singleton.BlunderbussReload();
+            SoundManager.singleton.BlunderbussReload(transform.position);
             //Debug.Log("reloading!"); //don't delete this comment
         }
     }

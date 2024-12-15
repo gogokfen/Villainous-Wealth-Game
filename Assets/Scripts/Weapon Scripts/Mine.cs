@@ -76,7 +76,7 @@ public class Mine : WeaponBase
                 //uses = startingAmmo;
             }
 
-            SoundManager.singleton.MinePlace();
+            SoundManager.singleton.MinePlace(transform.position);
 
             placing = true;
         }

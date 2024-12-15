@@ -62,7 +62,7 @@ public class MineShot : WeaponBase
         explosionEffect.transform.SetParent(null);
         explosionEffect.Play();
 
-        SoundManager.singleton.MineExplode();
+        SoundManager.singleton.MineExplode(transform.position);
 
         if (GasCloudUpgrade)
         {

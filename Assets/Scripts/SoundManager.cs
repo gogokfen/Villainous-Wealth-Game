@@ -84,64 +84,78 @@ public class SoundManager : MonoBehaviour
         AS.PlayOneShot(announcerMonopolyDude);
     }
 
-    public void Melee1()
+    public void Melee1(Vector3 soundLocation)
     {
         AS.PlayOneShot(melee1);
+        transform.position = soundLocation;
     }
 
-    public void Melee2()
+    public void Melee2(Vector3 soundLocation)
     {
          AS.PlayOneShot(melee2);
+        transform.position = soundLocation;
     }
 
-    public void Melee3()
+    public void Melee3(Vector3 soundLocation)
     {
         AS.PlayOneShot(melee3);
+        transform.position = soundLocation;
     }
 
-    public void GunShot()
+    public void GunShot(Vector3 soundLocation)
     {
         AS.PlayOneShot(gunShot);
+        transform.position = soundLocation;
     }
-    public void LazerGunShot()
+    public void LazerGunShot(Vector3 soundLocation)
     {
         AS.PlayOneShot(lazerGunShot);
+        transform.position = soundLocation;
     }
-    public void BlunderbussShot()
+    public void BlunderbussShot(Vector3 soundLocation)
     {
         AS.PlayOneShot(blunderbussShot);
+        transform.position = soundLocation;
     }
-    public void BlunderbussReload()
+    public void BlunderbussReload(Vector3 soundLocation)
     {
         AS.PlayOneShot(blunderbussReload);
+        transform.position = soundLocation;
     }
-    public void BoomerangThrow()
+    public void BoomerangThrow(Vector3 soundLocation)
     {
         AS.PlayOneShot(boomerangThrow);
+        transform.position = soundLocation;
     }
-    public void BoomerangCatch()
+    public void BoomerangCatch(Vector3 soundLocation)
     {
         AS.PlayOneShot(boomerangCatch);
+        transform.position = soundLocation;
     }
-    public void MinePlace()
+    public void MinePlace(Vector3 soundLocation)
     {
         AS.PlayOneShot(minePlace);
+        transform.position = soundLocation;
     }
-    public void MineExplode()
+    public void MineExplode(Vector3 soundLocation)
     {
         AS.PlayOneShot(mineExplode);
+        transform.position = soundLocation;
     }
-    public void BombThrow()
+    public void BombThrow(Vector3 soundLocation)
     {
         AS.PlayOneShot(bombThrow);
+        transform.position = soundLocation;
     }
-    public void BombExplode()
+    public void BombExplode(Vector3 soundLocation)
     {
         AS.PlayOneShot(bombExplode);
+        transform.position = soundLocation;
     }
 
-    public void Damage()
+    public void Damage(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         int random = Random.Range(0, 3);
         if (random == 0)
             AS.PlayOneShot(takeDamage1);
@@ -150,12 +164,14 @@ public class SoundManager : MonoBehaviour
         if (random == 2)
             AS.PlayOneShot(takeDamage3);
     }
-    public void Death()
+    public void Death(Vector3 soundLocation)
     {
         AS.PlayOneShot(death);
+        transform.position = soundLocation;
     }
-    public void Pickup()
+    public void Pickup(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         int random = Random.Range(0, 3);
         if (random == 0)
             AS.PlayOneShot(coinPickup1);
@@ -164,20 +180,24 @@ public class SoundManager : MonoBehaviour
         if (random == 2)
             AS.PlayOneShot(coinPickup3);
     }
-    public void CannonShot()
+    public void CannonShot(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         AS.PlayOneShot(cannonShot);
     }
-    public void ChestOpen()
+    public void ChestOpen(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         AS.PlayOneShot(chestOpen);
     }
-    public void Roll()
+    public void Roll(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         AS.PlayOneShot(roll);
     }
-    public void Shield()
+    public void Shield(Vector3 soundLocation)
     {
+        transform.position = soundLocation;
         AS.PlayOneShot(shield);
     }
 }

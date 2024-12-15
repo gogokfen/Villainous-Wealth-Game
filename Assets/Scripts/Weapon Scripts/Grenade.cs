@@ -102,7 +102,7 @@ public class Grenade : WeaponBase
 
             windup = 0;
 
-            SoundManager.singleton.BombThrow();
+            SoundManager.singleton.BombThrow(transform.position);
 
             charging = false;
             releasing = true;

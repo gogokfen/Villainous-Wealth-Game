@@ -22,6 +22,7 @@ public class CharacterControl : MonoBehaviour
     private float teleportCD;
     public bool Invisibility = false; //self explanatory
     [SerializeField] GameObject[] bodyPartsGFX;
+    [SerializeField] GameObject propHideout;
     private float invisibilityduration;
     private float invisibilityCD;
 
@@ -216,19 +217,23 @@ public class CharacterControl : MonoBehaviour
 
         if (PlayerID == PlayerTypes.Red)
         {
-            playerIndicator.GetComponent<Renderer>().material.color = Color.red;
+            //playerIndicator.GetComponent<Renderer>().material.color = Color.red;
+            playerIndicator.GetComponent<Image>().color = Color.red;
         }
         else if (PlayerID == PlayerTypes.Blue)
         {
-            playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
+            //playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
+            playerIndicator.GetComponent<Image>().color = Color.blue;
         }
         else if (PlayerID == PlayerTypes.Green)
         {
-            playerIndicator.GetComponent<Renderer>().material.color = Color.green;
+            //playerIndicator.GetComponent<Renderer>().material.color = Color.green;
+            playerIndicator.GetComponent<Image>().color = Color.green;
         }
         else if (PlayerID == PlayerTypes.Yellow)
         {
-            playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
+            //playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
+            playerIndicator.GetComponent<Image>().color = Color.yellow;
         }
 
         startingColor = HeadGFX.GetComponent<Renderer>().material.color;
@@ -275,8 +280,13 @@ public class CharacterControl : MonoBehaviour
 
     public void OutTheRound()
     {
-        int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
-        for (int i =0;i<randomMoneyDrop;i++)
+        //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
+        int moneylost = (int)(0.1f * coins);
+        coins -= moneylost;
+        MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
+        if (moneylost == 0)
+            moneylost = 1;
+        for (int i =0;i<moneylost;i++)
         {
             PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z));
         }
@@ -290,7 +300,7 @@ public class CharacterControl : MonoBehaviour
 
         dead = true;
 
-        SoundManager.singleton.Death();
+        SoundManager.singleton.Death(transform.position);
 
         PlayerManager.PlayerCheck();
     }
@@ -385,7 +395,7 @@ public class CharacterControl : MonoBehaviour
             blockCD = 3.5f;
             holdTimer = 0.75f;
 
-            SoundManager.singleton.Shield();
+            SoundManager.singleton.Shield(transform.position);
         }
 
         rollCD -= Time.deltaTime;
@@ -403,7 +413,7 @@ public class CharacterControl : MonoBehaviour
             //charAnim.Play("SpinDash");
             charAnim.SetTrigger("Roll");
 
-            SoundManager.singleton.Roll();
+            SoundManager.singleton.Roll(transform.position);
         }
 
 
@@ -464,6 +474,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     bodyPartsGFX[i].SetActive(false);
                 }
+                propHideout.SetActive(true);
                 invisibilityduration = 5;
                 invisibilityCD = Time.time + 11;
             }
@@ -473,6 +484,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     bodyPartsGFX[i].SetActive(true); ;
                 }
+                propHideout.SetActive(false);
             }
         }
 
@@ -714,7 +726,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch1");
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
-                    SoundManager.singleton.Melee1();
+                    SoundManager.singleton.Melee1(transform.position);
                 }
                 else if (animState == AS.Punch1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -729,7 +741,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch2");
                     //charAnim.Play("PunchingTwo");
                     charAnim.SetTrigger("Punch2");
-                    SoundManager.singleton.Melee2();
+                    SoundManager.singleton.Melee2(transform.position);
                 }
                 else if (animState == AS.Punch2Recovery) //animState == AS.Punch2Active || 
                 {
@@ -745,7 +757,7 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch3");
                     //charAnim.Play("PunchingThree");
                     charAnim.SetTrigger("Punch3");
-                    SoundManager.singleton.Melee3();
+                    SoundManager.singleton.Melee3(transform.position);
                 }
             }
             else if (equippedWeapon == Weapons.Sword)
@@ -761,7 +773,7 @@ public class CharacterControl : MonoBehaviour
                     animTimer = 0;
                     animState = AS.Sword1Windup;
                     charAnim.SetTrigger("Sword1");
-                    SoundManager.singleton.Melee1();
+                    SoundManager.singleton.Melee1(transform.position);
                 }
                 else if (animState == AS.Sword1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -773,7 +785,7 @@ public class CharacterControl : MonoBehaviour
                     animTimer = 0;
                     animState = AS.Sword2Windup;
                     charAnim.SetTrigger("Sword2");
-                    SoundManager.singleton.Melee2();
+                    SoundManager.singleton.Melee2(transform.position);
                 }
 
             }
@@ -957,7 +969,7 @@ public class CharacterControl : MonoBehaviour
                 }
                 else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall" || pickupSearch[i].transform.name == "CoinSack")
                 {
-                    SoundManager.singleton.Pickup();
+                    SoundManager.singleton.Pickup(transform.position);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
                         coins++; //change later
@@ -1071,7 +1083,7 @@ public class CharacterControl : MonoBehaviour
                     }
                     */
 
-                    SoundManager.singleton.Damage();
+                    SoundManager.singleton.Damage(transform.position);
                 }
             }
 
@@ -1111,7 +1123,7 @@ public class CharacterControl : MonoBehaviour
                 knockbackDirection *= (damage / 2f);
                 knockbackDirection.y = 0;
 
-                SoundManager.singleton.Damage();
+                SoundManager.singleton.Damage(transform.position);
 
 
             }

@@ -55,9 +55,9 @@ public class Gun : WeaponBase
                 tempBullet.GetComponent<GunShot>().GunRicochetUpgrade = true;
             
             if (lazerGun)
-                SoundManager.singleton.LazerGunShot();
+                SoundManager.singleton.LazerGunShot(transform.position);
             else
-                SoundManager.singleton.GunShot();
+                SoundManager.singleton.GunShot(transform.position);
         }
     }
 }

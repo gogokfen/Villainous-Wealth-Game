@@ -49,7 +49,7 @@ public class Cannon : MonoBehaviour
 
                 PickupManager.singleton.CoinShot();
 
-                SoundManager.singleton.CannonShot();
+                SoundManager.singleton.CannonShot(transform.position);
 
                 //Instantiate(coinShot,Vector3.zero,Quaternion.Euler(0,UnityEngine.Random.Range(0,360f),0));
             }
