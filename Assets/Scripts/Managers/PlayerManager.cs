@@ -5,13 +5,14 @@ using UnityEngine.InputSystem.UI;
 using VInspector;
 using Cinemachine;
 using UnityEngine.SceneManagement;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     public bool singleplayerTesting;
     [SerializeField] Transform[] startPositions;
+    public int characterAmount;
     [SerializeField] GameObject[] playerPrefabs;
     [SerializeField] GameObject gamepadDisconnectedUI;
 
@@ -19,7 +20,6 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject cameraParent;
     [SerializeField] CinemachineTargetGroup cameraGroup;
     [EndFoldout]
-
 
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
@@ -34,7 +34,6 @@ public class PlayerManager : MonoBehaviour
     private List<InputDevice> joinedDevices = new List<InputDevice>();
     [SerializeField] GameObject menuPlayerPrefab;
     [SerializeField] GameObject defaultCharacterButton;
-    private int characterSelection;
     private int playerNumber = 1;
 
     public int[] characterPicks;
@@ -45,12 +44,14 @@ public class PlayerManager : MonoBehaviour
     public Material greenMaterial;
     public Material blueMaterial;
     public Material yellowMaterial;
+    
     [EndFoldout]
 
-    public float holdDuration = 1.5f;
-    private float holdTime = 0f;
-    public Image holdImage;
-    
+    private static List<PlayerInput> menuPlayers = new List<PlayerInput>();
+
+    public int readyPlayers = 0;
+    public Button startButton;
+    public TextMeshProUGUI requirementText;
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -63,39 +64,32 @@ public class PlayerManager : MonoBehaviour
         instance = this;
         roundOver = false;
         DontDestroyOnLoad(gameObject);
-        characterPicks = new int[4];
+        characterPicks = new int[characterAmount];
     }
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Escape) && characterSelectionScreen.activeInHierarchy == true)
+        if (readyPlayers == joinedDevices.Count && readyPlayers >= 2)
         {
-            holdTime += Time.deltaTime;
-            holdImage.fillAmount = holdTime / holdDuration;
-            Debug.Log(holdTime);
-            if (holdTime >= holdDuration)
-            {
-                characterSelectionScreen.SetActive(false);
-            }
-        }
+            startButton.interactable = true;
+            requirementText.text = "Lets do this!";
+        }    
         else 
         {
-            holdTime = 0f;
-            holdImage.fillAmount = 0f;
+            startButton.interactable = false;
+            requirementText.text = "Not enough players are ready";
         }
 
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
             if (characterSelectionScreen.activeInHierarchy == true)
             {
-                //characterScreenOn = true;
-                
                 DetectPlayerJoin();
             }
-            if (characterSelectionScreen.activeInHierarchy == false)
+            else 
             {
-                //kill all fake players
-                holdImage.fillAmount = 0f;
-                //characterScreenOn = false;
+                playerNumber = 1;
+                joinedDevices.Clear();
+                readyPlayers = 0;
             }
         }
         InputSystem.onDeviceChange += (device, change) =>
@@ -131,6 +125,7 @@ public class PlayerManager : MonoBehaviour
                 || device is Keyboard keyboard && keyboard.enterKey.wasPressedThisFrame)
                 {
                     PlayerInput menuPlayer = PlayerInput.Instantiate(menuPlayerPrefab, controlScheme: null, pairWithDevice: device);
+                    menuPlayers.Add(menuPlayer);
                     MultiplayerEventSystem player = menuPlayer.GetComponent<MultiplayerEventSystem>();
                     player.SetSelectedGameObject(null);
                     player.SetSelectedGameObject(defaultCharacterButton);
@@ -140,6 +135,7 @@ public class PlayerManager : MonoBehaviour
                     menuPlayer.actions["UI/Submit"].performed += ctx => CharacterPick(menuPlayer);
                     menuPlayer.actions["UI/Cancel"].performed += ctx => CancelCharacterPick(menuPlayer);
                     Debug.Log(joinedDevices);
+
                 }
             }
         }
@@ -151,51 +147,61 @@ public class PlayerManager : MonoBehaviour
         GameObject selectedButton = playerEventSystem.currentSelectedGameObject;
         if (selectedButton.GetComponent<CustomizeCharacter>().picked == false)
         {
-        MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
-        menuPlayer.selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
-        menuPlayer.pickedCharButton = selectedButton;
-        playerEventSystem.GetComponent<MenuPlayer>().selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
-        characterPicks[playerEventSystem.GetComponent<MenuPlayer>().selectedChar] = playerEventSystem.GetComponent<MenuPlayer>().playerNum;
-        selectedButton.GetComponent<Button>().interactable = false;
-        selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
-        playerEventSystem.SetSelectedGameObject(null);
-        selectedButton.GetComponent<CustomizeCharacter>().picked = true;
-        if (selectedButton.name == "Dragon")
-        {
-            SoundManager.singleton.AnnounceDragon();
-        }
-        else if (selectedButton.name == "Boxhead")
-        {
-            SoundManager.singleton.AnnounceBoxhead();
-        }
-        else if (selectedButton.name == "TestDummy")
-        {
-            SoundManager.singleton.AnnounceTestDummy();
-        }
-        else if (selectedButton.name == "MonopolyDude")
-        {
-            SoundManager.singleton.AnnounceMonopolyDude();
-        }
+            MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
+            menuPlayer.selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
+            menuPlayer.pickedCharButton = selectedButton;
+            playerEventSystem.GetComponent<MenuPlayer>().selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
+            characterPicks[playerEventSystem.GetComponent<MenuPlayer>().selectedChar] = playerEventSystem.GetComponent<MenuPlayer>().playerNum;
+            selectedButton.GetComponent<Button>().interactable = false;
+            selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
+            playerEventSystem.SetSelectedGameObject(null);
+            selectedButton.GetComponent<CustomizeCharacter>().picked = true;
+            if (playerEventSystem.GetComponent<MenuPlayer>().ready == false)
+            {
+                playerEventSystem.GetComponent<MenuPlayer>().ready = true;
+                readyPlayers++;
+            }
+            if (selectedButton.name == "Dragon")
+            {
+                SoundManager.singleton.AnnounceDragon();
+            }
+            else if (selectedButton.name == "Boxhead")
+            {
+                SoundManager.singleton.AnnounceBoxhead();
+            }
+            else if (selectedButton.name == "TestDummy")
+            {
+                SoundManager.singleton.AnnounceTestDummy();
+            }
+            else if (selectedButton.name == "MonopolyDude")
+            {
+                SoundManager.singleton.AnnounceMonopolyDude();
+            }
         }
     }
 
     private void CancelCharacterPick(PlayerInput player)
-{
-    MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
-    if (menuPlayer.selectedChar >= 0)
     {
-        GameObject selectedButton = menuPlayer.pickedCharButton;
-        characterPicks[menuPlayer.selectedChar] = 0;
-        menuPlayer.selectedChar = 0;
-        selectedButton.GetComponent<Button>().interactable = true;
-        selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
-        selectedButton.GetComponent<CustomizeCharacter>().picked = false;
-        MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
-        playerEventSystem.SetSelectedGameObject(null);
-        playerEventSystem.SetSelectedGameObject(defaultCharacterButton);
-        menuPlayer.pickedCharButton = null;
+        MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
+        if (menuPlayer.selectedChar >= 0)
+        {
+            GameObject selectedButton = menuPlayer.pickedCharButton;
+            characterPicks[menuPlayer.selectedChar] = 0;
+            menuPlayer.selectedChar = 0;
+            selectedButton.GetComponent<Button>().interactable = true;
+            selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
+            selectedButton.GetComponent<CustomizeCharacter>().picked = false;
+            MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
+            playerEventSystem.SetSelectedGameObject(null);
+            playerEventSystem.SetSelectedGameObject(defaultCharacterButton);
+            menuPlayer.pickedCharButton = null;
+            if (playerEventSystem.GetComponent<MenuPlayer>().ready == true)
+            {
+                playerEventSystem.GetComponent<MenuPlayer>().ready = false;
+                readyPlayers--;
+            }
+        }
     }
-}
 
     public void StartRound()
     {
@@ -306,5 +312,18 @@ public class PlayerManager : MonoBehaviour
         {
             roundOver = true;
         }
+    }
+
+    public static void KillMenuPlayers()
+    {
+        for (int i = menuPlayers.Count - 1; i >= 0; i--)
+        {
+            if (menuPlayers[i] != null)
+            {
+                Destroy(menuPlayers[i].gameObject);
+            }
+        }
+        menuPlayers.Clear();
+        
     }
 }

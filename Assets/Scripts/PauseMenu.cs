@@ -20,7 +20,7 @@ public class PauseMenu : MonoBehaviour
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         foreach (PlayerInput player in playerInputs)
         {
-            player.actions["UI/Cancel"].performed += ctx => OnPause(player);
+            player.actions["UI/Pause"].performed += ctx => OnPause(player);
         }
     }
     public void OnPause(PlayerInput player)

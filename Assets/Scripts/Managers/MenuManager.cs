@@ -35,8 +35,40 @@ public class MenuManager : MonoBehaviour
     [EndFoldout]
     [SerializeField] GameObject optionsMenu;
     [SerializeField] TextMeshProUGUI roundText;
+
+    public float holdDuration = 1.5f;
+    private float holdTime = 0f;
+    public Image holdImage;
+
+    public CanvasGroup menuButtons;
+    [SerializeField] GameObject characterSelectionScreen;
     void Update()
     {
+        if (characterSelectionScreen.activeInHierarchy == true)
+        {
+            menuButtons.interactable = false;
+            if ((Input.GetKey(KeyCode.Escape) || Input.GetButton("Cancel")) && characterSelectionScreen.activeInHierarchy == true)
+            {
+                holdTime += Time.deltaTime;
+                holdImage.fillAmount = holdTime / holdDuration;
+                if (holdTime >= holdDuration)
+                {
+                    characterSelectionScreen.SetActive(false);
+                    holdImage.fillAmount = 0f;
+                    menuButtons.interactable = true;
+                    playButton.SetActive(true);
+                    optionsButton.SetActive(true);
+                    quitButton.SetActive(true);
+                    EventSystem.current.SetSelectedGameObject(playButton);
+                    PlayerManager.KillMenuPlayers();
+                }
+            }
+        }
+        else
+        {
+            holdTime = 0f;
+            holdImage.fillAmount = 0f;
+        }
         if (Mouse.current.delta.ReadValue() != Vector2.zero)
         {
             if (!usingMouse && usingInput)
