@@ -16,11 +16,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject[] playerPrefabs;
     [SerializeField] GameObject gamepadDisconnectedUI;
 
-    [Foldout("Camera")]
-    [SerializeField] GameObject cameraParent;
-    [SerializeField] CinemachineTargetGroup cameraGroup;
-    [EndFoldout]
-
+    
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     private List<PlayerInput> activePlayers;
@@ -34,24 +30,23 @@ public class PlayerManager : MonoBehaviour
     private List<InputDevice> joinedDevices = new List<InputDevice>();
     [SerializeField] GameObject menuPlayerPrefab;
     [SerializeField] GameObject defaultCharacterButton;
-    private int playerNumber = 1;
+    public int playerNumber = 1;
 
-    public int[] characterPicks;
-    public int pickingPlayer = 1;
-
+    private int[] characterPicks;
+    private int pickingPlayer = 1;
+    private static List<PlayerInput> menuPlayers = new List<PlayerInput>();
+    private int readyPlayers = 0;
     [Foldout("Player Materials")]
     public Material redMaterial;
     public Material greenMaterial;
     public Material blueMaterial;
     public Material yellowMaterial;
-    
     [EndFoldout]
 
-    private static List<PlayerInput> menuPlayers = new List<PlayerInput>();
-
-    public int readyPlayers = 0;
-    public Button startButton;
-    public TextMeshProUGUI requirementText;
+    [Foldout("Camera")]
+    [SerializeField] GameObject cameraParent;
+    [SerializeField] CinemachineTargetGroup cameraGroup;
+    [EndFoldout]
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -70,13 +65,13 @@ public class PlayerManager : MonoBehaviour
     {
         if (readyPlayers == joinedDevices.Count && readyPlayers >= 2)
         {
-            startButton.interactable = true;
-            requirementText.text = "Lets do this!";
+            MenuManager.instance.weReadyCheck = true;
+            MenuManager.instance.WeReady();
         }    
         else 
         {
-            startButton.interactable = false;
-            requirementText.text = "Not enough players are ready";
+            MenuManager.instance.weReadyCheck = false;
+            MenuManager.instance.WeReady();
         }
 
         if (SceneManager.GetActiveScene().name == "MainMenu")
@@ -127,15 +122,14 @@ public class PlayerManager : MonoBehaviour
                     PlayerInput menuPlayer = PlayerInput.Instantiate(menuPlayerPrefab, controlScheme: null, pairWithDevice: device);
                     menuPlayers.Add(menuPlayer);
                     MultiplayerEventSystem player = menuPlayer.GetComponent<MultiplayerEventSystem>();
-                    player.SetSelectedGameObject(null);
-                    player.SetSelectedGameObject(defaultCharacterButton);
                     joinedDevices.Add(device);
                     player.GetComponent<MenuPlayer>().playerNum = playerNumber;
+                    player.SetSelectedGameObject(null);
+                    player.SetSelectedGameObject(defaultCharacterButton);
+                    defaultCharacterButton.GetComponent<CustomizeCharacter>().FirstTimeSelection(playerNumber);
                     playerNumber++;
                     menuPlayer.actions["UI/Submit"].performed += ctx => CharacterPick(menuPlayer);
                     menuPlayer.actions["UI/Cancel"].performed += ctx => CancelCharacterPick(menuPlayer);
-                    Debug.Log(joinedDevices);
-
                 }
             }
         }

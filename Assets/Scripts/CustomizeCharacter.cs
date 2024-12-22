@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VInspector;
-
 public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public int characterNum;
@@ -16,26 +15,31 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
     [SerializeField] public GameObject blueSelectionIcon;
     [SerializeField] public GameObject yellowSelectionIcon;
     [EndFoldout]
-
     private Button button;
-
-    private void Start() 
+    private void Start()
     {
         button = GetComponent<Button>();
     }
     public void OnSelect(BaseEventData eventData)
     {
-        if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 1)
-            redSelectionIcon.SetActive(true);
-        else if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 2)
-            greenSelectionIcon.SetActive(true);
-        else if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 3)
-            blueSelectionIcon.SetActive(true);
-        else if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 4)
-            yellowSelectionIcon.SetActive(true);
-        
+        var menuPlayer = eventData.currentInputModule?.GetComponent<MenuPlayer>();
+        if (menuPlayer == null) return; 
+        switch (menuPlayer.playerNum)
+        {
+            case 1:
+                redSelectionIcon.SetActive(true);
+                break;
+            case 2:
+                greenSelectionIcon.SetActive(true);
+                break;
+            case 3:
+                blueSelectionIcon.SetActive(true);
+                break;
+            case 4:
+                yellowSelectionIcon.SetActive(true);
+                break;
+        }
     }
-
     public void OnDeselect(BaseEventData eventData)
     {
         if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 1)
@@ -47,8 +51,7 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
         else if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 4)
             yellowSelectionIcon.SetActive(false);
     }
-
-    private void OnDisable() 
+    private void OnDisable()
     {
         redSelectionIcon.SetActive(false);
         greenSelectionIcon.SetActive(false);
@@ -56,5 +59,16 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
         yellowSelectionIcon.SetActive(false);
         pickedUI.SetActive(false);
         button.interactable = true;
+    }
+    public void FirstTimeSelection(int num)
+    {
+        if (num == 1)
+            redSelectionIcon.SetActive(true);
+        else if (num == 2)
+            greenSelectionIcon.SetActive(true);
+        else if (num == 3)
+            blueSelectionIcon.SetActive(true);
+        else if (num == 4)
+            yellowSelectionIcon.SetActive(true);
     }
 }

@@ -240,6 +240,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "a4948614-aad1-48e4-828f-6e51fab69c70",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Point",
                     "type": "PassThrough",
                     "id": "f0d7453c-2371-4869-bc52-537bc2cb03d1",
@@ -298,15 +307,6 @@
                     "type": "PassThrough",
                     "id": "3c1281bc-e902-4c8a-9736-5f8eddbf2995",
                     "expectedControlType": "Quaternion",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Pause",
-                    "type": "Button",
-                    "id": "a4948614-aad1-48e4-828f-6e51fab69c70",
-                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -757,6 +757,17 @@
                     "name": "",
                     "id": "014d5c0e-a2fe-4dd0-84b4-a6303b6bb274",
                     "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0bf778e2-7226-45bf-bac1-fffe68f741c7",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "Controller",

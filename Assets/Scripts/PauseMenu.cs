@@ -21,10 +21,12 @@ public class PauseMenu : MonoBehaviour
         foreach (PlayerInput player in playerInputs)
         {
             player.actions["UI/Pause"].performed += ctx => OnPause(player);
+            Debug.Log("shalom");
         }
     }
     public void OnPause(PlayerInput player)
     {
+        Debug.Log("ahalan");
         MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
         {
             if (!paused)

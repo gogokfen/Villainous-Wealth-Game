@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using TMPro;
 public class MenuManager : MonoBehaviour
 {
+    public static MenuManager instance;
     private bool usingMouse = true;
     private bool usingInput = false;
     [Foldout("Menu Buttons")]
@@ -42,8 +43,21 @@ public class MenuManager : MonoBehaviour
 
     public CanvasGroup menuButtons;
     [SerializeField] GameObject characterSelectionScreen;
+    public bool weReadyCheck;
+    public Button startButton;
+    public TextMeshProUGUI requirementText;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Update()
     {
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton7)) && weReadyCheck == true)
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+
         if (characterSelectionScreen.activeInHierarchy == true)
         {
             menuButtons.interactable = false;
@@ -63,11 +77,11 @@ public class MenuManager : MonoBehaviour
                     PlayerManager.KillMenuPlayers();
                 }
             }
-        }
-        else
-        {
-            holdTime = 0f;
-            holdImage.fillAmount = 0f;
+            else
+            {
+                holdTime = 0f;
+                holdImage.fillAmount = 0f;
+            }
         }
         if (Mouse.current.delta.ReadValue() != Vector2.zero)
         {
@@ -185,5 +199,19 @@ public class MenuManager : MonoBehaviour
     public void StartGameButton()
     {
         SceneManager.LoadScene("MainScene");
+    }
+
+    public void WeReady()
+    {
+        if (weReadyCheck)
+        {
+            startButton.interactable = true;
+            requirementText.text = "Lets do this!";
+        }
+        else
+        {
+            startButton.interactable = false;
+            requirementText.text = "Not enough players are ready";
+        }
     }
 }
