@@ -29,6 +29,13 @@ public class Sword : WeaponBase
         swordGFX.SetActive(true);
     }
 
+    public override void SetConfig(WeaponConfig config)
+    {
+        base.SetConfig(config);
+        var c = (SwordConfig)config;
+        WindSlashUpgrade = c.WindSlashUpgrade;
+    }
+
     private void OnDisable()
     {
         transform.GetComponent<BoxCollider>().enabled = false;

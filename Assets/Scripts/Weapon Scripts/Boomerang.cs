@@ -9,6 +9,7 @@ public class Boomerang : WeaponBase
 {
     [HideInInspector] public bool charging = false;
     [HideInInspector] public bool releasing = false;
+    [HideInInspector] public bool canThrow = true;
 
     [Foldout("Upgrades")]
     public bool TripleBoomerangUpgrade = false;
@@ -18,7 +19,7 @@ public class Boomerang : WeaponBase
 
     [SerializeField] GameObject boomerang;
     [SerializeField] GameObject boomerangGFX;
-    private bool canThrow = true;
+    //private bool canThrow = true;
     private float windup;
 
     [SerializeField] LayerMask boomerangPickupMask;
@@ -67,7 +68,7 @@ public class Boomerang : WeaponBase
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);
-            windUpSlider.value = Mathf.InverseLerp(0, 25, windup * 37.5f);
+            windUpSlider.value = Mathf.InverseLerp(0, 35, windup * 65f);
 
             charging = true;
         }
@@ -86,8 +87,8 @@ public class Boomerang : WeaponBase
             tempBoomrang.GetComponent<WeaponBase>().damageType = damageType;
 
             tempBoomrang.GetComponent<BoomerangShot>().lookAtTarget = transform;
-            tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 15 + windup * 37.5f;
-            if ((15+windup*37.5f)>40)
+            tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f; //15 + windup * 37.5f
+            if ((5+windup*65f)>40)
                 tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 40;
 
             if (TripleBoomerangUpgrade)
@@ -99,8 +100,8 @@ public class Boomerang : WeaponBase
                 tempBoomrangL.GetComponent<WeaponBase>().damageType = damageType;
 
                 tempBoomrangL.GetComponent<BoomerangShot>().lookAtTarget = transform;
-                tempBoomrangL.GetComponent<BoomerangShot>().flySpeed = 15 + windup * 37.5f;
-                if ((15 + windup * 37.5f) > 40)
+                tempBoomrangL.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f;
+                if ((5 + windup * 65f) > 40)
                     tempBoomrangL.GetComponent<BoomerangShot>().flySpeed = 40;
 
                 GameObject tempBoomrangR = Instantiate(boomerang, transform.position, Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y - 45, transform.rotation.z)));
@@ -110,8 +111,8 @@ public class Boomerang : WeaponBase
                 tempBoomrangR.GetComponent<WeaponBase>().damageType = damageType;
 
                 tempBoomrangR.GetComponent<BoomerangShot>().lookAtTarget = transform;
-                tempBoomrangR.GetComponent<BoomerangShot>().flySpeed = 15 + windup * 37.5f;
-                if ((15 + windup * 37.5f) > 40)
+                tempBoomrangR.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f;
+                if ((5 + windup * 65f) > 40)
                     tempBoomrangR.GetComponent<BoomerangShot>().flySpeed = 40;
             }
 

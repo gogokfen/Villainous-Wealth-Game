@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 2939225391973353246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_Name
-      value: Bioshock
+      value: BigDaddy
       objectReference: {fileID: 0}
     - target: {fileID: 2969950310000140246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -68,6 +68,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: HeadGFX
+      value: 
+      objectReference: {fileID: 3510960062989167519}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -161,11 +166,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bioshock
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 25e1a91f76a8e3a40b29bf9ff1ac6549,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25e1a91f76a8e3a40b29bf9ff1ac6549, type: 3}
+--- !u!1 &3510960062989167519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 25e1a91f76a8e3a40b29bf9ff1ac6549,
+    type: 3}
+  m_PrefabInstance: {fileID: 4357239522887489230}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4319725273491517733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 25e1a91f76a8e3a40b29bf9ff1ac6549,

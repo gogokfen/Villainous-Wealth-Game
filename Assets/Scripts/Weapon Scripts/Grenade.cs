@@ -22,6 +22,7 @@ public class Grenade : WeaponBase
     float windup;
 
     [SerializeField] Slider windUpSlider;
+    [SerializeField] Slider reloadSlider;
 
     int attackState = 0;
 
@@ -61,9 +62,13 @@ public class Grenade : WeaponBase
         if (attackCooldown > 0)
         {
             attackCooldown -= Time.deltaTime;
+
+            reloadSlider.gameObject.SetActive(true);
+            reloadSlider.value = Mathf.InverseLerp(maxAttackCooldown, 0, attackCooldown);
             if (attackCooldown<=0)
             {
                 GrenadeGFX.SetActive(true);
+                reloadSlider.gameObject.SetActive(false);
             }
         }
             
@@ -73,7 +78,7 @@ public class Grenade : WeaponBase
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);
-            windUpSlider.value = Mathf.InverseLerp(0, 50,windup *75);
+            windUpSlider.value = Mathf.InverseLerp(0, 70,windup *125); //(0, 50,windup *75)
 
             charging = true;
         }
@@ -90,10 +95,10 @@ public class Grenade : WeaponBase
             attackCooldown = maxAttackCooldown;
 
 
-            if ((25 + windup * 75f) > 75)
+            if ((5 + windup * 125f) > 75)
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 75;
             else
-                tempGrenade.GetComponent<GrenadeShot>().throwPower = 25 + windup * 75f;
+                tempGrenade.GetComponent<GrenadeShot>().throwPower = 5 + windup * 125f; //25 + windup * 75f;
 
             if (ExtraBounceUpgrade)
                 tempGrenade.GetComponent<GrenadeShot>().ExtraBounceUpgrade = true;

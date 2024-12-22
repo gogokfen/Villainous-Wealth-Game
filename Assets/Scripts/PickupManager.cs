@@ -23,6 +23,7 @@ public class PickupManager : MonoBehaviour
 
     List<GameObject> coins = new List<GameObject>();
     [SerializeField] GameObject prefabCoin;
+    [SerializeField] GameObject coinPickup;
     [SerializeField] GameObject coinShot;
     [SerializeField] GameObject coinPickupVFX;
     //public static int uncollectedCoinsAmount = 0;
@@ -78,7 +79,18 @@ public class PickupManager : MonoBehaviour
                 }
             }
         }
-        
+
+        for (int i = 0; i < coins.Count; i++) //updating the position of each pickup in the scene
+        {
+            if (coins[i].transform.position.y <= 1 && coins[i].name == "Coin")
+            {
+                GameObject tempCoin =Instantiate(coinPickup, new Vector3(coins[i].transform.position.x, 1, coins[i].transform.position.z),Quaternion.identity);
+                tempCoin.name = "Coin";
+                coins[i].gameObject.SetActive(false);
+                coins.Remove(coins[i]);
+            }
+        }
+
         if (Time.time >= timer)
         {
             timer += pickupFrequency; //timer = Time.time + 3
@@ -162,7 +174,8 @@ public class PickupManager : MonoBehaviour
 
     public void SpawnTreasureChestCoin(Vector3 treasureChestPosition)
     {
-        Vector3 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
+        //Vector3 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
+        Vector3 coinPosition = new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(4, 10f), Random.Range(-7.5f, 7.5f));
         GameObject tempCoin = Instantiate(prefabCoin, treasureChestPosition,Quaternion.identity);
         tempCoin.name = prefabCoin.name;
         Rigidbody coinRB = tempCoin.GetComponent<Rigidbody>();
@@ -187,11 +200,15 @@ public class PickupManager : MonoBehaviour
         }
         else if (randomPowerup == 1)
         {
+            SpawnPowerUp();
+            //disabled health pickup, time for cursed code
+            /*
             GameObject tempPowerup = Instantiate(healthPowerup, tempPos, Quaternion.identity);
             tempPowerup.name = "Health";
 
             pickups.Add(tempPowerup);
             Destroy(tempPowerup, 20);
+            */
         }
         else if (randomPowerup == 2)
         {
@@ -212,7 +229,7 @@ public class PickupManager : MonoBehaviour
 
     }
 
-    public void SpawnPowerup(Vector3 powerupPosition)
+    public void SpawnPowerUp(Vector3 powerupPosition)
     {
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
@@ -225,11 +242,15 @@ public class PickupManager : MonoBehaviour
         }
         else if (randomPowerup == 1)
         {
+            SpawnPowerUp();
+            //disabled health pickup, time for cursed code
+            /*
             GameObject tempPowerup = Instantiate(healthPowerup, powerupPosition, Quaternion.identity);
             tempPowerup.name = "Health";
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
             Destroy(tempPowerup, 20);
+            */
         }
         else if (randomPowerup == 2)
         {

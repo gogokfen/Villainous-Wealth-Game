@@ -12,13 +12,18 @@ public abstract class WeaponBase : MonoBehaviour
         destructableProjectile,
         indestructableProjectile,
         bounceOffProjectile,
-        grenade
+        grenade,
+        zone
     }
     public damageTypes damageType;
 
     public int damage;
 
-
+    public virtual void SetConfig(WeaponConfig config)
+    {
+        damageType = config.DamageType;
+        damage = config.Damage;
+    }
 
     //public int damageType;
     /* 

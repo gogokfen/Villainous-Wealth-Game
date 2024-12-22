@@ -48,7 +48,7 @@ public class Destructable : MonoBehaviour
         else
         {
             if (Random.Range(0,3) == 0)
-                PickupManager.singleton.SpawnPowerup(transform.position);
+                PickupManager.singleton.SpawnPowerUp(transform.position);
             explosionEffect.Play();
             explosionEffect.transform.SetParent(null);
             for (int i = 0; i<debrisList.Length;i++)
@@ -76,10 +76,14 @@ public class Destructable : MonoBehaviour
             (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
             identicalDamageCD >= 0)) //making sure lootbox is not taking multiple instances of damage from the same attack
         {
-            hp-= damage;
-            hitEffect.Play();
-            if (hp <= 0)
-                destroyed = true;
+            if (damageType != WeaponBase.damageTypes.zone)
+            {
+                hp -= damage;
+                hitEffect.Play();
+                if (hp <= 0)
+                    destroyed = true;
+            }
+
         }
 
 
