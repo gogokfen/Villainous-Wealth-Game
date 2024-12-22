@@ -22,6 +22,7 @@ public class Grenade : WeaponBase
     float windup;
 
     [SerializeField] Slider windUpSlider;
+    [SerializeField] Slider reloadSlider;
 
     int attackState = 0;
 
@@ -61,9 +62,13 @@ public class Grenade : WeaponBase
         if (attackCooldown > 0)
         {
             attackCooldown -= Time.deltaTime;
+
+            reloadSlider.gameObject.SetActive(true);
+            reloadSlider.value = Mathf.InverseLerp(maxAttackCooldown, 0, attackCooldown);
             if (attackCooldown<=0)
             {
                 GrenadeGFX.SetActive(true);
+                reloadSlider.gameObject.SetActive(false);
             }
         }
             

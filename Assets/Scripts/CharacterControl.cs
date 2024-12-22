@@ -30,6 +30,9 @@ public class CharacterControl : MonoBehaviour
 
     public bool isTargetDummy = false;
 
+    [HideInInspector] public bool zoneImmunity = false;
+    [HideInInspector] public int zoneTicksGraceAmount = 2;
+
     public PlayerTypes PlayerID;
     public static PlayerTypes discardingPlayerID;
     //public static PlayerTypes holdingPlayerID;
@@ -99,6 +102,8 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject[] weaponList;
     [SerializeField] GameObject rightArmGFX;
     //[SerializeField] WeaponConfig[] configs;
+    private bool weaponSwap;
+    private Weapons originalWeapon;
 
     SphereCollider rFist;
     [SerializeField] SphereCollider lFist;
@@ -127,12 +132,12 @@ public class CharacterControl : MonoBehaviour
         Blunderbuss,
         Grenade
     }
-    public enum PlayerTypes
+    public enum PlayerTypes //add neutral?
     {
         Red,
         Green,
         Blue,
-        Yellow
+        Yellow 
     }
 
     private Weapons equippedWeapon;
@@ -163,12 +168,13 @@ public class CharacterControl : MonoBehaviour
     private float blockCD;
 
     [SerializeField] Slider windUpBar;
+    [SerializeField] Slider reloadBar;
     float reloadTime;
 
     [SerializeField] ParticleSystem meleeParticleEffect;
     [SerializeField] GameObject characterGFX;
 
-    [SerializeField] GameObject HeadGFX;
+    public GameObject HeadGFX;
     Color32 headColor = Color.grey;
     Color startingColor;
 
@@ -222,24 +228,48 @@ public class CharacterControl : MonoBehaviour
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.red;
             playerIndicator.GetComponent<Image>().color = Color.red;
+
+            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
+            {
+                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.red;
+            }
         }
         else if (PlayerID == PlayerTypes.Blue)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
             playerIndicator.GetComponent<Image>().color = Color.blue;
+
+            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
+            {
+                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.blue;
+            }
         }
         else if (PlayerID == PlayerTypes.Green)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.green;
             playerIndicator.GetComponent<Image>().color = Color.green;
+
+            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
+            {
+                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.green;
+            }
         }
         else if (PlayerID == PlayerTypes.Yellow)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
             playerIndicator.GetComponent<Image>().color = Color.yellow;
+
+            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
+            {
+                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.yellow;
+            }
         }
 
         startingColor = HeadGFX.GetComponent<Renderer>().material.color;
+
+
+
+
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -404,6 +434,8 @@ public class CharacterControl : MonoBehaviour
 
         CharacterCollision();
 
+        if (Input.GetKeyDown(KeyCode.Q))
+            SwapWeapon();
 
         if (shieldInput && blockCD <= 0)
         {
@@ -538,10 +570,15 @@ public class CharacterControl : MonoBehaviour
         windUpBar.value = Mathf.InverseLerp(reloadTime, 0, holdTimer);
         if (holdTimer <= 0)
             windUpBar.gameObject.SetActive(false);
-        */
+
         windUpBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
         if (slowdownTimer <= 0)
             windUpBar.gameObject.SetActive(false);
+        */
+        reloadBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
+        if (slowdownTimer <= 0)
+            reloadBar.gameObject.SetActive(false);
+
 
         Attack();
 
@@ -560,6 +597,8 @@ public class CharacterControl : MonoBehaviour
 
                 if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
                     TakeDamage(attackWB.playerID, attackWB.damage, projSearch[i].transform.position);
+                else if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.zone)
+                    TakeDamage(attackWB.damage);
                 else
                     TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType, projSearch[i].transform.position);
 
@@ -723,6 +762,27 @@ public class CharacterControl : MonoBehaviour
                     characterSearch[i].GetComponent<CharacterController>().Move(pushDirection);
                     //characterSearch[i].transform.position += pushDirection;
                 }
+            }
+        }
+    }
+
+    private void SwapWeapon()
+    {
+        if (equippedWeapon!= Weapons.Boomerang || (equippedWeapon == Weapons.Boomerang && weaponList[(int)equippedWeapon].GetComponent<Boomerang>().canThrow == true)) //checking that the boomerang is not mid air
+        {
+            weaponSwap = !weaponSwap;
+            if (weaponSwap)
+            {
+                originalWeapon = equippedWeapon;
+                weaponList[(int)equippedWeapon].SetActive(false);
+                equippedWeapon = Weapons.Fist;
+                weaponList[(int)equippedWeapon].SetActive(true);
+            }
+            else
+            {
+                weaponList[(int)equippedWeapon].SetActive(false);
+                equippedWeapon = originalWeapon;
+                weaponList[(int)equippedWeapon].SetActive(true);
             }
         }
     }
@@ -1002,6 +1062,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     previousWeapon = equippedWeapon;
                     equippedWeapon = Enum.Parse<Weapons>(pickupSearch[i].transform.name);
+                    originalWeapon = equippedWeapon;
 
                     weaponList[(int)previousWeapon].SetActive(false);
                     weaponList[(int)equippedWeapon].SetActive(true);
@@ -1182,6 +1243,30 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
+    private void TakeDamage(int damage) // in case of zone/storm closing
+    {
+        if (shieldBuffTimer <= 0)
+        {
+            if (zoneImmunity)
+            {
+
+            }
+            else if (zoneTicksGraceAmount > 0)
+                zoneTicksGraceAmount--;
+            else
+            {
+                hp = hp - damage;
+                hpBar.fillAmount = hp / 10f;
+                charAnim.SetTrigger("DMG");
+
+                headColor = Color.red;
+                paintHead = true;
+
+                SoundManager.singleton.Damage(transform.position);
+            }
+        }
+    }
+
     private void Shoot(Weapons WeaponUsed)
     {
         //holdTimer = 0.15f; //default case if no change
@@ -1239,7 +1324,8 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
                     slowdownTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
 
-                    windUpBar.gameObject.SetActive(true);
+                    //windUpBar.gameObject.SetActive(true);
+                    reloadBar.gameObject.SetActive(true);
                     //reloadTime = holdTimer;
                     reloadTime = slowdownTimer;
                 }

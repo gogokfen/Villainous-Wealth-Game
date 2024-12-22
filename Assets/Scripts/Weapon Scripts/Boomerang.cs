@@ -9,6 +9,7 @@ public class Boomerang : WeaponBase
 {
     [HideInInspector] public bool charging = false;
     [HideInInspector] public bool releasing = false;
+    [HideInInspector] public bool canThrow = true;
 
     [Foldout("Upgrades")]
     public bool TripleBoomerangUpgrade = false;
@@ -18,7 +19,7 @@ public class Boomerang : WeaponBase
 
     [SerializeField] GameObject boomerang;
     [SerializeField] GameObject boomerangGFX;
-    private bool canThrow = true;
+    //private bool canThrow = true;
     private float windup;
 
     [SerializeField] LayerMask boomerangPickupMask;

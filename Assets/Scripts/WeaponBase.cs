@@ -12,7 +12,8 @@ public abstract class WeaponBase : MonoBehaviour
         destructableProjectile,
         indestructableProjectile,
         bounceOffProjectile,
-        grenade
+        grenade,
+        zone
     }
     public damageTypes damageType;
 

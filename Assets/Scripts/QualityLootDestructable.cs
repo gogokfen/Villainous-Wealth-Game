@@ -94,7 +94,8 @@ public class QualityLootDestructable : MonoBehaviour
             (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
             identicalDamageCD >= 0)) //making sure lootbox is not taking multiple instances of damage from the same attack
         {
-            pickupSlider.value -= (float)(damage / (float)hitsNeeded);
+            if (damageType!= WeaponBase.damageTypes.zone)
+                pickupSlider.value -= (float)(damage / (float)hitsNeeded);
         }
 
 

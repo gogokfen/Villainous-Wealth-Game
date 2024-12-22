@@ -76,10 +76,14 @@ public class Destructable : MonoBehaviour
             (damageType == WeaponBase.damageTypes.indestructableProjectile || damageType == WeaponBase.damageTypes.melee || damageType == WeaponBase.damageTypes.bounceOffProjectile) &&
             identicalDamageCD >= 0)) //making sure lootbox is not taking multiple instances of damage from the same attack
         {
-            hp-= damage;
-            hitEffect.Play();
-            if (hp <= 0)
-                destroyed = true;
+            if (damageType != WeaponBase.damageTypes.zone)
+            {
+                hp -= damage;
+                hitEffect.Play();
+                if (hp <= 0)
+                    destroyed = true;
+            }
+
         }
 
 
