@@ -20,6 +20,7 @@ public class RoundManager : MonoBehaviour
     //public UnityEvent gameEnd;
     //[SerializeField] PlayerManager playerManager;
     [SerializeField] ShopManager shopManager;
+    [SerializeField] StormManager stormManager;
 
     [Foldout("Winner UI")]
     [SerializeField] GameObject winnerBG;
@@ -50,10 +51,12 @@ public class RoundManager : MonoBehaviour
     private IEnumerator RoundLoop()
     {
         //gameStart.Invoke();
-        PlayerManager.instance.StartRound();
+        
+        PlayerManager.instance.StartRound(); //starts round
         //PauseMenu.instance.SubToPause();
         while (currentRound != totalRounds)
         {
+            CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             AssignWinner(); //gives winner of round all money dropped
@@ -69,9 +72,10 @@ public class RoundManager : MonoBehaviour
                 //playerManager.PlayersNextRound(); 
             }
             MapManager.instance.ResetMap(); //resets map elements, currently only respawns the chest
+            stormManager.ResetStorm(); //resets storm
             //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
-        AssignUltimateWinner();
+        AssignUltimateWinner(); //Assigns winner with most coins
         //gameEnd.Invoke();
     }
 
@@ -125,7 +129,7 @@ public class RoundManager : MonoBehaviour
             if (coins > mostCoins)
             {
                 mostCoins = coins;
-                playerIDWinner = character.PlayerID.ToString();
+                playerIDWinner = character.HeadGFX.name;
             }
         }
 

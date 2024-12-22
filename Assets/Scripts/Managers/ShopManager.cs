@@ -13,7 +13,22 @@ public class ShopManager : MonoBehaviour
     public GameObject shopUI;
     public float shopTimer;
     [SerializeField] TextMeshProUGUI timerText;
+    [SerializeField] GameObject[] playerShopUI;
+    int shopUIIndex;
+    //int playerIndex;
 
+    private void Start()
+    {
+        PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
+        foreach (PlayerInput player in playerInputs)
+        {
+            // CharacterControl characterControl = player.GetComponent<CharacterControl>();
+            // playerShopUIs[shopUIIndex].name = characterControl.HeadGFX.name;
+            // playerShopUIs[shopUIIndex].SetActive(true);
+            // shopUIIndex++;
+            //playerIndex++;
+        }
+    }
     private void Update()
     {
 
@@ -25,7 +40,8 @@ public class ShopManager : MonoBehaviour
         shopUI.SetActive(true);
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         defaultButtonIndex = 0;
-        
+        shopUIIndex = 0;
+
         // for (int i = 0; i < defaultButtons.Length; i++) //osher for loop for resetting bought items
         // {
         //     defaultButtons[i].GetComponent<Button>().interactable = true;
@@ -37,7 +53,7 @@ public class ShopManager : MonoBehaviour
         // }
 
         ResetButtons(); //resets Button UI and interactibility
-        foreach (PlayerInput player in playerInputs)
+        foreach (PlayerInput player in PlayerManager.instance.activePlayers)
         {
             // Find the EventSystem attached to this player
             MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
@@ -51,6 +67,13 @@ public class ShopManager : MonoBehaviour
                 player.actions["UI/Submit"].performed += ctx => OnSubmit(player);
 
                 defaultButtonIndex++;
+
+
+                CharacterControl characterControl = player.GetComponent<CharacterControl>();
+                playerShopUI[shopUIIndex].name = characterControl.HeadGFX.name;
+                playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = characterControl.coins.ToString();
+                playerShopUI[shopUIIndex].SetActive(true);
+                shopUIIndex++;
             }
         }
 
@@ -75,7 +98,11 @@ public class ShopManager : MonoBehaviour
                 {
                     PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().coins -= itemPrice;
                     PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
-
+                    Debug.Log("player index " + player.playerIndex);
+                    Debug.Log(shopUIIndex);
+                    shopUIIndex = player.playerIndex;
+                    Debug.Log("shop ui index " + shopUIIndex);
+                    playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().coins.ToString();
                     selectedButton.GetComponent<Button>().interactable = false;
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
                     playerEventSystem.SetSelectedGameObject(null);
@@ -120,17 +147,17 @@ public class ShopManager : MonoBehaviour
     }
 
     private void ResetButtons()
-{
-    foreach (GameObject button in defaultButtons)
     {
-        ButtonSelectionTracker tracker = button.GetComponent<ButtonSelectionTracker>();
-        button.GetComponent<Button>().interactable = true;
-        tracker.soldUI.SetActive(false);
-        tracker.redSelectionIcon.SetActive(false);
-        tracker.blueSelectionIcon.SetActive(false);
-        tracker.greenSelectionIcon.SetActive(false);
-        tracker.yellowSelectionIcon.SetActive(false);
+        foreach (GameObject button in defaultButtons)
+        {
+            ButtonSelectionTracker tracker = button.GetComponent<ButtonSelectionTracker>();
+            button.GetComponent<Button>().interactable = true;
+            tracker.soldUI.SetActive(false);
+            tracker.redSelectionIcon.SetActive(false);
+            tracker.blueSelectionIcon.SetActive(false);
+            tracker.greenSelectionIcon.SetActive(false);
+            tracker.yellowSelectionIcon.SetActive(false);
+        }
     }
-}
 
 }

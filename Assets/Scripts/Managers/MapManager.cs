@@ -14,6 +14,5 @@ public class MapManager : MonoBehaviour
         //Quaternion rotation = prefabToSpawn.transform.rotation;
         Destroy(FindAnyObjectByType<QualityLootDestructable>().gameObject);
         Instantiate(prefabToSpawn, location.position, location.rotation);
-        Debug.Log("i triggered");
     }
 }

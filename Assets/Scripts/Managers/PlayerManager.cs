@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
     
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
-    private List<PlayerInput> activePlayers;
+    public List<PlayerInput> activePlayers;
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
@@ -43,10 +43,10 @@ public class PlayerManager : MonoBehaviour
     public Material yellowMaterial;
     [EndFoldout]
 
-    [Foldout("Camera")]
-    [SerializeField] GameObject cameraParent;
-    [SerializeField] CinemachineTargetGroup cameraGroup;
-    [EndFoldout]
+    // [Foldout("Camera")]
+    // //[SerializeField] GameObject cameraParent;
+    // [SerializeField] CinemachineTargetGroup cameraGroup;
+    // [EndFoldout]
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -209,7 +209,7 @@ public class PlayerManager : MonoBehaviour
         }
         AvailablePlayerIDs();
         AssignPlayers();
-        cameraParent.SetActive(true);
+        //cameraParent.SetActive(true);
     }
     private void AvailablePlayerIDs()
     {
@@ -243,7 +243,7 @@ public class PlayerManager : MonoBehaviour
                             characterControl.PlayerID = assignedPlayerID;
                             availablePlayerID.Remove(assignedPlayerID);
                             playerInput.gameObject.name = $"Player_{assignedPlayerID}";
-                            cameraGroup.AddMember(playerInput.gameObject.transform, 1f, 0f);
+                            //cameraGroup.AddMember(playerInput.gameObject.transform, 1f, 0f);
                             ChangePlayerMaterial(playerInput.gameObject, assignedPlayerID);
                             activePlayers.Add(playerInput);
                             playerIndex++;

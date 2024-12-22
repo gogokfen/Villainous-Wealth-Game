@@ -166,7 +166,6 @@ public class PickupManager : MonoBehaviour
             {
                 playerWon = false;
                 animTimer = 0;
-                Debug.Log("player won");
             }
         }
 

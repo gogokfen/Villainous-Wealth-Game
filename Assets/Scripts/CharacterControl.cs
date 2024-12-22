@@ -339,6 +339,7 @@ public class CharacterControl : MonoBehaviour
         SoundManager.singleton.Death(transform.position);
 
         PlayerManager.PlayerCheck();
+        CameraManager.instance.RemoveFromCameraGroup(gameObject);
     }
     public void NextRound()
     {
@@ -1191,6 +1192,7 @@ public class CharacterControl : MonoBehaviour
                     */
 
                     SoundManager.singleton.Damage(transform.position);
+                    CameraManager.instance.ShakeCamera(0.3f, 0.1f);
                 }
             }
 
@@ -1232,7 +1234,7 @@ public class CharacterControl : MonoBehaviour
 
                 SoundManager.singleton.Damage(transform.position);
 
-
+                CameraManager.instance.ShakeCamera(0.3f, 0.1f);
             }
 
             //characterGFX.transform.position += knockbackDirection;
@@ -1263,6 +1265,7 @@ public class CharacterControl : MonoBehaviour
                 paintHead = true;
 
                 SoundManager.singleton.Damage(transform.position);
+                CameraManager.instance.ShakeCamera(0.3f, 0.1f);
             }
         }
     }
