@@ -48,7 +48,7 @@ public class Destructable : MonoBehaviour
         else
         {
             if (Random.Range(0,3) == 0)
-                PickupManager.singleton.SpawnPowerup(transform.position);
+                PickupManager.singleton.SpawnPowerUp(transform.position);
             explosionEffect.Play();
             explosionEffect.transform.SetParent(null);
             for (int i = 0; i<debrisList.Length;i++)

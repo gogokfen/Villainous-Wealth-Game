@@ -12,10 +12,11 @@ public class GunShot : WeaponBase
     [EndFoldout]
 
     [SerializeField] float shotSpeed;
+    [SerializeField] float destroyTimer;
     void Start()
     {
         wallMask = 1; //default layer
-        Destroy(gameObject, 1.75f);
+        Destroy(gameObject, destroyTimer);
     }
 
     void Update()

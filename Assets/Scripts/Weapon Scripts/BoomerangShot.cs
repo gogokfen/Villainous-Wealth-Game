@@ -36,10 +36,13 @@ public class BoomerangShot : WeaponBase
 
         transform.rotation = Quaternion.Lerp(prevRotation, transform.rotation, Time.deltaTime * rotationAmount);
 
-        if (CharacterControl.weaponID != (int)CharacterControl.Weapons.Boomerang) //make the enum a public class?
+        /** code for picking up another weapon while the boomerang is in the air!, doesn't work with multiple players though, buggy
+        if (CharacterControl.weaponID != (int)CharacterControl.Weapons.Boomerang)//make the enum a public class?
         {
+            Debug.Log("nani");
             Destroy(gameObject);
         }
+        /*
         /*
         if (CharacterControl.weaponID != 3) //make the enum a public class?
         {

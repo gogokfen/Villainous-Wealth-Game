@@ -18,7 +18,11 @@ public abstract class WeaponBase : MonoBehaviour
 
     public int damage;
 
-
+    public virtual void SetConfig(WeaponConfig config)
+    {
+        damageType = config.DamageType;
+        damage = config.Damage;
+    }
 
     //public int damageType;
     /* 

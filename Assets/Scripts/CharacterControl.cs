@@ -66,6 +66,7 @@ public class CharacterControl : MonoBehaviour
     private float forwardMomentumDelay;
 
     private float holdTimer;
+    private float slowdownTimer;
     private bool rolling;
     private Vector3 rollDirection;
     private float rollCD;
@@ -97,6 +98,7 @@ public class CharacterControl : MonoBehaviour
 
     [SerializeField] GameObject[] weaponList;
     [SerializeField] GameObject rightArmGFX;
+    //[SerializeField] WeaponConfig[] configs;
 
     SphereCollider rFist;
     [SerializeField] SphereCollider lFist;
@@ -136,7 +138,7 @@ public class CharacterControl : MonoBehaviour
     private Weapons equippedWeapon;
     private Weapons previousWeapon;
 
-    public static int weaponID;
+    //public static int weaponID;
 
     private static bool weaponDiscarded = false;
 
@@ -154,6 +156,7 @@ public class CharacterControl : MonoBehaviour
     //[SerializeField] TextMeshProUGUI hpText;
     [SerializeField] Image hpBar;
     [SerializeField] TextMeshProUGUI moneyText;
+    [SerializeField] Animator moneyAnim;
     [SerializeField] GameObject shieldGFX;
     [SerializeField] GameObject blockBubble;
     private float blockDuration;
@@ -193,7 +196,7 @@ public class CharacterControl : MonoBehaviour
 
         startingSpeed = moveSpeed;
         currentMaxSpeed = startingSpeed;
-        weaponID = 0;
+        //weaponID = 0;
 
         CC = GetComponent<CharacterController>();
 
@@ -283,18 +286,21 @@ public class CharacterControl : MonoBehaviour
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
         int moneylost = (int)(0.1f * coins);
         coins -= moneylost;
+        moneyText.text = coins.ToString();
         MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
         if (moneylost == 0)
             moneylost = 1;
         for (int i =0;i<moneylost;i++)
         {
-            PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 1.5f, transform.position.z));
+            PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z));
         }
-        PickupManager.singleton.SpawnPowerup(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
+        PickupManager.singleton.SpawnPowerUp(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
 
         CC.enabled = false;
 
         //characterGFX.SetActive(false);
+
+        weaponList[(int)equippedWeapon].SetActive(false); //making sure he can't attack while dead kek
 
         charAnim.Play("Death");
 
@@ -314,6 +320,7 @@ public class CharacterControl : MonoBehaviour
         dead = false;
         moneyText.text = coins.ToString();
 
+        weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
 
         charAnim.Play("Idle");
         winner = false;
@@ -349,7 +356,7 @@ public class CharacterControl : MonoBehaviour
         }
             
 
-        if (transform.position.y>0)
+        if (transform.position.y!=0)
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything
         }
@@ -363,6 +370,16 @@ public class CharacterControl : MonoBehaviour
             return;
 
         identicalDamageCD -= Time.deltaTime;
+
+        if (equippedWeapon !=Weapons.Fist && Input.GetMouseButton(1)) //360 aiming with mouse
+        {
+            Ray raycastFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(raycastFromMouse, out RaycastHit raycastHit))
+            {
+            }
+            raycastHit.point = new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z); //preventing the char from unwanted rotation;
+            transform.LookAt(raycastHit.point);
+        }
 
         AttackScan(); //scanning the area around the character for projectiles & melee attacks - damage intances
 
@@ -399,6 +416,10 @@ public class CharacterControl : MonoBehaviour
         }
 
         rollCD -= Time.deltaTime;
+        if (rollCD>=0)
+        {
+            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, Mathf.InverseLerp(2.5f,0,rollCD));
+        }
 
         if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
         {
@@ -412,6 +433,8 @@ public class CharacterControl : MonoBehaviour
             rollCD = 2.5f;
             //charAnim.Play("SpinDash");
             charAnim.SetTrigger("Roll");
+
+            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, 0);
 
             SoundManager.singleton.Roll(transform.position);
         }
@@ -510,10 +533,15 @@ public class CharacterControl : MonoBehaviour
         }
 
         holdTimer -= Time.deltaTime;
+        slowdownTimer -= Time.deltaTime;
+        /*
         windUpBar.value = Mathf.InverseLerp(reloadTime, 0, holdTimer);
         if (holdTimer <= 0)
             windUpBar.gameObject.SetActive(false);
-
+        */
+        windUpBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
+        if (slowdownTimer <= 0)
+            windUpBar.gameObject.SetActive(false);
 
         Attack();
 
@@ -579,7 +607,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (moveInput != Vector2.zero)
         {
-            if (speedBuffTimer <= 0)
+            if (speedBuffTimer <= 0 && speedBuffTimer>-1)
             {
                 currentMaxSpeed = startingSpeed;
                 if (moveSpeed > currentMaxSpeed)
@@ -591,6 +619,12 @@ public class CharacterControl : MonoBehaviour
                 accelSpeed += Time.deltaTime * 5;
                 deAccelSpeed = 0;
                 moveSpeed += accelSpeed;
+                if (moveSpeed > currentMaxSpeed)
+                    moveSpeed = currentMaxSpeed;
+            }
+            if (slowdownTimer>0)
+            {
+                moveSpeed = startingSpeed * 0.35f;
             }
 
             moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
@@ -600,13 +634,22 @@ public class CharacterControl : MonoBehaviour
                 if (equippedWeapon == Weapons.Gun || equippedWeapon == Weapons.Lazer)
                 {
                     charAnim.SetBool("RunGun", true);
+                    charAnim.SetBool("Run", true);
+                    charAnim.SetBool("RunShotGun", false);
                 }
                 else if (equippedWeapon == Weapons.Blunderbuss)
                 {
                     charAnim.SetBool("RunShotGun", true);
+                    charAnim.SetBool("Run", true);
+                    charAnim.SetBool("RunGun", false);
                 }
                 else
+                {
                     charAnim.SetBool("Run", true);
+                    charAnim.SetBool("RunGun", false);
+                    charAnim.SetBool("RunShotGun", false);
+                }
+                    
 
                 if (equippedWeapon == Weapons.Fist)
                 {
@@ -647,8 +690,8 @@ public class CharacterControl : MonoBehaviour
                 if (moveSpeed < 5)
                 {
                     charAnim.SetBool("Run", false);
-                    charAnim.SetBool("RunGun", false);
-                    charAnim.SetBool("RunShotGun", false);
+                    //charAnim.SetBool("RunGun", false);
+                    //charAnim.SetBool("RunShotGun", false);
                 }
 
                 if (moveSpeed < 1)
@@ -962,7 +1005,8 @@ public class CharacterControl : MonoBehaviour
 
                     weaponList[(int)previousWeapon].SetActive(false);
                     weaponList[(int)equippedWeapon].SetActive(true);
-                    weaponID = (int)equippedWeapon;
+                    //weaponList[(int)equippedWeapon].SetConfig(WeaponConfigList[(int)equippedWeapon]);
+                    //weaponID = (int)equippedWeapon;
 
                     Destroy(pickupSearch[i].transform.gameObject);
                     return;
@@ -975,6 +1019,7 @@ public class CharacterControl : MonoBehaviour
                         coins++; //change later
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
                         moneyText.text = coins.ToString();
+                        moneyAnim.Play("Player Coin Pickup");
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
@@ -983,6 +1028,7 @@ public class CharacterControl : MonoBehaviour
                         coins+=5; //change later
                         MoneyManager.singleton.ModifyMoney(PlayerID, 5);
                         moneyText.text = coins.ToString();
+                        moneyAnim.Play("Player Coin Pickup");
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
@@ -1028,7 +1074,7 @@ public class CharacterControl : MonoBehaviour
 
             weaponList[(int)previousWeapon].SetActive(false);
             weaponList[(int)equippedWeapon].SetActive(true);
-            weaponID = (int)equippedWeapon;
+            //weaponID = (int)equippedWeapon;
             Debug.Log("actually discarded yo");
         }
 
@@ -1064,7 +1110,7 @@ public class CharacterControl : MonoBehaviour
 
                     knockbackDirection = transform.position - hitPos;
                     knockbackDirection.Normalize();
-                    knockbackDirection *=0.1f;
+                    knockbackDirection *=0.2f;
                     knockbackDirection *= (damage/2f);
                     knockbackDirection.y = 0;
 
@@ -1119,7 +1165,7 @@ public class CharacterControl : MonoBehaviour
 
                 knockbackDirection = transform.position - grenadePos;
                 knockbackDirection.Normalize();
-                knockbackDirection *= 0.1f;
+                knockbackDirection *= 0.2f;
                 knockbackDirection *= (damage / 2f);
                 knockbackDirection.y = 0;
 
@@ -1145,7 +1191,8 @@ public class CharacterControl : MonoBehaviour
                 break;
             case Weapons.Gun:          // 1
                 charAnim.SetTrigger("Shoot");
-                holdTimer = 0.15f;
+                //holdTimer = 0.15f;
+                slowdownTimer = 0.15f;
                 break;
             case Weapons.Sword:        // 2
                 break;
@@ -1189,10 +1236,12 @@ public class CharacterControl : MonoBehaviour
                 else if (weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().reloading)
                 {
                     weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().reloading = false;
-                    holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
+                    //holdTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
+                    slowdownTimer = weaponList[(int)Weapons.Blunderbuss].GetComponent<Blunderbuss>().holdTime * 2;
 
                     windUpBar.gameObject.SetActive(true);
-                    reloadTime = holdTimer;
+                    //reloadTime = holdTimer;
+                    reloadTime = slowdownTimer;
                 }
                 break;
             case Weapons.Grenade:  // 7
@@ -1219,13 +1268,42 @@ public class CharacterControl : MonoBehaviour
 
             weaponList[(int)previousWeapon].SetActive(false);
             weaponList[(int)equippedWeapon].SetActive(true);
-            weaponID = (int)equippedWeapon;
+            //weaponID = (int)equippedWeapon;
+
+
         }
         else
         {
             Debug.Log("Change the object's name to the correct weapon");
         }
     }
+
+    public void BuyWeapon(WeaponConfig config)
+    {
+        switch (equippedWeapon)
+        {
+
+            case Weapons.Lazer:
+                break;
+            case Weapons.Mine:
+                break;
+            case Weapons.Blunderbuss:
+                break;
+            case Weapons.Grenade:
+                break;
+            case Weapons.Fist:
+                break;
+            case Weapons.Gun:
+                break;
+            case Weapons.Sword:
+                break;
+            case Weapons.Boomerang:
+                break;
+            default:
+                break;
+        }
+    }
+
 
     public void SetLeader(PlayerTypes newLeader)
     {

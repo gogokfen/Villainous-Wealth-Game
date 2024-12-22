@@ -83,6 +83,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: The Sheeper
       objectReference: {fileID: 0}
+    - target: {fileID: 1301448923321918501, guid: e9230e2924e20b14f8ef55fb8d3c9074,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4356761914688346220, guid: e9230e2924e20b14f8ef55fb8d3c9074,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4414300389547019949, guid: e9230e2924e20b14f8ef55fb8d3c9074,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4537398765139407228, guid: e9230e2924e20b14f8ef55fb8d3c9074,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -91,6 +111,12 @@ PrefabInstance:
 --- !u!4 &724923214928975865 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 533177320882251628, guid: e9230e2924e20b14f8ef55fb8d3c9074,
+    type: 3}
+  m_PrefabInstance: {fileID: 966382899307589781}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3471139450835975736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4414300389547019949, guid: e9230e2924e20b14f8ef55fb8d3c9074,
     type: 3}
   m_PrefabInstance: {fileID: 966382899307589781}
   m_PrefabAsset: {fileID: 0}
@@ -162,6 +188,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: HeadGFX
+      value: 
+      objectReference: {fileID: 3471139450835975736}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
