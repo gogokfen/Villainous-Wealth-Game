@@ -1162,6 +1162,7 @@ MonoBehaviour:
   bodyPartsGFX: []
   propHideout: {fileID: 0}
   isTargetDummy: 1
+  cameraManagerIsOn: 0
   zoneImmunity: 0
   zoneTicksGraceAmount: 2
   PlayerID: 2
@@ -1189,6 +1190,7 @@ MonoBehaviour:
   charAnim: {fileID: 0}
   dead: 0
   hpBar: {fileID: 0}
+  emptyHpBar: {fileID: 0}
   moneyText: {fileID: 0}
   moneyAnim: {fileID: 0}
   shieldGFX: {fileID: 0}
@@ -1196,11 +1198,14 @@ MonoBehaviour:
   windUpBar: {fileID: 0}
   reloadBar: {fileID: 0}
   meleeParticleEffect: {fileID: 0}
+  speedBuffEffect: {fileID: 0}
+  healthBuffEffect: {fileID: 0}
+  leaderGlow: {fileID: 0}
+  leaderCrown: {fileID: 0}
   characterGFX: {fileID: 0}
   HeadGFX: {fileID: 0}
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
-  leaderGlow: {fileID: 0}
   winner: 0
 --- !u!114 &162726733
 MonoBehaviour:
@@ -3290,6 +3295,11 @@ PrefabInstance:
         type: 3}
       propertyPath: isTargetDummy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: cameraManagerIsOn
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7670,6 +7680,7 @@ GameObject:
   - component: {fileID: 1206977465}
   - component: {fileID: 1206977468}
   - component: {fileID: 1206977469}
+  - component: {fileID: 1206977470}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -7753,6 +7764,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closingStorm: {fileID: 840392351}
+  closingTimer: 80
+--- !u!114 &1206977470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206977463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15a003b586db7a4e82341da93bceb16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 0}
+  cameraGroup: {fileID: 0}
 --- !u!4 &1217883961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8104377922190183829, guid: 99e98d8696553ad43b7a7d7fcc3aa9a0,
@@ -10590,6 +10616,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1353082224765298307, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2353852331797208162, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
@@ -10702,6 +10733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
+      propertyPath: cameraManagerIsOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
       propertyPath: configs.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -10709,6 +10745,11 @@ PrefabInstance:
         type: 3}
       propertyPath: configs.Array.data[0]
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9188293253667133210, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13496,6 +13537,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 635109495995372412, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2353852331797208162, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
@@ -13630,6 +13676,11 @@ PrefabInstance:
         type: 3}
       propertyPath: isTargetDummy
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: cameraManagerIsOn
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14723,6 +14774,7 @@ MonoBehaviour:
   bodyPartsGFX: []
   propHideout: {fileID: 0}
   isTargetDummy: 0
+  cameraManagerIsOn: 0
   zoneImmunity: 0
   zoneTicksGraceAmount: 2
   PlayerID: 1
@@ -14750,6 +14802,7 @@ MonoBehaviour:
   charAnim: {fileID: 0}
   dead: 0
   hpBar: {fileID: 0}
+  emptyHpBar: {fileID: 0}
   moneyText: {fileID: 0}
   moneyAnim: {fileID: 0}
   shieldGFX: {fileID: 0}
@@ -14757,11 +14810,14 @@ MonoBehaviour:
   windUpBar: {fileID: 0}
   reloadBar: {fileID: 0}
   meleeParticleEffect: {fileID: 0}
+  speedBuffEffect: {fileID: 0}
+  healthBuffEffect: {fileID: 0}
+  leaderGlow: {fileID: 0}
+  leaderCrown: {fileID: 0}
   characterGFX: {fileID: 0}
   HeadGFX: {fileID: 0}
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
-  leaderGlow: {fileID: 0}
   winner: 0
 --- !u!4 &1554438631218744846
 Transform:

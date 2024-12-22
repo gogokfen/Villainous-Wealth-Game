@@ -25,9 +25,17 @@ public class BoomerangShot : WeaponBase
 
         transform.Translate(Vector3.forward * flySpeed * Time.deltaTime);
 
+        if (flySpeed < 15)
+        {
+            flySpeed += Time.deltaTime * 5;
+            rotationAmount += Time.deltaTime * 7.5f;
+        }
+            
+
         prevRotation = transform.rotation;
         transform.LookAt(lookAtTarget);
         rotationAmount += Time.deltaTime*2;
+
 
         if (upTime>=2)
         {

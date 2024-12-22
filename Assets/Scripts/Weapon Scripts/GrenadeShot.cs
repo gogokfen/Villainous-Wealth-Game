@@ -37,6 +37,9 @@ public class GrenadeShot : WeaponBase
         SC = GetComponent<SphereCollider>();
         BC = GetComponent<BoxCollider>();
         SC.enabled = false;
+
+        currentExplosionTime = currentExplosionTime - (0.75f * Mathf.InverseLerp(75, 5, throwPower));
+
         maxExplosionTime = currentExplosionTime;
 
         throwPower /= 2;

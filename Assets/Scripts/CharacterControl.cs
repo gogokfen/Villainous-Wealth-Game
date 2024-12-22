@@ -29,6 +29,7 @@ public class CharacterControl : MonoBehaviour
     [EndFoldout]
 
     public bool isTargetDummy = false;
+    public bool cameraManagerIsOn = false;
 
     [HideInInspector] public bool zoneImmunity = false;
     [HideInInspector] public int zoneTicksGraceAmount = 2;
@@ -160,6 +161,7 @@ public class CharacterControl : MonoBehaviour
 
     //[SerializeField] TextMeshProUGUI hpText;
     [SerializeField] Image hpBar;
+    [SerializeField] Image emptyHpBar;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] Animator moneyAnim;
     [SerializeField] GameObject shieldGFX;
@@ -171,7 +173,14 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] Slider reloadBar;
     float reloadTime;
 
+    [Foldout("VFX")]
     [SerializeField] ParticleSystem meleeParticleEffect;
+    [SerializeField] ParticleSystem speedBuffEffect;
+    [SerializeField] ParticleSystem healthBuffEffect;
+    [SerializeField] ParticleSystem leaderGlow;
+    [SerializeField] GameObject     leaderCrown;
+    [EndFoldout]
+
     [SerializeField] GameObject characterGFX;
 
     public GameObject HeadGFX;
@@ -189,7 +198,7 @@ public class CharacterControl : MonoBehaviour
     private int cannonBallAmount = 0;
     [SerializeField] GameObject cannonBall;
 
-    [SerializeField] ParticleSystem leaderGlow;
+
 
     [HideInInspector] public bool winner;
 
@@ -267,9 +276,7 @@ public class CharacterControl : MonoBehaviour
 
         startingColor = HeadGFX.GetComponent<Renderer>().material.color;
 
-
-
-
+        //originalHpBarPos = hpBar.transform.position;
     }
 
     public void Weapon(InputAction.CallbackContext context)
@@ -623,6 +630,14 @@ public class CharacterControl : MonoBehaviour
             {
                 headColor = new Color32((byte)(255 - paintAmount), (byte)(paintAmount), (byte)(paintAmount), headColor.a);
                 HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
+
+                Vector3 randomValue = new Vector3(UnityEngine.Random.Range(-3.75f, 3.75f), UnityEngine.Random.Range(-3.75f, 3.75f), UnityEngine.Random.Range(0, 0));
+                Vector3 randomValueScale = Vector3.one * (UnityEngine.Random.Range(1f, 1.5f));
+                hpBar.transform.localPosition = randomValue;
+                emptyHpBar.transform.localPosition = randomValue;
+
+                hpBar.transform.localScale = randomValueScale;
+                emptyHpBar.transform.localScale = randomValueScale;
             }
             else
             {
@@ -631,8 +646,15 @@ public class CharacterControl : MonoBehaviour
                 headColor = startingColor;
                 HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", headColor);
                 paintHead = false;
+
+                hpBar.transform.localPosition = Vector3.zero;
+                emptyHpBar.transform.localPosition = Vector3.zero;
+                hpBar.transform.localScale = Vector3.one;
+                emptyHpBar.transform.localScale = Vector3.one;
+
             }
         }
+        
         //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
 
         transform.position += knockbackDirection;
@@ -821,9 +843,10 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 16;
+                    attackMoveSpeed = speedBuffTimer>0 ? 30 : 24 ; //16 orignally
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
+
 
                     animTimer = 0;
                     animState = AS.Punch1Windup;
@@ -836,7 +859,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 16;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -852,7 +875,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f; // 25/60
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 16;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -871,7 +894,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 20;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
@@ -883,7 +906,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f;
                     attackDirection = moveDirection;
-                    attackMoveSpeed = 20;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
@@ -1028,7 +1051,7 @@ public class CharacterControl : MonoBehaviour
                 animState = AS.StrongPunch;
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = moveDirection;
-                attackMoveSpeed = 22;
+                attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
                 rFist.enabled = true;
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
@@ -1098,12 +1121,14 @@ public class CharacterControl : MonoBehaviour
                     {
                         hp += 5;
                         hpBar.fillAmount += 5f / 10f;
+                        healthBuffEffect.Play();
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Speed")
                     {
                         currentMaxSpeed = startingSpeed * 1.5f;
                         speedBuffTimer = 5;
+                        speedBuffEffect.Play();
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Shield")
@@ -1156,11 +1181,12 @@ public class CharacterControl : MonoBehaviour
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
                     hpBar.fillAmount = hp / 10f;
+                    //originalHpBarPos = hpBar.transform.position;
                     charAnim.SetTrigger("DMG");
 
                     headColor = Color.red;
                     paintHead = true;
-
+                    
 
 
                     meleeParticleEffect.transform.position = hitPos;
@@ -1192,7 +1218,9 @@ public class CharacterControl : MonoBehaviour
                     */
 
                     SoundManager.singleton.Damage(transform.position);
-                    CameraManager.instance.ShakeCamera(0.3f, 0.1f);
+
+                    if (cameraManagerIsOn)
+                        CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
                 }
             }
 
@@ -1234,7 +1262,8 @@ public class CharacterControl : MonoBehaviour
 
                 SoundManager.singleton.Damage(transform.position);
 
-                CameraManager.instance.ShakeCamera(0.3f, 0.1f);
+                if (cameraManagerIsOn)
+                    CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
             }
 
             //characterGFX.transform.position += knockbackDirection;
@@ -1265,7 +1294,8 @@ public class CharacterControl : MonoBehaviour
                 paintHead = true;
 
                 SoundManager.singleton.Damage(transform.position);
-                CameraManager.instance.ShakeCamera(0.3f, 0.1f);
+                if (cameraManagerIsOn)
+                    CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
             }
         }
     }
@@ -1397,9 +1427,15 @@ public class CharacterControl : MonoBehaviour
     public void SetLeader(PlayerTypes newLeader)
     {
         if (newLeader == PlayerID)
+        {
             leaderGlow.Play();
+            leaderCrown.SetActive(true);
+        }
         else
+        {
             leaderGlow.Stop();
+            leaderCrown.SetActive(false);
+        }
     }
 
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)
