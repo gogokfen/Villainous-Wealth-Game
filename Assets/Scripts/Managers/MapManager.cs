@@ -10,9 +10,8 @@ public class MapManager : MonoBehaviour
     }
     public void ResetMap()
     {
-        //Vector3 position = prefabToSpawn.transform.position;
-        //Quaternion rotation = prefabToSpawn.transform.rotation;
-        Destroy(FindAnyObjectByType<QualityLootDestructable>().gameObject);
+        //Destroy(FindAnyObjectByType<QualityLootDestructable>().gameObject);
+        DestroyMap.instance.DestroyMapElements();
         Instantiate(prefabToSpawn, location.position, location.rotation);
     }
 }

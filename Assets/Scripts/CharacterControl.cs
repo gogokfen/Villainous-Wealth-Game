@@ -347,6 +347,7 @@ public class CharacterControl : MonoBehaviour
 
         PlayerManager.PlayerCheck();
         CameraManager.instance.RemoveFromCameraGroup(gameObject);
+        TimeManager.instance.SlowTime(0.4f, 1f);
     }
     public void NextRound()
     {
