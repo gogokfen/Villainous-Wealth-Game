@@ -65,7 +65,7 @@ public class PickupManager : MonoBehaviour
         }
         */
 
-        
+        /* pickup no longer drop from the sky
         for (int i=0;i<pickups.Count;i++) //updating the position of each pickup in the scene
         {
             if (pickups[i].transform.position.y > 1) //0
@@ -79,7 +79,7 @@ public class PickupManager : MonoBehaviour
                 }
             }
         }
-
+        */
         for (int i = 0; i < coins.Count; i++) //updating the position of each pickup in the scene
         {
             if (coins[i].transform.position.y <= 1 && coins[i].name == "Coin")
@@ -186,8 +186,8 @@ public class PickupManager : MonoBehaviour
 
     private void SpawnPowerUp()
     {
-        Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
-
+        //Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+        Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), 1, transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {

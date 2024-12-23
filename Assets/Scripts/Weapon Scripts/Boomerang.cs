@@ -19,6 +19,7 @@ public class Boomerang : WeaponBase
 
     [SerializeField] GameObject boomerang;
     [SerializeField] GameObject boomerangGFX;
+    private GameObject boomerangReference;
     //private bool canThrow = true;
     private float windup;
 
@@ -43,6 +44,11 @@ public class Boomerang : WeaponBase
     private void OnDisable()
     {
         boomerangGFX.SetActive(false);
+
+        if (boomerangReference!= null)
+        {
+            Destroy(boomerangReference);
+        }
     }
 
     public void Thrown(InputAction.CallbackContext context)
@@ -90,6 +96,8 @@ public class Boomerang : WeaponBase
             tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f; //15 + windup * 37.5f
             if ((5+windup*65f)>40)
                 tempBoomrang.GetComponent<BoomerangShot>().flySpeed = 40;
+
+            boomerangReference = tempBoomrang;
 
             if (TripleBoomerangUpgrade)
             {
@@ -155,6 +163,7 @@ public class Boomerang : WeaponBase
                             if (boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang Shot")
                             {
                                 catchCD = 0;
+                                boomerangReference = null;
                                 Destroy(boomrangSearch[i].gameObject);
 
                                 canThrow = true;
