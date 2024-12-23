@@ -199,7 +199,14 @@ public class PickupManager : MonoBehaviour
         }
         else if (randomPowerup == 1)
         {
-            SpawnPowerUp();
+            GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
+            tempPowerup.name = "CoinSack";
+
+            pickups.Add(tempPowerup);
+            Destroy(tempPowerup, 20);
+
+            //SpawnPowerUp();
+
             //disabled health pickup, time for cursed code
             /*
             GameObject tempPowerup = Instantiate(healthPowerup, tempPos, Quaternion.identity);
@@ -241,7 +248,14 @@ public class PickupManager : MonoBehaviour
         }
         else if (randomPowerup == 1)
         {
-            SpawnPowerUp();
+            GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
+            tempPowerup.name = "CoinSack";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            Destroy(tempPowerup, 20);
+
+            //SpawnPowerUp();
+
             //disabled health pickup, time for cursed code
             /*
             GameObject tempPowerup = Instantiate(healthPowerup, powerupPosition, Quaternion.identity);
