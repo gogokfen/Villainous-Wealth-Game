@@ -26,7 +26,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField] GameObject winnerBG;
     [SerializeField] TextMeshProUGUI winnerText;
     [EndFoldout]
-
+    public GameObject winner;
     private bool timeStop;
     private void Awake()
     {
@@ -81,6 +81,7 @@ public class RoundManager : MonoBehaviour
             //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
         AssignUltimateWinner(); //Assigns winner with most coins
+        WinnerManager.instance.WinnerScene();
         //gameEnd.Invoke();
     }
 
@@ -126,7 +127,8 @@ public class RoundManager : MonoBehaviour
         CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
         string playerIDWinner = null;
         int mostCoins = 0;
-
+        //CharacterControl winner;
+        
         foreach (CharacterControl character in characters)
         {
             int coins = character.coins;
@@ -135,12 +137,13 @@ public class RoundManager : MonoBehaviour
             {
                 mostCoins = coins;
                 playerIDWinner = character.HeadGFX.name;
+                winner = character.gameObject;
             }
         }
 
         if (playerIDWinner != null)
         {
-            winnerBG.SetActive(true);
+            //winnerBG.SetActive(true);
             if (mostCoins == 1) winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coin!";
             else winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coins!";
         }
