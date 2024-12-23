@@ -26,6 +26,8 @@ public class RoundManager : MonoBehaviour
     [SerializeField] GameObject winnerBG;
     [SerializeField] TextMeshProUGUI winnerText;
     [EndFoldout]
+
+    private bool timeStop;
     private void Awake()
     {
         //playerManager = FindAnyObjectByType<PlayerManager>();
@@ -56,6 +58,7 @@ public class RoundManager : MonoBehaviour
         //PauseMenu.instance.SubToPause();
         while (currentRound != totalRounds)
         {
+            SoundManager.singleton.PlayNextClip(); //
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
@@ -65,6 +68,8 @@ public class RoundManager : MonoBehaviour
             currentRound++; //ups the round counter
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {
+                TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
+                SoundManager.singleton.MaloMart(); //plays Shop Music
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 PlayerManager.roundOver = false; //resets the bool for the next round
@@ -140,5 +145,4 @@ public class RoundManager : MonoBehaviour
             else winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coins!";
         }
     }
-
 }

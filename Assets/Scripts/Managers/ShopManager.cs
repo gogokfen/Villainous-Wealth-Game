@@ -130,7 +130,7 @@ public class ShopManager : MonoBehaviour
         while (remainingTime > 0)
         {
             timerText.text = $"Timer: {remainingTime.ToString("F1")}";
-            remainingTime -= Time.deltaTime;
+            remainingTime -= Time.unscaledDeltaTime;
             yield return null;
         }
         shopUI.SetActive(false);
