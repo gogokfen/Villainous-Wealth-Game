@@ -21,7 +21,7 @@ public class CharacterControl : MonoBehaviour
     private float teleportDistance = 6;
     private float teleportCD;
     public bool Invisibility = false; //self explanatory
-    [SerializeField] GameObject[] bodyPartsGFX;
+    public GameObject[] bodyPartsGFX;
     [SerializeField] GameObject propHideout;
     private float invisibilityduration;
     private float invisibilityCD;
@@ -108,6 +108,7 @@ public class CharacterControl : MonoBehaviour
 
     SphereCollider rFist;
     [SerializeField] SphereCollider lFist;
+    [SerializeField] SphereCollider strongFist;
 
     [SerializeField] Animator charAnim;
 
@@ -225,6 +226,7 @@ public class CharacterControl : MonoBehaviour
         rFist = weaponList[0].GetComponent<SphereCollider>();
 
         lFist.GetComponent<WeaponBase>().playerID = PlayerID;
+        strongFist.GetComponent<WeaponBase>().playerID = PlayerID;
 
         animState = AS.idle;
 
@@ -575,6 +577,12 @@ public class CharacterControl : MonoBehaviour
 
         holdTimer -= Time.deltaTime;
         slowdownTimer -= Time.deltaTime;
+
+        if (holdTimer<=0)
+        {
+            strongFist.enabled = false;
+        }
+
         /*
         windUpBar.value = Mathf.InverseLerp(reloadTime, 0, holdTimer);
         if (holdTimer <= 0)
@@ -717,6 +725,8 @@ public class CharacterControl : MonoBehaviour
                 if (equippedWeapon == Weapons.Fist)
                 {
                     rFist.enabled = false;
+
+                    //strongFist.enabled = false;
                 }
 
                 CC.Move(moveDirection * moveSpeed * Time.deltaTime);
@@ -1053,7 +1063,8 @@ public class CharacterControl : MonoBehaviour
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = moveDirection;
                 attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
-                rFist.enabled = true;
+                //rFist.enabled = true;
+                strongFist.enabled = true;
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
                 //rArm.localPosition = new Vector3(0.75f, 0, 0);
@@ -1111,7 +1122,7 @@ public class CharacterControl : MonoBehaviour
                     }
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
-                        coins+=5; //change later
+                        coins+=3; //change later
                         MoneyManager.singleton.ModifyMoney(PlayerID, 5);
                         moneyText.text = coins.ToString();
                         moneyAnim.Play("Player Coin Pickup");
