@@ -62,6 +62,7 @@ public class RoundManager : MonoBehaviour
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+            stormManager.ResetStorm(); //resets storm, remove after alpha
             AssignWinner(); //gives winner of round all money dropped
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
             //roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
