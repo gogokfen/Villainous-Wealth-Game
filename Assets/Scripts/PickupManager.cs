@@ -85,9 +85,11 @@ public class PickupManager : MonoBehaviour
             if (coins[i].transform.position.y <= 1 && coins[i].name == "Coin")
             {
                 GameObject tempCoin =Instantiate(coinPickup, new Vector3(coins[i].transform.position.x, 1, coins[i].transform.position.z),Quaternion.identity);
-                tempCoin.name = "Coin";
+                tempCoin.name = "Coin2";
                 coins[i].gameObject.SetActive(false);
                 coins.Remove(coins[i]);
+
+                coins.Add(tempCoin);
             }
         }
 

@@ -1108,10 +1108,19 @@ public class CharacterControl : MonoBehaviour
                     Destroy(pickupSearch[i].transform.gameObject);
                     return;
                 }
-                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall" || pickupSearch[i].transform.name == "CoinSack")
+                else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Coin2" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall" || pickupSearch[i].transform.name == "CoinSack")
                 {
                     SoundManager.singleton.Pickup(transform.position);
                     if (pickupSearch[i].transform.name == "Coin")
+                    {
+                        coins++; //change later
+                        MoneyManager.singleton.ModifyMoney(PlayerID, 1);
+                        moneyText.text = coins.ToString();
+                        moneyAnim.Play("Player Coin Pickup");
+                        pickupSearch[i].transform.gameObject.SetActive(false);
+                        PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
+                    }
+                    else if (pickupSearch[i].transform.name == "Coin2")
                     {
                         coins++; //change later
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
