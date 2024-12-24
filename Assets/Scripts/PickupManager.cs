@@ -195,7 +195,13 @@ public class PickupManager : MonoBehaviour
             tempPowerup.name = "CoinSack";
 
             pickups.Add(tempPowerup);
-            Destroy(tempPowerup, 20);
+
+            coins.Add(tempPowerup);
+
+            
+            //Destroy(tempPowerup, 20);
+
+
         }
         else if (randomPowerup == 1)
         {
@@ -203,7 +209,12 @@ public class PickupManager : MonoBehaviour
             tempPowerup.name = "CoinSack";
 
             pickups.Add(tempPowerup);
-            Destroy(tempPowerup, 20);
+
+            coins.Add(tempPowerup);
+
+            //Destroy(tempPowerup, 20);
+
+
 
             //SpawnPowerUp();
 
@@ -244,7 +255,10 @@ public class PickupManager : MonoBehaviour
             tempPowerup.name = "CoinSack";
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
-            Destroy(tempPowerup, 20);
+
+            coins.Add(tempPowerup);
+
+            //Destroy(tempPowerup, 20);
         }
         else if (randomPowerup == 1)
         {
@@ -252,7 +266,12 @@ public class PickupManager : MonoBehaviour
             tempPowerup.name = "CoinSack";
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
-            Destroy(tempPowerup, 20);
+
+            coins.Add(tempPowerup);
+
+            //Destroy(tempPowerup, 20);
+
+
 
             //SpawnPowerUp();
 
