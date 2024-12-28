@@ -1297,6 +1297,7 @@ MonoBehaviour:
   propHideout: {fileID: 0}
   isTargetDummy: 1
   cameraManagerIsOn: 0
+  mouseMovement: 0
   zoneImmunity: 0
   zoneTicksGraceAmount: 2
   PlayerID: 2
@@ -3415,7 +3416,7 @@ PrefabInstance:
     - target: {fileID: 7841318357815598602, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8213661146023656113, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -6053,7 +6054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &940451153
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6064,9 +6065,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 4ffece427f5133f4cb9a05315c9ec74d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6162,7 +6163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c7325229486bd84ebbbd94eb78661c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicAS: {fileID: 0}
+  musicAS: {fileID: 940451153}
   musicClips: []
   maloMart: {fileID: 0}
   melee1: {fileID: 8300000, guid: 214f6690f8dcc05478cbee324f9a88e0, type: 3}
@@ -11090,7 +11091,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1618554451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11370,6 +11371,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1028425750602651232, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: test
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1353082224765298307, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
@@ -11483,6 +11489,11 @@ PrefabInstance:
     - target: {fileID: 6770467643748140188, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: GasCloudUpgrade
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: mouseMovement
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
@@ -13044,7 +13055,7 @@ GameObject:
   - component: {fileID: 1831556591}
   - component: {fileID: 1831556590}
   - component: {fileID: 1831556589}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14420,7 +14431,7 @@ PrefabInstance:
     - target: {fileID: 7841318357815598602, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -15669,6 +15680,7 @@ MonoBehaviour:
   propHideout: {fileID: 0}
   isTargetDummy: 0
   cameraManagerIsOn: 0
+  mouseMovement: 0
   zoneImmunity: 0
   zoneTicksGraceAmount: 2
   PlayerID: 1

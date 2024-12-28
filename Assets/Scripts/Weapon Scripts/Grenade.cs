@@ -26,6 +26,8 @@ public class Grenade : WeaponBase
 
     int attackState = 0;
 
+    [SerializeField] GameObject rangeIndicator;
+
     private void Start()
     {
         damageType = damageTypes.bounceOffProjectile;
@@ -61,6 +63,8 @@ public class Grenade : WeaponBase
     {
         if (attackCooldown > 0)
         {
+            rangeIndicator.SetActive(false);
+
             attackCooldown -= Time.deltaTime;
 
             reloadSlider.gameObject.SetActive(true);
@@ -75,6 +79,14 @@ public class Grenade : WeaponBase
 
         if (attackState ==1 && attackCooldown<=0) 
         {
+            rangeIndicator.SetActive(true);
+
+            float throwPowerCalc = 5 + windup*125f;
+            if (throwPowerCalc > 75)
+                throwPowerCalc = 75;
+
+            rangeIndicator.transform.position = transform.position + transform.forward + transform.forward * Mathf.Lerp(0,30,(windUpSlider.value *  (1 - (0.75f * Mathf.InverseLerp(75, 5, throwPowerCalc))))); // I CAN"T BELIEVE THIS WORKS
+
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);

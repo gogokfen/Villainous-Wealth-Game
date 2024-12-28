@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 2922314431179128500}
   - component: {fileID: 3432676537852555785}
   - component: {fileID: 5399256636572788824}
+  - component: {fileID: 828419477200175205}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -207,6 +208,27 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &828419477200175205
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352731964056964992}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eec5d867fb1f40846a5906ace0b5dd54, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4440636258552575766
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +573,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 300
+  m_Radius: 500
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7345928291230689543
 GameObject:
@@ -850,7 +872,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.85
+      value: 0.8499997
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
@@ -860,7 +882,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
@@ -885,7 +907,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
@@ -987,7 +1009,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
@@ -1012,7 +1034,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
@@ -1037,7 +1059,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: c7d37b0f6d78c9e4fbdec65c5b65a9a7,
         type: 3}
