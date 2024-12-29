@@ -30,6 +30,7 @@ public class CharacterControl : MonoBehaviour
 
     public bool isTargetDummy = false;
     public bool cameraManagerIsOn = false;
+    private bool mouseMovement = false;
 
     [HideInInspector] public bool zoneImmunity = false;
     [HideInInspector] public int zoneTicksGraceAmount = 2;
@@ -42,6 +43,7 @@ public class CharacterControl : MonoBehaviour
 
     public int hp = 10;
     public int coins = 0;
+    private int coinsAtRoundStart;
 
     Collider[] pickupSearch;
     [SerializeField] LayerMask pickupMask;
@@ -179,6 +181,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] ParticleSystem speedBuffEffect;
     [SerializeField] ParticleSystem healthBuffEffect;
     [SerializeField] ParticleSystem leaderGlow;
+    [SerializeField] ParticleSystem strongPunchCharged;
     [SerializeField] GameObject     leaderCrown;
     [EndFoldout]
 
@@ -191,7 +194,8 @@ public class CharacterControl : MonoBehaviour
     private bool paintHead = false;
     private float paintAmount;
     private Vector3 desiredPos;
-    private Vector3 knockbackDirection;
+    //private Vector3 knockbackDirection;
+    private Vector2 knockbackDirection;
 
     [SerializeField] GameObject playerIndicator;
 
@@ -203,8 +207,15 @@ public class CharacterControl : MonoBehaviour
 
     [HideInInspector] public bool winner;
 
+    private PlayerInput PI;
+
     void Start()
     {
+        PI = GetComponent<PlayerInput>();
+        if (PI.currentControlScheme == "Keyboard & Mouse") //you really tell me it contains a string
+            mouseMovement = true;
+            
+
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
 
         //if (isTargetDummy)
@@ -323,7 +334,7 @@ public class CharacterControl : MonoBehaviour
     public void OutTheRound()
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
-        int moneylost = (int)(0.1f * coins);
+        int moneylost = (int)(0.25f * coins);
         coins -= moneylost;
         moneyText.text = coins.ToString();
         MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
@@ -348,7 +359,8 @@ public class CharacterControl : MonoBehaviour
         SoundManager.singleton.Death(transform.position);
 
         PlayerManager.PlayerCheck();
-        CameraManager.instance.RemoveFromCameraGroup(gameObject);
+        if (cameraManagerIsOn)
+            CameraManager.instance.RemoveFromCameraGroup(gameObject);
         TimeManager.instance.SlowTime(0.4f, 1f);
     }
     public void NextRound()
@@ -360,8 +372,17 @@ public class CharacterControl : MonoBehaviour
         characterGFX.SetActive(true);
         dead = false;
         moneyText.text = coins.ToString();
+        coinsAtRoundStart = coins;
+        MoneyManager.singleton.UpdateRoundMoney(PlayerID,coinsAtRoundStart);
 
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
+
+        cannonBallAmount = 0; //cannon balls don't transfer between rounds
+        cannonBall.name = "" + cannonBallAmount;
+        shieldBuffTimer = -1; //making sure not starting with a buff
+        speedBuffTimer = -1;
+        knockbackDirection = Vector2.zero;
+        useWeapon = false; //making sure not attacking at the start of round
 
         charAnim.Play("Idle");
         winner = false;
@@ -412,15 +433,24 @@ public class CharacterControl : MonoBehaviour
 
         identicalDamageCD -= Time.deltaTime;
 
-        if (equippedWeapon !=Weapons.Fist && Input.GetMouseButton(1)) //360 aiming with mouse
+        if (mouseMovement) //360 aiming with mouse && Input.GetMouseButton(1)  //equippedWeapon != Weapons.Fist && (Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
-            Ray raycastFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(raycastFromMouse, out RaycastHit raycastHit))
+            LayerMask LM = 1024; //floor layer
+            Ray raycastFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition); //because it's a raycast, it hits invisble colliders
+            if (Physics.Raycast(raycastFromMouse, out RaycastHit raycastHit, 500, LM))
             {
             }
             raycastHit.point = new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z); //preventing the char from unwanted rotation;
             transform.LookAt(raycastHit.point);
+
+            //mouseMovement = true;
+            /*
+             *         else
+            mouseMovement = false;
+            */
         }
+
+
 
         AttackScan(); //scanning the area around the character for projectiles & melee attacks - damage intances
 
@@ -448,7 +478,7 @@ public class CharacterControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
             SwapWeapon();
 
-        if (shieldInput && blockCD <= 0)
+        if (shieldInput && blockCD <= 0) //disable for now
         {
             blockBubble.SetActive(true);
             blockDuration = 0.75f;
@@ -466,7 +496,10 @@ public class CharacterControl : MonoBehaviour
 
         if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
         {
-            rollDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            if (!mouseMovement)
+                rollDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            else
+                rollDirection = transform.forward;
             if (rollDirection == Vector3.zero)
             {
                 rollDirection = transform.forward;
@@ -592,7 +625,7 @@ public class CharacterControl : MonoBehaviour
         if (slowdownTimer <= 0)
             windUpBar.gameObject.SetActive(false);
         */
-        reloadBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
+            reloadBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
         if (slowdownTimer <= 0)
             reloadBar.gameObject.SetActive(false);
 
@@ -666,8 +699,8 @@ public class CharacterControl : MonoBehaviour
         
         //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
 
-        transform.position += knockbackDirection;
-        //CC.Move(knockbackDirection);
+        //transform.position += knockbackDirection;
+        CC.Move(new Vector3 (knockbackDirection.x,0, knockbackDirection.y));
         //CC.SimpleMove(knockbackDirection);
         knockbackDirection /= (1 + Time.deltaTime * 10);
 
@@ -698,7 +731,13 @@ public class CharacterControl : MonoBehaviour
                 moveSpeed = startingSpeed * 0.35f;
             }
 
-            moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+
+            if (!mouseMovement)
+                moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+            else
+            {
+                moveDirection = transform.forward;
+            }
             if (holdTimer <= 0) //can still rotate while shooting
             {
                 //charAnim.Play("Runnig"); //CHANEL I'LL FUCKING MMURDER YOU reminder
@@ -740,7 +779,10 @@ public class CharacterControl : MonoBehaviour
                 //rFootAnim.SetBool("Walk", false);
             }
 
-            targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+            if (!mouseMovement)
+                targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
+            else
+                targetAngle = transform.eulerAngles.y;
 
             if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery || animState == AS.Sword1Recovery || animState == AS.Sword2Recovery) && !rolling) //can't rotate whiling using fists
             {
@@ -999,6 +1041,18 @@ public class CharacterControl : MonoBehaviour
                     lFist.enabled = true;
                 }
             }
+            if (animState == AS.StrongPunch)
+            {
+                if (animTimer >= 0.22f) 
+                {
+                    strongFist.enabled = false;
+                }
+                else if (animTimer >= 0.05f) 
+                {
+                    strongFist.enabled = true;
+                }
+            }
+
 
             if (animTimer >= 0.5833f) // 45/60  35/60 chanel
             {
@@ -1012,12 +1066,12 @@ public class CharacterControl : MonoBehaviour
 
             if (animState == AS.Sword1Windup || animState == AS.Sword1Active || animState == AS.Sword1Recovery)
             {
-                if (animTimer >= 0.4166f) //25/60 chanel
+                if (animTimer >= 0.45f) //25/60 chanel original || buffed version: 27/60
                 {
                     animState = AS.Sword1Recovery;
                     weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = false;
                 }
-                else if (animTimer >= 0.35f) //21/60 chanel 
+                else if (animTimer >= 0.3f) //21/60 chanel original || buffed version: 18/60
                 {
                     animState = AS.Sword1Active;
                     weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = true;
@@ -1026,12 +1080,12 @@ public class CharacterControl : MonoBehaviour
 
             if (animState == AS.Sword2Windup || animState == AS.Sword2Active || animState == AS.Sword2Recovery)
             {
-                if (animTimer >= 0.4166f) //25/60 chanel
+                if (animTimer >= 0.45f) //25/60 chanel original || buffed version: 27/60
                 {
                     animState = AS.Sword2Recovery;
                     weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = false;
                 }
-                else if (animTimer >= 0.35f) //21/60 chanel 
+                else if (animTimer >= 0.3f) //21/60 chanel  original || buffed version: 18/60
                 {
                     animState = AS.Sword2Active;
                     weaponList[(int)Weapons.Sword].GetComponent<BoxCollider>().enabled = true;
@@ -1043,13 +1097,17 @@ public class CharacterControl : MonoBehaviour
         {
             if (animState == 0)
             {
+                slowdownTimer = 0.05f;
                 if (powerPunchWindup < 0.75)
                 {
                     powerPunchWindup += Time.deltaTime;
                     //charAnim.Play("StrongPunch");
                     charAnim.SetBool("StrongPunch", true);
                     //rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
+                    if (powerPunchWindup>=0.75)
+                        strongPunchCharged.Play();
                 }
+
             }
         }
 
@@ -1063,8 +1121,11 @@ public class CharacterControl : MonoBehaviour
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = moveDirection;
                 attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
+                strongPunchCharged.Stop();
                 //rFist.enabled = true;
-                strongFist.enabled = true;
+                //strongFist.enabled = true;
+                //strongTimer = 0.5f;
+
 
                 //rArm.localPosition = new Vector3(0.75f, 0, 2 * powerPunchWindup);
                 //rArm.localPosition = new Vector3(0.75f, 0, 0);
@@ -1199,6 +1260,9 @@ public class CharacterControl : MonoBehaviour
             {
                 if (shieldBuffTimer <= 0)
                 {
+                    if (hp > 0 && hp - damage <= 0)
+                        Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
+
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
                     hpBar.fillAmount = hp / 10f;
@@ -1207,7 +1271,8 @@ public class CharacterControl : MonoBehaviour
 
                     headColor = Color.red;
                     paintHead = true;
-                    
+
+
 
 
                     meleeParticleEffect.transform.position = hitPos;
@@ -1215,13 +1280,24 @@ public class CharacterControl : MonoBehaviour
 
                     //originalPos = characterGFX.transform.position;
 
-                    
 
-                    knockbackDirection = transform.position - hitPos;
+                    knockbackDirection += new Vector2(transform.position.x - hitPos.x,transform.position.z - hitPos.z);
                     knockbackDirection.Normalize();
-                    knockbackDirection *=0.2f;
-                    knockbackDirection *= (damage/2f);
-                    knockbackDirection.y = 0;
+                    knockbackDirection *= 0.15f;
+                    knockbackDirection *= (damage / 2f);
+                    //knockbackDirection.y = 0;
+
+                    /*
+                    knockbackDirection = transform.position - hitPos;
+                    Debug.Log("Original:" + knockbackDirection);
+                    knockbackDirection.Normalize();
+                    Debug.Log("Normalized:" + knockbackDirection);
+                    knockbackDirection *= 0.2f;
+                    knockbackDirection *= (damage / 2f);
+                    //knockbackDirection.y = 0;
+                    Debug.Log("Final:" + knockbackDirection);
+                    */
+
 
                     //characterGFX.transform.position += knockbackDirection;
 
@@ -1268,6 +1344,9 @@ public class CharacterControl : MonoBehaviour
                 else
                     damageBasedOnDistance = damage;
 
+                if (hp > 0 && hp - damage <= 0)
+                    Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
+
                 hp = hp - damageBasedOnDistance;
                 //hpText.text = ("HP: " + hp);
                 hpBar.fillAmount = hp / 10f;
@@ -1275,12 +1354,18 @@ public class CharacterControl : MonoBehaviour
                 headColor = Color.red;
                 paintHead = true;
 
+                knockbackDirection = new Vector2(transform.position.x - grenadePos.x, transform.position.z - grenadePos.z);
+                knockbackDirection.Normalize();
+                knockbackDirection *= 0.15f;
+                knockbackDirection *= (damageBasedOnDistance / 2f);
+
+                /*
                 knockbackDirection = transform.position - grenadePos;
                 knockbackDirection.Normalize();
                 knockbackDirection *= 0.2f;
                 knockbackDirection *= (damage / 2f);
                 knockbackDirection.y = 0;
-
+                */
                 SoundManager.singleton.Damage(transform.position);
 
                 if (cameraManagerIsOn)
@@ -1307,6 +1392,9 @@ public class CharacterControl : MonoBehaviour
                 zoneTicksGraceAmount--;
             else
             {
+                if (hp > 0 && hp - damage <= 0)
+                    Leaderboard.singleton.AnnounceKill(PlayerID, PlayerID);
+
                 hp = hp - damage;
                 hpBar.fillAmount = hp / 10f;
                 charAnim.SetTrigger("DMG");

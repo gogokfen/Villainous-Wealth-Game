@@ -9,9 +9,13 @@ public class MoneyManager : MonoBehaviour
     private CharacterControl[] characters;
 
     int redMoney;
+    int redMoneyAtRoundStart;
     int greenMoney;
+    int greenMoneyAtRoundStart;
     int blueMoney;
+    int blueMoneyAtRoundStart;
     int yellowMoney;
+    int yellowMoneyAtRoundStart;
 
 
     void Start()
@@ -59,6 +63,26 @@ public class MoneyManager : MonoBehaviour
         FindLeader();
     }
 
+    public void UpdateRoundMoney(CharacterControl.PlayerTypes playerColor, int amount)
+    {
+        if (playerColor == CharacterControl.PlayerTypes.Red)
+        {
+            redMoneyAtRoundStart = amount;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Green)
+        {
+            greenMoneyAtRoundStart = amount;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Blue)
+        {
+            blueMoneyAtRoundStart = amount;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Yellow)
+        {
+            yellowMoneyAtRoundStart = amount;
+        }
+    }
+
     public int GetMoney(CharacterControl.PlayerTypes playerColor)
     {
         if (playerColor == CharacterControl.PlayerTypes.Red)
@@ -79,6 +103,28 @@ public class MoneyManager : MonoBehaviour
         }
         else
             return 0;
+    }
+
+    public int GetRoundMoney(CharacterControl.PlayerTypes playerColor)
+    {
+        if (playerColor == CharacterControl.PlayerTypes.Red)
+        {
+            return redMoneyAtRoundStart;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Green)
+        {
+            return greenMoneyAtRoundStart;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Blue)
+        {
+            return blueMoneyAtRoundStart;
+        }
+        else if (playerColor == CharacterControl.PlayerTypes.Yellow)
+        {
+            return yellowMoneyAtRoundStart;
+        }
+        else
+            return -1;
     }
 
     /*
@@ -108,7 +154,7 @@ public class MoneyManager : MonoBehaviour
         else if (greenMoney > redMoney && greenMoney > blueMoney && greenMoney > yellowMoney)
             leader = CharacterControl.PlayerTypes.Green;
         else if (yellowMoney > redMoney && yellowMoney > greenMoney && yellowMoney > blueMoney)
-            leader = CharacterControl.PlayerTypes.Blue;
+            leader = CharacterControl.PlayerTypes.Yellow;
         else
             leader = CharacterControl.PlayerTypes.Yellow;
 
