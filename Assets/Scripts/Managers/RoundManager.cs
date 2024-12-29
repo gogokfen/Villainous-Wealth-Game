@@ -58,7 +58,7 @@ public class RoundManager : MonoBehaviour
         //PauseMenu.instance.SubToPause();
         while (currentRound != totalRounds)
         {
-            SoundManager.singleton.PlayNextClip(); //
+            SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over

@@ -51,4 +51,9 @@ public class CameraManager : MonoBehaviour
     {
         cameraGroup.RemoveMember(player.transform);
     }
+
+    public void AddToGroup(GameObject objectToAdd)
+    {
+        cameraGroup.AddMember(objectToAdd.transform, 1f, 0f);
+    }
 }
