@@ -21,7 +21,8 @@ public class WinnerManager : MonoBehaviour
     }
     public void WinnerScene()
     {
-        coinWinner = roundManager.winner.GetComponent<CharacterControl>().coins;
+        coinWinner = MoneyManager.singleton.FindMostMoney();
+        //coinWinner = roundManager.winner.GetComponent<CharacterControl>().coins;
         playerWinner = roundManager.winner;
         winnerText.text = playerWinner.GetComponent<CharacterControl>().HeadGFX.name;
         playerWinner.GetComponent<CharacterControl>().enabled = false;

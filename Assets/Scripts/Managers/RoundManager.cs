@@ -32,7 +32,7 @@ public class RoundManager : MonoBehaviour
     {
         //playerManager = FindAnyObjectByType<PlayerManager>();
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
     }
 
@@ -65,6 +65,8 @@ public class RoundManager : MonoBehaviour
             stormManager.ResetStorm(); //resets storm, remove after alpha
             AssignWinner(); //gives winner of round all money dropped
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
+            Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
+            yield return new WaitUntil(() => Leaderboard.singleton.leaderboard.activeSelf == false); //waits until leaderboard is deactivated
             //roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
             currentRound++; //ups the round counter
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
@@ -132,7 +134,7 @@ public class RoundManager : MonoBehaviour
         
         foreach (CharacterControl character in characters)
         {
-            int coins = character.coins;
+            int coins = MoneyManager.singleton.GetMoney(character.PlayerID);
 
             if (coins > mostCoins)
             {
@@ -140,13 +142,6 @@ public class RoundManager : MonoBehaviour
                 playerIDWinner = character.HeadGFX.name;
                 winner = character.gameObject;
             }
-        }
-
-        if (playerIDWinner != null)
-        {
-            //winnerBG.SetActive(true);
-            if (mostCoins == 1) winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coin!";
-            else winnerText.text = $"{playerIDWinner} Wins with {mostCoins} coins!";
         }
     }
 }

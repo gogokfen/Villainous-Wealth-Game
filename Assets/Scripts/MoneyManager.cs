@@ -163,4 +163,19 @@ public class MoneyManager : MonoBehaviour
             characters[i].SetLeader(leader);
         }
     }
+
+    public int FindMostMoney()
+    {
+         if (redMoney > blueMoney && redMoney > greenMoney && redMoney > yellowMoney)
+            return redMoney;
+        else if (greenMoney > redMoney && greenMoney > blueMoney && greenMoney > yellowMoney)
+            return greenMoney;
+        else if (blueMoney > redMoney && blueMoney > greenMoney && blueMoney > yellowMoney)
+            return blueMoney;
+        else if (yellowMoney > redMoney && yellowMoney > greenMoney && yellowMoney > blueMoney)
+            return yellowMoney;
+        else
+            return yellowMoney;
+    }
+
 }

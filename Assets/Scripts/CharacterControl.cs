@@ -42,7 +42,7 @@ public class CharacterControl : MonoBehaviour
     //bool onOff = false;
 
     public int hp = 10;
-    public int coins = 0;
+    
     private int coinsAtRoundStart;
 
     Collider[] pickupSearch;
@@ -334,10 +334,9 @@ public class CharacterControl : MonoBehaviour
     public void OutTheRound()
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
-        int moneylost = (int)(0.25f * coins);
-        coins -= moneylost;
-        moneyText.text = coins.ToString();
+        int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
         MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
+        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
         if (moneylost == 0)
             moneylost = 1;
         for (int i =0;i<moneylost;i++)
@@ -371,8 +370,8 @@ public class CharacterControl : MonoBehaviour
         CC.enabled = true;
         characterGFX.SetActive(true);
         dead = false;
-        moneyText.text = coins.ToString();
-        coinsAtRoundStart = coins;
+        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
+        coinsAtRoundStart = MoneyManager.singleton.GetMoney(PlayerID);
         MoneyManager.singleton.UpdateRoundMoney(PlayerID,coinsAtRoundStart);
 
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
@@ -907,6 +906,7 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
                     SoundManager.singleton.Melee1(transform.position);
+                    RumbleManager.instance.RumblePulse(0.2f, 0.2f, 0.5f, PI);
                 }
                 else if (animState == AS.Punch1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -1097,6 +1097,7 @@ public class CharacterControl : MonoBehaviour
         {
             if (animState == 0)
             {
+                if ((int)powerPunchWindup * 10 % 3 == 0) RumbleManager.instance.RumblePulse(1f, 1f, 0.5f, PI);
                 slowdownTimer = 0.05f;
                 if (powerPunchWindup < 0.75)
                 {
@@ -1174,27 +1175,27 @@ public class CharacterControl : MonoBehaviour
                     SoundManager.singleton.Pickup(transform.position);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
-                        coins++; //change later
+                        
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
-                        moneyText.text = coins.ToString();
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup");
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
                     else if (pickupSearch[i].transform.name == "Coin2")
                     {
-                        coins++; //change later
+                        
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
-                        moneyText.text = coins.ToString();
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup");
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
-                        coins+=3; //change later
-                        MoneyManager.singleton.ModifyMoney(PlayerID, 5);
-                        moneyText.text = coins.ToString();
+                        
+                        MoneyManager.singleton.ModifyMoney(PlayerID, 3);
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup");
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using VInspector;
+using UnityEngine.UI;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -10,13 +12,42 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] TextMeshProUGUI killsAnnouncer;
     [SerializeField] Animator killsAnnouncerAnimation;
 
-    [SerializeField] GameObject leaderboard;
+    [SerializeField] public GameObject leaderboard;
     private bool leaderboardActive = false;
 
-    [SerializeField] TextMeshProUGUI redPlayerText;
-    [SerializeField] TextMeshProUGUI greenPlayerText;
-    [SerializeField] TextMeshProUGUI bluePlayerText;
-    [SerializeField] TextMeshProUGUI yellowPlayerText;
+    // [SerializeField] TextMeshProUGUI redPlayerText;
+    // [SerializeField] TextMeshProUGUI greenPlayerText;
+    // [SerializeField] TextMeshProUGUI bluePlayerText;
+    // [SerializeField] TextMeshProUGUI yellowPlayerText;
+    [SerializeField] GameObject[] leaderboardPlayerPrefabs;
+
+
+    [SerializeField] Sprite[] portraits;
+
+    [Foldout("Red Player")]
+    [SerializeField] TextMeshProUGUI redPlayerName;
+    [SerializeField] TextMeshProUGUI redPlayerCoins;
+    [SerializeField] TextMeshProUGUI redPlayerKills;
+    [SerializeField] Image redPlayerPortrait;
+    [EndFoldout]
+    [Foldout("Green Player")]
+    [SerializeField] TextMeshProUGUI greenPlayerName;
+    [SerializeField] TextMeshProUGUI greenPlayerCoins;
+    [SerializeField] TextMeshProUGUI greenPlayerKills;
+    [SerializeField] Image greenPlayerPortrait;
+    [EndFoldout]
+    [Foldout("Blue Player")]
+    [SerializeField] TextMeshProUGUI bluePlayerName;
+    [SerializeField] TextMeshProUGUI bluePlayerCoins;
+    [SerializeField] TextMeshProUGUI bluePlayerKills;
+    [SerializeField] Image bluePlayerPortrait;
+    [EndFoldout]
+    [Foldout("Yellow Player")]
+    [SerializeField] TextMeshProUGUI yellowPlayerName;
+    [SerializeField] TextMeshProUGUI yellowPlayerCoins;
+    [SerializeField] TextMeshProUGUI yellowPlayerKills;
+    [SerializeField] Image yellowPlayerPortrait;
+    [EndFoldout]
 
     private CharacterControl[] characters;
     /*
@@ -28,9 +59,9 @@ public class Leaderboard : MonoBehaviour
 
     private struct PlayerStats
     {
-        public PlayerStats(CharacterControl characterRefrence, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound)
+        public PlayerStats(CharacterControl characterReference, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound)
         {
-            this.characterRefrence = characterRefrence;
+            this.characterReference = characterReference;
             this.name = name;
             this.roundStartMoney = roundStartMoney;
             this.currentMoney = currentMoney;
@@ -39,7 +70,7 @@ public class Leaderboard : MonoBehaviour
             this.wonThisRound = wonThisRound;
         }
 
-        public CharacterControl characterRefrence;
+        public CharacterControl characterReference;
         public string name;
         public int roundStartMoney;
         public int currentMoney;
@@ -68,24 +99,36 @@ public class Leaderboard : MonoBehaviour
         {
             if (character.PlayerID == CharacterControl.PlayerTypes.Red)
             {
-                redPlayer.characterRefrence = character;
+                leaderboardPlayerPrefabs[0].SetActive(true);
+                redPlayer.characterReference = character;
                 redPlayer.name = character.HeadGFX.name;
+                redPlayerPortrait.sprite = SetPlayerPortrait(redPlayer.name);
+                redPlayerName.text = redPlayer.name;
             }
 
             else if (character.PlayerID == CharacterControl.PlayerTypes.Green)
             {
-                greenPlayer.characterRefrence = character;
+                leaderboardPlayerPrefabs[1].SetActive(true);
+                greenPlayer.characterReference = character;
                 greenPlayer.name = character.HeadGFX.name;
+                greenPlayerPortrait.sprite = SetPlayerPortrait(greenPlayer.name);
+                greenPlayerName.text = greenPlayer.name;
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Blue)
             {
-                bluePlayer.characterRefrence = character;
+                leaderboardPlayerPrefabs[2].SetActive(true);
+                bluePlayer.characterReference = character;
                 bluePlayer.name = character.HeadGFX.name;
+                bluePlayerPortrait.sprite = SetPlayerPortrait(bluePlayer.name);
+                bluePlayerName.text = bluePlayer.name;
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Yellow)
             {
-                yellowPlayer.characterRefrence = character;
+                leaderboardPlayerPrefabs[3].SetActive(true);
+                yellowPlayer.characterReference = character;
                 yellowPlayer.name = character.HeadGFX.name;
+                yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
+                yellowPlayerName.text = yellowPlayer.name;
             }
 
         }
@@ -98,9 +141,9 @@ public class Leaderboard : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0)) && leaderboard.activeSelf)
         {
-            ShowLeaderboard();
+            leaderboard.SetActive(false);
         }
     }
 
@@ -164,68 +207,99 @@ public class Leaderboard : MonoBehaviour
         //character.HeadGFX.name;
     }
 
-    public void ShowLeaderboard()
+    public void UpdateLeaderboard()
     {
-        leaderboardActive = !leaderboardActive;
-        leaderboard.SetActive(leaderboardActive);
+        //leaderboardActive = !leaderboardActive;
+        leaderboard.SetActive(true);
 
-        if (leaderboardActive)
+        if (leaderboard.activeSelf)
         {
-            if (redPlayer.characterRefrence == null)
-                redPlayerText.gameObject.SetActive(false);
-            else
+            if (leaderboardPlayerPrefabs[0].activeSelf)
             {
                 redPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Red);
                 redPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Red);
-                //                                  color name   round$cur$killsdeaths
-                redPlayerText.text = string.Format("{0,-6}{1,-25}{2,8:N0}{3,8:N0}{4,6:N0}{5,6:N0}",
-                    CharacterControl.PlayerTypes.Red, redPlayer.name, redPlayer.roundStartMoney, (redPlayer.currentMoney-redPlayer.roundStartMoney), redPlayer.kills, redPlayer.deaths);
-
-                //Debug.Log(redPlayerText.text);
-                /*
-                string output;
-                output = string.Format("{0,-12}{1,8:yyyy}{2,12:N0}{3,8:yyyy}{4,12:N0}{5,14:P1}",
-                       "hello", 1958, 1234567, 1970, 7654321,
-                       (7654321 - 1234567) / (double)1234567);
-                Debug.Log(output);
-                */
+                redPlayerCoins.text = redPlayer.currentMoney.ToString();
+                redPlayerKills.text = redPlayer.kills.ToString();
             }
-
-            if (greenPlayer.characterRefrence == null)
-                greenPlayerText.gameObject.SetActive(false);
-            else
+            if (leaderboardPlayerPrefabs[1].activeSelf)
             {
                 greenPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Green);
                 greenPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Green);
-                greenPlayerText.text = string.Format("{0,-6}{1,-25}{2,8:N0}{3,8:N0}{4,6:N0}{5,6:N0}",
-                    CharacterControl.PlayerTypes.Green, greenPlayer.name, greenPlayer.roundStartMoney, (greenPlayer.currentMoney - greenPlayer.roundStartMoney), greenPlayer.kills, greenPlayer.deaths);
-
-                //Debug.Log(greenPlayerText.text);
+                greenPlayerCoins.text = greenPlayer.currentMoney.ToString();
+                greenPlayerKills.text = greenPlayer.kills.ToString();
             }
-
-            if (bluePlayer.characterRefrence == null)
-                bluePlayerText.gameObject.SetActive(false);
-            else
+            if (leaderboardPlayerPrefabs[2].activeSelf)
             {
                 bluePlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Blue);
                 bluePlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Blue);
-                bluePlayerText.text = string.Format("{0,-6}{1,-25}{2,8:N0}{3,8:N0}{4,6:N0}{5,6:N0}",
-                    CharacterControl.PlayerTypes.Blue, bluePlayer.name, bluePlayer.roundStartMoney, (bluePlayer.currentMoney - bluePlayer.roundStartMoney), bluePlayer.kills, bluePlayer.deaths);
-
-                //Debug.Log(greenPlayerText.text);
+                bluePlayerCoins.text = bluePlayer.currentMoney.ToString();
+                bluePlayerKills.text = bluePlayer.kills.ToString();
             }
-
-            if (yellowPlayer.characterRefrence == null)
-                yellowPlayerText.gameObject.SetActive(false);
-            else
+            if (leaderboardPlayerPrefabs[3].activeSelf)
             {
                 yellowPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Yellow);
                 yellowPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Yellow);
-                yellowPlayerText.text = string.Format("{0,-6}{1,-25}{2,8:N0}{3,8:N0}{4,6:N0}{5,6:N0}",
-                    CharacterControl.PlayerTypes.Yellow, yellowPlayer.name, yellowPlayer.roundStartMoney, (yellowPlayer.currentMoney - yellowPlayer.roundStartMoney), yellowPlayer.kills, yellowPlayer.deaths);
-
-                //Debug.Log(greenPlayerText.text);
+                yellowPlayerCoins.text = yellowPlayer.currentMoney.ToString();
+                yellowPlayerKills.text = yellowPlayer.kills.ToString();
             }
+        }
+    }
+
+    private Sprite SetPlayerPortrait(string name)
+    {
+        switch (name)
+        {
+            case "Dragon":
+                return portraits[0];
+
+            case "Monopoly Dude":
+                return portraits[1];
+
+            case "Dummy":
+                return portraits[2];
+
+            case "Boxhead":
+                return portraits[3];
+
+            case "Big Daddy":
+                return portraits[4];
+
+            case "Guardtron":
+                return portraits[5];
+
+            case "RI":
+                return portraits[6];
+
+            case "The Sheeper":
+                return portraits[7];
+
+            case "Jacko":
+                return portraits[8];
+
+            case "PC Pirate":
+                return portraits[9];
+
+            case "Kerenboy":
+                return portraits[10];
+
+            case "Nuke Man":
+                return portraits[11];
+
+            case "Stronghold Smasher":
+                return portraits[12];
+
+            case "Zolda":
+                return portraits[13];
+
+            case "Donte":
+                return portraits[14];
+
+            case "Booba":
+                return portraits[15];
+
+            case "Shamayim":
+                return portraits[16];
+            default: return null;
         }
     }
 }
