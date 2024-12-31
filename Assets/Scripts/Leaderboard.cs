@@ -9,11 +9,11 @@ public class Leaderboard : MonoBehaviour
 {
     public static Leaderboard singleton { get; private set; }
 
-    [SerializeField] TextMeshProUGUI killsAnnouncer;
-    [SerializeField] Animator killsAnnouncerAnimation;
+    public TextMeshProUGUI killsAnnouncer;
+    public Animator killsAnnouncerAnimation;
 
     [SerializeField] public GameObject leaderboard;
-    private bool leaderboardActive = false;
+    //private bool leaderboardActive = false;
 
     // [SerializeField] TextMeshProUGUI redPlayerText;
     // [SerializeField] TextMeshProUGUI greenPlayerText;
@@ -130,7 +130,6 @@ public class Leaderboard : MonoBehaviour
                 yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
                 yellowPlayerName.text = yellowPlayer.name;
             }
-
         }
     }
 
@@ -151,43 +150,43 @@ public class Leaderboard : MonoBehaviour
     {
         if (killingPlayer == CharacterControl.PlayerTypes.Red)
         {
-            killsAnnouncer.text = redPlayer.name;
+            killsAnnouncer.text = $"<sprite name=\"{redPlayer.name}\">";
             redPlayer.kills++;
         }
         else if (killingPlayer == CharacterControl.PlayerTypes.Green)
         {
-            killsAnnouncer.text = greenPlayer.name;
+            killsAnnouncer.text = $"<sprite name=\"{greenPlayer.name}\">";
             greenPlayer.kills++;
         }
         else if (killingPlayer == CharacterControl.PlayerTypes.Blue)
         {
-            killsAnnouncer.text = bluePlayer.name;
+            killsAnnouncer.text = $"<sprite name=\"{bluePlayer.name}\">";
             bluePlayer.kills++;
         }
         else if (killingPlayer == CharacterControl.PlayerTypes.Yellow)
         {
-            killsAnnouncer.text = yellowPlayer.name;
+            killsAnnouncer.text = $"<sprite name=\"{yellowPlayer.name}\">";
             yellowPlayer.kills++;
         }
 
         if (dyingPlayer == CharacterControl.PlayerTypes.Red)
         {
-            killsAnnouncer.text += " has killed " + redPlayer.name;
+            killsAnnouncer.text += " has killed " + $"<sprite name=\"{redPlayer.name}\">";
             redPlayer.deaths++;
         }
         else if (dyingPlayer == CharacterControl.PlayerTypes.Green)
         {
-            killsAnnouncer.text += " has killed " + greenPlayer.name;
+            killsAnnouncer.text += " has killed " + $"<sprite name=\"{greenPlayer.name}\">";
             greenPlayer.deaths++;
         }
         else if (dyingPlayer == CharacterControl.PlayerTypes.Blue)
         {
-            killsAnnouncer.text += " has killed " + bluePlayer.name;
+            killsAnnouncer.text += " has killed " + $"<sprite name=\"{bluePlayer.name}\">";
             bluePlayer.deaths++;
         }
         else if (dyingPlayer == CharacterControl.PlayerTypes.Yellow)
         {
-            killsAnnouncer.text += " has killed " + yellowPlayer.name;
+            killsAnnouncer.text += " has killed " + $"<sprite name=\"{yellowPlayer.name}\">";
             yellowPlayer.deaths++;
         }
 
@@ -199,13 +198,14 @@ public class Leaderboard : MonoBehaviour
         */
     }
 
-    public void AnnounceKill(string killingPlayer, string dyingPlayer)
-    {
-        killsAnnouncer.text = killingPlayer + " Player has killed " + dyingPlayer + " Player!";
-        killsAnnouncerAnimation.Play("Announcement");
+    // public void AnnounceKill(string killingPlayer, string dyingPlayer)
+    // {
+    //     killsAnnouncer.text = $"<sprite name=\"{killingPlayer}\"> Player has killed <sprite name=\"{dyingPlayer}\"> Player!";
 
-        //character.HeadGFX.name;
-    }
+    //     killsAnnouncerAnimation.Play("Announcement");
+
+    //     //character.HeadGFX.name;
+    // }
 
     public void UpdateLeaderboard()
     {
@@ -244,7 +244,13 @@ public class Leaderboard : MonoBehaviour
             }
         }
     }
-
+    public void EmptyPlayerHands()
+    {
+        for (int i = 0; i < Leaderboard.singleton.characters.Length; i++)
+        {
+            Leaderboard.singleton.characters[i].EmptyHand();
+        }
+    }
     private Sprite SetPlayerPortrait(string name)
     {
         switch (name)
@@ -301,5 +307,10 @@ public class Leaderboard : MonoBehaviour
                 return portraits[16];
             default: return null;
         }
+    }
+    public void AnnounceText(string text)
+    {
+        Leaderboard.singleton.killsAnnouncer.text = text;
+        Leaderboard.singleton.killsAnnouncerAnimation.Play("Announcement");
     }
 }

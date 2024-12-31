@@ -5,70 +5,41 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using UnityEngine.UI;
 using TMPro;
-
 public class ShopManager : MonoBehaviour
 {
-    public GameObject[] defaultButtons; // Assign the default button for each player
+    public GameObject[] defaultButtons;
     int defaultButtonIndex = 0;
     public GameObject shopUI;
     public float shopTimer;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] GameObject[] playerShopUI;
     int shopUIIndex;
-    //int playerIndex;
-
     private void Start()
     {
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         foreach (PlayerInput player in playerInputs)
         {
-            // CharacterControl characterControl = player.GetComponent<CharacterControl>();
-            // playerShopUIs[shopUIIndex].name = characterControl.HeadGFX.name;
-            // playerShopUIs[shopUIIndex].SetActive(true);
-            // shopUIIndex++;
-            //playerIndex++;
         }
     }
     private void Update()
     {
-
     }
-
     public void Shopping()
     {
-        //Debug.Log("we shopping");
         shopUI.SetActive(true);
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         defaultButtonIndex = 0;
         shopUIIndex = 0;
-
-        // for (int i = 0; i < defaultButtons.Length; i++) //osher for loop for resetting bought items
-        // {
-        //     defaultButtons[i].GetComponent<Button>().interactable = true;
-        //     defaultButtons[i].GetComponent<ButtonSelectionTracker>().soldUI.SetActive(false);
-        //     defaultButtons[i].GetComponent<ButtonSelectionTracker>().redSelectionIcon.SetActive(false);
-        //     defaultButtons[i].GetComponent<ButtonSelectionTracker>().blueSelectionIcon.SetActive(false);
-        //     defaultButtons[i].GetComponent<ButtonSelectionTracker>().greenSelectionIcon.SetActive(false);
-        //     defaultButtons[i].GetComponent<ButtonSelectionTracker>().yellowSelectionIcon.SetActive(false);
-        // }
-
-        ResetButtons(); //resets Button UI and interactibility
+        ResetButtons();
         foreach (PlayerInput player in PlayerManager.instance.activePlayers)
         {
-            // Find the EventSystem attached to this player
             MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
             if (playerEventSystem != null)
             {
-                // Set the initial selected button for the player
                 playerEventSystem.SetSelectedGameObject(null);
                 playerEventSystem.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
-
-                // Subscribe to the Submit action for each player
                 player.actions["UI/Submit"].performed += ctx => OnSubmit(player);
-
                 defaultButtonIndex++;
-
-
                 CharacterControl characterControl = player.GetComponent<CharacterControl>();
                 playerShopUI[shopUIIndex].name = characterControl.HeadGFX.name;
                 playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(characterControl.PlayerID).ToString();
@@ -76,26 +47,18 @@ public class ShopManager : MonoBehaviour
                 shopUIIndex++;
             }
         }
-
-
         StartCoroutine(TimerCloseShop(shopTimer));
     }
-
     private void OnSubmit(PlayerInput player)
     {
-        // Get the EventSystem related to this player
         MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
         if (playerEventSystem != null)
         {
-            // Get the currently selected button
             GameObject selectedButton = playerEventSystem.currentSelectedGameObject;
-
             if (selectedButton != null)
             {
-                //Debug.Log("Player "+PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID + " Bought "+selectedButton.name+"!");
-                int itemPrice = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice; //checking & buying items
+                int itemPrice = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice;
                 if (MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID) >= itemPrice)
-                // if (PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().coins >= itemPrice)
                 {
                     MoneyManager.singleton.ModifyMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID, -itemPrice);
                     PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
@@ -108,15 +71,6 @@ public class ShopManager : MonoBehaviour
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
                     playerEventSystem.SetSelectedGameObject(null);
                 }
-
-
-
-                //PlayerManager.instance.playerList[player.playerIndex].GetComponent<InputSystemUIInputModule>().enabled = false;
-
-
-
-                //Debug.Log($"Player {player.playerIndex} pressed the submit button on {selectedButton.name}");
-                // Handle the player's selection logic here, e.g., purchasing an item
             }
             else
             {
@@ -124,7 +78,6 @@ public class ShopManager : MonoBehaviour
             }
         }
     }
-
     private IEnumerator TimerCloseShop(float delay)
     {
         float remainingTime = delay;
@@ -146,7 +99,6 @@ public class ShopManager : MonoBehaviour
             }
         }
     }
-
     private void ResetButtons()
     {
         foreach (GameObject button in defaultButtons)
@@ -160,5 +112,4 @@ public class ShopManager : MonoBehaviour
             tracker.yellowSelectionIcon.SetActive(false);
         }
     }
-
 }

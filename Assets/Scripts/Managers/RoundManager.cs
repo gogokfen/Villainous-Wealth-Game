@@ -28,17 +28,17 @@ public class RoundManager : MonoBehaviour
     [EndFoldout]
     public GameObject winner;
     private bool timeStop;
+    public GameObject[] winnerAndLosers;
     private void Awake()
     {
         //playerManager = FindAnyObjectByType<PlayerManager>();
         Cursor.visible = false;
         //Cursor.lockState = CursorLockMode.Locked;
-
     }
 
     void Start()
     {
-        if (CustomizationManager.instance !=null) totalRounds = CustomizationManager.instance.roundAmount;
+        if (CustomizationManager.instance != null) totalRounds = CustomizationManager.instance.roundAmount;
         else totalRounds = 5;
         StartCoroutine(RoundLoop());
     }
@@ -53,11 +53,12 @@ public class RoundManager : MonoBehaviour
     private IEnumerator RoundLoop()
     {
         //gameStart.Invoke();
-        
+
         PlayerManager.instance.StartRound(); //starts round
         //PauseMenu.instance.SubToPause();
         while (currentRound != totalRounds)
         {
+            Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             //Debug.Log($"Round {currentRound + 1} start"); //displays current round
@@ -73,6 +74,7 @@ public class RoundManager : MonoBehaviour
             {
                 TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 SoundManager.singleton.MaloMart(); //plays Shop Music
+                Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 PlayerManager.roundOver = false; //resets the bool for the next round
@@ -83,8 +85,8 @@ public class RoundManager : MonoBehaviour
             stormManager.ResetStorm(); //resets storm
             //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
         }
-        AssignUltimateWinner(); //Assigns winner with most coins
-        WinnerManager.instance.WinnerScene();
+        AssignUltimateWinnerAndLosers(); //Assigns winner with most coins, and losers, changes their animation accordingly
+        WinnerManager.instance.WinnerScene(); //setup Winner Scene, moves winner and losers to positions
         //gameEnd.Invoke();
     }
 
@@ -125,23 +127,39 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void AssignUltimateWinner()
+    public void AssignUltimateWinnerAndLosers()
     {
         CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        string playerIDWinner = null;
+        CharacterControl.PlayerTypes playerIDWinner = CharacterControl.PlayerTypes.Red;
         int mostCoins = 0;
+        int players = 0;
         //CharacterControl winner;
-        
+
         foreach (CharacterControl character in characters)
         {
             int coins = MoneyManager.singleton.GetMoney(character.PlayerID);
-
+            players++;
             if (coins > mostCoins)
             {
                 mostCoins = coins;
-                playerIDWinner = character.HeadGFX.name;
+                playerIDWinner = character.PlayerID;
                 winner = character.gameObject;
             }
         }
+        winnerAndLosers = new GameObject[players];
+        winnerAndLosers[0] = winner;
+        winner.GetComponent<CharacterControl>().VictoryOrLose(0);
+        int LoserIndex = 1;
+        foreach (CharacterControl character in characters)
+        {
+            if (character.PlayerID != playerIDWinner)
+            {
+                winnerAndLosers[LoserIndex] = character.gameObject;
+                character.GetComponent<CharacterControl>().VictoryOrLose(LoserIndex);
+                LoserIndex++;
+            }
+        }
     }
+
+    
 }
