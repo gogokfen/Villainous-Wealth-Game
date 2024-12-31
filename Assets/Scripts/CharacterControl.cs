@@ -203,7 +203,7 @@ public class CharacterControl : MonoBehaviour
     private int cannonBallAmount = 0;
     [SerializeField] GameObject cannonBall;
 
-
+    float rumbleTimer;
 
     [HideInInspector] public bool winner;
 
@@ -337,14 +337,17 @@ public class CharacterControl : MonoBehaviour
         int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
         MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
+
+        /* //players no longer drop physical money
         if (moneylost == 0)
             moneylost = 1;
         for (int i =0;i<moneylost;i++)
         {
             PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z));
         }
+        */
         PickupManager.singleton.SpawnPowerUp(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
-
+        
         CC.enabled = false;
 
         //characterGFX.SetActive(false);
@@ -410,6 +413,25 @@ public class CharacterControl : MonoBehaviour
             Teleport = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            RumbleManager.instance.RumblePulse(1f, 1f, 0.5f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            RumbleManager.instance.RumblePulse(0f, 1f, 0.5f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            RumbleManager.instance.RumblePulse(1f, 0f, 0.5f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            RumbleManager.instance.RumblePulse(1f, 1f, 0f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+            RumbleManager.instance.RumblePulse(0.5f, 0.5f, 0.05f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+            RumbleManager.instance.RumblePulse(0.5f, 0.5f, 0.1f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+            RumbleManager.instance.RumblePulse(0.5f, 0.5f, 0.15f, PI); //feels best
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+            RumbleManager.instance.RumblePulse(0.5f, 0.5f, 0.20f, PI);
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+            RumbleManager.instance.RumblePulse(0.5f, 0.5f, 0.25f, PI);
+
         if (winner)
         {
             charAnim.Play("Victory");
@@ -419,7 +441,9 @@ public class CharacterControl : MonoBehaviour
 
         if (transform.position.y!=0)
         {
+            CC.enabled = false;
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything
+            CC.enabled = true;
         }
 
         if (hp <= 0 & !dead)
@@ -440,7 +464,9 @@ public class CharacterControl : MonoBehaviour
             {
             }
             raycastHit.point = new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z); //preventing the char from unwanted rotation;
-            transform.LookAt(raycastHit.point);
+
+            if (!rolling)
+                transform.LookAt(raycastHit.point);
 
             //mouseMovement = true;
             /*
@@ -894,7 +920,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
-                    attackDirection = moveDirection;
+                    attackDirection = transform.forward; //moveDirection
                     attackMoveSpeed = speedBuffTimer>0 ? 30 : 24 ; //16 orignally
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
@@ -906,12 +932,16 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
                     SoundManager.singleton.Melee1(transform.position);
-                    RumbleManager.instance.RumblePulse(0.2f, 0.2f, 0.5f, PI);
+                    
+                    /*
+                    if (!(mouseMovement || isTargetDummy))
+                        RumbleManager.instance.RumblePulse(0.2f, 0.2f, 0.5f, PI);
+                    */
                 }
                 else if (animState == AS.Punch1Recovery) //animState == AS.Punch1Active ||
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
-                    attackDirection = moveDirection;
+                    attackDirection = transform.forward; //moveDirection
                     attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
@@ -927,7 +957,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f; // 25/60
-                    attackDirection = moveDirection;
+                    attackDirection = transform.forward; //moveDirection
                     attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
@@ -946,7 +976,7 @@ public class CharacterControl : MonoBehaviour
                 if (animState == AS.idle || animState == AS.Sword2Recovery)
                 {
                     holdTimer = 0.4166f;  // 25/60 chanel
-                    attackDirection = moveDirection;
+                    attackDirection = transform.forward; //moveDirection
                     attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -958,7 +988,7 @@ public class CharacterControl : MonoBehaviour
                 else if (animState == AS.Sword1Recovery) //animState == AS.Punch1Active ||
                 {
                     holdTimer = 0.4166f;
-                    attackDirection = moveDirection;
+                    attackDirection = transform.forward; //moveDirection
                     attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1097,7 +1127,19 @@ public class CharacterControl : MonoBehaviour
         {
             if (animState == 0)
             {
-                if ((int)powerPunchWindup * 10 % 3 == 0) RumbleManager.instance.RumblePulse(1f, 1f, 0.5f, PI);
+                if (powerPunchWindup == 0.75f)
+                {
+                    rumbleTimer -= Time.deltaTime;
+                    if (rumbleTimer <= 0)
+                    {
+                        rumbleTimer = 0.25f;
+
+                        if (!(mouseMovement || isTargetDummy))
+                            RumbleManager.instance.RumblePulse(0.15f, 0.375f, 0.10f, PI);
+                    }
+                }
+
+
                 slowdownTimer = 0.05f;
                 if (powerPunchWindup < 0.75)
                 {
@@ -1106,7 +1148,11 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetBool("StrongPunch", true);
                     //rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
                     if (powerPunchWindup>=0.75)
+                    {
                         strongPunchCharged.Play();
+                        powerPunchWindup = 0.75f;
+                    }
+                        
                 }
 
             }
@@ -1120,7 +1166,7 @@ public class CharacterControl : MonoBehaviour
             {
                 animState = AS.StrongPunch;
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
-                attackDirection = moveDirection;
+                attackDirection = transform.forward; //moveDirection
                 attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
                 strongPunchCharged.Stop();
                 //rFist.enabled = true;
@@ -1137,6 +1183,8 @@ public class CharacterControl : MonoBehaviour
                 charAnim.SetBool("StrongPunch", false);
 
                 powerPunchWindup = 0;
+
+                
             }
             else
             {
@@ -1262,7 +1310,11 @@ public class CharacterControl : MonoBehaviour
                 if (shieldBuffTimer <= 0)
                 {
                     if (hp > 0 && hp - damage <= 0)
+                    {
                         Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
+                        MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                    }
+                        
 
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
@@ -1317,6 +1369,9 @@ public class CharacterControl : MonoBehaviour
 
                     SoundManager.singleton.Damage(transform.position);
 
+                    if (!(mouseMovement || isTargetDummy))
+                        RumbleManager.instance.RumblePulse((0.25f +damage*0.125f), 0.5f, 0.225f, PI);
+
                     if (cameraManagerIsOn)
                         CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
                 }
@@ -1346,7 +1401,11 @@ public class CharacterControl : MonoBehaviour
                     damageBasedOnDistance = damage;
 
                 if (hp > 0 && hp - damage <= 0)
+                {
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
+                    MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
+                }
+                    
 
                 hp = hp - damageBasedOnDistance;
                 //hpText.text = ("HP: " + hp);
@@ -1368,6 +1427,9 @@ public class CharacterControl : MonoBehaviour
                 knockbackDirection.y = 0;
                 */
                 SoundManager.singleton.Damage(transform.position);
+
+                if (!(mouseMovement || isTargetDummy))
+                    RumbleManager.instance.RumblePulse((0.25f + damageBasedOnDistance * 0.125f), 0.5f, 0.225f, PI);
 
                 if (cameraManagerIsOn)
                     CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
@@ -1404,6 +1466,10 @@ public class CharacterControl : MonoBehaviour
                 paintHead = true;
 
                 SoundManager.singleton.Damage(transform.position);
+
+                if (!(mouseMovement || isTargetDummy))
+                    RumbleManager.instance.RumblePulse(0.25f, 0.5f, 0.225f, PI);
+
                 if (cameraManagerIsOn)
                     CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
             }
