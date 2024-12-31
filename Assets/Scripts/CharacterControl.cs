@@ -1621,6 +1621,14 @@ public class CharacterControl : MonoBehaviour
         //Debug.Log("weapon discarded");
     }
 
+    public void VictoryOrLose(int result)
+    {
+        if (result == 0) charAnim.Play("Victory");
+        else if (result == 1) charAnim.Play("Loser");
+        else if (result == 2) charAnim.Play("Loser2");
+        else if (result == 3) charAnim.Play("Loser3");
+    }
+
 
     private void OnDrawGizmosSelected()
     {
