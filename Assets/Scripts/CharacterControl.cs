@@ -446,11 +446,6 @@ public class CharacterControl : MonoBehaviour
             CC.enabled = true;
         }
 
-        if (hp <= 0 & !dead)
-        {
-            OutTheRound();
-        }
-
         if (dead)  //dying only turns out visuals, making sure no unwanted actions happen
             return;
 
@@ -1313,6 +1308,7 @@ public class CharacterControl : MonoBehaviour
                     {
                         Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                         MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                        OutTheRound();
                     }
                         
 
@@ -1404,6 +1400,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                     MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
+                    OutTheRound();
                 }
                     
 
@@ -1456,7 +1453,11 @@ public class CharacterControl : MonoBehaviour
             else
             {
                 if (hp > 0 && hp - damage <= 0)
+                {
+                    OutTheRound();
                     Leaderboard.singleton.AnnounceKill(PlayerID, PlayerID);
+                }
+                    
 
                 hp = hp - damage;
                 hpBar.fillAmount = hp / 10f;
@@ -1599,6 +1600,12 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
+    public void EmptyHand()
+    {
+        weaponList[(int)equippedWeapon].SetActive(false);
+        equippedWeapon = Weapons.Fist;
+        weaponList[(int)equippedWeapon].SetActive(true);
+    }
 
     public void SetLeader(PlayerTypes newLeader)
     {
