@@ -731,7 +731,7 @@ public class CharacterControl : MonoBehaviour
     {
         if (moveInput != Vector2.zero)
         {
-            if (speedBuffTimer <= 0 && speedBuffTimer>-1)
+            if (speedBuffTimer <= 0) //&& speedBuffTimer>-1
             {
                 currentMaxSpeed = startingSpeed;
                 if (moveSpeed > currentMaxSpeed)
@@ -1221,7 +1221,7 @@ public class CharacterControl : MonoBehaviour
                         
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
                         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
-                        moneyAnim.Play("Player Coin Pickup");
+                        moneyAnim.Play("Player Coin Pickup",-1,0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
@@ -1230,7 +1230,7 @@ public class CharacterControl : MonoBehaviour
                         
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
                         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
-                        moneyAnim.Play("Player Coin Pickup");
+                        moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
@@ -1239,7 +1239,7 @@ public class CharacterControl : MonoBehaviour
                         
                         MoneyManager.singleton.ModifyMoney(PlayerID, 3);
                         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
-                        moneyAnim.Play("Player Coin Pickup");
+                        moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
@@ -1248,6 +1248,10 @@ public class CharacterControl : MonoBehaviour
                         hp += 5;
                         hpBar.fillAmount += 5f / 10f;
                         healthBuffEffect.Play();
+
+                        moneyText.text = "Health";
+                        moneyAnim.Play("Player Powerup Pickup", -1, 0);
+
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Speed")
@@ -1255,17 +1259,29 @@ public class CharacterControl : MonoBehaviour
                         currentMaxSpeed = startingSpeed * 1.5f;
                         speedBuffTimer = 5;
                         speedBuffEffect.Play();
+
+                        moneyText.text = "Speed";
+                        moneyAnim.Play("Player Powerup Pickup", -1, 0);
+
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Shield")
                     {
                         shieldGFX.SetActive(true);
                         shieldBuffTimer = 3.5f;
+
+                        moneyText.text = "Shield";
+                        moneyAnim.Play("Player Powerup Pickup", -1, 0);
+
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "CannonBall")
                     {
                         cannonBallAmount = Int32.Parse(cannonBall.name);
+
+                        moneyText.text = "Cannonball";
+                        moneyAnim.Play("Player Powerup Pickup", -1, 0);
+
 
                         cannonBallAmount++;
                         cannonBall.name = "" + cannonBallAmount;

@@ -13,14 +13,8 @@ public class Leaderboard : MonoBehaviour
     public Animator killsAnnouncerAnimation;
 
     [SerializeField] public GameObject leaderboard;
-    //private bool leaderboardActive = false;
 
-    // [SerializeField] TextMeshProUGUI redPlayerText;
-    // [SerializeField] TextMeshProUGUI greenPlayerText;
-    // [SerializeField] TextMeshProUGUI bluePlayerText;
-    // [SerializeField] TextMeshProUGUI yellowPlayerText;
     [SerializeField] GameObject[] leaderboardPlayerPrefabs;
-
 
     [SerializeField] Sprite[] portraits;
 
@@ -50,13 +44,8 @@ public class Leaderboard : MonoBehaviour
     [EndFoldout]
 
     private CharacterControl[] characters;
-    /*
-    private string redPlayerName;
-    private string greenPlayerName;
-    private string bluePlayerName;
-    private string yellowPlayerName;
-    */
 
+    public int playerCount;
     private struct PlayerStats
     {
         public PlayerStats(CharacterControl characterReference, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound)
@@ -130,6 +119,7 @@ public class Leaderboard : MonoBehaviour
                 yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
                 yellowPlayerName.text = yellowPlayer.name;
             }
+            playerCount++;
         }
     }
 

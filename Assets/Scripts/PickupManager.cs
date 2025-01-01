@@ -26,12 +26,14 @@ public class PickupManager : MonoBehaviour
     [SerializeField] GameObject coinPickup;
     [SerializeField] GameObject coinShot;
     [SerializeField] GameObject coinPickupVFX;
-    //public static int uncollectedCoinsAmount = 0;
     GameObject winningPlayer;
     bool playerWon = false;
     float animTimer;
 
     float timer;
+
+    private int currentCoinSackAmount;
+    private int maxCoinSacksPerRound = 10;
 
     [Header("Gizmos")]
     [SerializeField] int gizmosWidth;
@@ -145,7 +147,7 @@ public class PickupManager : MonoBehaviour
                 else if (nameRandomlyPicked == 3)
                     tempPickup.name = "Speed";
                 */
-
+                
             }
 
             //GameObject tempCoin = Instantiate(prefabCoin, transform.position, Quaternion.identity);
@@ -193,29 +195,40 @@ public class PickupManager : MonoBehaviour
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
-            GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
-            tempPowerup.name = "CoinSack";
+            if (currentCoinSackAmount >= maxCoinSacksPerRound)
+                SpawnPowerUp();
+            else
+            {
+                GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
+                tempPowerup.name = "CoinSack";
 
-            pickups.Add(tempPowerup);
+                pickups.Add(tempPowerup);
 
-            coins.Add(tempPowerup);
+                coins.Add(tempPowerup);
 
-            
+                currentCoinSackAmount++;
+            }
+
             //Destroy(tempPowerup, 20);
-
 
         }
         else if (randomPowerup == 1)
         {
-            GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
-            tempPowerup.name = "CoinSack";
+            if (currentCoinSackAmount >= maxCoinSacksPerRound)
+                SpawnPowerUp();
+            else
+            {
+                GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
+                tempPowerup.name = "CoinSack";
 
-            pickups.Add(tempPowerup);
+                pickups.Add(tempPowerup);
 
-            coins.Add(tempPowerup);
+                coins.Add(tempPowerup);
+
+                currentCoinSackAmount++;
+            }
 
             //Destroy(tempPowerup, 20);
-
 
 
             //SpawnPowerUp();
@@ -253,23 +266,40 @@ public class PickupManager : MonoBehaviour
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
-            GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
-            tempPowerup.name = "CoinSack";
-            tempPowerup.GetComponent<Animator>().enabled = true;
-            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            if (currentCoinSackAmount >= maxCoinSacksPerRound)
+                SpawnPowerUp(powerupPosition);
+            else
+            {
+                GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
+                tempPowerup.name = "CoinSack";
+                tempPowerup.GetComponent<Animator>().enabled = true;
+                tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
-            coins.Add(tempPowerup);
+                coins.Add(tempPowerup);
+
+                currentCoinSackAmount++;
+            }
+
+
 
             //Destroy(tempPowerup, 20);
         }
         else if (randomPowerup == 1)
         {
-            GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
-            tempPowerup.name = "CoinSack";
-            tempPowerup.GetComponent<Animator>().enabled = true;
-            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            if (currentCoinSackAmount >= maxCoinSacksPerRound)
+                SpawnPowerUp(powerupPosition);
+            else
+            {
+                GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
+                tempPowerup.name = "CoinSack";
+                tempPowerup.GetComponent<Animator>().enabled = true;
+                tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
-            coins.Add(tempPowerup);
+                coins.Add(tempPowerup);
+
+                currentCoinSackAmount++;
+            }
+
 
             //Destroy(tempPowerup, 20);
 
@@ -334,6 +364,24 @@ public class PickupManager : MonoBehaviour
         {
             Destroy(coins[i].GetComponent<Rigidbody>());
         }
+    }
+
+    public void RemovePickupFromList(GameObject pickup)
+    {
+        foreach (GameObject coin in coins)
+        {
+            if (coin == pickup)
+            {
+                coins.Remove(coin);
+                return;
+            }
+        }
+    }
+
+    public void ResetCoinSackCount()
+    {
+        currentCoinSackAmount = 0;
+        maxCoinSacksPerRound = Leaderboard.singleton.playerCount * 2 + 2;
     }
 
     private void OnDrawGizmosSelected()

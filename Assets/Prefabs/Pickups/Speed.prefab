@@ -637,8 +637,64 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -516098083770646512, guid: 48fd5750455647347ae21c848e285caf,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2504322885791469866}
+    - targetCorrespondingSourceObject: {fileID: 8416272007918961125, guid: 48fd5750455647347ae21c848e285caf,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2433397140661150373}
   m_SourcePrefab: {fileID: 100100000, guid: 48fd5750455647347ae21c848e285caf, type: 3}
+--- !u!1 &1313452786343916702 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8416272007918961125, guid: 48fd5750455647347ae21c848e285caf,
+    type: 3}
+  m_PrefabInstance: {fileID: 7419337980064855419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2433397140661150373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313452786343916702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!1 &2170940713183950187 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -516098083770646512, guid: 48fd5750455647347ae21c848e285caf,
+    type: 3}
+  m_PrefabInstance: {fileID: 7419337980064855419}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2504322885791469866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2170940713183950187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 0.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!4 &7024614760522519184 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 48fd5750455647347ae21c848e285caf,
