@@ -13,34 +13,22 @@ public class RoundManager : MonoBehaviour
     [Header("Player Management")]
     public static bool roundActive = false;
 
-    [Header("Round Management")]
-    //public UnityEvent gameStart;
-    //public UnityEvent roundStart;
-    //public UnityEvent roundEnd;
-    //public UnityEvent gameEnd;
-    //[SerializeField] PlayerManager playerManager;
+
     [SerializeField] ShopManager shopManager;
     [SerializeField] StormManager stormManager;
-
-    [Foldout("Winner UI")]
-    [SerializeField] GameObject winnerBG;
-    [SerializeField] TextMeshProUGUI winnerText;
-    [EndFoldout]
     public GameObject winner;
-    private bool timeStop;
     public GameObject[] winnerAndLosers;
+    public GameObject controlsUI;
     private void Awake()
     {
-        //playerManager = FindAnyObjectByType<PlayerManager>();
         Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start()
     {
         if (CustomizationManager.instance != null) totalRounds = CustomizationManager.instance.roundAmount;
         else totalRounds = 5;
-        StartCoroutine(RoundLoop());
+        StartCoroutine(WarmupRound());
     }
     private void Update()
     {
@@ -48,20 +36,27 @@ public class RoundManager : MonoBehaviour
         {
             DebugEndRound();
         }
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0)) && controlsUI.activeSelf)
+        {
+            controlsUI.SetActive(false);
+            foreach (CharacterControl character in Leaderboard.singleton.characters)
+            {
+                character.GetComponent<CharacterController>().enabled = true;
+            }
+        }
     }
 
     private IEnumerator RoundLoop()
     {
-        //gameStart.Invoke();
-
-        PlayerManager.instance.StartRound(); //starts round
-        //PauseMenu.instance.SubToPause();
+        PickupManager.singleton.DropPowerups = true;
+        stormManager.enabled = true;
+        //PlayerManager.instance.StartRound(); //starts round
         while (currentRound != totalRounds)
         {
+            PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
             Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
-            //Debug.Log($"Round {currentRound + 1} start"); //displays current round
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             AssignWinner(); //gives winner of round all money dropped
@@ -79,15 +74,32 @@ public class RoundManager : MonoBehaviour
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 PlayerManager.roundOver = false; //resets the bool for the next round
                 PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
-                //playerManager.PlayersNextRound(); 
             }
-            MapManager.instance.ResetMap(); //resets map elements, currently only respawns the chest
-            stormManager.ResetStorm(); //resets storm
-            //NextRound(); not necessary anymore since PlayersNextRound does it anyway        
+            MapManager.instance.ResetMap(); //resets map elements
+            stormManager.ResetStorm(); //resets storm    
         }
         AssignUltimateWinnerAndLosers(); //Assigns winner with most coins, and losers, changes their animation accordingly
         WinnerManager.instance.WinnerScene(); //setup Winner Scene, moves winner and losers to positions
-        //gameEnd.Invoke();
+    }
+
+    private IEnumerator WarmupRound()
+    {
+        PlayerManager.instance.StartRound(); //starts round
+        PickupManager.singleton.DropPowerups = false;
+        stormManager.enabled = false;
+        MapManager.instance.Warmup(); //spawns Warmup Protectors equal to players present
+        Leaderboard.singleton.AnnounceText("Warmup Round"); //announced that its the warmup round
+        SoundManager.singleton.PlayNextClip(); //rotates between songs
+        CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
+        controlsUI.SetActive(true);//show Controls
+        yield return new WaitUntil(() => controlsUI.activeSelf == false);
+        yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+        //function to reset kill and money counts
+        yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
+        PlayerManager.roundOver = false; //resets the bool for the next round
+        MapManager.instance.ResetMap(); //resets map elements
+        PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+        StartCoroutine(RoundLoop());
     }
 
     [Button]
@@ -99,15 +111,6 @@ public class RoundManager : MonoBehaviour
     public static void NextRound()
     {
         CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        /*
-        for (int i=0;i<characters.Length;i++)
-        {
-            if (characters[i].dead == false)
-            {
-                PickupManager.singleton.SetWinningPlayer(characters[i].gameObject);
-            }
-        }
-        */
         foreach (CharacterControl character in characters)
         {
             character.NextRound();
@@ -133,8 +136,6 @@ public class RoundManager : MonoBehaviour
         CharacterControl.PlayerTypes playerIDWinner = CharacterControl.PlayerTypes.Red;
         int mostCoins = 0;
         int players = 0;
-        //CharacterControl winner;
-
         foreach (CharacterControl character in characters)
         {
             int coins = MoneyManager.singleton.GetMoney(character.PlayerID);
@@ -161,5 +162,5 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    
+
 }

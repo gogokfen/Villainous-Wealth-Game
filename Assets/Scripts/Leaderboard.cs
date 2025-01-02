@@ -43,7 +43,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image yellowPlayerPortrait;
     [EndFoldout]
 
-    private CharacterControl[] characters;
+    public CharacterControl[] characters;
 
     public int playerCount;
     private struct PlayerStats

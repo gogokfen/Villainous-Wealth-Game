@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     public bool singleplayerTesting;
-    [SerializeField] Transform[] startPositions;
+    // [SerializeField] Transform[] startPositions;
     public int characterAmount;
     [SerializeField] GameObject[] playerPrefabs;
     [SerializeField] GameObject gamepadDisconnectedUI;
@@ -43,10 +43,6 @@ public class PlayerManager : MonoBehaviour
     public Material yellowMaterial;
     [EndFoldout]
 
-    // [Foldout("Camera")]
-    // //[SerializeField] GameObject cameraParent;
-    // [SerializeField] CinemachineTargetGroup cameraGroup;
-    // [EndFoldout]
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -235,7 +231,7 @@ public class PlayerManager : MonoBehaviour
                         var playerInput = PlayerInput.Instantiate(playerPrefabs[i], controlScheme: null, pairWithDevice: device);
 
                         playerList[playerInput.playerIndex] = playerInput.gameObject;
-                        playerInput.transform.position = startPositions[playerIndex].position;
+                        playerInput.transform.position = MapManager.instance.startPositions[playerIndex].position;
                         CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();
                         if (availablePlayerID.Count > 0)
                         {
@@ -262,7 +258,7 @@ public class PlayerManager : MonoBehaviour
         playerIndex = 0;
         foreach (PlayerInput playerInput in activePlayers)
         {
-            playerInput.transform.position = startPositions[playerIndex].position;
+            playerInput.transform.position = MapManager.instance.startPositions[playerIndex].position;
             CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();
             if (characterControl != null)
             {
