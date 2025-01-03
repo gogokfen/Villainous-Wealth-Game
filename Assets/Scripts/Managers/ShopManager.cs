@@ -14,6 +14,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] GameObject[] playerShopUI;
     int shopUIIndex;
+    [SerializeField] Animator animator;
     private void Start()
     {
         PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
@@ -62,13 +63,12 @@ public class ShopManager : MonoBehaviour
                 {
                     MoneyManager.singleton.ModifyMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID, -itemPrice);
                     PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
-                    Debug.Log("player index " + player.playerIndex);
-                    Debug.Log(shopUIIndex);
                     shopUIIndex = player.playerIndex;
-                    Debug.Log("shop ui index " + shopUIIndex);
                     playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID).ToString();
                     selectedButton.GetComponent<Button>().interactable = false;
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
+                    selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice +=2;
+                    selectedButton.GetComponent<ButtonSelectionTracker>().priceText.text = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice.ToString();
                     playerEventSystem.SetSelectedGameObject(null);
                 }
             }
@@ -85,6 +85,11 @@ public class ShopManager : MonoBehaviour
         {
             timerText.text = $"Timer: {remainingTime.ToString("F1")}";
             remainingTime -= Time.unscaledDeltaTime;
+            if (remainingTime <= 5f)
+            {
+                Debug.Log("hello");
+                animator.Play("ShopTimer");
+            }
             yield return null;
         }
         shopUI.SetActive(false);

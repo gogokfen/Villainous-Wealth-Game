@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using VInspector;
 using TMPro;
+using Unity.VisualScripting;
 
 public class RoundManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class RoundManager : MonoBehaviour
     public GameObject winner;
     public GameObject[] winnerAndLosers;
     public GameObject controlsUI;
+    public bool areWeWarming;
     private void Awake()
     {
         Cursor.visible = false;
@@ -28,7 +30,10 @@ public class RoundManager : MonoBehaviour
     {
         if (CustomizationManager.instance != null) totalRounds = CustomizationManager.instance.roundAmount;
         else totalRounds = 5;
-        StartCoroutine(WarmupRound());
+
+        if (areWeWarming == true) StartCoroutine(WarmupRound());
+        else StartCoroutine(RoundLoop());
+        
     }
     private void Update()
     {
@@ -50,7 +55,7 @@ public class RoundManager : MonoBehaviour
     {
         PickupManager.singleton.DropPowerups = true;
         stormManager.enabled = true;
-        //PlayerManager.instance.StartRound(); //starts round
+        if (areWeWarming == false) PlayerManager.instance.StartRound();
         while (currentRound != totalRounds)
         {
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round

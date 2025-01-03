@@ -14,7 +14,7 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
 {
     public int itemPrice;
 
-    [SerializeField] TextMeshProUGUI priceText;
+    [SerializeField] public TextMeshProUGUI priceText;
     [SerializeField] public GameObject soldUI;
 
     [Foldout("Selection Icons")]
