@@ -386,6 +386,25 @@ public class CharacterControl : MonoBehaviour
         knockbackDirection = Vector2.zero;
         useWeapon = false; //making sure not attacking at the start of round
 
+
+        strongPunchCharged.Stop();
+        charAnim.ResetTrigger("Roll");
+        charAnim.ResetTrigger("Punch1");
+        charAnim.ResetTrigger("Punch2");
+        charAnim.ResetTrigger("Punch3");
+        charAnim.ResetTrigger("Shoot");
+        charAnim.SetBool("StrongPunch",false);
+        charAnim.ResetTrigger("StrongPunchRelease");
+        charAnim.ResetTrigger("DMG");
+        charAnim.ResetTrigger("Mine");
+        charAnim.ResetTrigger("Sword1");
+        charAnim.ResetTrigger("Sword2");
+        charAnim.SetBool("ThrowCharge",false);
+        charAnim.ResetTrigger("ThrowRelease");
+        
+
+
+
         charAnim.Play("Idle");
         winner = false;
     }

@@ -6,7 +6,7 @@ public class MoneyManager : MonoBehaviour
 {
     public static MoneyManager singleton { get; private set; }
 
-    private CharacterControl[] characters;
+    //private CharacterControl[] characters;
 
     int redMoney;
     int redMoneyAtRoundStart;
@@ -20,7 +20,7 @@ public class MoneyManager : MonoBehaviour
 
     void Start()
     {
-        characters = GameObject.FindObjectsOfType<CharacterControl>();
+        //characters = GameObject.FindObjectsOfType<CharacterControl>();
     }
 
     void Update()
@@ -149,19 +149,47 @@ public class MoneyManager : MonoBehaviour
 
         if (redMoney > blueMoney && redMoney > greenMoney && redMoney > yellowMoney)
             leader = CharacterControl.PlayerTypes.Red;
-        else if (blueMoney > redMoney && blueMoney > greenMoney && blueMoney > yellowMoney)
-            leader = CharacterControl.PlayerTypes.Blue;
         else if (greenMoney > redMoney && greenMoney > blueMoney && greenMoney > yellowMoney)
             leader = CharacterControl.PlayerTypes.Green;
+        else if (blueMoney > redMoney && blueMoney > greenMoney && blueMoney > yellowMoney)
+            leader = CharacterControl.PlayerTypes.Blue;
         else if (yellowMoney > redMoney && yellowMoney > greenMoney && yellowMoney > blueMoney)
             leader = CharacterControl.PlayerTypes.Yellow;
         else
             leader = CharacterControl.PlayerTypes.Yellow;
 
-        for (int i=0;i<characters.Length;i++)
+        for (int i=0;i<Leaderboard.singleton.characters.Length;i++)
         {
-            characters[i].SetLeader(leader);
+            Leaderboard.singleton.characters[i].SetLeader(leader);
         }
+    }
+
+    public GameObject FindLeaderGameObject()
+    {
+        if (redMoney > blueMoney && redMoney > greenMoney && redMoney > yellowMoney)
+            return Leaderboard.singleton.GetPlayerReference(CharacterControl.PlayerTypes.Red);
+        else if (greenMoney > redMoney && greenMoney > blueMoney && greenMoney > yellowMoney)
+            return Leaderboard.singleton.GetPlayerReference(CharacterControl.PlayerTypes.Green);
+        else if (blueMoney > redMoney && blueMoney > greenMoney && blueMoney > yellowMoney)
+            return Leaderboard.singleton.GetPlayerReference(CharacterControl.PlayerTypes.Blue);
+        else if (yellowMoney > redMoney && yellowMoney > greenMoney && yellowMoney > blueMoney)
+            return Leaderboard.singleton.GetPlayerReference(CharacterControl.PlayerTypes.Yellow);
+        else
+            return Leaderboard.singleton.GetPlayerReference(CharacterControl.PlayerTypes.Yellow);
+    }
+
+    public CharacterControl.PlayerTypes FindLeaderColor()
+    {
+        if (redMoney > blueMoney && redMoney > greenMoney && redMoney > yellowMoney)
+            return (CharacterControl.PlayerTypes.Red);
+        else if (greenMoney > redMoney && greenMoney > blueMoney && greenMoney > yellowMoney)
+            return (CharacterControl.PlayerTypes.Green);
+        else if (blueMoney > redMoney && blueMoney > greenMoney && blueMoney > yellowMoney)
+            return (CharacterControl.PlayerTypes.Blue);
+        else if (yellowMoney > redMoney && yellowMoney > greenMoney && yellowMoney > blueMoney)
+            return (CharacterControl.PlayerTypes.Yellow);
+        else
+            return (CharacterControl.PlayerTypes.Yellow);
     }
 
     public int FindMostMoney()

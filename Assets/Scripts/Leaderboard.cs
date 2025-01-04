@@ -79,9 +79,15 @@ public class Leaderboard : MonoBehaviour
     PlayerStats bluePlayer = new PlayerStats(null, "", 0, 0, 0, 0, false);
     PlayerStats yellowPlayer = new PlayerStats(null, "", 0, 0, 0, 0, false);
 
-
     private void Start()
     {
+
+    }
+
+    private void Awake()
+    {
+        singleton = this;
+
         characters = GameObject.FindObjectsOfType<CharacterControl>();
 
         foreach (CharacterControl character in characters)
@@ -121,11 +127,6 @@ public class Leaderboard : MonoBehaviour
             }
             playerCount++;
         }
-    }
-
-    private void Awake()
-    {
-        singleton = this;
     }
 
     private void Update()
@@ -240,6 +241,20 @@ public class Leaderboard : MonoBehaviour
         {
             Leaderboard.singleton.characters[i].EmptyHand();
         }
+    }
+
+    public GameObject GetPlayerReference(CharacterControl.PlayerTypes playerColor)
+    {
+        if (playerColor == CharacterControl.PlayerTypes.Red)
+            return redPlayer.characterReference.gameObject;
+        if (playerColor == CharacterControl.PlayerTypes.Green)
+            return greenPlayer.characterReference.gameObject;
+        if (playerColor == CharacterControl.PlayerTypes.Blue)
+            return bluePlayer.characterReference.gameObject;
+        if (playerColor == CharacterControl.PlayerTypes.Yellow)
+            return yellowPlayer.characterReference.gameObject;
+
+        return null;
     }
     private Sprite SetPlayerPortrait(string name)
     {
