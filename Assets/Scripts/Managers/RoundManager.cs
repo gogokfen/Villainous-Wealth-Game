@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using VInspector;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -14,13 +15,14 @@ public class RoundManager : MonoBehaviour
     [Header("Player Management")]
     public static bool roundActive = false;
 
-
+    [SerializeField] Animator curtain;
     [SerializeField] ShopManager shopManager;
     [SerializeField] StormManager stormManager;
     public GameObject winner;
     public GameObject[] winnerAndLosers;
     public GameObject controlsUI;
     public bool areWeWarming;
+    bool roundstart;
     private void Awake()
     {
         Cursor.visible = false;
@@ -30,9 +32,7 @@ public class RoundManager : MonoBehaviour
     {
         if (CustomizationManager.instance != null) totalRounds = CustomizationManager.instance.roundAmount;
         else totalRounds = 5;
-
-        if (areWeWarming == true) StartCoroutine(WarmupRound());
-        else StartCoroutine(RoundLoop());
+        
         
     }
     private void Update()
@@ -49,13 +49,23 @@ public class RoundManager : MonoBehaviour
                 character.GetComponent<CharacterController>().enabled = true;
             }
         }
+        if (SceneManager.GetActiveScene().name == "MainScene" && !roundstart)
+        {
+            if (areWeWarming == true) StartCoroutine(WarmupRound());
+            else StartCoroutine(RoundLoop());
+
+            roundstart = true;
+        }
     }
 
     private IEnumerator RoundLoop()
     {
         PickupManager.singleton.DropPowerups = true;
         stormManager.enabled = true;
+        curtain.Play("Curtain");
+        yield return new WaitUntil(() => curtain.GetCurrentAnimatorStateInfo(0).IsName("Curtain"));
         if (areWeWarming == false) PlayerManager.instance.StartRound();
+        Leaderboard.singleton.FindPlayers();
         while (currentRound != totalRounds)
         {
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
@@ -67,8 +77,8 @@ public class RoundManager : MonoBehaviour
             AssignWinner(); //gives winner of round all money dropped
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
-            yield return new WaitUntil(() => Leaderboard.singleton.leaderboard.activeSelf == false); //waits until leaderboard is deactivated
-            //roundEnd.Invoke(); //Invokes an end of round event, currently does nothing
+            yield return new WaitForSeconds(3.5f);
+            Leaderboard.singleton.leaderboard.SetActive(false); //waits until leaderboard is deactivated
             currentRound++; //ups the round counter
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {
@@ -96,7 +106,7 @@ public class RoundManager : MonoBehaviour
         Leaderboard.singleton.AnnounceText("Warmup Round"); //announced that its the warmup round
         SoundManager.singleton.PlayNextClip(); //rotates between songs
         CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
-        controlsUI.SetActive(true);//show Controls
+        controlsUI.SetActive(true); //show Controls
         yield return new WaitUntil(() => controlsUI.activeSelf == false);
         yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
         //function to reset kill and money counts

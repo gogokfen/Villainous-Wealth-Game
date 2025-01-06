@@ -55,7 +55,7 @@ public class MenuManager : MonoBehaviour
     {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton7)) && weReadyCheck == true)
         {
-            SceneManager.LoadScene("MainScene");
+            PlayerManager.instance.MainScene();
         }
 
         if (characterSelectionScreen.activeInHierarchy == true)

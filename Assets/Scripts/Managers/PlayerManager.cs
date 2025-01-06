@@ -7,6 +7,7 @@ using Cinemachine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
@@ -47,7 +48,22 @@ public class PlayerManager : MonoBehaviour
     [Button("Go To Main Scene")]
     public void MainScene()
     {
-        SceneManager.LoadScene("MainScene");
+        StartCoroutine(LoadYourAsyncScene());
+    }
+
+
+    public IEnumerator LoadYourAsyncScene()
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
+        operation.allowSceneActivation = false;
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
     }
 
     private void Awake()
@@ -219,6 +235,7 @@ public class PlayerManager : MonoBehaviour
     }
     public void AssignPlayers()
     {
+        playerIndex = 0;
         playerList = new GameObject[InputSystem.devices.Count];
         foreach (var device in joinedDevices)
         {
@@ -228,8 +245,7 @@ public class PlayerManager : MonoBehaviour
                 {
                     if (characterPicks[i] == pickingPlayer)
                     {
-                        var playerInput = PlayerInput.Instantiate(playerPrefabs[i], controlScheme: null, pairWithDevice: device);
-
+                        PlayerInput playerInput = PlayerInput.Instantiate(playerPrefabs[i], controlScheme: null, pairWithDevice: device);
                         playerList[playerInput.playerIndex] = playerInput.gameObject;
                         playerInput.transform.position = MapManager.instance.startPositions[playerIndex].position;
                         CharacterControl characterControl = playerInput.GetComponent<CharacterControl>();

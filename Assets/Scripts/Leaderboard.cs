@@ -84,10 +84,8 @@ public class Leaderboard : MonoBehaviour
 
     }
 
-    private void Awake()
+    public void FindPlayers()
     {
-        singleton = this;
-
         characters = GameObject.FindObjectsOfType<CharacterControl>();
 
         foreach (CharacterControl character in characters)
@@ -127,13 +125,20 @@ public class Leaderboard : MonoBehaviour
             }
             playerCount++;
         }
+
+    }
+
+    private void Awake()
+    {
+        singleton = this;
+
     }
 
     private void Update()
     {
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0)) && leaderboard.activeSelf)
         {
-            leaderboard.SetActive(false);
+            //leaderboard.SetActive(false);
         }
     }
 

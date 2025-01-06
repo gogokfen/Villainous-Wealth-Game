@@ -5,13 +5,15 @@ public class MapManager : MonoBehaviour
     public static MapManager instance;
     public GameObject prefabToSpawn;
     public Transform location;
-    [SerializeField] public Transform[] startPositions;
+    public Transform[] startPositions;
     [SerializeField] GameObject[] warmupProtectors;
     private int protectorIndex;
     [HideInInspector] public bool warmupRound;
     private void Awake()
     {
         instance = this;
+
+        
     }
     public void ResetMap()
     {
