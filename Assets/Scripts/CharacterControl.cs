@@ -335,7 +335,7 @@ public class CharacterControl : MonoBehaviour
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
         int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
-        MoneyManager.singleton.ModifyMoney(PlayerID, moneylost);
+        MoneyManager.singleton.ModifyMoney(PlayerID, -moneylost);
         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
 
         /* //players no longer drop physical money
