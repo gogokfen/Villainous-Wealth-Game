@@ -209,11 +209,17 @@ public class CharacterControl : MonoBehaviour
 
     private PlayerInput PI;
 
+    bool keyboardMouse = false;
+
     void Start()
     {
         PI = GetComponent<PlayerInput>();
         if (PI.currentControlScheme == "Keyboard & Mouse") //you really tell me it contains a string
+        {
+            keyboardMouse = true;
             mouseMovement = true;
+        }
+            
             
 
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
@@ -401,7 +407,14 @@ public class CharacterControl : MonoBehaviour
         charAnim.ResetTrigger("Sword2");
         charAnim.SetBool("ThrowCharge",false);
         charAnim.ResetTrigger("ThrowRelease");
-        
+
+        meleeParticleEffect.Stop();
+        speedBuffEffect.Stop();
+        healthBuffEffect.Stop();
+        leaderGlow.Stop();
+        strongPunchCharged.Stop();
+
+
 
 
 
@@ -430,6 +443,11 @@ public class CharacterControl : MonoBehaviour
             Ghost = false;
             Invisibility = false;
             Teleport = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F10))
+        {
+            mouseMovement = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -552,6 +570,11 @@ public class CharacterControl : MonoBehaviour
             playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, 0);
 
             SoundManager.singleton.Roll(transform.position);
+
+            charAnim.SetBool("StrongPunch", false); //making sure you can't strong punch after rolling
+            powerPunchWindup = 0;
+            rightPunchAttackState = 0;
+            strongPunchCharged.Stop();
         }
 
 
@@ -866,6 +889,9 @@ public class CharacterControl : MonoBehaviour
         {
             for (int i =0; i<characterSearch.Length;i++)
             {
+                if (animState != 0 && characterSearch[i].GetComponent<CharacterControl>().PlayerID != PlayerID) // trying out collision with players while meleeing
+                    attackMoveSpeed = 0;
+
                 if (moveInput!= Vector2.zero)
                 {
                     //characterSearch[i].GetComponent<CharacterController>().Move(moveDirection * moveSpeed * Time.deltaTime);
@@ -935,7 +961,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer>0 ? 30 : 24 ; //16 orignally
+                    attackMoveSpeed = speedBuffTimer>0 ? 24 : 24; //16 orignally //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -956,7 +982,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -972,7 +998,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f; // 25/60
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -991,7 +1017,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
+                    attackMoveSpeed = speedBuffTimer > 0 ? 30f : 30; //20 originally 0 ? 37.5f : 30;
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
@@ -1003,7 +1029,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f;
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 37.5f : 30; //20 originally
+                    attackMoveSpeed = speedBuffTimer > 0 ? 30f : 30; //20 originally 0 ? 37.5f : 30;
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
                     animTimer = 0;
@@ -1148,7 +1174,7 @@ public class CharacterControl : MonoBehaviour
                     {
                         rumbleTimer = 0.25f;
 
-                        if (!(mouseMovement || isTargetDummy))
+                        if (!(keyboardMouse || isTargetDummy || mouseMovement))
                             RumbleManager.instance.RumblePulse(0.15f, 0.375f, 0.10f, PI);
                     }
                 }
@@ -1400,7 +1426,7 @@ public class CharacterControl : MonoBehaviour
 
                     SoundManager.singleton.Damage(transform.position);
 
-                    if (!(mouseMovement || isTargetDummy))
+                    if (!(keyboardMouse || isTargetDummy || mouseMovement))
                         RumbleManager.instance.RumblePulse((0.25f +damage*0.125f), 0.5f, 0.225f, PI);
 
                     if (cameraManagerIsOn)
@@ -1460,7 +1486,7 @@ public class CharacterControl : MonoBehaviour
                 */
                 SoundManager.singleton.Damage(transform.position);
 
-                if (!(mouseMovement || isTargetDummy))
+                if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse((0.25f + damageBasedOnDistance * 0.125f), 0.5f, 0.225f, PI);
 
                 if (cameraManagerIsOn)
@@ -1503,7 +1529,7 @@ public class CharacterControl : MonoBehaviour
 
                 SoundManager.singleton.Damage(transform.position);
 
-                if (!(mouseMovement || isTargetDummy))
+                if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse(0.25f, 0.5f, 0.225f, PI);
 
                 if (cameraManagerIsOn)
@@ -1530,6 +1556,7 @@ public class CharacterControl : MonoBehaviour
                 if (weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().charging)
                 {
                     charAnim.SetBool("ThrowCharge", true);
+                    holdTimer = 0.2f;
                 }
                 
                 /*
@@ -1539,7 +1566,7 @@ public class CharacterControl : MonoBehaviour
                     weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing = false;
                 }
                 */
-                holdTimer = 0.2f;
+                //holdTimer = 0.2f;
                 break;
             case Weapons.Lazer:      // 4
                 charAnim.SetTrigger("Shoot");
@@ -1579,8 +1606,9 @@ public class CharacterControl : MonoBehaviour
                 if (weaponList[(int)Weapons.Grenade].GetComponent<Grenade>().charging)
                 {
                     charAnim.SetBool("ThrowCharge", true);
+                    holdTimer = 0.25f;
                 }
-                holdTimer = 0.25f;
+                //holdTimer = 0.25f;
                 break;
             default:
                 Debug.Log("no");

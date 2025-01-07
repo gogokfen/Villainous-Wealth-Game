@@ -25,7 +25,8 @@ public class RoundManager : MonoBehaviour
     bool roundstart;
     private void Awake()
     {
-        Cursor.visible = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start()

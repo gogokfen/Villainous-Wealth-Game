@@ -7,7 +7,7 @@ public class ZoneProtect : MonoBehaviour
     private void OnTriggerStay(Collider other) //collider override searches for characters only
     {
         other.GetComponent<CharacterControl>().zoneImmunity = true;
-        other.GetComponent<CharacterControl>().zoneTicksGraceAmount = 2;
+        other.GetComponent<CharacterControl>().zoneTicksGraceAmount = 1;
     }
 
     private void OnTriggerExit(Collider other)
