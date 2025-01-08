@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RemovePickup : MonoBehaviour
 {
+    [SerializeField] bool isCoinSackPickup;
     void Start()
     {
         Destroy(gameObject, 20);
@@ -11,7 +12,10 @@ public class RemovePickup : MonoBehaviour
 
     private void OnDestroy()
     {
-        PickupManager.singleton.RemovePickupFromList(gameObject);
+        if (isCoinSackPickup)
+            PickupManager.singleton.RemovePickupFromList(gameObject);
+        else
+            PickupManager.singleton.RemovePickupFromPickups(gameObject);
     }
 
 }

@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 2471476175619974084}
   - component: {fileID: 3292603460137936686}
   - component: {fileID: -5047003417369594471}
+  - component: {fileID: 1633787597344738538}
   m_Layer: 6
   m_Name: Speed
   m_TagString: Untagged
@@ -173,6 +174,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d20d899d9e0aaa41983fc560386af8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1633787597344738538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508945608445756943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e2c505332326bd469d462385bd37711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCoinPickup: 0
 --- !u!1 &3071516208473883748
 GameObject:
   m_ObjectHideFlags: 0

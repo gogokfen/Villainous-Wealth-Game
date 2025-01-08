@@ -210,6 +210,7 @@ public class CharacterControl : MonoBehaviour
     private PlayerInput PI;
 
     bool keyboardMouse = false;
+    [SerializeField] GameObject mouseIndicator;
 
     void Start()
     {
@@ -220,6 +221,7 @@ public class CharacterControl : MonoBehaviour
             mouseMovement = true;
 
             Mouse.current.WarpCursorPosition(Camera.main.WorldToScreenPoint(transform.position) + (transform.forward * 0.25f));
+            mouseIndicator.gameObject.SetActive(true);
         }
             
             
@@ -453,7 +455,13 @@ public class CharacterControl : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F10))
         {
-            mouseMovement = false;
+            if (mouseMovement)
+                mouseIndicator.gameObject.SetActive(false);
+            else
+                mouseIndicator.gameObject.SetActive(true);
+
+            mouseMovement = !mouseMovement;
+
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -509,37 +517,49 @@ public class CharacterControl : MonoBehaviour
             }
             raycastHit.point = new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z); //preventing the char from unwanted rotation;
 
+            Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
+
+            //V4 +V3
+            Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.0075f));
+
+            float distance = Vector3.Distance(raycastHit.point, transform.position);
+
+            float restrictedDis = Mathf.InverseLerp(0, 10, distance);
+
+            mouseIndicator.transform.localPosition = Vector3.right * restrictedDis;
+
+
             if (!rolling)
             {
-                if (Vector3.Distance(raycastHit.point,transform.position)>0.2f) //0.2f
+                if (distance>0.2f) //0.2f
                     transform.LookAt(raycastHit.point);
+                 //V3 
                 else
                 {
-                    Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
+                    //Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
                     Mouse.current.WarpCursorPosition(mouseCharLock + (transform.forward*0.25f));
                 }
+                
             }
+
 
             //V2
             /*
             Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
 
-            //Debug.Log("character"+mouseCharLock);
-            //Debug.Log("mouse" + Mouse.current.position.value);
-            //Debug.Log(Vector2.Distance(Mouse.current.position.value, new Vector2(mouseCharLock.x,mouseCharLock.y)));
-
             if (Vector2.Distance(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y)) > 500)
                 Mouse.current.WarpCursorPosition(mouseCharLock);
             */
 
-            //V3
+            
+            
 
 
             //mouseMovement = true;
-            /*
-             *         else
-            mouseMovement = false;
-            */
+                /*
+                 *         else
+                mouseMovement = false;
+                */
         }
 
 
@@ -1996,4 +2016,28 @@ if (wallSearch.Length > 0)
         transform.position = new Vector3(transform.position.x - direction.x, transform.position.y, transform.position.z - direction.z);
     }
 }
+*/
+
+
+/* I hate myself
+ *             speed = Vector2.SqrMagnitude(Mouse.current.position.value - prevMousePos);
+            if (speed > prevSpeed)
+                accel++;
+            else
+                accel--;
+
+            //Debug.Log(accel);
+            float distance = Mathf.InverseLerp(1, 10, accel);
+
+
+            if (accel>0)
+                mouseIndicator.transform.localPosition = Vector3.right * distance;
+            else
+            {
+                mouseIndicator.transform.localPosition = Vector3.zero;
+                accel = 0;
+            }
+                
+
+            prevSpeed = speed;
 */

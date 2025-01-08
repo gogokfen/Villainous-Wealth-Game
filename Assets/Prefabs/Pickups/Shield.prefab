@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 1787319433323183743}
   - component: {fileID: 1433773704091924652}
   - component: {fileID: 2960873849131921734}
+  - component: {fileID: 3319383819676336746}
   m_Layer: 6
   m_Name: Shield
   m_TagString: Untagged
@@ -290,6 +291,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d20d899d9e0aaa41983fc560386af8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3319383819676336746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855054025748920295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e2c505332326bd469d462385bd37711, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCoinPickup: 0
 --- !u!1 &5481944245975390978
 GameObject:
   m_ObjectHideFlags: 0

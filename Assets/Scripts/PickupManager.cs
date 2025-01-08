@@ -378,10 +378,30 @@ public class PickupManager : MonoBehaviour
         }
     }
 
+    public void RemovePickupFromPickups(GameObject pickupToRemove)
+    {
+        foreach (GameObject pickup in pickups)
+        {
+            if (pickup == pickupToRemove)
+            {
+                pickups.Remove(pickupToRemove);
+                return;
+            }
+        }
+    }
+
     public void ResetCoinSackCount()
     {
         currentCoinSackAmount = 0;
         maxCoinSacksPerRound = Leaderboard.singleton.playerCount * 2 + 2;
+    }
+
+    public void DestroyAllPickups()
+    {
+        for (int i = 0; i < pickups.Count; i++)
+        {
+            Destroy(pickups[i]);
+        }
     }
 
     private void OnDrawGizmosSelected()
