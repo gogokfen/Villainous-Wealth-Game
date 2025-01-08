@@ -202,7 +202,7 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
-                pickups.Add(tempPowerup);
+                //pickups.Add(tempPowerup);
 
                 coins.Add(tempPowerup);
 
@@ -221,7 +221,7 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
-                pickups.Add(tempPowerup);
+                //pickups.Add(tempPowerup);
 
                 coins.Add(tempPowerup);
 
