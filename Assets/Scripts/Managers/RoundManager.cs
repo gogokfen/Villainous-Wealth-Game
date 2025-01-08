@@ -18,6 +18,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField] Animator curtain;
     [SerializeField] ShopManager shopManager;
     [SerializeField] StormManager stormManager;
+    [SerializeField] ShopStall shopStall;
     public GameObject winner;
     public GameObject[] winnerAndLosers;
     public GameObject controlsUI;
@@ -63,6 +64,7 @@ public class RoundManager : MonoBehaviour
     {
         PickupManager.singleton.DropPowerups = true;
         stormManager.enabled = true;
+        curtain.gameObject.SetActive(true);
         curtain.Play("Curtain");
         yield return new WaitUntil(() => curtain.GetCurrentAnimatorStateInfo(0).IsName("Curtain"));
         if (areWeWarming == false) PlayerManager.instance.StartRound();
@@ -75,19 +77,23 @@ public class RoundManager : MonoBehaviour
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
+            PickupManager.singleton.DropPowerups = false;
             AssignWinner(); //gives winner of round all money dropped
+            Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
-            yield return new WaitForSeconds(3.5f);
+            yield return new WaitForSeconds(3.5f); //time to see leaderboards
             Leaderboard.singleton.leaderboard.SetActive(false); //waits until leaderboard is deactivated
             currentRound++; //ups the round counter
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {
+                StartCoroutine(shopStall.StallTime());
+                yield return new WaitUntil(() => shopStall.shoppingTime == true);
                 TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 SoundManager.singleton.MaloMart(); //plays Shop Music
-                Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
+                shopStall.shoppingTime = false;
                 PlayerManager.roundOver = false; //resets the bool for the next round
                 PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
             }

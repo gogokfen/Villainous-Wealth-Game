@@ -56,4 +56,16 @@ public class CameraManager : MonoBehaviour
     {
         cameraGroup.AddMember(objectToAdd.transform, 1f, 0f);
     }
+
+    public void ShopStallFocus()
+    {
+        for (int i = cameraGroup.m_Targets.Length - 1; i >= 0; i--)
+        {
+            if (cameraGroup.m_Targets[i].target == null || 
+                cameraGroup.m_Targets[i].target.name != "Shop Stall")
+            {
+                cameraGroup.RemoveMember(cameraGroup.m_Targets[i].target);
+            }
+        }
+    }
 }

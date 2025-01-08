@@ -67,7 +67,7 @@ public class ShopManager : MonoBehaviour
                     playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID).ToString();
                     selectedButton.GetComponent<Button>().interactable = false;
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
-                    selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice +=2;
+                    selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice += 3;
                     selectedButton.GetComponent<ButtonSelectionTracker>().priceText.text = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice.ToString();
                     playerEventSystem.SetSelectedGameObject(null);
                 }
@@ -87,7 +87,6 @@ public class ShopManager : MonoBehaviour
             remainingTime -= Time.unscaledDeltaTime;
             if (remainingTime <= 5f)
             {
-                Debug.Log("hello");
                 animator.Play("ShopTimer");
             }
             yield return null;

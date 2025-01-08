@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] musicClips;
     public AudioClip maloMart;
     private int currentClipIndex = 0;
+    bool isPaused = false;
 
     [Tab("Melee")]
     [SerializeField] AudioClip melee1;
@@ -215,7 +216,7 @@ public class SoundManager : MonoBehaviour
 
     void Update()
     {
-        if (!musicAS.isPlaying)
+        if (!musicAS.isPlaying && !isPaused)
         {
             PlayNextClip();
         }
@@ -225,5 +226,10 @@ public class SoundManager : MonoBehaviour
     {
         musicAS.clip = maloMart;
         musicAS.Play();
+    }
+
+     void OnApplicationFocus(bool hasFocus)
+    {
+        isPaused = !hasFocus;
     }
 }
