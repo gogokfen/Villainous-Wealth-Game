@@ -218,6 +218,8 @@ public class CharacterControl : MonoBehaviour
         {
             keyboardMouse = true;
             mouseMovement = true;
+
+            Mouse.current.WarpCursorPosition(Camera.main.WorldToScreenPoint(transform.position) + (transform.forward * 0.25f));
         }
             
             
@@ -424,6 +426,10 @@ public class CharacterControl : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log("Mouse"+Camera.main.WorldToScreenPoint(transform.position));
+        //Debug.Log("Character" + transform.position);
+        //Debug.Log(Mouse.current.position.value);
+
         if (Input.GetKeyDown(KeyCode.F2))
         {
             Ghost = true;
@@ -490,6 +496,12 @@ public class CharacterControl : MonoBehaviour
 
         if (mouseMovement) //360 aiming with mouse && Input.GetMouseButton(1)  //equippedWeapon != Weapons.Fist && (Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
+            //V1
+            /*
+            Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position); //moving the mouse to character's position
+            Mouse.current.WarpCursorPosition(new Vector2(mouseCharLock.x, mouseCharLock.y-1f)); //prevent character from always going up
+            */
+
             LayerMask LM = 1024; //floor layer
             Ray raycastFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition); //because it's a raycast, it hits invisble colliders
             if (Physics.Raycast(raycastFromMouse, out RaycastHit raycastHit, 500, LM))
@@ -498,7 +510,30 @@ public class CharacterControl : MonoBehaviour
             raycastHit.point = new Vector3(raycastHit.point.x, transform.position.y, raycastHit.point.z); //preventing the char from unwanted rotation;
 
             if (!rolling)
-                transform.LookAt(raycastHit.point);
+            {
+                if (Vector3.Distance(raycastHit.point,transform.position)>0.2f) //0.2f
+                    transform.LookAt(raycastHit.point);
+                else
+                {
+                    Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
+                    Mouse.current.WarpCursorPosition(mouseCharLock + (transform.forward*0.25f));
+                }
+            }
+
+            //V2
+            /*
+            Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
+
+            //Debug.Log("character"+mouseCharLock);
+            //Debug.Log("mouse" + Mouse.current.position.value);
+            //Debug.Log(Vector2.Distance(Mouse.current.position.value, new Vector2(mouseCharLock.x,mouseCharLock.y)));
+
+            if (Vector2.Distance(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y)) > 500)
+                Mouse.current.WarpCursorPosition(mouseCharLock);
+            */
+
+            //V3
+
 
             //mouseMovement = true;
             /*
