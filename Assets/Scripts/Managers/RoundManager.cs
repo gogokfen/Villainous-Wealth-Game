@@ -61,8 +61,7 @@ public class RoundManager : MonoBehaviour
     }
 
     private IEnumerator RoundLoop()
-    {
-        PickupManager.singleton.DropPowerups = true;
+    { 
         stormManager.enabled = true;
         curtain.gameObject.SetActive(true);
         curtain.Play("Curtain");
@@ -71,6 +70,7 @@ public class RoundManager : MonoBehaviour
         Leaderboard.singleton.FindPlayers();
         while (currentRound != totalRounds)
         {
+            PickupManager.singleton.DropPowerups = true;
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
             Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
@@ -82,6 +82,7 @@ public class RoundManager : MonoBehaviour
             Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
+            PickupManager.singleton.DestroyAllPickups();
             yield return new WaitForSeconds(3.5f); //time to see leaderboards
             Leaderboard.singleton.leaderboard.SetActive(false); //waits until leaderboard is deactivated
             currentRound++; //ups the round counter
