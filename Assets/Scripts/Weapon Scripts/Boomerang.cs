@@ -48,6 +48,12 @@ public class Boomerang : WeaponBase
         if (boomerangReference!= null)
         {
             Destroy(boomerangReference);
+
+            catchCD = 0;
+            boomerangReference = null;
+
+            canThrow = true;
+            //boomerangGFX.SetActive(true);
         }
     }
 

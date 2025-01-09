@@ -377,6 +377,7 @@ GameObject:
   - component: {fileID: 8443660168794941787}
   - component: {fileID: 8316138229845066103}
   - component: {fileID: 1325452622729016799}
+  - component: {fileID: 445175323498234665}
   m_Layer: 7
   m_Name: Boomerang Shot
   m_TagString: Untagged
@@ -560,6 +561,18 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &445175323498234665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670712718768357648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d20d899d9e0aaa41983fc560386af8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5507258876127361174
 GameObject:
   m_ObjectHideFlags: 0

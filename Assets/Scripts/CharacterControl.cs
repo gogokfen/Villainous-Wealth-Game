@@ -365,8 +365,11 @@ public class CharacterControl : MonoBehaviour
         weaponList[(int)equippedWeapon].SetActive(false); //making sure he can't attack while dead kek
 
         charAnim.Play("Death");
+        
+        DeadStop(); //making sure character is dead
 
         dead = true;
+
 
         SoundManager.singleton.Death(transform.position);
 
@@ -389,38 +392,7 @@ public class CharacterControl : MonoBehaviour
 
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
 
-        cannonBallAmount = 0; //cannon balls don't transfer between rounds
-        cannonBall.name = "" + cannonBallAmount;
-        shieldBuffTimer = -1; //making sure not starting with a buff
-        speedBuffTimer = -1;
-        knockbackDirection = Vector2.zero;
-        useWeapon = false; //making sure not attacking at the start of round
-
-
-        strongPunchCharged.Stop();
-        charAnim.ResetTrigger("Roll");
-        charAnim.ResetTrigger("Punch1");
-        charAnim.ResetTrigger("Punch2");
-        charAnim.ResetTrigger("Punch3");
-        charAnim.ResetTrigger("Shoot");
-        charAnim.SetBool("StrongPunch",false);
-        charAnim.ResetTrigger("StrongPunchRelease");
-        charAnim.ResetTrigger("DMG");
-        charAnim.ResetTrigger("Mine");
-        charAnim.ResetTrigger("Sword1");
-        charAnim.ResetTrigger("Sword2");
-        charAnim.SetBool("ThrowCharge",false);
-        charAnim.ResetTrigger("ThrowRelease");
-
-        meleeParticleEffect.Stop();
-        speedBuffEffect.Stop();
-        healthBuffEffect.Stop();
-        leaderGlow.Stop();
-        strongPunchCharged.Stop();
-
-
-
-
+        DeadStop(); //making sure character was dead
 
         charAnim.Play("Idle");
         winner = false;
@@ -520,7 +492,7 @@ public class CharacterControl : MonoBehaviour
             Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
 
             //V4 +V3
-            Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.0075f));
+            Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.01f));
 
             float distance = Vector3.Distance(raycastHit.point, transform.position);
 
@@ -1434,10 +1406,12 @@ public class CharacterControl : MonoBehaviour
                     //originalHpBarPos = hpBar.transform.position;
                     charAnim.SetTrigger("DMG");
 
-                    headColor = Color.red;
-                    paintHead = true;
-
-
+                    if (!dead)
+                    {
+                        headColor = Color.red;
+                        paintHead = true;
+                        DeadStop();
+                    }
 
 
                     meleeParticleEffect.transform.position = hitPos;
@@ -1512,11 +1486,12 @@ public class CharacterControl : MonoBehaviour
                 else
                     damageBasedOnDistance = damage;
 
-                if (hp > 0 && hp - damage <= 0)
+                if (hp > 0 && hp - damageBasedOnDistance <= 0)
                 {
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                     MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
                     OutTheRound();
+                    DeadStop();
                 }
                     
 
@@ -1524,8 +1499,11 @@ public class CharacterControl : MonoBehaviour
                 //hpText.text = ("HP: " + hp);
                 hpBar.fillAmount = hp / 10f;
 
-                headColor = Color.red;
-                paintHead = true;
+                if (!dead)
+                {
+                    headColor = Color.red;
+                    paintHead = true;
+                }
 
                 knockbackDirection = new Vector2(transform.position.x - grenadePos.x, transform.position.z - grenadePos.z);
                 knockbackDirection.Normalize();
@@ -1572,6 +1550,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     OutTheRound();
                     Leaderboard.singleton.AnnounceKill(PlayerID, PlayerID);
+                    DeadStop();
                 }
                     
 
@@ -1579,8 +1558,11 @@ public class CharacterControl : MonoBehaviour
                 hpBar.fillAmount = hp / 10f;
                 charAnim.SetTrigger("DMG");
 
-                headColor = Color.red;
-                paintHead = true;
+                if (!dead)
+                {
+                    headColor = Color.red;
+                    paintHead = true;
+                }
 
                 SoundManager.singleton.Damage(transform.position);
 
@@ -1672,12 +1654,52 @@ public class CharacterControl : MonoBehaviour
 
     }
 
+    private void DeadStop()
+    {
+        paintAmount = 0; //making sure head isn't red
+        //headColor = startingColor;
+        HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", startingColor);
+        paintHead = false;
+
+        cannonBallAmount = 0; //cannon balls don't transfer between rounds
+        cannonBall.name = "" + cannonBallAmount;
+        shieldBuffTimer = -1; //making sure not starting with a buff
+        speedBuffTimer = -1;
+        knockbackDirection = Vector2.zero;
+        useWeapon = false; //making sure not attacking at the start of round
+
+
+        strongPunchCharged.Stop();
+        charAnim.ResetTrigger("Roll");
+        charAnim.ResetTrigger("Punch1");
+        charAnim.ResetTrigger("Punch2");
+        charAnim.ResetTrigger("Punch3");
+        charAnim.ResetTrigger("Shoot");
+        charAnim.SetBool("StrongPunch", false);
+        charAnim.ResetTrigger("StrongPunchRelease");
+        charAnim.ResetTrigger("DMG");
+        charAnim.ResetTrigger("Mine");
+        charAnim.ResetTrigger("Sword1");
+        charAnim.ResetTrigger("Sword2");
+        charAnim.SetBool("ThrowCharge", false);
+        charAnim.ResetTrigger("ThrowRelease");
+
+        shieldGFX.SetActive(false);
+        meleeParticleEffect.Stop();
+        speedBuffEffect.Stop();
+        healthBuffEffect.Stop();
+        leaderGlow.Stop();
+        strongPunchCharged.Stop();
+    }
+
     public void BuyWeapon(string shopWeaponName)
     {
         if (Enum.TryParse<Weapons>(shopWeaponName, out Weapons weapon))
         {
             previousWeapon = equippedWeapon;
             equippedWeapon = Enum.Parse<Weapons>(shopWeaponName);
+
+            originalWeapon = equippedWeapon; //interaction with weapon swap
 
 
             weaponList[(int)previousWeapon].SetActive(false);

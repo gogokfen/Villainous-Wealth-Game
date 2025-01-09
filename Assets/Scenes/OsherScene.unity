@@ -1633,6 +1633,7 @@ MonoBehaviour:
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
   winner: 0
+  mouseIndicator: {fileID: 0}
 --- !u!114 &162726733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3911,7 +3912,7 @@ PrefabInstance:
     - target: {fileID: 2939225391973353246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2969950310000140246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -3981,12 +3982,12 @@ PrefabInstance:
     - target: {fileID: 4487892822975772327, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4487892822975772327, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6117944193317545693, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -14221,6 +14222,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3318652327209257556, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3846904075160001242, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_Enabled
@@ -18171,7 +18177,7 @@ PrefabInstance:
     - target: {fileID: 2939225391973353246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2969950310000140246, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -18241,12 +18247,12 @@ PrefabInstance:
     - target: {fileID: 4487892822975772327, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4487892822975772327, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6117944193317545693, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -19841,6 +19847,7 @@ MonoBehaviour:
   playerIndicator: {fileID: 0}
   cannonBall: {fileID: 0}
   winner: 0
+  mouseIndicator: {fileID: 0}
 --- !u!4 &1554438631218744846
 Transform:
   m_ObjectHideFlags: 0
@@ -21105,6 +21112,11 @@ PrefabInstance:
     - target: {fileID: 2778604925449223321, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
         type: 3}
       propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900323548344076559, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+        type: 3}
+      propertyPath: m_FillAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3876076081894715390, guid: 39cc6b7727c6c3c459d821bc73c6fff2,

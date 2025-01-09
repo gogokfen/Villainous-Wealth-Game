@@ -10,6 +10,7 @@ public class Pirate : MonoBehaviour
     private float payCD;
     private float AttackCD;
 
+    private CharacterControl payingPlayerRef;
 
     [SerializeField] LayerMask collisionMask;
     Collider[] playerSearch;
@@ -31,9 +32,13 @@ public class Pirate : MonoBehaviour
             {
                 if (MoneyManager.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=5 && Time.time>=payCD)
                 {
-                    MoneyManager.singleton.ModifyMoney((playerSearch[i].GetComponent<CharacterControl>().PlayerID), -5);
+                    payingPlayerRef = playerSearch[i].GetComponent<CharacterControl>();
+
+                    MoneyManager.singleton.ModifyMoney((payingPlayerRef.PlayerID), -5);
                     cannonV2GameObject.SetActive(true);
-                    cannonV2Script.UpdateShooter(playerSearch[i].GetComponent<CharacterControl>().PlayerID);
+                    cannonV2Script.UpdateShooter(payingPlayerRef.PlayerID);
+
+                    payingPlayerRef.enabled = false;
 
                     payCD = Time.time + 12;
                     AttackCD = Time.time + 7;
@@ -41,9 +46,10 @@ public class Pirate : MonoBehaviour
             }
         }
 
-        if (Time.time>=AttackCD)
+        if (Time.time>=AttackCD && payingPlayerRef!=null)
         {
             cannonV2GameObject.SetActive(false);
+            payingPlayerRef.enabled = true;
         }
     }
 }
