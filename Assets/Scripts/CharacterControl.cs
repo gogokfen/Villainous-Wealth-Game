@@ -345,9 +345,9 @@ public class CharacterControl : MonoBehaviour
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
         int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
+        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString()+"-"+moneylost;
         MoneyManager.singleton.ModifyMoney(PlayerID, -moneylost);
-        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
-
+        moneyAnim.Play("Player Coin Pickup", -1, 0);
         /* //players no longer drop physical money
         if (moneylost == 0)
             moneylost = 1;
@@ -492,14 +492,29 @@ public class CharacterControl : MonoBehaviour
             Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
 
             //V4 +V3
-            Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.01f));
-
             float distance = Vector3.Distance(raycastHit.point, transform.position);
 
             float restrictedDis = Mathf.InverseLerp(0, 10, distance);
 
             mouseIndicator.transform.localPosition = Vector3.right * restrictedDis;
 
+            
+            Vector2 charMousePos = new Vector2(mouseCharLock.x, mouseCharLock.y);
+            Vector2 dir = charMousePos - Mouse.current.position.value;
+            dir.Normalize();
+            dir *= 15;
+
+            if (distance>2.75)
+            {
+                Mouse.current.WarpCursorPosition(Mouse.current.position.value + dir);
+            }
+            else if (distance<2.75)
+            {
+                Mouse.current.WarpCursorPosition(Mouse.current.position.value - dir);
+            }
+            
+            //Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.01f));
+            
 
             if (!rolling)
             {
@@ -721,8 +736,8 @@ public class CharacterControl : MonoBehaviour
 
         Attack();
 
-
-        PickupSearch(); //scan the area for pickups
+        if (!dead)
+            PickupSearch(); //scan the area for pickups
     }
 
     private void AttackScan()
@@ -1291,8 +1306,8 @@ public class CharacterControl : MonoBehaviour
                     if (pickupSearch[i].transform.name == "Coin")
                     {
                         
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString()+"+"+"1";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup",-1,0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1300,8 +1315,8 @@ public class CharacterControl : MonoBehaviour
                     else if (pickupSearch[i].transform.name == "Coin2")
                     {
                         
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1309,8 +1324,8 @@ public class CharacterControl : MonoBehaviour
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
                         
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "3";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 3);
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
