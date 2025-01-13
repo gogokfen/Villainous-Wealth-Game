@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using VInspector;
+using MelenitasDev.SoundsGood;
 
 public class SoundManager : MonoBehaviour
 {
@@ -63,7 +64,6 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioClip shield;
     [SerializeField] AudioClip chestOpen;
     [SerializeField] AudioClip cannonShot;
-
     void Start()
     {
         sfxAS = GetComponent<AudioSource>();
@@ -98,7 +98,7 @@ public class SoundManager : MonoBehaviour
 
     public void Melee2(Vector3 soundLocation)
     {
-         sfxAS.PlayOneShot(melee2);
+        sfxAS.PlayOneShot(melee2);
         transform.position = soundLocation;
     }
 
@@ -228,8 +228,18 @@ public class SoundManager : MonoBehaviour
         musicAS.Play();
     }
 
-     void OnApplicationFocus(bool hasFocus)
+    void OnApplicationFocus(bool hasFocus)
     {
         isPaused = !hasFocus;
+    }
+
+    public void PlayClip(string tag, Vector3 soundLocation, float volume, bool addRandomPitch)
+    {
+        Sound sound = new(tag);
+        if (addRandomPitch) sound.SetRandomPitch();
+        sound
+            .SetPosition(soundLocation)
+            .SetVolume(volume)
+            .Play();
     }
 }
