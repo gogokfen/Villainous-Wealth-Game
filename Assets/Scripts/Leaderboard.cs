@@ -194,6 +194,37 @@ public class Leaderboard : MonoBehaviour
         */
     }
 
+    public void AnnounceKill(CharacterControl.PlayerTypes playerWhoDiedToZone) //in case of player killed by the zone
+    {
+        if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Red)
+        {
+            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{redPlayer.name}\">";
+            redPlayer.deaths++;
+        }
+        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Green)
+        {
+            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{greenPlayer.name}\">";
+            greenPlayer.deaths++;
+        }
+        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Blue)
+        {
+            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{bluePlayer.name}\">";
+            bluePlayer.deaths++;
+        }
+        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Yellow)
+        {
+            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{yellowPlayer.name}\">";
+            yellowPlayer.deaths++;
+        }
+
+        killsAnnouncerAnimation.Play("Announcement");
+
+        /*
+        killsAnnouncer.text = killingPlayer + " Player has killed " + dyingPlayer + " Player!";
+        killsAnnouncerAnimation.Play("Announcement");
+        */
+    }
+
     // public void AnnounceKill(string killingPlayer, string dyingPlayer)
     // {
     //     killsAnnouncer.text = $"<sprite name=\"{killingPlayer}\"> Player has killed <sprite name=\"{dyingPlayer}\"> Player!";
@@ -322,5 +353,32 @@ public class Leaderboard : MonoBehaviour
     {
         Leaderboard.singleton.killsAnnouncer.text = text;
         Leaderboard.singleton.killsAnnouncerAnimation.Play("Announcement");
+    }
+
+    public void StopForwardMomentum(CharacterControl.PlayerTypes playerColor)
+    {
+        if (playerColor == CharacterControl.PlayerTypes.Red)
+            redPlayer.characterReference.StopForwardMomentum();
+        if (playerColor == CharacterControl.PlayerTypes.Green)
+            greenPlayer.characterReference.StopForwardMomentum();
+        if (playerColor == CharacterControl.PlayerTypes.Blue)
+            bluePlayer.characterReference.StopForwardMomentum();
+        if (playerColor == CharacterControl.PlayerTypes.Yellow)
+            yellowPlayer.characterReference.StopForwardMomentum();
+    }
+
+    public void DisableCharacterControl()
+    {
+        for (int i=0;i<characters.Length;i++)
+        {
+            characters[i].GetComponent<CharacterControl>().enabled = false;
+        }
+    }
+    public void EnableCharacterControl()
+    {
+        for (int i = 0; i < characters.Length; i++)
+        {
+            characters[i].GetComponent<CharacterControl>().enabled = true;
+        }
     }
 }

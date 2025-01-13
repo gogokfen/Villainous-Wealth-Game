@@ -26,12 +26,17 @@ public class Wall : MonoBehaviour
             {
                 WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile)
+                if (attackWB.damageType == WeaponBase.damageTypes.destructableProjectile)
                 {
                     Destroy(projSearch[i].gameObject);
                 }
 
-                else if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.bounceOffProjectile)
+                if (attackWB.damageType == WeaponBase.damageTypes.melee)
+                {
+                    Leaderboard.singleton.StopForwardMomentum(attackWB.playerID);
+                }
+
+                else if (attackWB.damageType == WeaponBase.damageTypes.bounceOffProjectile)
                 {
                     //projSearch[i].transform.Rotate(0,90,0); //need to think about the correct calculation
                     /*

@@ -27,10 +27,13 @@ public class Grenade : WeaponBase
     int attackState = 0;
 
     [SerializeField] GameObject rangeIndicator;
+    [SerializeField] GameObject rangeCenter;
+    LineRenderer LR;
 
     private void Start()
     {
         damageType = damageTypes.bounceOffProjectile;
+        LR = GetComponent<LineRenderer>();
     }
 
     private void OnEnable()
@@ -81,21 +84,31 @@ public class Grenade : WeaponBase
         {
             rangeIndicator.SetActive(true);
 
-            float throwPowerCalc = 5 + windup*125f;
+            float throwPowerCalc = 5 + windup*90f; //originally 125
             if (throwPowerCalc > 75)
                 throwPowerCalc = 75;
 
             rangeIndicator.transform.position = transform.position + transform.forward + transform.forward * Mathf.Lerp(0,30,(windUpSlider.value *  (1 - (0.75f * Mathf.InverseLerp(75, 5, throwPowerCalc))))); // I CAN"T BELIEVE THIS WORKS
 
+            LR.enabled = true;
+            LR.SetPosition(0, transform.position);
+            Vector3 airPos = (rangeCenter.transform.position + transform.position) / 2f;
+            airPos.y = Vector3.Distance(rangeCenter.transform.position, transform.position) / 4.5f;
+            //Vector3 airPos = new Vector3((  transform.position.x - rangeIndicator.transform.position.x) /2, 7.5f, ( transform.position.z - rangeIndicator.transform.position.z) / 2);
+            LR.SetPosition(1, airPos);
+            LR.SetPosition(2, rangeCenter.transform.position);
+
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);
-            windUpSlider.value = Mathf.InverseLerp(0, 70,windup *125); //(0, 50,windup *75)
+            windUpSlider.value = Mathf.InverseLerp(0, 70,windup *90); //(0, 50,windup *75) //latest ver is 125
 
             charging = true;
         }
         if (attackState == -1 && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
         {
+            LR.enabled = false;
+
             attackState = 0;
 
             windUpSlider.gameObject.SetActive(false);
@@ -107,10 +120,10 @@ public class Grenade : WeaponBase
             attackCooldown = maxAttackCooldown;
 
 
-            if ((5 + windup * 125f) > 75)
+            if ((5 + windup * 90f) > 75) //latest 125
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 75;
             else
-                tempGrenade.GetComponent<GrenadeShot>().throwPower = 5 + windup * 125f; //25 + windup * 75f;
+                tempGrenade.GetComponent<GrenadeShot>().throwPower = 5 + windup * 90f; //25 + windup * 75f; //125
 
             if (ExtraBounceUpgrade)
                 tempGrenade.GetComponent<GrenadeShot>().ExtraBounceUpgrade = true;

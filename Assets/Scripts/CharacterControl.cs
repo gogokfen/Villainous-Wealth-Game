@@ -182,6 +182,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] ParticleSystem healthBuffEffect;
     [SerializeField] ParticleSystem leaderGlow;
     [SerializeField] ParticleSystem strongPunchCharged;
+    [SerializeField] Animator strongPunchPulse;
     [SerializeField] GameObject     leaderCrown;
     [EndFoldout]
 
@@ -357,7 +358,10 @@ public class CharacterControl : MonoBehaviour
         }
         */
         PickupManager.singleton.SpawnPowerUp(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
-        
+
+        //Debug.Log(HeadGFX.name);
+        //Debug.Log("Dead Player"+new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
+
         CC.enabled = false;
 
         //characterGFX.SetActive(false);
@@ -931,8 +935,10 @@ public class CharacterControl : MonoBehaviour
         {
             for (int i =0; i<characterSearch.Length;i++)
             {
+                /*
                 if (animState != 0 && characterSearch[i].GetComponent<CharacterControl>().PlayerID != PlayerID) // trying out collision with players while meleeing
                     attackMoveSpeed = 0;
+                */
 
                 if (moveInput!= Vector2.zero)
                 {
@@ -1232,6 +1238,7 @@ public class CharacterControl : MonoBehaviour
                     if (powerPunchWindup>=0.75)
                     {
                         strongPunchCharged.Play();
+                        strongPunchPulse.Play("Strong Punch Pulse");
                         powerPunchWindup = 0.75f;
                     }
                         
@@ -1251,6 +1258,7 @@ public class CharacterControl : MonoBehaviour
                 attackDirection = transform.forward; //moveDirection
                 attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
                 strongPunchCharged.Stop();
+                strongPunchPulse.Play("Waiting");
                 //rFist.enabled = true;
                 //strongFist.enabled = true;
                 //strongTimer = 0.5f;
@@ -1302,6 +1310,8 @@ public class CharacterControl : MonoBehaviour
                 }
                 else if (pickupSearch[i].transform.name == "Coin" || pickupSearch[i].transform.name == "Coin2" || pickupSearch[i].transform.name == "Speed" || pickupSearch[i].transform.name == "Health" || pickupSearch[i].transform.name == "Shield" || pickupSearch[i].transform.name == "CannonBall" || pickupSearch[i].transform.name == "CoinSack")
                 {
+                    //Debug.Log(HeadGFX.name +" "+ pickupSearch[i].transform.name);
+
                     SoundManager.singleton.Pickup(transform.position);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
@@ -1413,7 +1423,8 @@ public class CharacterControl : MonoBehaviour
                         MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
                         OutTheRound();
                     }
-                        
+
+                    Leaderboard.singleton.StopForwardMomentum(attackingPlayer);    
 
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
@@ -1564,7 +1575,7 @@ public class CharacterControl : MonoBehaviour
                 if (hp > 0 && hp - damage <= 0)
                 {
                     OutTheRound();
-                    Leaderboard.singleton.AnnounceKill(PlayerID, PlayerID);
+                    Leaderboard.singleton.AnnounceKill(PlayerID); //overload function
                     DeadStop();
                 }
                     
@@ -1789,6 +1800,11 @@ public class CharacterControl : MonoBehaviour
         else if (result == 1) charAnim.Play("Loser");
         else if (result == 2) charAnim.Play("Loser2");
         else if (result == 3) charAnim.Play("Loser3");
+    }
+
+    public void StopForwardMomentum()
+    {
+        attackMoveSpeed = 0;
     }
 
 

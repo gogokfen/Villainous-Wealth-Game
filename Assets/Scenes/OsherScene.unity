@@ -1627,6 +1627,7 @@ MonoBehaviour:
   healthBuffEffect: {fileID: 0}
   leaderGlow: {fileID: 0}
   strongPunchCharged: {fileID: 0}
+  strongPunchPulse: {fileID: 0}
   leaderCrown: {fileID: 0}
   characterGFX: {fileID: 0}
   HeadGFX: {fileID: 0}
@@ -9821,6 +9822,7 @@ GameObject:
   - component: {fileID: 1206977470}
   - component: {fileID: 1206977471}
   - component: {fileID: 1206977472}
+  - component: {fileID: 1206977473}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -9985,6 +9987,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08ab5978dea3b3c44924a63b8f497941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1206977473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206977463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d879cf99bd89d94a935b9637dace32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1208279480
@@ -13934,6 +13948,55 @@ Transform:
   - {fileID: 1915488059}
   - {fileID: 1900700214}
   m_Father: {fileID: 1055101176}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1635413689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1635413691}
+  - component: {fileID: 1635413690}
+  m_Layer: 0
+  m_Name: Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1635413690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635413689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 68bcdf3308efae346a7b4c775f911185, type: 2}
+--- !u!4 &1635413691
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635413689}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1636746990
 GameObject:
@@ -19841,6 +19904,7 @@ MonoBehaviour:
   healthBuffEffect: {fileID: 0}
   leaderGlow: {fileID: 0}
   strongPunchCharged: {fileID: 0}
+  strongPunchPulse: {fileID: 0}
   leaderCrown: {fileID: 0}
   characterGFX: {fileID: 0}
   HeadGFX: {fileID: 0}
@@ -22715,3 +22779,4 @@ SceneRoots:
   - {fileID: 913395930}
   - {fileID: 770784891}
   - {fileID: 1980920236}
+  - {fileID: 1635413691}

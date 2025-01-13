@@ -31,6 +31,9 @@ public class Blunderbuss : WeaponBase
 
     [SerializeField] ParticleSystem gunShotEffect;
 
+    [SerializeField] GameObject ammoVisual;
+    [SerializeField] GameObject[] bulletsVisual;
+
     private void OnEnable()
     {
         ammo = maxAmmo;
@@ -66,6 +69,12 @@ public class Blunderbuss : WeaponBase
 
     private void Shoot()
     {
+        if (reloading)
+            ammoVisual.SetActive(false);
+        else
+            ammoVisual.SetActive(true);
+
+
         if (attackCooldown <= 0 && ammo != 0)
         {
             ammo--;
@@ -105,6 +114,18 @@ public class Blunderbuss : WeaponBase
             transform.rotation = startingShotPos;
 
             attackCooldown = maxAttackCooldown;
+
+            ammoVisual.SetActive(true);
+
+            for (int i =0;i<bulletsVisual.Length;i++) //turning all the bullets visual off then turning on the active ones
+            {
+                bulletsVisual[i].SetActive(false);
+            }
+
+            for (int i=0;i<ammo;i++)
+            {
+                bulletsVisual[i].SetActive(true);
+            }
         }
         else if (ammo == 0)
         {
@@ -113,6 +134,12 @@ public class Blunderbuss : WeaponBase
             attackCooldown = 2 * maxAttackCooldown;
 
             SoundManager.singleton.BlunderbussReload(transform.position);
+
+            for (int i = 0; i < ammo; i++)
+            {
+                bulletsVisual[i].SetActive(true);
+            }
+
             //Debug.Log("reloading!"); //don't delete this comment
         }
     }

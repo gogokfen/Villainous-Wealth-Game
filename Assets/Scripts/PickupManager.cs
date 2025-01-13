@@ -192,6 +192,7 @@ public class PickupManager : MonoBehaviour
     {
         //Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
         Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), 1, transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
+        //Debug.Log("PickupManager alive player" + tempPos);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
@@ -263,6 +264,7 @@ public class PickupManager : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 powerupPosition)
     {
+        //Debug.Log("PickupManager dead player" + powerupPosition);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
