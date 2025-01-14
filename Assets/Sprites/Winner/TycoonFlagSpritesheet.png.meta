@@ -1,0 +1,721 @@
+fileFormatVersion: 2
+guid: b54a0fce7f019fd498682f836d1a5e97
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 12288
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1737bcefadb43241b7399115c9df068
+      internalID: 1186559324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 12288
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e6ddc3c49ca14f45b55a4d738bbb639
+      internalID: 410532676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 12288
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca6c955dd22fc0a4c8bf315a0cdecef1
+      internalID: 1039601501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 12288
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1471df35ecc653428df636e927cb1c2
+      internalID: -396973595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 10240
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb7cef2011d72fd45a429ab442fcc6a1
+      internalID: -231268686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 10240
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f7c77a351e46944f961a1aa06bc22f9
+      internalID: -1103985461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 10240
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc5c87c5df30b234c95dfec9fa9ec9ad
+      internalID: 279897170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 10240
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1acf52549b762f4ca240d07f09c717a
+      internalID: -487475797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8192
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14d44b0b13274754498349a2686e5556
+      internalID: -1592429570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 8192
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06c1ce3fe8df68b43806838b7d64a75e
+      internalID: -1674649274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 8192
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84dc9d313d02adc4aba97483d28cc7e4
+      internalID: 271657964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 8192
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f00c3d19c31480840a317581ebef9c53
+      internalID: 1327881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6144
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5336c08d46e5610419cec0ce717cca4b
+      internalID: 905783895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 6144
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 491c308de244202438a0e35746c67494
+      internalID: -809428407
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 6144
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cfa2f636664d0e4f92f1b66b6167902
+      internalID: -61612390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 6144
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 441843de08b688444aee640bc832c157
+      internalID: 1303675212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4096
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e2e135aa9fd76e46b74a19136c3d323
+      internalID: -594106670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 4096
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d429b4ee34c30e946a283b35c1cba3f8
+      internalID: -1992271704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 4096
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9295ab72504bef84a8cf3e9914f705b1
+      internalID: -106539437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_19
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 4096
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 444f274b4eee1044cbefdfdadf5dac9a
+      internalID: -484724735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2048
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8989015bde5a9e74f995c908eaf5d859
+      internalID: -1125367976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_21
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 2048
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7f68cc4fd5eb75448bca7de789ab74c7
+      internalID: 310783542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_22
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 2048
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f37be90249de45c4f9a70f3d5305b072
+      internalID: 838101153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_23
+      rect:
+        serializedVersion: 2
+        x: 6144
+        y: 2048
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ffaf6be4eb8544085e8c8ca5e18bba
+      internalID: -744790054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85740495a5e20c349a710faf4a374082
+      internalID: -809685805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_25
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 0
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8fa68c2d1548cdd44ae8399544e142d6
+      internalID: -223635687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TycoonFlagSpritesheet_26
+      rect:
+        serializedVersion: 2
+        x: 4096
+        y: 0
+        width: 2028
+        height: 2048
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a1cd63ed7b986249b593439284025c9
+      internalID: -236949576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      TycoonFlagSpritesheet_0: 1186559324
+      TycoonFlagSpritesheet_1: 410532676
+      TycoonFlagSpritesheet_10: 271657964
+      TycoonFlagSpritesheet_11: 1327881
+      TycoonFlagSpritesheet_12: 905783895
+      TycoonFlagSpritesheet_13: -809428407
+      TycoonFlagSpritesheet_14: -61612390
+      TycoonFlagSpritesheet_15: 1303675212
+      TycoonFlagSpritesheet_16: -594106670
+      TycoonFlagSpritesheet_17: -1992271704
+      TycoonFlagSpritesheet_18: -106539437
+      TycoonFlagSpritesheet_19: -484724735
+      TycoonFlagSpritesheet_2: 1039601501
+      TycoonFlagSpritesheet_20: -1125367976
+      TycoonFlagSpritesheet_21: 310783542
+      TycoonFlagSpritesheet_22: 838101153
+      TycoonFlagSpritesheet_23: -744790054
+      TycoonFlagSpritesheet_24: -809685805
+      TycoonFlagSpritesheet_25: -223635687
+      TycoonFlagSpritesheet_26: -236949576
+      TycoonFlagSpritesheet_3: -396973595
+      TycoonFlagSpritesheet_4: -231268686
+      TycoonFlagSpritesheet_5: -1103985461
+      TycoonFlagSpritesheet_6: 279897170
+      TycoonFlagSpritesheet_7: -487475797
+      TycoonFlagSpritesheet_8: -1592429570
+      TycoonFlagSpritesheet_9: -1674649274
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
