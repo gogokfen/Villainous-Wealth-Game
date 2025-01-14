@@ -375,7 +375,8 @@ public class CharacterControl : MonoBehaviour
         dead = true;
 
 
-        SoundManager.singleton.Death(transform.position);
+        //SoundManager.singleton.Death(transform.position);
+        SoundManager.singleton.PlayClip("Death", transform.position, 1f, false, true);
 
         PlayerManager.PlayerCheck();
         if (cameraManagerIsOn)
@@ -615,7 +616,8 @@ public class CharacterControl : MonoBehaviour
 
             playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, 0);
 
-            SoundManager.singleton.Roll(transform.position);
+            //SoundManager.singleton.Roll(transform.position);
+            SoundManager.singleton.PlayClip("Roll", transform.position, 1f, false, true);
 
             charAnim.SetBool("StrongPunch", false); //making sure you can't strong punch after rolling
             powerPunchWindup = 0;
@@ -1019,7 +1021,8 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch1");
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
-                    SoundManager.singleton.Melee1(transform.position);
+                    //SoundManager.singleton.Melee1(transform.position);
+                    SoundManager.singleton.PlayClip("Melee1", transform.position, 1f, true, true);
                     
                     /*
                     if (!(mouseMovement || isTargetDummy))
@@ -1039,7 +1042,8 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch2");
                     //charAnim.Play("PunchingTwo");
                     charAnim.SetTrigger("Punch2");
-                    SoundManager.singleton.Melee2(transform.position);
+                    //SoundManager.singleton.Melee2(transform.position);
+                    SoundManager.singleton.PlayClip("Melee2", transform.position, 1f, true, true);
                 }
                 else if (animState == AS.Punch2Recovery) //animState == AS.Punch2Active || 
                 {
@@ -1055,7 +1059,8 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch3");
                     //charAnim.Play("PunchingThree");
                     charAnim.SetTrigger("Punch3");
-                    SoundManager.singleton.Melee3(transform.position);
+                    //SoundManager.singleton.Melee3(transform.position);
+                    SoundManager.singleton.PlayClip("Melee3", transform.position, 1f, true, true);
                 }
             }
             else if (equippedWeapon == Weapons.Sword)
@@ -1071,7 +1076,8 @@ public class CharacterControl : MonoBehaviour
                     animTimer = 0;
                     animState = AS.Sword1Windup;
                     charAnim.SetTrigger("Sword1");
-                    SoundManager.singleton.Melee1(transform.position);
+                    //SoundManager.singleton.Melee1(transform.position);
+                    SoundManager.singleton.PlayClip("Melee1", transform.position, 1f, true, true);
                 }
                 else if (animState == AS.Sword1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -1083,7 +1089,8 @@ public class CharacterControl : MonoBehaviour
                     animTimer = 0;
                     animState = AS.Sword2Windup;
                     charAnim.SetTrigger("Sword2");
-                    SoundManager.singleton.Melee2(transform.position);
+                    //SoundManager.singleton.Melee2(transform.position);
+                    SoundManager.singleton.PlayClip("Melee2", transform.position, 1f, true, true);
                 }
 
             }
@@ -1312,7 +1319,8 @@ public class CharacterControl : MonoBehaviour
                 {
                     //Debug.Log(HeadGFX.name +" "+ pickupSearch[i].transform.name);
 
-                    SoundManager.singleton.Pickup(transform.position);
+                    //SoundManager.singleton.Pickup(transform.position);
+                    SoundManager.singleton.PlayClip("Pickup", transform.position, 1f, false, true);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
                         
@@ -1479,7 +1487,8 @@ public class CharacterControl : MonoBehaviour
                     }
                     */
 
-                    SoundManager.singleton.Damage(transform.position);
+                    //SoundManager.singleton.Damage(transform.position);
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
 
                     if (!(keyboardMouse || isTargetDummy || mouseMovement))
                         RumbleManager.instance.RumblePulse((0.25f +damage*0.125f), 0.5f, 0.225f, PI);
@@ -1543,7 +1552,8 @@ public class CharacterControl : MonoBehaviour
                 knockbackDirection *= (damage / 2f);
                 knockbackDirection.y = 0;
                 */
-                SoundManager.singleton.Damage(transform.position);
+                //SoundManager.singleton.Damage(transform.position);
+                SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse((0.25f + damageBasedOnDistance * 0.125f), 0.5f, 0.225f, PI);
@@ -1590,7 +1600,8 @@ public class CharacterControl : MonoBehaviour
                     paintHead = true;
                 }
 
-                SoundManager.singleton.Damage(transform.position);
+                //SoundManager.singleton.Damage(transform.position);
+                SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse(0.25f, 0.5f, 0.225f, PI);

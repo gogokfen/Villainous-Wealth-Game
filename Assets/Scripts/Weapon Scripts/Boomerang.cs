@@ -132,7 +132,8 @@ public class Boomerang : WeaponBase
 
             windup = 0;
 
-            SoundManager.singleton.BoomerangThrow(transform.position);
+            //SoundManager.singleton.BoomerangThrow(transform.position);
+            SoundManager.singleton.PlayClip("BoomerangThrow", transform.position, 1f, false, true);
 
             charging = false;
             releasing = true;
@@ -153,7 +154,8 @@ public class Boomerang : WeaponBase
                             {
                                 catchCount++;
                                 Destroy(boomrangSearch[i].gameObject);
-                                SoundManager.singleton.BoomerangCatch(transform.position);
+                                //SoundManager.singleton.BoomerangCatch(transform.position);
+                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 1f, false, true);
                                 if (catchCount == 3)
                                 {
                                     catchCD = 0;
@@ -175,7 +177,8 @@ public class Boomerang : WeaponBase
                                 canThrow = true;
                                 boomerangGFX.SetActive(true);
 
-                                SoundManager.singleton.BoomerangCatch(transform.position);
+                                //SoundManager.singleton.BoomerangCatch(transform.position);
+                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 1f, false, true);
                             }
                         }
                     }

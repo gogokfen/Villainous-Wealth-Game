@@ -13,21 +13,87 @@ MonoBehaviour:
   m_Name: SoundCollection
   m_EditorClassIdentifier: 
   sounds:
-  - tag: MafiaBoss
+  - tag: Melee1
     clips:
-    - {fileID: 8300000, guid: f8b2cc5122e936f4a9010107c701c683, type: 3}
-    - {fileID: 8300000, guid: 7418ffd6e4aba0448b9bb7d21bc133fb, type: 3}
-    - {fileID: 8300000, guid: c3492072362b0d6448fe5f21107926bc, type: 3}
-    - {fileID: 8300000, guid: 9edd2d158cad2b94ea58a0fe73ea4012, type: 3}
-    - {fileID: 8300000, guid: 8c1224a67c410e54cab56bd95e123ea2, type: 3}
-    - {fileID: 8300000, guid: 3cb35bd2283c8f6468cbddfd04860f76, type: 3}
-    - {fileID: 8300000, guid: 9b5770a5e3df92147bb796ec4af6ac97, type: 3}
-    - {fileID: 8300000, guid: ef2776e774e851c4795bdd2d653ac956, type: 3}
-    - {fileID: 8300000, guid: f6fa71e0a98b9634c835acb6d33a07f6, type: 3}
-    - {fileID: 8300000, guid: 9a15d4421777d2b4d94185e28a4a03d4, type: 3}
-    - {fileID: 8300000, guid: 715c7af2559a4ce4980c30559e93b5e8, type: 3}
-    - {fileID: 8300000, guid: 1d435097d9631f9499e80520e0c3048e, type: 3}
-    - {fileID: 8300000, guid: 7645145e38b6baa4282d29060bf02580, type: 3}
-    - {fileID: 8300000, guid: bc4c2fe06040dd045b185775fc11b3ec, type: 3}
+    - {fileID: 8300000, guid: 214f6690f8dcc05478cbee324f9a88e0, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Melee2
+    clips:
+    - {fileID: 8300000, guid: 7626399fe3b966145905bcc492bfc190, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Melee3
+    clips:
+    - {fileID: 8300000, guid: 83f480ad3b916984c8fa481b4822cf3f, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: GunShot
+    clips:
+    - {fileID: 8300000, guid: b941ba4c7c9ebb64dbca3e05291464a0, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: LaserGunShot
+    clips:
+    - {fileID: 8300000, guid: cfbf112bbe1ef934e8362f44eae19825, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: BlunderbussShot
+    clips:
+    - {fileID: 8300000, guid: 099d0d609b0668344a72fcf682372fbc, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: BlunderbussReload
+    clips:
+    - {fileID: 8300000, guid: 8751f88d6e25eea4e95746444a9cdf39, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: BoomerangThrow
+    clips:
+    - {fileID: 8300000, guid: 136869339d466a848a22ba9342071062, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: BoomerangCatch
+    clips:
+    - {fileID: 8300000, guid: cb4d5c09d0a8e4548803b1e36fc615fb, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: GrenadeThrow
+    clips:
+    - {fileID: 8300000, guid: d9a4e06304eb9f546b167d05032fa636, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: GrenadeExplode
+    clips:
+    - {fileID: 8300000, guid: 3a2b08715b8ed8d438fd166abcbf965d, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Damage
+    clips:
+    - {fileID: 8300000, guid: fc466a8b50fbaf64da18b58690cd5d84, type: 3}
+    - {fileID: 8300000, guid: 6ea88438654e7b84196cf56cd4957c50, type: 3}
+    - {fileID: 8300000, guid: 5caf53c21fc0816499122c9a946c3888, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Death
+    clips:
+    - {fileID: 8300000, guid: 83b5054fd71df3945a365843e4270236, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Pickup
+    clips:
+    - {fileID: 8300000, guid: 72288b18559b8da419d59c9c88707eb6, type: 3}
+    - {fileID: 8300000, guid: c9f09fc034d12ad40a123a00413b5369, type: 3}
+    - {fileID: 8300000, guid: f6adde55f456ee54ca0ba81f6de69404, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: ChestOpen
+    clips:
+    - {fileID: 8300000, guid: 44b985dc6aea62c4995b105082674004, type: 3}
+    compressionPreset: 1
+    forceToMono: 0
+  - tag: Roll
+    clips:
+    - {fileID: 8300000, guid: df2f5eae5ca1ae143a9b9b0389193f2d, type: 3}
     compressionPreset: 1
     forceToMono: 0

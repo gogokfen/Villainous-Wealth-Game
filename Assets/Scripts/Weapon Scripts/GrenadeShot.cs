@@ -84,7 +84,8 @@ public class GrenadeShot : WeaponBase
                 explosionEffect.transform.position += Vector3.up/4; //making sure the effect is visble
                 explosionEffect.Play();
 
-                SoundManager.singleton.BombExplode(transform.position);
+                //SoundManager.singleton.BombExplode(transform.position);
+                SoundManager.singleton.PlayClip("GrenadeExplode", transform.position, 1f, false, true);
 
                 Destroy(explosionEffect.gameObject, 3f);
             }

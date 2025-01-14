@@ -132,7 +132,8 @@ public class Grenade : WeaponBase
 
             windup = 0;
 
-            SoundManager.singleton.BombThrow(transform.position);
+            //SoundManager.singleton.BombThrow(transform.position);
+            SoundManager.singleton.PlayClip("GrenadeThrow", transform.position, 1f, false, true);
 
             charging = false;
             releasing = true;

@@ -115,7 +115,8 @@ public class QualityLootDestructable : MonoBehaviour
         coinNumber = Random.Range(5,16);
         animator.SetTrigger("Open");
 
-        SoundManager.singleton.ChestOpen(transform.position);
+        //SoundManager.singleton.ChestOpen(transform.position);
+        SoundManager.singleton.PlayClip("ChestOpen", transform.position, 1f, false, true);
         /*
         for (int i=0;i<coinNumber;i++)
         {

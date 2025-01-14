@@ -44,28 +44,6 @@ public class PlayerManager : MonoBehaviour
     public Material yellowMaterial;
     [EndFoldout]
 
-
-    [Button("Go To Main Scene")]
-    public void MainScene()
-    {
-        StartCoroutine(LoadYourAsyncScene());
-    }
-
-
-    public IEnumerator LoadYourAsyncScene()
-    {
-        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
-        operation.allowSceneActivation = false;
-        while (!operation.isDone)
-        {
-            if (operation.progress >= 0.9f)
-            {
-                operation.allowSceneActivation = true;
-            }
-            yield return null;
-        }
-    }
-
     private void Awake()
     {
         instance = this;

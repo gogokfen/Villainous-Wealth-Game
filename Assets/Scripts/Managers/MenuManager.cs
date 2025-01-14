@@ -46,6 +46,32 @@ public class MenuManager : MonoBehaviour
     public bool weReadyCheck;
     public Button startButton;
     public TextMeshProUGUI requirementText;
+    [SerializeField] Animator curtain;
+
+    [Button("Go To Main Scene")]
+    public void MainScene()
+    {
+        StartCoroutine(LoadYourAsyncScene());
+    }
+
+
+    public IEnumerator LoadYourAsyncScene()
+    {
+        curtain.Play("CurtainClose");
+        yield return new WaitForSeconds(3);
+        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
+        operation.allowSceneActivation = false;
+        while (!operation.isDone)
+        {
+            if (operation.progress >= 0.9f)
+            {
+                operation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+    }
+
+    
 
     private void Awake()
     {
@@ -55,7 +81,7 @@ public class MenuManager : MonoBehaviour
     {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton7)) && weReadyCheck == true)
         {
-            PlayerManager.instance.MainScene();
+            MainScene();
         }
 
         if (characterSelectionScreen.activeInHierarchy == true)

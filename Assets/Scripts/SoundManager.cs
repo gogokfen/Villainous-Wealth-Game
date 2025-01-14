@@ -90,54 +90,54 @@ public class SoundManager : MonoBehaviour
         sfxAS.PlayOneShot(announcerMonopolyDude);
     }
 
-    public void Melee1(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(melee1);
-        transform.position = soundLocation;
-    }
+    // public void Melee1(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(melee1);
+    //     transform.position = soundLocation;
+    // }
 
-    public void Melee2(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(melee2);
-        transform.position = soundLocation;
-    }
+    // public void Melee2(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(melee2);
+    //     transform.position = soundLocation;
+    // }
 
-    public void Melee3(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(melee3);
-        transform.position = soundLocation;
-    }
+    // public void Melee3(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(melee3);
+    //     transform.position = soundLocation;
+    // }
 
-    public void GunShot(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(gunShot);
-        transform.position = soundLocation;
-    }
-    public void LazerGunShot(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(lazerGunShot);
-        transform.position = soundLocation;
-    }
-    public void BlunderbussShot(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(blunderbussShot);
-        transform.position = soundLocation;
-    }
-    public void BlunderbussReload(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(blunderbussReload);
-        transform.position = soundLocation;
-    }
-    public void BoomerangThrow(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(boomerangThrow);
-        transform.position = soundLocation;
-    }
-    public void BoomerangCatch(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(boomerangCatch);
-        transform.position = soundLocation;
-    }
+    // public void GunShot(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(gunShot);
+    //     transform.position = soundLocation;
+    // }
+    // public void LazerGunShot(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(lazerGunShot);
+    //     transform.position = soundLocation;
+    // }
+    // public void BlunderbussShot(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(blunderbussShot);
+    //     transform.position = soundLocation;
+    // }
+    // public void BlunderbussReload(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(blunderbussReload);
+    //     transform.position = soundLocation;
+    // }
+    // public void BoomerangThrow(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(boomerangThrow);
+    //     transform.position = soundLocation;
+    // }
+    // public void BoomerangCatch(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(boomerangCatch);
+    //     transform.position = soundLocation;
+    // }
     public void MinePlace(Vector3 soundLocation)
     {
         sfxAS.PlayOneShot(minePlace);
@@ -148,59 +148,59 @@ public class SoundManager : MonoBehaviour
         sfxAS.PlayOneShot(mineExplode);
         transform.position = soundLocation;
     }
-    public void BombThrow(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(bombThrow);
-        transform.position = soundLocation;
-    }
-    public void BombExplode(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(bombExplode);
-        transform.position = soundLocation;
-    }
+    // public void BombThrow(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(bombThrow);
+    //     transform.position = soundLocation;
+    // }
+    // public void BombExplode(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(bombExplode);
+    //     transform.position = soundLocation;
+    // }
 
-    public void Damage(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        int random = Random.Range(0, 3);
-        if (random == 0)
-            sfxAS.PlayOneShot(takeDamage1);
-        if (random == 1)
-            sfxAS.PlayOneShot(takeDamage2);
-        if (random == 2)
-            sfxAS.PlayOneShot(takeDamage3);
-    }
-    public void Death(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(death);
-        transform.position = soundLocation;
-    }
-    public void Pickup(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        int random = Random.Range(0, 3);
-        if (random == 0)
-            sfxAS.PlayOneShot(coinPickup1);
-        if (random == 1)
-            sfxAS.PlayOneShot(coinPickup2);
-        if (random == 2)
-            sfxAS.PlayOneShot(coinPickup3);
-    }
+    // public void Damage(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     int random = Random.Range(0, 3);
+    //     if (random == 0)
+    //         sfxAS.PlayOneShot(takeDamage1);
+    //     if (random == 1)
+    //         sfxAS.PlayOneShot(takeDamage2);
+    //     if (random == 2)
+    //         sfxAS.PlayOneShot(takeDamage3);
+    // }
+    // public void Death(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(death);
+    //     transform.position = soundLocation;
+    // }
+    // public void Pickup(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     int random = Random.Range(0, 3);
+    //     if (random == 0)
+    //         sfxAS.PlayOneShot(coinPickup1);
+    //     if (random == 1)
+    //         sfxAS.PlayOneShot(coinPickup2);
+    //     if (random == 2)
+    //         sfxAS.PlayOneShot(coinPickup3);
+    // }
     public void CannonShot(Vector3 soundLocation)
     {
         transform.position = soundLocation;
         sfxAS.PlayOneShot(cannonShot);
     }
-    public void ChestOpen(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        sfxAS.PlayOneShot(chestOpen);
-    }
-    public void Roll(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        sfxAS.PlayOneShot(roll);
-    }
+    // public void ChestOpen(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     sfxAS.PlayOneShot(chestOpen);
+    // }
+    // public void Roll(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     sfxAS.PlayOneShot(roll);
+    // }
     public void Shield(Vector3 soundLocation)
     {
         transform.position = soundLocation;
@@ -233,13 +233,15 @@ public class SoundManager : MonoBehaviour
         isPaused = !hasFocus;
     }
 
-    public void PlayClip(string tag, Vector3 soundLocation, float volume, bool addRandomPitch)
+    public void PlayClip(string tag, Vector3 soundLocation, float volume, bool addRandomPitch, bool spatialSound)
     {
-        Sound sound = new(tag);
+        Sound sound = new (tag);
         if (addRandomPitch) sound.SetRandomPitch();
+        if (spatialSound) sound.SetSpatialSound(true);
         sound
             .SetPosition(soundLocation)
-            .SetVolume(volume)
+            .SetVolume(volume, new Vector2(35f, 35f))
+            .SetOutput(Output.SFX)
             .Play();
     }
 }
