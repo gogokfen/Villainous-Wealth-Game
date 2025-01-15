@@ -28,14 +28,14 @@ public class CannonTargetManualControl : MonoBehaviour
 
     void Update()
     {
-        //moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
 
-        //transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 
-        float horiz = Input.GetAxisRaw("Horizontal");
-        float vert = Input.GetAxisRaw("Vertical");
+        //float horiz = Input.GetAxisRaw("Horizontal");
+        //float vert = Input.GetAxisRaw("Vertical");
 
-        transform.Translate((horiz*Vector3.right + vert*Vector3.forward) * moveSpeed * Time.deltaTime);
+        //transform.Translate((horiz*Vector3.right + vert*Vector3.forward) * moveSpeed * Time.deltaTime);
 
     }
 }

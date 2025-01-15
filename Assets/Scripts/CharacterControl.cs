@@ -659,6 +659,8 @@ public class CharacterControl : MonoBehaviour
 
                 Instantiate(teleportVFXEnd, transform.position, transform.rotation);
                 teleportCD = Time.time + 4;
+
+                Teleport = false; //for consumeable behaviour
             }
         }
 
@@ -671,6 +673,8 @@ public class CharacterControl : MonoBehaviour
                 currentMaxSpeed = startingSpeed * 1.25f;
                 speedBuffTimer = 5;
                 ghostCD = Time.time + 12;
+
+                Ghost = false; //for consumeable behaviour
             }
         }
 
@@ -687,13 +691,15 @@ public class CharacterControl : MonoBehaviour
                 invisibilityduration = 5;
                 invisibilityCD = Time.time + 11;
             }
-            if (invisibilityduration<=0)
+            if (invisibilityduration>0 && invisibilityduration-Time.deltaTime<=0)
             {
                 for (int i = 0; i < bodyPartsGFX.Length; i++)
                 {
-                    bodyPartsGFX[i].SetActive(true); ;
+                    bodyPartsGFX[i].SetActive(true);
                 }
                 propHideout.SetActive(false);
+
+                Invisibility = false; //for consumeable behaviour
             }
         }
 
@@ -1774,6 +1780,32 @@ public class CharacterControl : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    public void BuyConsumeable(string shopConsumeableName)
+    {
+        if (shopConsumeableName == "Ghost")
+        {
+            Ghost = true;
+            Invisibility = false;
+            Teleport = false;
+        }
+        else if (shopConsumeableName == "Invisibility")
+        {
+            Ghost = false;
+            Invisibility = true;
+            Teleport = false;
+        }
+        else if (shopConsumeableName == "Teleport")
+        {
+            Ghost = false;
+            Invisibility = false;
+            Teleport = true;
+        }
+        else
+        {
+            Debug.Log("please enter the correct consumeable name in the shop");
         }
     }
 

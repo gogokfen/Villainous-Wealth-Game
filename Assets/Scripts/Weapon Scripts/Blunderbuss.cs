@@ -54,6 +54,7 @@ public class Blunderbuss : WeaponBase
     {
         weaponActive = false;
         blunderbussGFX.SetActive(false);
+        ammoVisual.SetActive(false);
     }
 
 

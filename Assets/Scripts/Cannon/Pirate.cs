@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Pirate : MonoBehaviour
 {
     [SerializeField] GameObject cannonV2GameObject;
     [SerializeField] CannonV2 cannonV2Script;
+    [SerializeField] PlayerInput PI;
 
     private float payCD;
     private float AttackCD;
@@ -32,13 +34,23 @@ public class Pirate : MonoBehaviour
             {
                 if (MoneyManager.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=5 && Time.time>=payCD)
                 {
+                    cannonV2GameObject.transform.position = transform.position;
+
                     payingPlayerRef = playerSearch[i].GetComponent<CharacterControl>();
+                    payingPlayerRef.enabled = false;
+                    payingPlayerRef.gameObject.SetActive(false);
+
 
                     MoneyManager.singleton.ModifyMoney((payingPlayerRef.PlayerID), -5);
                     cannonV2GameObject.SetActive(true);
                     cannonV2Script.UpdateShooter(payingPlayerRef.PlayerID);
 
-                    payingPlayerRef.enabled = false;
+
+
+                    //PI.user = 0;
+                    //PI.SwitchCurrentControlScheme("Mouse & Keyboard",InputDevice[0].device);
+
+
 
                     payCD = Time.time + 12;
                     AttackCD = Time.time + 7;
@@ -50,6 +62,7 @@ public class Pirate : MonoBehaviour
         {
             cannonV2GameObject.SetActive(false);
             payingPlayerRef.enabled = true;
+            payingPlayerRef.gameObject.SetActive(true);
         }
     }
 }
