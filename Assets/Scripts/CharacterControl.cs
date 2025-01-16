@@ -1356,8 +1356,16 @@ public class CharacterControl : MonoBehaviour
                     }
                     else if (pickupSearch[i].transform.name == "Health")
                     {
-                        hp += 5;
-                        hpBar.fillAmount += 5f / 10f;
+                        if (hp+3>=10)
+                        {
+                            hp = 10;
+                            hpBar.fillAmount = 10;
+                        }
+                        else
+                        {
+                            hp += 3;
+                            hpBar.fillAmount += 3f / 10f;
+                        }
                         healthBuffEffect.Play();
 
                         moneyText.text = "Health";
