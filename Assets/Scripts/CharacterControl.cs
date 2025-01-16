@@ -1850,6 +1850,18 @@ public class CharacterControl : MonoBehaviour
         attackMoveSpeed = 0;
     }
 
+    public void DisplaySack()
+    {
+        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
+        //moneyAnim.Play("Player Coin Pickup", -1, 0);
+        moneyAnim.enabled = false;
+        moneyText.color = Color.white;
+        moneyText.alpha = 1;
+
+        //DON"T RECOMMEND DOING THIS
+        moneyAnim.gameObject.transform.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
+    }
+
 
     private void OnDrawGizmosSelected()
     {

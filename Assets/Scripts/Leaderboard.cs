@@ -381,4 +381,12 @@ public class Leaderboard : MonoBehaviour
             characters[i].GetComponent<CharacterControl>().enabled = true;
         }
     }
+
+    public void DisplayPlayerSacks()
+    {
+        for (int i = 0; i < characters.Length; i++)
+        {
+            characters[i].GetComponent<CharacterControl>().DisplaySack();
+        }
+    }
 }
