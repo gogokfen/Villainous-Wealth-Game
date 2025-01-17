@@ -264,6 +264,8 @@ public class PickupManager : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 powerupPosition)
     {
+        if (RoundManager.instance.areWeWarming == true) 
+            return;
         //Debug.Log("PickupManager dead player" + powerupPosition);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)

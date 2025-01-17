@@ -42,7 +42,7 @@ public class CharacterControl : MonoBehaviour
     //bool onOff = false;
 
     public int hp = 10;
-    
+
     private int coinsAtRoundStart;
 
     Collider[] pickupSearch;
@@ -141,7 +141,7 @@ public class CharacterControl : MonoBehaviour
         Red,
         Green,
         Blue,
-        Yellow 
+        Yellow
     }
 
     private Weapons equippedWeapon;
@@ -156,6 +156,7 @@ public class CharacterControl : MonoBehaviour
     bool useWeapon;
     bool rollInput;
     bool shieldInput;
+    bool consumableInput;
     int rightPunchAttackState;
     [HideInInspector] public bool dead;
     private Vector2 moveInput;
@@ -183,7 +184,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] ParticleSystem leaderGlow;
     [SerializeField] ParticleSystem strongPunchCharged;
     [SerializeField] Animator strongPunchPulse;
-    [SerializeField] GameObject     leaderCrown;
+    [SerializeField] GameObject leaderCrown;
     [EndFoldout]
 
     [SerializeField] GameObject characterGFX;
@@ -212,6 +213,7 @@ public class CharacterControl : MonoBehaviour
 
     bool keyboardMouse = false;
     [SerializeField] GameObject mouseIndicator;
+    [SerializeField] GameObject weaponScripts;
 
     void Start()
     {
@@ -224,8 +226,8 @@ public class CharacterControl : MonoBehaviour
             Mouse.current.WarpCursorPosition(Camera.main.WorldToScreenPoint(transform.position) + (transform.forward * 0.25f));
             mouseIndicator.gameObject.SetActive(true);
         }
-            
-            
+
+
 
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
 
@@ -341,12 +343,16 @@ public class CharacterControl : MonoBehaviour
                 rightPunchAttackState = 0;
         }
     }
+    public void Consumable(InputAction.CallbackContext context)
+    {
+        consumableInput = context.action.triggered;
+    }
 
     public void OutTheRound()
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
         int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
-        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString()+"-"+moneylost;
+        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "-" + moneylost;
         MoneyManager.singleton.ModifyMoney(PlayerID, -moneylost);
         moneyAnim.Play("Player Coin Pickup", -1, 0);
         /* //players no longer drop physical money
@@ -369,7 +375,7 @@ public class CharacterControl : MonoBehaviour
         weaponList[(int)equippedWeapon].SetActive(false); //making sure he can't attack while dead kek
 
         charAnim.Play("Death");
-        
+
         DeadStop(); //making sure character is dead
 
         dead = true;
@@ -393,7 +399,7 @@ public class CharacterControl : MonoBehaviour
         dead = false;
         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
         coinsAtRoundStart = MoneyManager.singleton.GetMoney(PlayerID);
-        MoneyManager.singleton.UpdateRoundMoney(PlayerID,coinsAtRoundStart);
+        MoneyManager.singleton.UpdateRoundMoney(PlayerID, coinsAtRoundStart);
 
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
 
@@ -465,9 +471,9 @@ public class CharacterControl : MonoBehaviour
             charAnim.Play("Victory");
             winner = false;
         }
-            
 
-        if (transform.position.y!=0)
+
+        if (transform.position.y != 0)
         {
             CC.enabled = false;
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure not climbing anything
@@ -503,35 +509,35 @@ public class CharacterControl : MonoBehaviour
 
             mouseIndicator.transform.localPosition = Vector3.right * restrictedDis;
 
-            
+
             Vector2 charMousePos = new Vector2(mouseCharLock.x, mouseCharLock.y);
             Vector2 dir = charMousePos - Mouse.current.position.value;
             dir.Normalize();
             dir *= 15;
 
-            if (distance>2.75)
+            if (distance > 2.75)
             {
                 Mouse.current.WarpCursorPosition(Mouse.current.position.value + dir);
             }
-            else if (distance<2.75)
+            else if (distance < 2.75)
             {
                 Mouse.current.WarpCursorPosition(Mouse.current.position.value - dir);
             }
-            
+
             //Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.01f));
-            
+
 
             if (!rolling)
             {
-                if (distance>0.2f) //0.2f
+                if (distance > 0.2f) //0.2f
                     transform.LookAt(raycastHit.point);
-                 //V3 
+                //V3 
                 else
                 {
                     //Vector3 mouseCharLock = Camera.main.WorldToScreenPoint(transform.position);
-                    Mouse.current.WarpCursorPosition(mouseCharLock + (transform.forward*0.25f));
+                    Mouse.current.WarpCursorPosition(mouseCharLock + (transform.forward * 0.25f));
                 }
-                
+
             }
 
 
@@ -543,15 +549,15 @@ public class CharacterControl : MonoBehaviour
                 Mouse.current.WarpCursorPosition(mouseCharLock);
             */
 
-            
-            
+
+
 
 
             //mouseMovement = true;
-                /*
-                 *         else
-                mouseMovement = false;
-                */
+            /*
+             *         else
+            mouseMovement = false;
+            */
         }
 
 
@@ -593,9 +599,9 @@ public class CharacterControl : MonoBehaviour
         }
 
         rollCD -= Time.deltaTime;
-        if (rollCD>=0)
+        if (rollCD >= 0)
         {
-            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, Mathf.InverseLerp(2.5f,0,rollCD));
+            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, Mathf.InverseLerp(2.5f, 0, rollCD));
         }
 
         if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
@@ -643,61 +649,71 @@ public class CharacterControl : MonoBehaviour
         }
 
 
-        if (Teleport)
+        if (consumableInput)
         {
-            //teleportCD -= Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time>teleportCD)
+
+            if (Teleport)
             {
-                Instantiate(teleportVFXStart, transform.position, transform.rotation);
-                //transform.Translate(Vector3.forward * teleportDistance);
+                //teleportCD -= Time.deltaTime;
+                if (Time.time > teleportCD)
+                {
+                    Instantiate(teleportVFXStart, transform.position, transform.rotation);
+                    //transform.Translate(Vector3.forward * teleportDistance);
 
-                CC.excludeLayers = 1;
-                CC.Move(transform.forward * teleportDistance);
-                CC.excludeLayers = 0;
-                CC.Move(transform.forward * 0.1f);
+                    CC.excludeLayers = 1;
+                    CC.Move(transform.forward * teleportDistance);
+                    CC.excludeLayers = 0;
+                    CC.Move(transform.forward * 0.1f);
 
 
-                Instantiate(teleportVFXEnd, transform.position, transform.rotation);
-                teleportCD = Time.time + 4;
+                    Instantiate(teleportVFXEnd, transform.position, transform.rotation);
+                    teleportCD = Time.time + 4;
 
-                Teleport = false; //for consumeable behaviour
+                    Teleport = false; //for consumeable behaviour
+                }
+            }
+
+            if (Ghost)
+            {
+                if (Time.time > ghostCD)
+                {
+                    Instantiate(ghostVFX, transform.position, transform.rotation);
+                    CC.excludeLayers = 1;
+                    currentMaxSpeed = startingSpeed * 1.25f;
+                    speedBuffTimer = 5;
+                    ghostCD = Time.time + 12;
+
+                    Ghost = false; //for consumeable behaviour
+                }
+            }
+
+            if (Invisibility)
+            {
+                //invisibilityduration -= Time.deltaTime;
+                if (Time.time > invisibilityCD)
+                {
+                    for (int i = 0; i < bodyPartsGFX.Length; i++)
+                    {
+                        bodyPartsGFX[i].SetActive(false);
+                    }
+                    leaderCrown.SetActive(false);
+                    propHideout.SetActive(true);
+                    invisibilityduration = Time.time + 5;
+                    invisibilityCD = Time.time + 11;
+                }
             }
         }
-
-        if (Ghost)
-        {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > ghostCD)
-            {
-                Instantiate(ghostVFX, transform.position,transform.rotation);
-                CC.excludeLayers = 1;
-                currentMaxSpeed = startingSpeed * 1.25f;
-                speedBuffTimer = 5;
-                ghostCD = Time.time + 12;
-
-                Ghost = false; //for consumeable behaviour
-            }
-        }
-
         if (Invisibility)
         {
-            invisibilityduration -= Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > invisibilityCD)
-            {
-                for (int i=0;i<bodyPartsGFX.Length;i++)
-                {
-                    bodyPartsGFX[i].SetActive(false);
-                }
-                propHideout.SetActive(true);
-                invisibilityduration = 5;
-                invisibilityCD = Time.time + 11;
-            }
-            if (invisibilityduration>0 && invisibilityduration-Time.deltaTime<=0)
+
+            if (Time.time < invisibilityduration && Time.time + Time.deltaTime >= invisibilityduration)
             {
                 for (int i = 0; i < bodyPartsGFX.Length; i++)
                 {
                     bodyPartsGFX[i].SetActive(true);
                 }
                 propHideout.SetActive(false);
+                MoneyManager.singleton.FindLeader();
 
                 Invisibility = false; //for consumeable behaviour
             }
@@ -727,7 +743,7 @@ public class CharacterControl : MonoBehaviour
         holdTimer -= Time.deltaTime;
         slowdownTimer -= Time.deltaTime;
 
-        if (holdTimer<=0)
+        if (holdTimer <= 0)
         {
             strongFist.enabled = false;
         }
@@ -741,7 +757,7 @@ public class CharacterControl : MonoBehaviour
         if (slowdownTimer <= 0)
             windUpBar.gameObject.SetActive(false);
         */
-            reloadBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
+        reloadBar.value = Mathf.InverseLerp(reloadTime, 0, slowdownTimer);
         if (slowdownTimer <= 0)
             reloadBar.gameObject.SetActive(false);
 
@@ -812,11 +828,11 @@ public class CharacterControl : MonoBehaviour
 
             }
         }
-        
+
         //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
 
         //transform.position += knockbackDirection;
-        CC.Move(new Vector3 (knockbackDirection.x,0, knockbackDirection.y));
+        CC.Move(new Vector3(knockbackDirection.x, 0, knockbackDirection.y));
         //CC.SimpleMove(knockbackDirection);
         knockbackDirection /= (1 + Time.deltaTime * 10);
 
@@ -842,7 +858,7 @@ public class CharacterControl : MonoBehaviour
                 if (moveSpeed > currentMaxSpeed)
                     moveSpeed = currentMaxSpeed;
             }
-            if (slowdownTimer>0)
+            if (slowdownTimer > 0)
             {
                 moveSpeed = startingSpeed * 0.35f;
             }
@@ -875,7 +891,7 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetBool("RunGun", false);
                     charAnim.SetBool("RunShotGun", false);
                 }
-                    
+
 
                 if (equippedWeapon == Weapons.Fist)
                 {
@@ -939,16 +955,16 @@ public class CharacterControl : MonoBehaviour
     {
         //characterSearch = (Physics.OverlapBox(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize / 1, transform.rotation, characterMask));
         characterSearch = Physics.OverlapSphere(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), 1.25f, characterMask);
-        if (characterSearch.Length>0)
+        if (characterSearch.Length > 0)
         {
-            for (int i =0; i<characterSearch.Length;i++)
+            for (int i = 0; i < characterSearch.Length; i++)
             {
                 /*
                 if (animState != 0 && characterSearch[i].GetComponent<CharacterControl>().PlayerID != PlayerID) // trying out collision with players while meleeing
                     attackMoveSpeed = 0;
                 */
 
-                if (moveInput!= Vector2.zero)
+                if (moveInput != Vector2.zero)
                 {
                     //characterSearch[i].GetComponent<CharacterController>().Move(moveDirection * moveSpeed * Time.deltaTime);
                     Vector3 pushDirection = characterSearch[i].transform.position - transform.position;
@@ -965,7 +981,7 @@ public class CharacterControl : MonoBehaviour
 
     private void SwapWeapon()
     {
-        if (equippedWeapon!= Weapons.Boomerang || (equippedWeapon == Weapons.Boomerang && weaponList[(int)equippedWeapon].GetComponent<Boomerang>().canThrow == true)) //checking that the boomerang is not mid air
+        if (equippedWeapon != Weapons.Boomerang || (equippedWeapon == Weapons.Boomerang && weaponList[(int)equippedWeapon].GetComponent<Boomerang>().canThrow == true)) //checking that the boomerang is not mid air
         {
             weaponSwap = !weaponSwap;
             if (weaponSwap)
@@ -1017,7 +1033,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer>0 ? 24 : 24; //16 orignally //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //16 orignally //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1029,7 +1045,7 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetTrigger("Punch1");
                     //SoundManager.singleton.Melee1(transform.position);
                     SoundManager.singleton.PlayClip("Melee1", transform.position, 1f, true, true);
-                    
+
                     /*
                     if (!(mouseMovement || isTargetDummy))
                         RumbleManager.instance.RumblePulse(0.2f, 0.2f, 0.5f, PI);
@@ -1174,11 +1190,11 @@ public class CharacterControl : MonoBehaviour
             }
             if (animState == AS.StrongPunch)
             {
-                if (animTimer >= 0.22f) 
+                if (animTimer >= 0.22f)
                 {
                     strongFist.enabled = false;
                 }
-                else if (animTimer >= 0.05f) 
+                else if (animTimer >= 0.05f)
                 {
                     strongFist.enabled = true;
                 }
@@ -1248,13 +1264,13 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("StrongPunch");
                     charAnim.SetBool("StrongPunch", true);
                     //rArm.localPosition = new Vector3(0.75f, 0, -powerPunchWindup);
-                    if (powerPunchWindup>=0.75)
+                    if (powerPunchWindup >= 0.75)
                     {
                         strongPunchCharged.Play();
                         strongPunchPulse.Play("Strong Punch Pulse");
                         powerPunchWindup = 0.75f;
                     }
-                        
+
                 }
 
             }
@@ -1287,7 +1303,7 @@ public class CharacterControl : MonoBehaviour
 
                 powerPunchWindup = 0;
 
-                
+
             }
             else
             {
@@ -1329,16 +1345,16 @@ public class CharacterControl : MonoBehaviour
                     SoundManager.singleton.PlayClip("Pickup", transform.position, 1f, false, true);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
-                        
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString()+"+"+"1";
+
+                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
-                        moneyAnim.Play("Player Coin Pickup",-1,0);
+                        moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
                     }
                     else if (pickupSearch[i].transform.name == "Coin2")
                     {
-                        
+
                         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 1);
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
@@ -1347,7 +1363,7 @@ public class CharacterControl : MonoBehaviour
                     }
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
-                        
+
                         moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "3";
                         MoneyManager.singleton.ModifyMoney(PlayerID, 3);
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
@@ -1356,7 +1372,7 @@ public class CharacterControl : MonoBehaviour
                     }
                     else if (pickupSearch[i].transform.name == "Health")
                     {
-                        if (hp+3>=10)
+                        if (hp + 3 >= 10)
                         {
                             hp = 10;
                             hpBar.fillAmount = 10;
@@ -1442,11 +1458,14 @@ public class CharacterControl : MonoBehaviour
                     if (hp > 0 && hp - damage <= 0)
                     {
                         Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
-                        MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                        if (RoundManager.instance.areWeWarming == false)
+                        {
+                            MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                        }
                         OutTheRound();
                     }
 
-                    Leaderboard.singleton.StopForwardMomentum(attackingPlayer);    
+                    Leaderboard.singleton.StopForwardMomentum(attackingPlayer);
 
                     hp = hp - damage;
                     //hpText.text = ("HP: " + hp);
@@ -1468,7 +1487,7 @@ public class CharacterControl : MonoBehaviour
                     //originalPos = characterGFX.transform.position;
 
 
-                    knockbackDirection += new Vector2(transform.position.x - hitPos.x,transform.position.z - hitPos.z);
+                    knockbackDirection += new Vector2(transform.position.x - hitPos.x, transform.position.z - hitPos.z);
                     knockbackDirection.Normalize();
                     knockbackDirection *= 0.15f;
                     knockbackDirection *= (damage / 2f);
@@ -1505,7 +1524,7 @@ public class CharacterControl : MonoBehaviour
                     SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
 
                     if (!(keyboardMouse || isTargetDummy || mouseMovement))
-                        RumbleManager.instance.RumblePulse((0.25f +damage*0.125f), 0.5f, 0.225f, PI);
+                        RumbleManager.instance.RumblePulse((0.25f + damage * 0.125f), 0.5f, 0.225f, PI);
 
                     if (cameraManagerIsOn)
                         CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
@@ -1538,11 +1557,14 @@ public class CharacterControl : MonoBehaviour
                 if (hp > 0 && hp - damageBasedOnDistance <= 0)
                 {
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
-                    MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
+                    if (RoundManager.instance.areWeWarming == false)
+                    {
+                        MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
+                    }
                     OutTheRound();
                     DeadStop();
                 }
-                    
+
 
                 hp = hp - damageBasedOnDistance;
                 //hpText.text = ("HP: " + hp);
@@ -1602,7 +1624,7 @@ public class CharacterControl : MonoBehaviour
                     Leaderboard.singleton.AnnounceKill(PlayerID); //overload function
                     DeadStop();
                 }
-                    
+
 
                 hp = hp - damage;
                 hpBar.fillAmount = hp / 10f;
@@ -1646,7 +1668,7 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetBool("ThrowCharge", true);
                     holdTimer = 0.2f;
                 }
-                
+
                 /*
                 if (weaponList[(int)Weapons.Boomerang].GetComponent<Boomerang>().releasing)
                 {
@@ -1870,11 +1892,21 @@ public class CharacterControl : MonoBehaviour
         moneyAnim.gameObject.transform.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
 
+    public void DisableWeaponScripts()
+    {
+        weaponScripts.SetActive(false);
+    }
+
+    public void EnableWeaponScripts()
+    {
+        weaponScripts.SetActive(true);
+    }
+
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize ); // the original is half extents
+        Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize); // the original is half extents
 
         Gizmos.color = Color.green;
         Gizmos.DrawCube(new Vector3(transform.position.x, transform.position.y + 1.25f, transform.position.z), hitBoxSize); // the original is half extents

@@ -62,14 +62,22 @@ public class ShopManager : MonoBehaviour
                 if (MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID) >= itemPrice)
                 {
                     MoneyManager.singleton.ModifyMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID, -itemPrice);
-                    PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
+                    if (selectedButton.GetComponent<ButtonSelectionTracker>().type == ButtonSelectionTracker.shopItemType.Weapon)
+                    {
+                        PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
+                        playerEventSystem.SetSelectedGameObject(null);
+                    }
+                    else if (selectedButton.GetComponent<ButtonSelectionTracker>().type == ButtonSelectionTracker.shopItemType.Consumable)
+                    {
+                        PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyConsumeable(selectedButton.name);
+                    }
                     shopUIIndex = player.playerIndex;
                     playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID).ToString();
                     selectedButton.GetComponent<Button>().interactable = false;
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
                     selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice += 3;
                     selectedButton.GetComponent<ButtonSelectionTracker>().priceText.text = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice.ToString();
-                    playerEventSystem.SetSelectedGameObject(null);
+                    //playerEventSystem.SetSelectedGameObject(null);
                 }
             }
             else

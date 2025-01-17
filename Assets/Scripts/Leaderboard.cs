@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using VInspector;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class Leaderboard : MonoBehaviour
 {
@@ -144,6 +145,8 @@ public class Leaderboard : MonoBehaviour
 
     public void AnnounceKill(CharacterControl.PlayerTypes killingPlayer, CharacterControl.PlayerTypes dyingPlayer)
     {
+        if (RoundManager.instance.areWeWarming == true) 
+            return;
         if (killingPlayer == CharacterControl.PlayerTypes.Red)
         {
             killsAnnouncer.text = $"<sprite name=\"{redPlayer.name}\">";
@@ -371,14 +374,17 @@ public class Leaderboard : MonoBehaviour
     {
         for (int i=0;i<characters.Length;i++)
         {
-            characters[i].GetComponent<CharacterControl>().enabled = false;
+            //characters[i].GetComponent<CharacterControl>().enabled = false;
+            characters[i].GetComponent<CharacterControl>().DisableWeaponScripts();
         }
     }
     public void EnableCharacterControl()
     {
         for (int i = 0; i < characters.Length; i++)
         {
-            characters[i].GetComponent<CharacterControl>().enabled = true;
+            //characters[i].GetComponent<CharacterControl>().enabled = true;
+            characters[i].GetComponent<CharacterControl>().EnableWeaponScripts();
+            
         }
     }
 

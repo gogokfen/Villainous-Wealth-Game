@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
+    public static RoundManager instance;
     [Header("Round Settings")]
     public int totalRounds = 5;
     private int currentRound = 0;
@@ -26,6 +27,7 @@ public class RoundManager : MonoBehaviour
     bool roundstart;
     private void Awake()
     {
+        instance = this;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Confined;
     }
@@ -62,14 +64,20 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator RoundLoop()
     { 
-        stormManager.enabled = true;
+        
         curtain.gameObject.SetActive(true);
         curtain.Play("Curtain");
+        stormManager.enabled = true;
         yield return new WaitUntil(() => curtain.GetCurrentAnimatorStateInfo(0).IsName("Curtain"));
-        if (areWeWarming == false) PlayerManager.instance.StartRound();
-        Leaderboard.singleton.FindPlayers();
+        if (areWeWarming == false)
+        {
+            PlayerManager.instance.StartRound();
+            Leaderboard.singleton.FindPlayers();
+        }
+        areWeWarming = false;
         while (currentRound != totalRounds)
         {
+            Leaderboard.singleton.EnableCharacterControl();
             PickupManager.singleton.DropPowerups = true;
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
             Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
@@ -92,6 +100,7 @@ public class RoundManager : MonoBehaviour
                 yield return new WaitUntil(() => shopStall.shoppingTime == true);
                 TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 SoundManager.singleton.MaloMart(); //plays Shop Music
+                Leaderboard.singleton.DisableCharacterControl();
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 shopStall.shoppingTime = false;
@@ -107,7 +116,10 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator WarmupRound()
     {
+        curtain.gameObject.SetActive(true);
+        curtain.Play("Curtain");
         PlayerManager.instance.StartRound(); //starts round
+        Leaderboard.singleton.FindPlayers();
         PickupManager.singleton.DropPowerups = false;
         stormManager.enabled = false;
         MapManager.instance.Warmup(); //spawns Warmup Protectors equal to players present

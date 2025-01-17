@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.UI;
 
 using TMPro;
 using VInspector;
+using System;
 
 public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -17,6 +18,7 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     [SerializeField] Sprite[] portraits;
     [SerializeField] public TextMeshProUGUI priceText;
     [SerializeField] public GameObject soldUI;
+    public shopItemType type;
 
     [Foldout("Selection Icons")]
     [SerializeField] public GameObject redSelectionIcon;
@@ -31,6 +33,13 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     [SerializeField] Image bluePortrait;
     [SerializeField] Image yellowPortrait;
     [EndFoldout]
+
+    public enum shopItemType
+    {
+        Weapon,
+        Consumable
+    }
+
     private void Start()
     {
         priceText.text = itemPrice.ToString();

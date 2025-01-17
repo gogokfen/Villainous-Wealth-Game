@@ -9325,19 +9325,7 @@ MonoBehaviour:
     m_ActionId: f0327ce9-5578-446d-913b-474faacdbbc1
     m_ActionName: Player/Roll[/Keyboard/space,/XInputControllerWindows/buttonNorth,/SwitchProControllerHID/buttonNorth]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8529768936932577941}
-        m_TargetAssemblyTypeName: CharacterControl, Assembly-CSharp
-        m_MethodName: Shield
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 7abadc6e-db1c-4f3f-af29-e466479dffa8
     m_ActionName: Player/Shield[/Keyboard/f,/SwitchProControllerHID/rightShoulder]
   - m_PersistentCalls:
@@ -9360,6 +9348,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: a4948614-aad1-48e4-828f-6e51fab69c70
     m_ActionName: UI/Pause[/Keyboard/escape,/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8529768936932577941}
+        m_TargetAssemblyTypeName: CharacterControl, Assembly-CSharp
+        m_MethodName: Consumable
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 43add926-4075-417a-af21-587f0902f4ea
+    m_ActionName: Player/Consumable[/XInputControllerWindows/buttonEast,/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -9447,6 +9451,7 @@ MonoBehaviour:
   cannonBall: {fileID: 4367939416322508013}
   winner: 0
   mouseIndicator: {fileID: 9151559300189210641}
+  weaponScripts: {fileID: 5146414170920022429}
 --- !u!143 &7841318357815598602
 CharacterController:
   m_ObjectHideFlags: 0
@@ -21275,7 +21280,6 @@ GameObject:
   - component: {fileID: 7150882273012480750}
   - component: {fileID: 6094164276766111051}
   - component: {fileID: 8319878417165320577}
-  - component: {fileID: 2458554875925544001}
   m_Layer: 0
   m_Name: IndestructibleCrate
   m_TagString: Untagged
@@ -21348,18 +21352,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2458554875925544001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7527442587838029908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 338df116c3bf78f4aa90f55430e3c244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7560845593155638298
 GameObject:
   m_ObjectHideFlags: 0

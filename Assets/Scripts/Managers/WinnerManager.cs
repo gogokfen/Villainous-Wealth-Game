@@ -34,6 +34,7 @@ public class WinnerManager : MonoBehaviour
         //playerWinner.transform.position = winnerLocation.position;
         winnerUI.SetActive(true);
         confettiParticle.SetActive(true);
+        //Leaderboard.singleton.DisplayPlayerSacks();
         for (int i = 0; i < roundManager.winnerAndLosers.Length; i++)
         {
             roundManager.winnerAndLosers[i].GetComponent<CharacterControl>().enabled = false;
