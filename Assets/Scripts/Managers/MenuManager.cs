@@ -48,6 +48,9 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI requirementText;
     [SerializeField] Animator curtain;
 
+    public Sprite[] showcaseImages;
+    public Image[] playerShowcases;
+
     [Button("Go To Main Scene")]
     public void MainScene()
     {

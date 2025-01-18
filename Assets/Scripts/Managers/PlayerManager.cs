@@ -24,6 +24,7 @@ public class PlayerManager : MonoBehaviour
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
+    int showcaseIndex = 0;
     int disconnectedPlayers = 0;
     public GameObject[] playerList;
 
@@ -117,6 +118,8 @@ public class PlayerManager : MonoBehaviour
                     player.SetSelectedGameObject(null);
                     player.SetSelectedGameObject(defaultCharacterButton);
                     defaultCharacterButton.GetComponent<CustomizeCharacter>().FirstTimeSelection(playerNumber);
+                    MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
+                    showcaseIndex++;
                     playerNumber++;
                     menuPlayer.actions["UI/Submit"].performed += ctx => CharacterPick(menuPlayer);
                     menuPlayer.actions["UI/Cancel"].performed += ctx => CancelCharacterPick(menuPlayer);
