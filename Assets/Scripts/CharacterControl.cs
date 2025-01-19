@@ -380,7 +380,8 @@ public class CharacterControl : MonoBehaviour
 
         dead = true;
 
-
+        bodyPartsGFX[6].SetActive(false);
+        bodyPartsGFX[7].SetActive(false);
         //SoundManager.singleton.Death(transform.position);
         SoundManager.singleton.PlayClip("Death", transform.position, 1f, false, true);
 
@@ -404,6 +405,8 @@ public class CharacterControl : MonoBehaviour
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
 
         DeadStop(); //making sure character was dead
+        bodyPartsGFX[6].SetActive(true);
+        bodyPartsGFX[7].SetActive(true);
 
         charAnim.Play("Idle");
         winner = false;

@@ -129,6 +129,7 @@ public class RoundManager : MonoBehaviour
         controlsUI.SetActive(true); //show Controls
         yield return new WaitUntil(() => controlsUI.activeSelf == false);
         yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+        AssignWinner();
         //function to reset kill and money counts
         yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
         PlayerManager.roundOver = false; //resets the bool for the next round
