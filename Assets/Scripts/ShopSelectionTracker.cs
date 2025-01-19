@@ -98,44 +98,23 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
             case "Boxhead":
                 return portraits[3];
 
-            case "Big Daddy":
+            case "Orc":
                 return portraits[4];
 
-            case "Guardtron":
+            case "Cat":
                 return portraits[5];
 
-            case "RI":
+            case "Leprechaun":
                 return portraits[6];
 
-            case "The Sheeper":
+            case "Mafia":
                 return portraits[7];
 
-            case "Jacko":
+            case "Pirate":
                 return portraits[8];
 
-            case "PC Pirate":
+            case "Shark":
                 return portraits[9];
-
-            case "Kerenboy":
-                return portraits[10];
-
-            case "Nuke Man":
-                return portraits[11];
-
-            case "Stronghold Smasher":
-                return portraits[12];
-
-            case "Zolda":
-                return portraits[13];
-
-            case "Donte":
-                return portraits[14];
-
-            case "Booba":
-                return portraits[15];
-
-            case "Shamayim":
-                return portraits[16];
             default: return null;
         }
     }

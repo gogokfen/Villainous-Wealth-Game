@@ -31,44 +31,23 @@ public class PlayerShopUI : MonoBehaviour
             case "Boxhead":
                 portrait.sprite = portraitImages[3];
                 break;
-            case "Big Daddy":
+            case "Orc":
                 portrait.sprite = portraitImages[4];
                 break;
-            case "Guardtron":
+            case "Cat":
                 portrait.sprite = portraitImages[5];
                 break;
-            case "RI":
+            case "Leprechaun":
                 portrait.sprite = portraitImages[6];
                 break;
-            case "The Sheeper":
+            case "Mafia":
                 portrait.sprite = portraitImages[7];
                 break;
-            case "Jacko":
+            case "Pirate":
                 portrait.sprite = portraitImages[8];
                 break;
-            case "PC Pirate":
+            case "Shark":
                 portrait.sprite = portraitImages[9];
-                break;
-            case "Kerenboy":
-                portrait.sprite = portraitImages[10];
-                break;
-            case "Nuke Man":
-                portrait.sprite = portraitImages[11];
-                break;
-            case "Stronghold Smasher":
-                portrait.sprite = portraitImages[12];
-                break;
-            case "Zolda":
-                portrait.sprite = portraitImages[13];
-                break;
-            case "Donte":
-                portrait.sprite = portraitImages[14];
-                break;
-            case "Booba":
-                portrait.sprite = portraitImages[15];
-                break;
-            case "Shamayim":
-                portrait.sprite = portraitImages[16];
                 break;
         }
     }
