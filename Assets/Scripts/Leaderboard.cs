@@ -49,9 +49,10 @@ public class Leaderboard : MonoBehaviour
     public int playerCount;
     private struct PlayerStats
     {
-        public PlayerStats(CharacterControl characterReference, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound)
+        public PlayerStats(CharacterControl characterReference, CharacterControl.PlayerTypes color ,string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound)
         {
             this.characterReference = characterReference;
+            this.color = color;
             this.name = name;
             this.roundStartMoney = roundStartMoney;
             this.currentMoney = currentMoney;
@@ -61,6 +62,7 @@ public class Leaderboard : MonoBehaviour
         }
 
         public CharacterControl characterReference;
+        public CharacterControl.PlayerTypes color;
         public string name;
         public int roundStartMoney;
         public int currentMoney;
@@ -69,16 +71,27 @@ public class Leaderboard : MonoBehaviour
         public bool wonThisRound;
     }
     PlayerStats redPlayer = new PlayerStats
-                    (null,             //character reference
-                    "",                //name
-                    0,                 //round start money
-                    0,                 //current money
-                    0,                 //kills
-                    0,                 //deaths
-                    false);            //won this round
-    PlayerStats greenPlayer = new PlayerStats(null, "", 0, 0, 0, 0, false);
-    PlayerStats bluePlayer = new PlayerStats(null, "", 0, 0, 0, 0, false);
-    PlayerStats yellowPlayer = new PlayerStats(null, "", 0, 0, 0, 0, false);
+                    (null,                            //character reference
+                    CharacterControl.PlayerTypes.Red, //player color
+                    "",                               //name
+                    0,                                //round start money
+                    0,                                //current money
+                    0,                                //kills
+                    0,                                //deaths
+                    false);                           //won this round
+    PlayerStats greenPlayer = new PlayerStats(null, CharacterControl.PlayerTypes.Green, "", 0, 0, 0, 0, false);
+    PlayerStats bluePlayer = new PlayerStats(null, CharacterControl.PlayerTypes.Blue, "", 0, 0, 0, 0, false);
+    PlayerStats yellowPlayer = new PlayerStats(null, CharacterControl.PlayerTypes.Yellow, "", 0, 0, 0, 0, false);
+
+    private PlayerStats[] players;
+
+    private struct PlayerRank
+    {
+        public int money;
+    }
+
+    private int[] moneyRankings;
+    private string[] nameRankings;
 
     private void Start()
     {
@@ -127,12 +140,30 @@ public class Leaderboard : MonoBehaviour
             playerCount++;
         }
 
+
+        players = new PlayerStats[playerCount];
+        moneyRankings = new int[playerCount];
+        nameRankings = new string[playerCount];
+
+        for (int i =0;i<playerCount;i++)
+        {
+            if (i==0)
+                players[i] = redPlayer;
+            if (i == 1)
+                players[i] = greenPlayer;
+            if (i == 2)
+                players[i] = bluePlayer;
+            if (i == 3)
+                players[i] = yellowPlayer;
+
+            //Debug.Log(players[i].name);
+        }
+
     }
 
     private void Awake()
     {
         singleton = this;
-
     }
 
     private void Update()
@@ -147,95 +178,22 @@ public class Leaderboard : MonoBehaviour
     {
         if (RoundManager.instance.areWeWarming == true) 
             return;
-        if (killingPlayer == CharacterControl.PlayerTypes.Red)
-        {
-            killsAnnouncer.text = $"<sprite name=\"{redPlayer.name}\">";
-            redPlayer.kills++;
-        }
-        else if (killingPlayer == CharacterControl.PlayerTypes.Green)
-        {
-            killsAnnouncer.text = $"<sprite name=\"{greenPlayer.name}\">";
-            greenPlayer.kills++;
-        }
-        else if (killingPlayer == CharacterControl.PlayerTypes.Blue)
-        {
-            killsAnnouncer.text = $"<sprite name=\"{bluePlayer.name}\">";
-            bluePlayer.kills++;
-        }
-        else if (killingPlayer == CharacterControl.PlayerTypes.Yellow)
-        {
-            killsAnnouncer.text = $"<sprite name=\"{yellowPlayer.name}\">";
-            yellowPlayer.kills++;
-        }
 
-        if (dyingPlayer == CharacterControl.PlayerTypes.Red)
-        {
-            killsAnnouncer.text += " has killed " + $"<sprite name=\"{redPlayer.name}\">";
-            redPlayer.deaths++;
-        }
-        else if (dyingPlayer == CharacterControl.PlayerTypes.Green)
-        {
-            killsAnnouncer.text += " has killed " + $"<sprite name=\"{greenPlayer.name}\">";
-            greenPlayer.deaths++;
-        }
-        else if (dyingPlayer == CharacterControl.PlayerTypes.Blue)
-        {
-            killsAnnouncer.text += " has killed " + $"<sprite name=\"{bluePlayer.name}\">";
-            bluePlayer.deaths++;
-        }
-        else if (dyingPlayer == CharacterControl.PlayerTypes.Yellow)
-        {
-            killsAnnouncer.text += " has killed " + $"<sprite name=\"{yellowPlayer.name}\">";
-            yellowPlayer.deaths++;
-        }
+        killsAnnouncer.text = $"<sprite name=\"{players[(int)killingPlayer].name}\">  has killed " + $"<sprite name=\"{players[(int)dyingPlayer].name}\">";
+        players[(int)killingPlayer].kills++;
+        players[(int)dyingPlayer].deaths++;
 
         killsAnnouncerAnimation.Play("Announcement");
-
-        /*
-        killsAnnouncer.text = killingPlayer + " Player has killed " + dyingPlayer + " Player!";
-        killsAnnouncerAnimation.Play("Announcement");
-        */
     }
 
     public void AnnounceKill(CharacterControl.PlayerTypes playerWhoDiedToZone) //in case of player killed by the zone
     {
-        if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Red)
-        {
-            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{redPlayer.name}\">";
-            redPlayer.deaths++;
-        }
-        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Green)
-        {
-            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{greenPlayer.name}\">";
-            greenPlayer.deaths++;
-        }
-        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Blue)
-        {
-            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{bluePlayer.name}\">";
-            bluePlayer.deaths++;
-        }
-        else if (playerWhoDiedToZone == CharacterControl.PlayerTypes.Yellow)
-        {
-            killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{yellowPlayer.name}\">";
-            yellowPlayer.deaths++;
-        }
+        killsAnnouncer.text = "The Zone has killed " + $"<sprite name=\"{players[(int)playerWhoDiedToZone].name}\">";
+        players[(int)playerWhoDiedToZone].deaths++;
 
         killsAnnouncerAnimation.Play("Announcement");
-
-        /*
-        killsAnnouncer.text = killingPlayer + " Player has killed " + dyingPlayer + " Player!";
-        killsAnnouncerAnimation.Play("Announcement");
-        */
     }
 
-    // public void AnnounceKill(string killingPlayer, string dyingPlayer)
-    // {
-    //     killsAnnouncer.text = $"<sprite name=\"{killingPlayer}\"> Player has killed <sprite name=\"{dyingPlayer}\"> Player!";
-
-    //     killsAnnouncerAnimation.Play("Announcement");
-
-    //     //character.HeadGFX.name;
-    // }
 
     public void UpdateLeaderboard()
     {
@@ -244,56 +202,47 @@ public class Leaderboard : MonoBehaviour
 
         if (leaderboard.activeSelf)
         {
+            /*
+            for (int i =0;i<players.Length;i++)
+            {
+                players[i].roundStartMoney = MoneyManager.singleton.GetRoundMoney(players[i].color);
+                players[i].currentMoney = MoneyManager.singleton.GetMoney(players[i].color);
+            }
+            */
             if (leaderboardPlayerPrefabs[0].activeSelf)
             {
-                redPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Red);
-                redPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Red);
-                redPlayerCoins.text = redPlayer.currentMoney.ToString();
-                redPlayerKills.text = redPlayer.kills.ToString();
+                redPlayerCoins.text = players[0].currentMoney.ToString();
+                redPlayerKills.text = players[0].kills.ToString();
             }
             if (leaderboardPlayerPrefabs[1].activeSelf)
             {
-                greenPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Green);
-                greenPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Green);
-                greenPlayerCoins.text = greenPlayer.currentMoney.ToString();
-                greenPlayerKills.text = greenPlayer.kills.ToString();
+                greenPlayerCoins.text = players[1].currentMoney.ToString();
+                greenPlayerKills.text = players[1].kills.ToString();
+
             }
             if (leaderboardPlayerPrefabs[2].activeSelf)
             {
-                bluePlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Blue);
-                bluePlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Blue);
-                bluePlayerCoins.text = bluePlayer.currentMoney.ToString();
-                bluePlayerKills.text = bluePlayer.kills.ToString();
+                bluePlayerCoins.text = players[2].currentMoney.ToString();
+                bluePlayerKills.text = players[2].kills.ToString();
             }
             if (leaderboardPlayerPrefabs[3].activeSelf)
             {
-                yellowPlayer.roundStartMoney = MoneyManager.singleton.GetRoundMoney(CharacterControl.PlayerTypes.Yellow);
-                yellowPlayer.currentMoney = MoneyManager.singleton.GetMoney(CharacterControl.PlayerTypes.Yellow);
-                yellowPlayerCoins.text = yellowPlayer.currentMoney.ToString();
-                yellowPlayerKills.text = yellowPlayer.kills.ToString();
+                yellowPlayerCoins.text = players[3].currentMoney.ToString();
+                yellowPlayerKills.text = players[3].kills.ToString();
             }
         }
     }
     public void EmptyPlayerHands()
     {
-        for (int i = 0; i < Leaderboard.singleton.characters.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            Leaderboard.singleton.characters[i].EmptyHand();
+            players[i].characterReference.EmptyHand();
         }
     }
 
     public GameObject GetPlayerReference(CharacterControl.PlayerTypes playerColor)
     {
-        if (playerColor == CharacterControl.PlayerTypes.Red)
-            return redPlayer.characterReference.gameObject;
-        if (playerColor == CharacterControl.PlayerTypes.Green)
-            return greenPlayer.characterReference.gameObject;
-        if (playerColor == CharacterControl.PlayerTypes.Blue)
-            return bluePlayer.characterReference.gameObject;
-        if (playerColor == CharacterControl.PlayerTypes.Yellow)
-            return yellowPlayer.characterReference.gameObject;
-
-        return null;
+        return players[(int)playerColor].characterReference.gameObject;
     }
     private Sprite SetPlayerPortrait(string name)
     {
@@ -333,28 +282,21 @@ public class Leaderboard : MonoBehaviour
     }
     public void AnnounceText(string text)
     {
-        Leaderboard.singleton.killsAnnouncer.text = text;
-        Leaderboard.singleton.killsAnnouncerAnimation.Play("Announcement");
+        killsAnnouncer.text = text;
+        killsAnnouncerAnimation.Play("Announcement");
     }
 
     public void StopForwardMomentum(CharacterControl.PlayerTypes playerColor)
     {
-        if (playerColor == CharacterControl.PlayerTypes.Red)
-            redPlayer.characterReference.StopForwardMomentum();
-        if (playerColor == CharacterControl.PlayerTypes.Green)
-            greenPlayer.characterReference.StopForwardMomentum();
-        if (playerColor == CharacterControl.PlayerTypes.Blue)
-            bluePlayer.characterReference.StopForwardMomentum();
-        if (playerColor == CharacterControl.PlayerTypes.Yellow)
-            yellowPlayer.characterReference.StopForwardMomentum();
+        players[(int)playerColor].characterReference.StopForwardMomentum();
     }
 
     public void DisableCharacterControl()
     {
-        for (int i=0;i<characters.Length;i++)
+        for (int i=0;i<players.Length;i++)
         {
             //characters[i].GetComponent<CharacterControl>().enabled = false;
-            characters[i].GetComponent<CharacterControl>().DisableWeaponScripts();
+            players[i].characterReference.DisableWeaponScripts();
         }
     }
     public void EnableCharacterControl()
@@ -362,16 +304,163 @@ public class Leaderboard : MonoBehaviour
         for (int i = 0; i < characters.Length; i++)
         {
             //characters[i].GetComponent<CharacterControl>().enabled = true;
-            characters[i].GetComponent<CharacterControl>().EnableWeaponScripts();
+            players[i].characterReference.EnableWeaponScripts();
             
         }
     }
 
     public void DisplayPlayerSacks()
     {
-        for (int i = 0; i < characters.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
-            characters[i].GetComponent<CharacterControl>().DisplaySack();
+            players[i].characterReference.DisplaySack();
         }
     }
+
+
+    ///////////////////////// MOVING ALL OF MONEY MANAGER INTO LEADERBOARD
+    
+    public void ModifyMoney(CharacterControl.PlayerTypes playerColor, int amount)
+    {
+        players[(int)playerColor].currentMoney += amount;
+
+        if (players[(int)playerColor].currentMoney < 0)
+            players[(int)playerColor].currentMoney = 0;
+
+        FindLeader();
+        ArrangeMoneyRanking();
+    }
+
+    public int GetMoney(CharacterControl.PlayerTypes playerColor)
+    {
+        return players[(int)playerColor].currentMoney;
+    }
+
+    public void FindLeader()
+    {
+        CharacterControl.PlayerTypes leader = CharacterControl.PlayerTypes.Red;
+
+        int leaderIndex = 0;
+        for (int i =1;i<players.Length;i++)
+        {
+            if (players[i].currentMoney > players[leaderIndex].currentMoney)
+            {
+                leaderIndex = i;
+                leader = players[i].color;
+            }
+        }
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].characterReference.SetLeader(leader);
+        }
+    }
+
+    public CharacterControl.PlayerTypes FindLeaderColor()
+    {
+        CharacterControl.PlayerTypes leaderColor = CharacterControl.PlayerTypes.Red;
+
+        int leaderIndex = 0;
+        for (int i = 1; i < players.Length; i++)
+        {
+            if (players[i].currentMoney > players[leaderIndex].currentMoney)
+            {
+                leaderIndex = i;
+                leaderColor = players[i].color;
+            }
+        }
+
+        return leaderColor;
+    }
+
+    public int FindLeaderMoney()
+    {
+        return players[(int)FindLeaderColor()].currentMoney; //probably the most bizzare code line I wrote in a while
+    }
+
+    public void UpdateRoundMoney(CharacterControl.PlayerTypes playerColor, int roundMoney)
+    {
+        for (int i =0;i<players.Length;i++)
+        {
+            if (players[i].color == playerColor)
+                players[i].roundStartMoney = roundMoney;
+        }
+    }
+
+    public void ArrangeMoneyRanking()
+    {
+        //oh yeah, madmah time!
+
+        int[] tempArray = new int[moneyRankings.Length];
+        string[] tempNames = new string[moneyRankings.Length];
+
+        int indexToRemember = 0;
+
+        for (int i = 0;i<moneyRankings.Length;i++)
+        {
+            tempArray[i] = players[i].currentMoney;
+            tempNames[i] = players[i].name;
+        }
+
+        for (int i = 0;i<moneyRankings.Length;i++)
+        {
+            for (int j =0;j<moneyRankings.Length;j++)
+            {
+                if (tempArray[j]>moneyRankings[i])
+                {
+                    moneyRankings[i] = tempArray[j];
+                    nameRankings[i] = tempNames[j];
+                    indexToRemember = j;
+                }
+                tempArray[indexToRemember] = 0;
+            }
+        }
+
+        //Array.Sort(moneyRankings);
+    }
+
+    public int DeathMoney(CharacterControl.PlayerTypes deadPlayerColor)
+    {
+        int moneylost = 0;
+
+        if (players.Length == 4)
+        {
+            if (players[(int)deadPlayerColor].name == nameRankings[0])
+                moneylost = players[(int)deadPlayerColor].currentMoney / 2; //50%
+            else if (players[(int)deadPlayerColor].name == nameRankings[1])
+                moneylost = players[(int)deadPlayerColor].currentMoney / 4; //25%
+            else if (players[(int)deadPlayerColor].name == nameRankings[2])
+                moneylost = players[(int)deadPlayerColor].currentMoney / 10; //10%
+            else
+                moneylost = 0;
+
+            ModifyMoney(deadPlayerColor, -moneylost);
+
+        }
+        if (players.Length == 3)
+        {
+            if (players[(int)deadPlayerColor].name == nameRankings[0])
+                moneylost = players[(int)deadPlayerColor].currentMoney / 2; //50%
+            else if (players[(int)deadPlayerColor].name == nameRankings[1])
+                moneylost = players[(int)deadPlayerColor].currentMoney / 4; //25%
+            else
+                moneylost = players[(int)deadPlayerColor].currentMoney / 10; //10%
+
+            ModifyMoney(deadPlayerColor, -moneylost);
+
+        }
+        if (players.Length == 2)
+        {
+            if (players[(int)deadPlayerColor].name == nameRankings[0])
+                moneylost = (int)(players[(int)deadPlayerColor].currentMoney * 0.4f); //40%
+            else
+                moneylost = (int)(players[(int)deadPlayerColor].currentMoney * 0.2f); //20%
+
+            ModifyMoney(deadPlayerColor, -moneylost);
+
+        }
+
+        return moneylost;
+    }
+
 }

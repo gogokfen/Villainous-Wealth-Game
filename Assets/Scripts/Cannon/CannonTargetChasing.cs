@@ -24,7 +24,7 @@ public class CannonTargetChasing : MonoBehaviour
         switchup += Time.deltaTime;
         if ((int)switchup%2 ==0)
         {
-            FollowPlayer(MoneyManager.singleton.FindLeaderColor());
+            FollowPlayer(Leaderboard.singleton.FindLeaderColor());
             //FollowPlayer(Leaderboard.singleton.characters[(int)switchup % 3].gameObject);
         }
 

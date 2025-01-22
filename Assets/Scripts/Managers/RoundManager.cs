@@ -174,7 +174,7 @@ public class RoundManager : MonoBehaviour
         int players = 0;
         foreach (CharacterControl character in characters)
         {
-            int coins = MoneyManager.singleton.GetMoney(character.PlayerID);
+            int coins = Leaderboard.singleton.GetMoney(character.PlayerID);
             players++;
             if (coins > mostCoins)
             {

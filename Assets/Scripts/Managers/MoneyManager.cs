@@ -61,6 +61,7 @@ public class MoneyManager : MonoBehaviour
         }
 
         FindLeader();
+
     }
 
     public void UpdateRoundMoney(CharacterControl.PlayerTypes playerColor, int amount)
@@ -204,6 +205,23 @@ public class MoneyManager : MonoBehaviour
             return yellowMoney;
         else
             return yellowMoney;
+    }
+
+    public void ArrangeMoneyRanking()
+    {
+        
+    }
+
+    public int DeathMoney(CharacterControl.PlayerTypes playerID)
+    {
+        int moneylost = 0;
+
+        if (Leaderboard.singleton.playerCount == 4)
+        {
+
+        }
+
+        return moneylost;
     }
 
 }

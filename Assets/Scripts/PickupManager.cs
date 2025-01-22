@@ -264,8 +264,12 @@ public class PickupManager : MonoBehaviour
 
     public void SpawnPowerUp(Vector3 powerupPosition)
     {
+        
         if (RoundManager.instance.areWeWarming == true) 
             return;
+
+        
+
         //Debug.Log("PickupManager dead player" + powerupPosition);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
@@ -277,6 +281,7 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
                 tempPowerup.GetComponent<Animator>().enabled = true;
+                tempPowerup.GetComponent<Animator>().Play("Pickup");
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
                 coins.Add(tempPowerup);
@@ -297,6 +302,7 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, powerupPosition, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
                 tempPowerup.GetComponent<Animator>().enabled = true;
+                tempPowerup.GetComponent<Animator>().Play("Pickup");
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
                 coins.Add(tempPowerup);
@@ -325,6 +331,7 @@ public class PickupManager : MonoBehaviour
             GameObject tempPowerup = Instantiate(shieldPowerup, powerupPosition, Quaternion.identity);
             tempPowerup.name = "Shield";
             tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
             Destroy(tempPowerup, 20);
         }
@@ -333,6 +340,7 @@ public class PickupManager : MonoBehaviour
             GameObject tempPowerup = Instantiate(speedPowerup, powerupPosition, Quaternion.identity);
             tempPowerup.name = "Speed";
             tempPowerup.GetComponent<Animator>().enabled = true;
+            tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
             Destroy(tempPowerup, 20);
         }

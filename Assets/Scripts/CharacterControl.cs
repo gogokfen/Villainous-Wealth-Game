@@ -305,6 +305,14 @@ public class CharacterControl : MonoBehaviour
         //originalHpBarPos = hpBar.transform.position;
     }
 
+    public void Pause(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            PauseMenu.instance.OnPause(PI);
+        }
+    }
+
     public void Weapon(InputAction.CallbackContext context)
     {
         useWeapon = context.action.triggered;
@@ -351,11 +359,14 @@ public class CharacterControl : MonoBehaviour
     public void OutTheRound()
     {
         //int randomMoneyDrop = UnityEngine.Random.Range(2, 7);
-        int moneylost = (int)(0.25f * MoneyManager.singleton.GetMoney(PlayerID));
-        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "-" + moneylost;
-        MoneyManager.singleton.ModifyMoney(PlayerID, -moneylost);
+        //int moneylost = (int)(0.25f * Leaderboard.singleton.GetMoney(PlayerID));
+        int moneylost = Leaderboard.singleton.DeathMoney(PlayerID);
+        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "-" + moneylost;
+        //Leaderboard.singleton.ModifyMoney(PlayerID, -moneylost); // I update it from the function itself
         moneyAnim.Play("Player Coin Pickup", -1, 0);
-        /* //players no longer drop physical money
+
+        //or do they? //players no longer drop physical money
+        /*
         if (moneylost == 0)
             moneylost = 1;
         for (int i =0;i<moneylost;i++)
@@ -398,9 +409,9 @@ public class CharacterControl : MonoBehaviour
         CC.enabled = true;
         characterGFX.SetActive(true);
         dead = false;
-        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
-        coinsAtRoundStart = MoneyManager.singleton.GetMoney(PlayerID);
-        MoneyManager.singleton.UpdateRoundMoney(PlayerID, coinsAtRoundStart);
+        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
+        coinsAtRoundStart = Leaderboard.singleton.GetMoney(PlayerID);
+        Leaderboard.singleton.UpdateRoundMoney(PlayerID, coinsAtRoundStart);
 
         weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
 
@@ -716,7 +727,7 @@ public class CharacterControl : MonoBehaviour
                     bodyPartsGFX[i].SetActive(true);
                 }
                 propHideout.SetActive(false);
-                MoneyManager.singleton.FindLeader();
+                Leaderboard.singleton.FindLeader();
 
                 Invisibility = false; //for consumeable behaviour
             }
@@ -1036,7 +1047,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //16 orignally //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //16 orignally //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1058,7 +1069,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1075,7 +1086,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f; // 25/60
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 24 : 24; //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1349,8 +1360,8 @@ public class CharacterControl : MonoBehaviour
                     if (pickupSearch[i].transform.name == "Coin")
                     {
 
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
-                        MoneyManager.singleton.ModifyMoney(PlayerID, 1);
+                        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
+                        Leaderboard.singleton.ModifyMoney(PlayerID, 1);
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1358,8 +1369,8 @@ public class CharacterControl : MonoBehaviour
                     else if (pickupSearch[i].transform.name == "Coin2")
                     {
 
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
-                        MoneyManager.singleton.ModifyMoney(PlayerID, 1);
+                        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
+                        Leaderboard.singleton.ModifyMoney(PlayerID, 1);
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1367,8 +1378,8 @@ public class CharacterControl : MonoBehaviour
                     else if (pickupSearch[i].transform.name == "CoinSack")
                     {
 
-                        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString() + "+" + "3";
-                        MoneyManager.singleton.ModifyMoney(PlayerID, 3);
+                        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "3";
+                        Leaderboard.singleton.ModifyMoney(PlayerID, 3);
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1463,7 +1474,7 @@ public class CharacterControl : MonoBehaviour
                         Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                         if (RoundManager.instance.areWeWarming == false)
                         {
-                            MoneyManager.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                            Leaderboard.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
                         }
                         OutTheRound();
                     }
@@ -1562,7 +1573,7 @@ public class CharacterControl : MonoBehaviour
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                     if (RoundManager.instance.areWeWarming == false)
                     {
-                        MoneyManager.singleton.ModifyMoney(attackingPlayer, 5);
+                        Leaderboard.singleton.ModifyMoney(attackingPlayer, 5);
                     }
                     OutTheRound();
                     DeadStop();
@@ -1885,7 +1896,7 @@ public class CharacterControl : MonoBehaviour
 
     public void DisplaySack()
     {
-        moneyText.text = MoneyManager.singleton.GetMoney(PlayerID).ToString();
+        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
         //moneyAnim.Play("Player Coin Pickup", -1, 0);
         moneyAnim.enabled = false;
         moneyText.color = Color.white;

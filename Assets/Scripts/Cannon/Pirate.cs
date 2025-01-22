@@ -32,7 +32,7 @@ public class Pirate : MonoBehaviour
         {
             for (int i = 0; i < playerSearch.Length; i++)
             {
-                if (MoneyManager.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=5 && Time.time>=payCD)
+                if (Leaderboard.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=5 && Time.time>=payCD)
                 {
                     cannonV2GameObject.transform.position = transform.position;
 
@@ -41,7 +41,7 @@ public class Pirate : MonoBehaviour
                     payingPlayerRef.gameObject.SetActive(false);
 
 
-                    MoneyManager.singleton.ModifyMoney((payingPlayerRef.PlayerID), -5);
+                    Leaderboard.singleton.ModifyMoney((payingPlayerRef.PlayerID), -5);
                     cannonV2GameObject.SetActive(true);
                     cannonV2Script.UpdateShooter(payingPlayerRef.PlayerID);
 

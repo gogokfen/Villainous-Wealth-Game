@@ -43,7 +43,7 @@ public class ShopManager : MonoBehaviour
                 defaultButtonIndex++;
                 CharacterControl characterControl = player.GetComponent<CharacterControl>();
                 playerShopUI[shopUIIndex].name = characterControl.HeadGFX.name;
-                playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(characterControl.PlayerID).ToString();
+                playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = Leaderboard.singleton.GetMoney(characterControl.PlayerID).ToString();
                 playerShopUI[shopUIIndex].SetActive(true);
                 shopUIIndex++;
             }
@@ -59,9 +59,9 @@ public class ShopManager : MonoBehaviour
             if (selectedButton != null)
             {
                 int itemPrice = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice;
-                if (MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID) >= itemPrice)
+                if (Leaderboard.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID) >= itemPrice)
                 {
-                    MoneyManager.singleton.ModifyMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID, -itemPrice);
+                    Leaderboard.singleton.ModifyMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID, -itemPrice);
                     if (selectedButton.GetComponent<ButtonSelectionTracker>().type == ButtonSelectionTracker.shopItemType.Weapon)
                     {
                         PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyWeapon(selectedButton.name);
@@ -72,7 +72,7 @@ public class ShopManager : MonoBehaviour
                         PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().BuyConsumeable(selectedButton.name);
                     }
                     shopUIIndex = player.playerIndex;
-                    playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = MoneyManager.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID).ToString();
+                    playerShopUI[shopUIIndex].GetComponent<PlayerShopUI>().coinUI.text = Leaderboard.singleton.GetMoney(PlayerManager.instance.playerList[player.playerIndex].GetComponent<CharacterControl>().PlayerID).ToString();
                     selectedButton.GetComponent<Button>().interactable = false;
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
                     selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice += 3;
