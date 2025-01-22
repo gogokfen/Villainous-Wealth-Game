@@ -15,13 +15,12 @@ public class TimeManager : MonoBehaviour
             timer -= Time.unscaledDeltaTime;
             if (timer <= 0)
             {
-                //Time.timeScale = 1;
                 start = false;
             }
         }
         else 
         {
-            if (Time.timeScale < 1f)
+            if (Time.timeScale < 1f  && !PauseMenu.instance.paused)
             {
                 Time.timeScale += Time.unscaledDeltaTime * 1.5f;
                 if (Time.timeScale > 1f)

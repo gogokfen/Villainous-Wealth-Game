@@ -9,7 +9,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject resumeButton;
     [SerializeField] Sprite resumeSprite;
-    bool paused;
+    public bool paused;
     private static PlayerInput pausingPlayer;
     private void Awake()
     {
