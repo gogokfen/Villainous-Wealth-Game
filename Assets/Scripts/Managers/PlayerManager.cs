@@ -31,13 +31,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject characterSelectionScreen;
     private List<InputDevice> joinedDevices = new List<InputDevice>();
     [SerializeField] GameObject menuPlayerPrefab;
-    [SerializeField] GameObject defaultCharacterButton;
+    public GameObject defaultCharacterButton;
     public int playerNumber = 1;
 
-    private int[] characterPicks;
+    public int[] characterPicks;
     private int pickingPlayer = 1;
     private static List<PlayerInput> menuPlayers = new List<PlayerInput>();
-    private int readyPlayers = 0;
+    public int readyPlayers = 0;
     [Foldout("Player Materials")]
     public Material redMaterial;
     public Material greenMaterial;
@@ -121,74 +121,72 @@ public class PlayerManager : MonoBehaviour
                     MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
                     showcaseIndex++;
                     playerNumber++;
-                    menuPlayer.actions["UI/Submit"].performed += ctx => CharacterPick(menuPlayer);
-                    menuPlayer.actions["UI/Cancel"].performed += ctx => CancelCharacterPick(menuPlayer);
                 }
             }
         }
     }
 
-    private void CharacterPick(PlayerInput player)
-    {
-        MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
-        GameObject selectedButton = playerEventSystem.currentSelectedGameObject;
-        if (selectedButton.GetComponent<CustomizeCharacter>().picked == false)
-        {
-            MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
-            menuPlayer.selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
-            menuPlayer.pickedCharButton = selectedButton;
-            playerEventSystem.GetComponent<MenuPlayer>().selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
-            characterPicks[playerEventSystem.GetComponent<MenuPlayer>().selectedChar] = playerEventSystem.GetComponent<MenuPlayer>().playerNum;
-            selectedButton.GetComponent<Button>().interactable = false;
-            selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
-            playerEventSystem.SetSelectedGameObject(null);
-            selectedButton.GetComponent<CustomizeCharacter>().picked = true;
-            if (playerEventSystem.GetComponent<MenuPlayer>().ready == false)
-            {
-                playerEventSystem.GetComponent<MenuPlayer>().ready = true;
-                readyPlayers++;
-            }
-            if (selectedButton.name == "Dragon")
-            {
-                SoundManager.singleton.AnnounceDragon();
-            }
-            else if (selectedButton.name == "Boxhead")
-            {
-                SoundManager.singleton.AnnounceBoxhead();
-            }
-            else if (selectedButton.name == "TestDummy")
-            {
-                SoundManager.singleton.AnnounceTestDummy();
-            }
-            else if (selectedButton.name == "MonopolyDude")
-            {
-                SoundManager.singleton.AnnounceMonopolyDude();
-            }
-        }
-    }
+    // private void CharacterPick(PlayerInput player)
+    // {
+    //     MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
+    //     GameObject selectedButton = playerEventSystem.currentSelectedGameObject;
+    //     if (selectedButton.GetComponent<CustomizeCharacter>().picked == false)
+    //     {
+    //         MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
+    //         menuPlayer.selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
+    //         menuPlayer.pickedCharButton = selectedButton;
+    //         playerEventSystem.GetComponent<MenuPlayer>().selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
+    //         characterPicks[playerEventSystem.GetComponent<MenuPlayer>().selectedChar] = playerEventSystem.GetComponent<MenuPlayer>().playerNum;
+    //         selectedButton.GetComponent<Button>().interactable = false;
+    //         selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
+    //         playerEventSystem.SetSelectedGameObject(null);
+    //         selectedButton.GetComponent<CustomizeCharacter>().picked = true;
+    //         if (playerEventSystem.GetComponent<MenuPlayer>().ready == false)
+    //         {
+    //             playerEventSystem.GetComponent<MenuPlayer>().ready = true;
+    //             readyPlayers++;
+    //         }
+    //         if (selectedButton.name == "Dragon")
+    //         {
+    //             SoundManager.singleton.AnnounceDragon();
+    //         }
+    //         else if (selectedButton.name == "Boxhead")
+    //         {
+    //             SoundManager.singleton.AnnounceBoxhead();
+    //         }
+    //         else if (selectedButton.name == "TestDummy")
+    //         {
+    //             SoundManager.singleton.AnnounceTestDummy();
+    //         }
+    //         else if (selectedButton.name == "MonopolyDude")
+    //         {
+    //             SoundManager.singleton.AnnounceMonopolyDude();
+    //         }
+    //     }
+    // }
 
-    private void CancelCharacterPick(PlayerInput player)
-    {
-        MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
-        if (menuPlayer.selectedChar >= 0)
-        {
-            GameObject selectedButton = menuPlayer.pickedCharButton;
-            characterPicks[menuPlayer.selectedChar] = 0;
-            menuPlayer.selectedChar = 0;
-            selectedButton.GetComponent<Button>().interactable = true;
-            selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
-            selectedButton.GetComponent<CustomizeCharacter>().picked = false;
-            MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
-            playerEventSystem.SetSelectedGameObject(null);
-            playerEventSystem.SetSelectedGameObject(defaultCharacterButton);
-            menuPlayer.pickedCharButton = null;
-            if (playerEventSystem.GetComponent<MenuPlayer>().ready == true)
-            {
-                playerEventSystem.GetComponent<MenuPlayer>().ready = false;
-                readyPlayers--;
-            }
-        }
-    }
+    // private void CancelCharacterPick(PlayerInput player)
+    // {
+    //     MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
+    //     if (menuPlayer.selectedChar >= 0)
+    //     {
+    //         GameObject selectedButton = menuPlayer.pickedCharButton;
+    //         characterPicks[menuPlayer.selectedChar] = 0;
+    //         menuPlayer.selectedChar = 0;
+    //         selectedButton.GetComponent<Button>().interactable = true;
+    //         selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
+    //         selectedButton.GetComponent<CustomizeCharacter>().picked = false;
+    //         MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
+    //         playerEventSystem.SetSelectedGameObject(null);
+    //         playerEventSystem.SetSelectedGameObject(defaultCharacterButton);
+    //         menuPlayer.pickedCharButton = null;
+    //         if (playerEventSystem.GetComponent<MenuPlayer>().ready == true)
+    //         {
+    //             playerEventSystem.GetComponent<MenuPlayer>().ready = false;
+    //             readyPlayers--;
+    //         }
+    //     }
+    // }
 
     public void StartRound()
     {

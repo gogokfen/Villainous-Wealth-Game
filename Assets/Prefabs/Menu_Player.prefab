@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: eff0920cce794fd44a442fbb70115884,
     type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 503568147854410387}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -60,10 +60,102 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6e7cbea5-5abc-456e-ac73-3024ffd75158
+    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 48c9b331-cb3d-4f70-9b73-2fe5c42f6e58
+    m_ActionName: Player/Pause[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ee89c8dd-fbe9-4754-98ea-2e1cd3bdade6
+    m_ActionName: Player/Item[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f0327ce9-5578-446d-913b-474faacdbbc1
+    m_ActionName: Player/Roll[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7abadc6e-db1c-4f3f-af29-e466479dffa8
+    m_ActionName: Player/Shield[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 10abd0c1-389f-4d40-9a3e-8b987c4c5af8
+    m_ActionName: Player/WindUpPunch[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43add926-4075-417a-af21-587f0902f4ea
+    m_ActionName: Player/Consumable[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c0b43b34-a09e-45f7-b95a-77ddc730f098
+    m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4837382061927458546}
+        m_TargetAssemblyTypeName: MenuPlayer, Assembly-CSharp
+        m_MethodName: PickCharacter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c4c13ff9-e44e-461a-a58b-e9b8d0998890
+    m_ActionName: UI/Submit[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4837382061927458546}
+        m_TargetAssemblyTypeName: MenuPlayer, Assembly-CSharp
+        m_MethodName: CancelPickCharacter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f07ffcda-1062-4ea3-92cd-55e494afffc8
+    m_ActionName: UI/Cancel[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f0d7453c-2371-4869-bc52-537bc2cb03d1
+    m_ActionName: UI/Point[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c77e9af5-2a51-49a8-8e09-27750de36e10
+    m_ActionName: UI/Click[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 195a47ef-4d9e-46a7-9cd6-0a96890e1541
+    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fa1d4db9-8462-4b29-8e93-c6e23afb27e7
+    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1a65c0c0-3e7b-4f26-b8ee-ff5ce823fd05
+    m_ActionName: UI/RightClick[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fb8f0cdb-e3c4-4b8e-bb24-61aa7e38bd21
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3c1281bc-e902-4c8a-9736-5f8eddbf2995
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &2249221248060137901
@@ -137,3 +229,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerNum: 1
   selectedChar: 0
+  pickedCharButton: {fileID: 0}
+  ready: 0

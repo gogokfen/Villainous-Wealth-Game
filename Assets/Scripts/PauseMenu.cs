@@ -15,18 +15,8 @@ public class PauseMenu : MonoBehaviour
     {
         instance = this;
     }
-    public void SubToPause()
-    {
-        PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
-        foreach (PlayerInput player in playerInputs)
-        {
-            player.actions["UI/Pause"].performed += ctx => OnPause(player);
-            Debug.Log("shalom");
-        }
-    }
     public void OnPause(PlayerInput player)
     {
-        Debug.Log("ahalan");
         MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
         {
             if (!paused)
