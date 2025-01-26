@@ -6,6 +6,14 @@ public class PickupManager : MonoBehaviour
 {
     public static PickupManager singleton { get; private set; }
 
+    public enum PowerupTypes
+    {
+        CoinSack,
+        Health,
+        Speed,
+        Shield
+    }
+
     public bool DropWeapons = false;
     public bool DropPowerups = false;
 
@@ -17,6 +25,8 @@ public class PickupManager : MonoBehaviour
     [SerializeField] GameObject healthPowerup;
     [SerializeField] GameObject shieldPowerup;
     [SerializeField] GameObject speedPowerup;
+
+    [SerializeField] GameObject[] weaponPickups;
 
     List<GameObject> pickups = new List<GameObject>();
 
@@ -349,6 +359,68 @@ public class PickupManager : MonoBehaviour
         //tempPowerup.GetComponent<Animator>().enabled = true;
         //tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
+        //Destroy(tempPowerup, 20);
+    }
+
+    public void SpawnPowerUp(CharacterControl.Weapons weaponToSpawn,Vector3 spawnPos,Transform parentToSpawnUnder)
+    {
+        for (int i =0;i<weaponPickups.Length;i++)
+        {
+            if (weaponPickups[i].name == weaponToSpawn.ToString())
+            {
+                GameObject tempPowerup = Instantiate(weaponPickups[i], spawnPos, Quaternion.identity);
+                tempPowerup.transform.SetParent(parentToSpawnUnder);
+                tempPowerup.name = weaponPickups[i].name;
+                tempPowerup.GetComponent<Animator>().enabled = true;
+                //tempPowerup.GetComponent<Animator>().Play("Pickup");
+                tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            }
+        }
+
+    }
+
+    public void SpawnPowerUp(PowerupTypes powerupToSpawn, Vector3 spawnPos, Transform parentToSpawnUnder)
+    {
+        if (powerupToSpawn == PowerupTypes.CoinSack)
+        {
+            GameObject tempPowerup = Instantiate(coinSackPowerup, spawnPos, Quaternion.identity);
+            tempPowerup.transform.SetParent(parentToSpawnUnder);
+            tempPowerup.name = "CoinSack";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            //tempPowerup.GetComponent<Animator>().Play("Pickup");
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+
+            coins.Add(tempPowerup);
+
+            currentCoinSackAmount++;
+        }
+        else if (powerupToSpawn == PowerupTypes.Health)
+        {
+            GameObject tempPowerup = Instantiate(healthPowerup, spawnPos, Quaternion.identity);
+            tempPowerup.transform.SetParent(parentToSpawnUnder);
+            tempPowerup.name = "Health";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            //tempPowerup.GetComponent<Animator>().Play("Pickup");
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+        }
+        if (powerupToSpawn == PowerupTypes.Speed)
+        {
+            GameObject tempPowerup = Instantiate(speedPowerup, spawnPos, Quaternion.identity);
+            tempPowerup.transform.SetParent(parentToSpawnUnder);
+            tempPowerup.name = "Speed";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            //tempPowerup.GetComponent<Animator>().Play("Pickup");
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+        }
+        if (powerupToSpawn == PowerupTypes.Shield)
+        {
+            GameObject tempPowerup = Instantiate(shieldPowerup, spawnPos, Quaternion.identity);
+            tempPowerup.transform.SetParent(parentToSpawnUnder);
+            tempPowerup.name = "Shield";
+            tempPowerup.GetComponent<Animator>().enabled = true;
+            //tempPowerup.GetComponent<Animator>().Play("Pickup");
+            tempPowerup.GetComponent<BoxCollider>().enabled = true;
+        }
         //Destroy(tempPowerup, 20);
     }
 

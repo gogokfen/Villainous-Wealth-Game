@@ -145,7 +145,7 @@ public class Leaderboard : MonoBehaviour
         moneyRankings = new int[playerCount];
         nameRankings = new string[playerCount];
 
-        for (int i =0;i<playerCount;i++)
+        for (int i =0;i<playerCount;i++) //same order as the charactercontrol.playertypes Red Green Blue Yellow 0 1 2 3
         {
             if (i==0)
                 players[i] = redPlayer;
