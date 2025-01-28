@@ -423,6 +423,28 @@ public class CharacterControl : MonoBehaviour
         winner = false;
     }
 
+    public void WarmupRound()
+    {
+        hp = 9999;
+        //hpText.text = "HP: " + hp;
+        hpBar.fillAmount = 1f;
+        CC.enabled = true;
+        characterGFX.SetActive(true);
+        dead = false;
+        //moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
+        //coinsAtRoundStart = Leaderboard.singleton.GetMoney(PlayerID);
+        //Leaderboard.singleton.UpdateRoundMoney(PlayerID, coinsAtRoundStart);
+
+        weaponList[(int)equippedWeapon].SetActive(true); //making sure he can't attack while dead kek
+
+        //DeadStop(); //making sure character was dead
+        bodyPartsGFX[6].SetActive(true);
+        bodyPartsGFX[7].SetActive(false); //removing the hp bar from the warmup round, characters can't die
+
+        charAnim.Play("Idle");
+        winner = false;
+    }
+
     void Update()
     {
         //Debug.Log("Mouse"+Camera.main.WorldToScreenPoint(transform.position));
@@ -1864,14 +1886,22 @@ public class CharacterControl : MonoBehaviour
     {
         if (newLeader == PlayerID)
         {
-            leaderGlow.Play();
-            leaderCrown.SetActive(true);
+            if (Leaderboard.singleton.GetMoney(PlayerID)!=0) //making sure a player with no money gets the crown
+            {
+                leaderGlow.Play();
+                leaderCrown.SetActive(true);
+            }
         }
         else
         {
             leaderGlow.Stop();
             leaderCrown.SetActive(false);
         }
+    }
+
+    public void SetWinner()
+    {
+        winner = true;
     }
 
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)

@@ -437,9 +437,10 @@ public class PickupManager : MonoBehaviour
         coins.Add(tempCoinShot);
     }
 
-    public void SetWinningPlayer(GameObject player)
+    public void SetWinningPlayer(GameObject player) //transfer this whole function to leaderboard?
     {
-        player.GetComponent<CharacterControl>().winner = true; //transfer after
+        //player.GetComponent<CharacterControl>().winner = true; //transfer after
+        player.GetComponent<CharacterControl>().SetWinner();
 
         winningPlayer = player;
         playerWon = true;

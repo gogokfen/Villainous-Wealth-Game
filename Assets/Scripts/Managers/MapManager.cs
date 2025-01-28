@@ -4,6 +4,7 @@ public class MapManager : MonoBehaviour
 {
     public static MapManager instance;
     public GameObject[] mapElements;
+    public GameObject warmupMap;
     public Transform location;
     public Transform[] startPositions;
     [SerializeField] GameObject[] warmupProtectors;
@@ -12,8 +13,6 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
-        
     }
     public void ResetMap()
     {
@@ -52,6 +51,10 @@ public class MapManager : MonoBehaviour
                 protectorIndex++;
             }
             warmupRound = true;
+
+
+            DestroyMap.instance.DestroyMapElements();
+            Instantiate(warmupMap);
         }
     }
 }
