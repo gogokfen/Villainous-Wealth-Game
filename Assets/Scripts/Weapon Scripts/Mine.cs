@@ -70,11 +70,13 @@ public class Mine : WeaponBase
 
             mineGFX.SetActive(false);
 
+            /*
             if (uses <= 0) //out of mines, refill and discard weapon
             {
                 CharacterControl.DiscardWeapon(playerID);
                 //uses = startingAmmo;
             }
+            */
 
             SoundManager.singleton.MinePlace(transform.position);
 

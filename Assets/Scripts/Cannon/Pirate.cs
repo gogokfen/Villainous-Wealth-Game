@@ -62,7 +62,10 @@ public class Pirate : MonoBehaviour
         {
             cannonV2GameObject.SetActive(false);
             payingPlayerRef.enabled = true;
-            payingPlayerRef.gameObject.SetActive(true);
+            payingPlayerRef.gameObject.SetActive(true); //consider making Character Control "Dead Stop" public and use it to fix animation bug
+
+            //considering making the pay available once per round
+            gameObject.SetActive(false);
         }
     }
 }

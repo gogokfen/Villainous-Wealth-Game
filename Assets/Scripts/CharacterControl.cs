@@ -36,7 +36,7 @@ public class CharacterControl : MonoBehaviour
     [HideInInspector] public int zoneTicksGraceAmount = 2;
 
     public PlayerTypes PlayerID;
-    public static PlayerTypes discardingPlayerID;
+    //public static PlayerTypes discardingPlayerID;
     //public static PlayerTypes holdingPlayerID;
 
     //bool onOff = false;
@@ -57,6 +57,7 @@ public class CharacterControl : MonoBehaviour
     Collider[] projSearch;
     float identicalDamageCD;
     private PlayerTypes lastPlayerID;
+    private float timeSinceLastPlayerHit; //checking if players intentionally dying to zone
 
     Vector3 hitBoxSize = new Vector3(1, 2f, 1);
 
@@ -149,7 +150,7 @@ public class CharacterControl : MonoBehaviour
 
     //public static int weaponID;
 
-    private static bool weaponDiscarded = false;
+    //private static bool weaponDiscarded = false;
 
 
     CharacterController CC;
@@ -202,8 +203,8 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject playerIndicator;
 
     //[HideInInspector] public int cannonBallAmount = 0;
-    private int cannonBallAmount = 0;
-    [SerializeField] GameObject cannonBall;
+    //private int cannonBallAmount = 0;
+    //[SerializeField] GameObject cannonBall;
 
     float rumbleTimer;
 
@@ -262,37 +263,50 @@ public class CharacterControl : MonoBehaviour
         if (PlayerID == PlayerTypes.Red)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.red;
-            playerIndicator.GetComponent<Image>().color = Color.red;
+
+            //playerIndicator.GetComponent<Image>().color = Color.red;
+            playerIndicator.GetComponent<Image>().color = new Color32(204,67,152,255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
 
             for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
             {
                 //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.red;
             }
         }
-        else if (PlayerID == PlayerTypes.Blue)
-        {
-            //playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
-            playerIndicator.GetComponent<Image>().color = Color.blue;
-
-            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
-            {
-                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.blue;
-            }
-        }
         else if (PlayerID == PlayerTypes.Green)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.green;
-            playerIndicator.GetComponent<Image>().color = Color.green;
+
+            //playerIndicator.GetComponent<Image>().color = Color.green;
+            playerIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
 
             for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
             {
                 //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.green;
             }
         }
+        else if (PlayerID == PlayerTypes.Blue)
+        {
+            //playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
+
+            //playerIndicator.GetComponent<Image>().color = Color.blue;
+
+            playerIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
+
+            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
+            {
+                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.blue;
+            }
+        }
         else if (PlayerID == PlayerTypes.Yellow)
         {
             //playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
-            playerIndicator.GetComponent<Image>().color = Color.yellow;
+
+            //playerIndicator.GetComponent<Image>().color = Color.yellow;
+            playerIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
 
             for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
             {
@@ -369,11 +383,11 @@ public class CharacterControl : MonoBehaviour
         /*
         if (moneylost == 0)
             moneylost = 1;
+        */
         for (int i =0;i<moneylost;i++)
         {
             PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z));
         }
-        */
         PickupManager.singleton.SpawnPowerUp(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
 
         //Debug.Log(HeadGFX.name);
@@ -520,6 +534,7 @@ public class CharacterControl : MonoBehaviour
             return;
 
         identicalDamageCD -= Time.deltaTime;
+        timeSinceLastPlayerHit += Time.deltaTime;
 
         if (mouseMovement) //360 aiming with mouse && Input.GetMouseButton(1)  //equippedWeapon != Weapons.Fist && (Input.GetMouseButton(1) || Input.GetMouseButton(0))
         {
@@ -545,7 +560,7 @@ public class CharacterControl : MonoBehaviour
 
             mouseIndicator.transform.localPosition = Vector3.right * restrictedDis;
 
-
+            /*
             Vector2 charMousePos = new Vector2(mouseCharLock.x, mouseCharLock.y);
             Vector2 dir = charMousePos - Mouse.current.position.value;
             dir.Normalize();
@@ -559,9 +574,9 @@ public class CharacterControl : MonoBehaviour
             {
                 Mouse.current.WarpCursorPosition(Mouse.current.position.value - dir);
             }
-
+            
             //Mouse.current.WarpCursorPosition(Vector2.Lerp(Mouse.current.position.value, new Vector2(mouseCharLock.x, mouseCharLock.y), 0.01f));
-
+            */
 
             if (!rolling)
             {
@@ -904,7 +919,14 @@ public class CharacterControl : MonoBehaviour
                 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
             else
             {
-                moveDirection = transform.forward;
+                //moveDirection = transform.forward;
+
+                //moveDirection = transform.eulerAngles.y + (Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg);
+                //moveDirection = new Vector3(Mathf.Sin(transform.eulerAngles.y * Mathf.Deg2Rad), 0 , Mathf.Cos(transform.eulerAngles.y * Mathf.Deg2Rad)).normalized;
+                float angleCalc = transform.eulerAngles.y + (Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg);
+                angleCalc *= Mathf.Deg2Rad;
+                Vector3 vectorCalc = new Vector3(Mathf.Sin(angleCalc) , 0, Mathf.Cos(angleCalc) ).normalized;
+                moveDirection = vectorCalc;
             }
             if (holdTimer <= 0) //can still rotate while shooting
             {
@@ -950,7 +972,11 @@ public class CharacterControl : MonoBehaviour
             if (!mouseMovement)
                 targetAngle = Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg;
             else
-                targetAngle = transform.eulerAngles.y;
+            {
+                //targetAngle = transform.eulerAngles.y;
+
+                targetAngle = transform.eulerAngles.y + (Mathf.Atan2(moveInput.x, moveInput.y) * Mathf.Rad2Deg);
+            }
 
             if ((animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery || animState == AS.Sword1Recovery || animState == AS.Sword2Recovery) && !rolling) //can't rotate whiling using fists
             {
@@ -1446,6 +1472,7 @@ public class CharacterControl : MonoBehaviour
 
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
+                    /*
                     else if (pickupSearch[i].transform.name == "CannonBall")
                     {
                         cannonBallAmount = Int32.Parse(cannonBall.name);
@@ -1458,6 +1485,7 @@ public class CharacterControl : MonoBehaviour
                         cannonBall.name = "" + cannonBallAmount;
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
+                    */
                     return;
                 }
                 else
@@ -1466,6 +1494,7 @@ public class CharacterControl : MonoBehaviour
                 }
             }
         }
+        /*
         if (weaponDiscarded && discardingPlayerID == PlayerID)
         {
             weaponDiscarded = false;
@@ -1477,6 +1506,7 @@ public class CharacterControl : MonoBehaviour
             //weaponID = (int)equippedWeapon;
             Debug.Log("actually discarded yo");
         }
+        */
 
     }
 
@@ -1569,6 +1599,7 @@ public class CharacterControl : MonoBehaviour
 
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
+            timeSinceLastPlayerHit = 0;
         }
     }
 
@@ -1639,6 +1670,7 @@ public class CharacterControl : MonoBehaviour
 
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
+            timeSinceLastPlayerHit = 0;
         }
     }
 
@@ -1656,8 +1688,18 @@ public class CharacterControl : MonoBehaviour
             {
                 if (hp > 0 && hp - damage <= 0)
                 {
+                    if (timeSinceLastPlayerHit <5)
+                    {
+                        Leaderboard.singleton.AnnounceKill(lastPlayerID, PlayerID);
+                        if (RoundManager.instance.areWeWarming == false)
+                        {
+                            Leaderboard.singleton.ModifyMoney(lastPlayerID, 5); // giving money to the killer
+                        }
+                    }
+                    else
+                        Leaderboard.singleton.AnnounceKill(PlayerID); //overload function
+
                     OutTheRound();
-                    Leaderboard.singleton.AnnounceKill(PlayerID); //overload function
                     DeadStop();
                 }
 
@@ -1770,8 +1812,8 @@ public class CharacterControl : MonoBehaviour
         HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", startingColor);
         paintHead = false;
 
-        cannonBallAmount = 0; //cannon balls don't transfer between rounds
-        cannonBall.name = "" + cannonBallAmount;
+        //cannonBallAmount = 0; //cannon balls don't transfer between rounds
+        //cannonBall.name = "" + cannonBallAmount;
         shieldBuffTimer = -1; //making sure not starting with a buff
         speedBuffTimer = -1;
         knockbackDirection = Vector2.zero;
@@ -1904,12 +1946,14 @@ public class CharacterControl : MonoBehaviour
         winner = true;
     }
 
+    /*
     public static void DiscardWeapon(PlayerTypes weaponPlayerID)
     {
         discardingPlayerID = weaponPlayerID;
         weaponDiscarded = true;
         //Debug.Log("weapon discarded");
     }
+    */
 
     public void VictoryOrLose(int result)
     {

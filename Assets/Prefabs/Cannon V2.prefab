@@ -127,7 +127,6 @@ GameObject:
   - component: {fileID: 7653153377662711713}
   - component: {fileID: 7710645850954469195}
   - component: {fileID: 5290133953499564935}
-  - component: {fileID: 3014146205567507237}
   m_Layer: 0
   m_Name: Cannon V2
   m_TagString: Untagged
@@ -253,8 +252,12 @@ MonoBehaviour:
     m_ActionName: Player/WindUpPunch[/XInputControllerWindows/buttonNorth,/SwitchProControllerHID/buttonNorth]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: a4948614-aad1-48e4-828f-6e51fab69c70
-    m_ActionName: UI/Pause[/Keyboard/escape,/XInputControllerWindows/start]
+    m_ActionId: 48c9b331-cb3d-4f70-9b73-2fe5c42f6e58
+    m_ActionName: Player/Pause[/Keyboard/escape,/XInputControllerWindows/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43add926-4075-417a-af21-587f0902f4ea
+    m_ActionName: Player/Consumable[/XInputControllerWindows/buttonEast,/Keyboard/leftShift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -285,18 +288,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 25
---- !u!114 &3014146205567507237
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505580200811096677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d20d899d9e0aaa41983fc560386af8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2686685894425659843
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,6 +382,7 @@ GameObject:
   - component: {fileID: 8627522893147068087}
   - component: {fileID: 2400583305651252851}
   - component: {fileID: 2050791169048941540}
+  - component: {fileID: 7715781712862067281}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -464,6 +456,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7715781712862067281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3483847385122108987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d20d899d9e0aaa41983fc560386af8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4563310203138676913
 GameObject:
   m_ObjectHideFlags: 0

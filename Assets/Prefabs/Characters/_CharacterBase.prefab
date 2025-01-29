@@ -9133,7 +9133,6 @@ Transform:
   - {fileID: 2939236825713545058}
   - {fileID: 7162931419871056618}
   - {fileID: 9115938184151715734}
-  - {fileID: 5899742981120495699}
   - {fileID: 3660197933975126053}
   - {fileID: 7150882273012480750}
   m_Father: {fileID: 0}
@@ -9345,10 +9344,6 @@ MonoBehaviour:
     m_ActionId: 10abd0c1-389f-4d40-9a3e-8b987c4c5af8
     m_ActionName: Player/WindUpPunch[/XInputControllerWindows/buttonNorth,/SwitchProControllerHID/buttonNorth]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a4948614-aad1-48e4-828f-6e51fab69c70
-    m_ActionName: UI/Pause[/Keyboard/escape,/XInputControllerWindows/start]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8529768936932577941}
         m_TargetAssemblyTypeName: CharacterControl, Assembly-CSharp
@@ -9464,7 +9459,6 @@ MonoBehaviour:
   characterGFX: {fileID: 858879399940756574}
   HeadGFX: {fileID: 8213661146023656113}
   playerIndicator: {fileID: 2919890665422610786}
-  cannonBall: {fileID: 4367939416322508013}
   winner: 0
   mouseIndicator: {fileID: 9151559300189210641}
   weaponScripts: {fileID: 5146414170920022429}
@@ -12132,59 +12126,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &4367939416322508013
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8008090751371127203}
-  - component: {fileID: 6381032163317677793}
-  m_Layer: 9
-  m_Name: 0
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8008090751371127203
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4367939416322508013}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5899742981120495699}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6381032163317677793
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4367939416322508013}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 1.5, y: 2, z: 1.5}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4409522580429158592
 GameObject:
   m_ObjectHideFlags: 0
@@ -14263,11 +14204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   portrait: {fileID: 5374869666813258485}
-  portraitImages:
-  - {fileID: 21300000, guid: 8c5c83ef5666cde4b8e497f4677384c0, type: 3}
-  - {fileID: 21300000, guid: c6d496c164735f847a91382ea69fb095, type: 3}
-  - {fileID: 21300000, guid: c3fea3883602a5f4d9eb3efe1e5d5cd5, type: 3}
-  - {fileID: 21300000, guid: e20f25f6a0275584b8fc38abeb0d9357, type: 3}
   coinUI: {fileID: 0}
 --- !u!1 &5911380222515829901
 GameObject:
@@ -20309,38 +20245,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &7034142270338837117
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5899742981120495699}
-  m_Layer: 0
-  m_Name: CannonBalls
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5899742981120495699
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7034142270338837117}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8008090751371127203}
-  m_Father: {fileID: 2969950310000140246}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7045067042267623776
 GameObject:
   m_ObjectHideFlags: 0
@@ -28349,7 +28253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e7f97f78c3c2e346b2d17cddc91de53, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 15cadd2e7052dd144a1d024942ae9de1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
