@@ -98,7 +98,7 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
                 return MenuManager.instance.showcaseImages[1];
             case "TestDummy":
                 return MenuManager.instance.showcaseImages[2];
-            case "Boxhead":
+            case "Conquistadorette":
                 return MenuManager.instance.showcaseImages[3];
             case "Orc":
                 return MenuManager.instance.showcaseImages[4];

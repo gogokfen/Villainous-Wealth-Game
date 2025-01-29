@@ -10,6 +10,7 @@ public class MenuPlayer : MonoBehaviour
     public GameObject pickedCharButton;
     public bool ready;
     private PlayerInput PI;
+    private GameObject selectedButton;
 
     private void Start() 
     {
@@ -35,7 +36,7 @@ public class MenuPlayer : MonoBehaviour
     private void Pick(PlayerInput player)
     {
         MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
-        GameObject selectedButton = playerEventSystem.currentSelectedGameObject;
+        selectedButton = playerEventSystem.currentSelectedGameObject;
         if (selectedButton.GetComponent<CustomizeCharacter>().picked == false)
         {
             MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
@@ -58,7 +59,7 @@ public class MenuPlayer : MonoBehaviour
     private void Cancel(PlayerInput player)
     {
         MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
-        if (menuPlayer.selectedChar >= 0)
+        if (menuPlayer.selectedChar > 0)
         {
             GameObject selectedButton = menuPlayer.pickedCharButton;
             PlayerManager.instance.characterPicks[menuPlayer.selectedChar] = 0;
@@ -68,7 +69,7 @@ public class MenuPlayer : MonoBehaviour
             selectedButton.GetComponent<CustomizeCharacter>().picked = false;
             MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
             playerEventSystem.SetSelectedGameObject(null);
-            playerEventSystem.SetSelectedGameObject( PlayerManager.instance.defaultCharacterButton);
+            playerEventSystem.SetSelectedGameObject(selectedButton);
             menuPlayer.pickedCharButton = null;
             if (playerEventSystem.GetComponent<MenuPlayer>().ready == true)
             {

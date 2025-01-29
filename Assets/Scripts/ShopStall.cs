@@ -10,11 +10,7 @@ public class ShopStall : MonoBehaviour
     [SerializeField] Animator circleFade;
     [SerializeField] GameObject cameraZoom;
     public bool shoppingTime = false;
-
-    void Start()
-    {
-        //StartCoroutine(StallTime());
-    }
+    
     public IEnumerator StallTime()
     {
         circleFade.gameObject.SetActive(true);

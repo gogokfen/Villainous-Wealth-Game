@@ -42,14 +42,16 @@ public class MenuManager : MonoBehaviour
     public Image holdImage;
 
     public CanvasGroup menuButtons;
-    [SerializeField] GameObject characterSelectionScreen;
+    public GameObject characterSelectionScreen;
     public bool weReadyCheck;
     public Button startButton;
     public TextMeshProUGUI requirementText;
     [SerializeField] Animator curtain;
 
     public Sprite[] showcaseImages;
+    public Sprite joinShowcaseImage;
     public Image[] playerShowcases;
+    public EventSystem eventSystem;
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -79,6 +81,8 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
     void Update()
     {
@@ -96,14 +100,17 @@ public class MenuManager : MonoBehaviour
                 holdImage.fillAmount = holdTime / holdDuration;
                 if (holdTime >= holdDuration)
                 {
-                    characterSelectionScreen.SetActive(false);
                     holdImage.fillAmount = 0f;
                     menuButtons.interactable = true;
                     playButton.SetActive(true);
                     optionsButton.SetActive(true);
                     quitButton.SetActive(true);
-                    EventSystem.current.SetSelectedGameObject(playButton);
+                    ResetShowcases();
                     PlayerManager.KillMenuPlayers();
+                    eventSystem.SetSelectedGameObject(null);
+                    eventSystem.SetSelectedGameObject(playButton);
+                    characterSelectionScreen.SetActive(false);
+                    eventSystem.gameObject.SetActive(true);
                 }
             }
             else
@@ -112,16 +119,16 @@ public class MenuManager : MonoBehaviour
                 holdImage.fillAmount = 0f;
             }
         }
-        if (Mouse.current.delta.ReadValue() != Vector2.zero)
-        {
-            if (!usingMouse && usingInput)
-            {
-                usingMouse = true;
-                usingInput = false;
-                EventSystem.current.SetSelectedGameObject(null);
-                KNMUI();
-            }
-        }
+        // if (Mouse.current.delta.ReadValue() != Vector2.zero)
+        // {
+        //     if (!usingMouse && usingInput)
+        //     {
+        //         usingMouse = true;
+        //         usingInput = false;
+        //         //EventSystem.current.SetSelectedGameObject(null);
+        //         KNMUI();
+        //     }
+        // }
         if ((Keyboard.current.anyKey.wasPressedThisFrame || (Gamepad.current != null && IsGamepadPressed())) && usingMouse && !usingInput)
         {
             if (usingMouse && !usingInput)
@@ -207,13 +214,15 @@ public class MenuManager : MonoBehaviour
     public void PlayButton()
     {
         //SceneManager.LoadScene("MainScene");
-        roundMenu.SetActive(true);
-        backButtonMenu.gameObject.SetActive(true);
+        //roundMenu.SetActive(true);
+        //backButtonMenu.gameObject.SetActive(true);
         playButton.SetActive(false);
         optionsButton.SetActive(false);
         quitButton.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(defaultRoundMenuButton);
+        eventSystem.SetSelectedGameObject(null);
+        eventSystem.gameObject.SetActive(false);
+        characterSelectionScreen.SetActive(true);
+        //EventSystem.current.SetSelectedGameObject(defaultRoundMenuButton);
     }
     public void OptionsButton()
     {
@@ -241,6 +250,14 @@ public class MenuManager : MonoBehaviour
         {
             startButton.interactable = false;
             requirementText.text = "Not enough players are ready";
+        }
+    }
+
+    public void ResetShowcases()
+    {
+        foreach (Image image in playerShowcases)
+        {
+            image.sprite = joinShowcaseImage;
         }
     }
 }

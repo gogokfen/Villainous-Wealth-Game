@@ -24,11 +24,11 @@ public class PlayerManager : MonoBehaviour
     public static bool roundOver;
     public static int playerCount;
     int playerIndex = 0;
-    int showcaseIndex = 0;
+    //int showcaseIndex = 0;
     int disconnectedPlayers = 0;
     public GameObject[] playerList;
 
-    [SerializeField] GameObject characterSelectionScreen;
+    //[SerializeField] GameObject characterSelectionScreen;
     private List<InputDevice> joinedDevices = new List<InputDevice>();
     [SerializeField] GameObject menuPlayerPrefab;
     public GameObject defaultCharacterButton;
@@ -67,7 +67,7 @@ public class PlayerManager : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            if (characterSelectionScreen.activeInHierarchy == true)
+            if (MenuManager.instance.characterSelectionScreen.activeInHierarchy == true)
             {
                 DetectPlayerJoin();
             }
@@ -118,8 +118,8 @@ public class PlayerManager : MonoBehaviour
                     player.SetSelectedGameObject(null);
                     player.SetSelectedGameObject(defaultCharacterButton);
                     defaultCharacterButton.GetComponent<CustomizeCharacter>().FirstTimeSelection(playerNumber);
-                    MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
-                    showcaseIndex++;
+                    //MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
+                    //showcaseIndex++;
                     playerNumber++;
                 }
             }
@@ -309,6 +309,5 @@ public class PlayerManager : MonoBehaviour
             }
         }
         menuPlayers.Clear();
-        
     }
 }

@@ -15,7 +15,7 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
 {
     public int itemPrice;
 
-    [SerializeField] Sprite[] portraits;
+    //[SerializeField] Sprite[] portraits;
     [SerializeField] public TextMeshProUGUI priceText;
     [SerializeField] public GameObject soldUI;
     public shopItemType type;
@@ -49,22 +49,22 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     {
         if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Red)
         {
-            redPortrait.sprite = ChangePortraitInPin(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            redPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
             redSelectionIcon.SetActive(true);
         }
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Green)
         {
-            greenPortrait.sprite = ChangePortraitInPin(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            greenPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
             greenSelectionIcon.SetActive(true);
         }
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Blue)
         {
-            bluePortrait.sprite = ChangePortraitInPin(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            bluePortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
             blueSelectionIcon.SetActive(true);
         }
         else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Yellow)
         {
-            yellowPortrait.sprite = ChangePortraitInPin(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            yellowPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
             yellowSelectionIcon.SetActive(true);
         }
 
@@ -82,40 +82,40 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
             yellowSelectionIcon.SetActive(false);
     }
 
-    Sprite ChangePortraitInPin(string headName)
-    {
-        switch (headName)
-        {
-            case "Dragon":
-                return portraits[0];
+    // Sprite ChangePortraitInPin(string headName)
+    // {
+    //     switch (headName)
+    //     {
+    //         case "Dragon":
+    //             return portraits[0];
 
-            case "Monopoly Dude":
-                return portraits[1];
+    //         case "Monopoly Dude":
+    //             return portraits[1];
 
-            case "Dummy":
-                return portraits[2];
+    //         case "Dummy":
+    //             return portraits[2];
 
-            case "Boxhead":
-                return portraits[3];
+    //         case "Boxhead":
+    //             return portraits[3];
 
-            case "Orc":
-                return portraits[4];
+    //         case "Orc":
+    //             return portraits[4];
 
-            case "Cat":
-                return portraits[5];
+    //         case "Cat":
+    //             return portraits[5];
 
-            case "Leprechaun":
-                return portraits[6];
+    //         case "Leprechaun":
+    //             return portraits[6];
 
-            case "Mafia":
-                return portraits[7];
+    //         case "Mafia":
+    //             return portraits[7];
 
-            case "Pirate":
-                return portraits[8];
+    //         case "Pirate":
+    //             return portraits[8];
 
-            case "Shark":
-                return portraits[9];
-            default: return null;
-        }
-    }
+    //         case "Shark":
+    //             return portraits[9];
+    //         default: return null;
+    //     }
+    // }
 }

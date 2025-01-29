@@ -97,6 +97,7 @@ public class RoundManager : MonoBehaviour
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {
                 StartCoroutine(shopStall.StallTime());
+                shopManager.WantedPosters();
                 yield return new WaitUntil(() => shopStall.shoppingTime == true);
                 TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 SoundManager.singleton.MaloMart(); //plays Shop Music
