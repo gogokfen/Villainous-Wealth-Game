@@ -8,7 +8,6 @@ public class MapManager : MonoBehaviour
     public Transform location;
     public Transform[] startPositions;
     [SerializeField] GameObject[] warmupProtectors;
-    private int protectorIndex;
     [HideInInspector] public bool warmupRound;
     private void Awake()
     {
@@ -43,15 +42,12 @@ public class MapManager : MonoBehaviour
     {
         if (!warmupRound)
         {
-            CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-            foreach (CharacterControl character in characters)
-            {
-                warmupProtectors[protectorIndex].SetActive(true);
-                character.GetComponent<CharacterController>().enabled = false;
-                protectorIndex++;
-            }
-            warmupRound = true;
+            for (int i =0;i<Leaderboard.singleton.playerCount;i++)
+                warmupProtectors[i].SetActive(true);
 
+            Leaderboard.singleton.DisableCharacterController();
+
+            warmupRound = true;
 
             DestroyMap.instance.DestroyMapElements();
             Instantiate(warmupMap);

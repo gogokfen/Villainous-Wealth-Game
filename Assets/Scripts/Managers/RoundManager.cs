@@ -79,12 +79,12 @@ public class RoundManager : MonoBehaviour
             Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
-            yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+            yield return new WaitUntil(() => PlayerManager.instance.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             PickupManager.singleton.DropPowerups = false;
             Leaderboard.singleton.AssignWinner(); //gives winner of round all money dropped
-            Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
+            Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
             PickupManager.singleton.DestroyAllPickups();
             yield return new WaitForSeconds(3.5f); //time to see leaderboards
@@ -101,8 +101,8 @@ public class RoundManager : MonoBehaviour
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
                 shopStall.shoppingTime = false;
-                PlayerManager.roundOver = false; //resets the bool for the next round
-                PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+                PlayerManager.instance.roundOver = false; //resets the bool for the next round
+                Leaderboard.singleton.NextRound(); //resets "dead" players prefabs, HP, and positions
             }
             MapManager.instance.ResetMap(); //resets map elements
             stormManager.ResetStorm(); //resets storm    
@@ -117,6 +117,7 @@ public class RoundManager : MonoBehaviour
         curtain.Play("Curtain");
         PlayerManager.instance.StartRound(); //starts round
         Leaderboard.singleton.FindPlayers();
+        Leaderboard.singleton.StartWarmupRound(); //Osher added
         PickupManager.singleton.DropPowerups = false;
         stormManager.enabled = false;
         MapManager.instance.Warmup(); //spawns Warmup Protectors equal to players present
@@ -125,28 +126,21 @@ public class RoundManager : MonoBehaviour
         CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
         controlsUI.SetActive(true); //show Controls
         yield return new WaitUntil(() => controlsUI.activeSelf == false);
-        yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
+        //yield return new WaitUntil(() => PlayerManager.instance.roundOver == true); //waits until round is over
+        yield return new WaitForSeconds(20f); //Osher Changed
         Leaderboard.singleton.AssignWinner();
         //function to reset kill and money counts
         yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
-        PlayerManager.roundOver = false; //resets the bool for the next round
+        Leaderboard.singleton.EmptyPlayerHands(); //Osher added
+        PlayerManager.instance.roundOver = false; //resets the bool for the next round
         MapManager.instance.ResetMap(); //resets map elements
-        PlayerManager.instance.PlayersNextRound(); //resets "dead" players prefabs, HP, and positions
+        Leaderboard.singleton.NextRound(); //resets "dead" players prefabs, HP, and positions
         StartCoroutine(RoundLoop());
     }
 
     [Button]
     private void DebugEndRound()
     {
-        PlayerManager.roundOver = true;
-    }
-
-    public static void NextRound()
-    {
-        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        foreach (CharacterControl character in characters)
-        {
-            character.NextRound();
-        }
+        PlayerManager.instance.roundOver = true;
     }
 }

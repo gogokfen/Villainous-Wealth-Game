@@ -14,7 +14,7 @@ public class WinnerManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI winnerText;
     [SerializeField] Transform[] positions;
     private int coinWinner;
-    private GameObject playerWinner;
+    //private GameObject playerWinner;
     private void Awake()
     {
         instance = this;
@@ -22,8 +22,8 @@ public class WinnerManager : MonoBehaviour
     public void WinnerScene()
     {
         coinWinner = Leaderboard.singleton.FindLeaderMoney();
-        playerWinner = roundManager.winner;
-        winnerText.text = playerWinner.GetComponent<CharacterControl>().HeadGFX.name;
+        //playerWinner = roundManager.winner;
+        winnerText.text = Leaderboard.singleton.FindLeaderName();
         // playerWinner.GetComponent<CharacterControl>().enabled = false;
         // playerWinner.GetComponent<CharacterControl>().bodyPartsGFX[6].SetActive(false);
         // playerWinner.GetComponent<CharacterControl>().bodyPartsGFX[7].SetActive(false);
@@ -35,13 +35,7 @@ public class WinnerManager : MonoBehaviour
         winnerUI.SetActive(true);
         confettiParticle.SetActive(true);
         //Leaderboard.singleton.DisplayPlayerSacks();
-        for (int i = 0; i < roundManager.winnerAndLosers.Length; i++)
-        {
-            roundManager.winnerAndLosers[i].GetComponent<CharacterControl>().enabled = false;
-            roundManager.winnerAndLosers[i].GetComponent<CharacterControl>().bodyPartsGFX[6].SetActive(false);
-            roundManager.winnerAndLosers[i].GetComponent<CharacterControl>().bodyPartsGFX[7].SetActive(false);
-            roundManager.winnerAndLosers[i].transform.position = positions[i].position;
-            roundManager.winnerAndLosers[i].transform.rotation = positions[i].rotation;
-        }
+        Leaderboard.singleton.ArrangeOnPodium(positions);
+
     }
 }

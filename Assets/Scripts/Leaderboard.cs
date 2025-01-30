@@ -19,7 +19,7 @@ public class Leaderboard : MonoBehaviour
 
     [SerializeField] GameObject[] leaderboardPlayerPrefabs;
 
-    //[SerializeField] Sprite[] portraits;
+    [SerializeField] Sprite[] portraits;
 
     [Foldout("Red Player")]
     [SerializeField] TextMeshProUGUI redPlayerName;
@@ -46,45 +46,51 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image yellowPlayerPortrait;
     [EndFoldout]
 
-    
-
     public int playerCount;
+
     private struct PlayerStats
     {
-        public PlayerStats(CharacterControl characterReference, MultiplayerEventSystem eventSystem, PlayerInput input, CharacterController controller, CharacterControl.PlayerTypes color ,string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound, int rank)
+        public PlayerStats(CharacterControl characterReference, MultiplayerEventSystem eventSystem, PlayerInput input, CharacterController controller, Sprite portrait, Transform transform ,CharacterControl.PlayerTypes color ,string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound, int rank)
         {
             this.characterReference = characterReference;
             this.eventSystem = eventSystem;
             this.input = input;
             this.controller = controller;
+            this.portrait = portrait;
+            this.transform = transform;
             this.color = color;
             this.name = name;
             this.roundStartMoney = roundStartMoney;
             this.currentMoney = currentMoney;
             this.kills = kills;
             this.deaths = deaths;
-            this.wonThisRound = wonThisRound;
             this.rank = rank;
+            this.wonThisRound = wonThisRound;
+
         }
 
         public CharacterControl characterReference;
         public CharacterControl.PlayerTypes color;
+        public MultiplayerEventSystem eventSystem;
+        public PlayerInput input;
+        public CharacterController controller;
+        public Sprite portrait;
+        public Transform transform;
         public string name;
         public int roundStartMoney;
         public int currentMoney;
         public int kills;
         public int deaths;
-        public bool wonThisRound;
-        public MultiplayerEventSystem eventSystem;
-        public PlayerInput input;
-        public CharacterController controller;
         public int rank;
+        public bool wonThisRound;
     }
     PlayerStats redPlayer = new PlayerStats
                     (null,                            //character Reference
                     null,                             //Event System
                     null,                             //Player Input  
                     null,                             //Character Controller
+                    null,                             //Portrait
+                    null,                             //Transform
                     CharacterControl.PlayerTypes.Red, //player color
                     "",                               //name
                     0,                                //round start money
@@ -93,21 +99,20 @@ public class Leaderboard : MonoBehaviour
                     0,                                //deaths
                     false,                            //won this round
                     0);                               //Rank  
-    PlayerStats greenPlayer = new PlayerStats(null, null, null, null, CharacterControl.PlayerTypes.Green, "", 0, 0, 0, 0, false, 0);
-    PlayerStats bluePlayer = new PlayerStats(null, null, null, null, CharacterControl.PlayerTypes.Blue, "", 0, 0, 0, 0, false, 0);
-    PlayerStats yellowPlayer = new PlayerStats(null, null, null, null, CharacterControl.PlayerTypes.Yellow, "", 0, 0, 0, 0, false, 0);
+    PlayerStats greenPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Green, "", 0, 0, 0, 0, false, 0);
+    PlayerStats bluePlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Blue, "", 0, 0, 0, 0, false, 0);
+    PlayerStats yellowPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Yellow, "", 0, 0, 0, 0, false, 0);
 
     private PlayerStats[] players;
 
-    private struct PlayerRank
+    private struct Ranking
     {
         public int money;
+        public CharacterControl.PlayerTypes color;
     }
 
-    private int[] moneyRankings;
-    private GameObject[] playerRankings;
-        public GameObject winner;
-    public GameObject[] winnerAndLosers;
+    //private int[] moneyRankings;
+    private Ranking[] ranking;
 
     public void FindPlayers()
     {
@@ -121,11 +126,14 @@ public class Leaderboard : MonoBehaviour
                 leaderboardPlayerPrefabs[0].SetActive(true);
                 redPlayer.characterReference = character;
                 redPlayer.name = character.HeadGFX.name;
-                redPlayerPortrait.sprite = CharacterInfoHandler.instance.Portrait(redPlayer.name);
+                redPlayerPortrait.sprite = SetPlayerPortrait(redPlayer.name);
+                redPlayer.portrait = redPlayerPortrait.sprite;
                 redPlayerName.text = redPlayer.name;
+                redPlayer.rank = 1;
                 redPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 redPlayer.input = character.gameObject.GetComponent<PlayerInput>();
                 redPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                redPlayer.transform = character.gameObject.transform;
             }
 
             else if (character.PlayerID == CharacterControl.PlayerTypes.Green)
@@ -133,41 +141,50 @@ public class Leaderboard : MonoBehaviour
                 leaderboardPlayerPrefabs[1].SetActive(true);
                 greenPlayer.characterReference = character;
                 greenPlayer.name = character.HeadGFX.name;
-                greenPlayerPortrait.sprite = CharacterInfoHandler.instance.Portrait(greenPlayer.name);
+                greenPlayerPortrait.sprite = SetPlayerPortrait(greenPlayer.name);
+                greenPlayer.portrait = greenPlayerPortrait.sprite;
                 greenPlayerName.text = greenPlayer.name;
+                greenPlayer.rank = 2;
                 greenPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 greenPlayer.input = character.gameObject.GetComponent<PlayerInput>();
                 greenPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                greenPlayer.transform = character.gameObject.transform;
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Blue)
             {
                 leaderboardPlayerPrefabs[2].SetActive(true);
                 bluePlayer.characterReference = character;
                 bluePlayer.name = character.HeadGFX.name;
-                bluePlayerPortrait.sprite = CharacterInfoHandler.instance.Portrait(bluePlayer.name);
+                bluePlayerPortrait.sprite = SetPlayerPortrait(bluePlayer.name);
+                bluePlayer.portrait = bluePlayerPortrait.sprite;
                 bluePlayerName.text = bluePlayer.name;
+                bluePlayer.rank = 3;
                 bluePlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 bluePlayer.input = character.gameObject.GetComponent<PlayerInput>();
                 bluePlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                bluePlayer.transform = character.gameObject.transform;
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Yellow)
             {
                 leaderboardPlayerPrefabs[3].SetActive(true);
                 yellowPlayer.characterReference = character;
                 yellowPlayer.name = character.HeadGFX.name;
-                yellowPlayerPortrait.sprite = CharacterInfoHandler.instance.Portrait(yellowPlayer.name);
+                yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
+                yellowPlayer.portrait = yellowPlayerPortrait.sprite;
                 yellowPlayerName.text = yellowPlayer.name;
+                yellowPlayer.rank = 4;
                 yellowPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 yellowPlayer.input = character.gameObject.GetComponent<PlayerInput>();
                 yellowPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                yellowPlayer.transform = character.gameObject.transform;
             }
             playerCount++;
         }
 
 
         players = new PlayerStats[playerCount];
-        moneyRankings = new int[playerCount];
-        playerRankings = new GameObject[playerCount];
+        //moneyRankings = new int[playerCount];
+        ranking = new Ranking[playerCount];
 
         for (int i =0;i<playerCount;i++) //same order as the charactercontrol.playertypes Red Green Blue Yellow 0 1 2 3
         {
@@ -188,14 +205,6 @@ public class Leaderboard : MonoBehaviour
     private void Awake()
     {
         singleton = this;
-    }
-
-    private void Update()
-    {
-        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0)) && leaderboard.activeSelf)
-        {
-            //leaderboard.SetActive(false);
-        }
     }
 
     public void AnnounceKill(CharacterControl.PlayerTypes killingPlayer, CharacterControl.PlayerTypes dyingPlayer)
@@ -268,42 +277,58 @@ public class Leaderboard : MonoBehaviour
     {
         return players[(int)playerColor].characterReference.gameObject;
     }
-    // private Sprite SetPlayerPortrait(string name)
-    // {
-    //     switch (name)
-    //     {
-    //         case "Dragon":
-    //             return portraits[0];
 
-    //         case "Monopoly Dude":
-    //             return portraits[1];
+    public string GetPlayerName(CharacterControl.PlayerTypes playerColor)
+    {
+        return players[(int)playerColor].name;
+    }
 
-    //         case "Dummy":
-    //             return portraits[2];
+    public PlayerInput[] GetPlayerInputs()
+    {
+        PlayerInput[] PI = new PlayerInput[playerCount];
+        for (int i=0;i<playerCount;i++)
+        {
+            PI[i] = players[i].input;
+        }
+        return PI;
+    }
 
-    //         case "Boxhead":
-    //             return portraits[3];
+    public Sprite SetPlayerPortrait(string name)
+    {
+        switch (name)
+        {
+            case "Dragon":
+                return portraits[0];
 
-    //         case "Orc":
-    //             return portraits[4];
+            case "Monopoly Dude":
+                return portraits[1];
 
-    //         case "Cat":
-    //             return portraits[5];
+            case "Dummy":
+                return portraits[2];
 
-    //         case "Leprechaun":
-    //             return portraits[6];
+            case "Boxhead":
+                return portraits[3];
 
-    //         case "Mafia":
-    //             return portraits[7];
+            case "Orc":
+                return portraits[4];
 
-    //         case "Pirate":
-    //             return portraits[8];
+            case "Cat":
+                return portraits[5];
 
-    //         case "Shark":
-    //             return portraits[9];
-    //         default: return null;
-    //     }
-    // }
+            case "Leprechaun":
+                return portraits[6];
+
+            case "Mafia":
+                return portraits[7];
+
+            case "Pirate":
+                return portraits[8];
+
+            case "Shark":
+                return portraits[9];
+            default: return null;
+        }
+    }
     public void AnnounceText(string text)
     {
         killsAnnouncer.text = text;
@@ -357,9 +382,6 @@ public class Leaderboard : MonoBehaviour
             players[i].characterReference.DisplaySack();
         }
     }
-
-
-    ///////////////////////// MOVING ALL OF MONEY MANAGER INTO LEADERBOARD
     
     public void ModifyMoney(CharacterControl.PlayerTypes playerColor, int amount)
     {
@@ -479,30 +501,44 @@ public class Leaderboard : MonoBehaviour
     {
         //oh yeah, madmah time!
 
-        int[] tempArray = new int[moneyRankings.Length];
+        Ranking[] tempArray = new Ranking[players.Length];
+
+        //int[] tempArray = new int[moneyRankings.Length];
+        
+        //CharacterControl.PlayerTypes[] playersRankingColor = null;
         //GameObject[] tempPlayers = new GameObject[moneyRankings.Length];
 
         int indexToRemember = 0;
 
-        for (int i = 0;i<moneyRankings.Length;i++)
+        for (int i = 0;i<ranking.Length;i++)
         {
-            tempArray[i] = players[i].currentMoney;
+            tempArray[i].money = players[i].currentMoney;
+            tempArray[i].color = players[i].color;
+            //tempArray[i] = players[i].currentMoney;
+            
+            //playersRankingColor[i] = players[i].color;
             //tempPlayers[i] = players[i].characterReference.gameObject;
         }
 
-        for (int i = 0;i<moneyRankings.Length;i++)
+        for (int i = 0;i<ranking.Length;i++)
         {
-            for (int j =0;j<moneyRankings.Length;j++)
+            for (int j =0;j<ranking.Length;j++)
             {
-                if (tempArray[j]>moneyRankings[i])
+                if (tempArray[j].money>ranking[i].money)
                 {
-                    moneyRankings[i] = tempArray[j];
-                    players[i].rank = i +1;
+                    ranking[i].money = tempArray[j].money;
+                    ranking[i].color = tempArray[j].color;
+                    //playersRankingColor[i] = 
+                    //players[i].rank = i +1; //does this work as intended?
                     //playerRankings[i] = tempPlayers[j];
                     indexToRemember = j;
                 }
-                tempArray[indexToRemember] = 0;
+                tempArray[indexToRemember].money = 0;
             }
+        }
+        for (int i=0;i<ranking.Length;i++)
+        {
+            players[(int)ranking[i].color].rank = i + 1; // for instance if if the array ranking contains a yellow player on the first place -> [0] that means that that players[3] = 1 
         }
 
         //Array.Sort(moneyRankings);
@@ -514,11 +550,11 @@ public class Leaderboard : MonoBehaviour
 
         if (players.Length == 4)
         {
-            if (players[(int)deadPlayerColor].characterReference == playerRankings[0].GetComponent<CharacterControl>())
+            if (players[(int)deadPlayerColor].rank == 1)
                 moneylost = players[(int)deadPlayerColor].currentMoney / 2; //50%
-            else if (players[(int)deadPlayerColor].name == playerRankings[1])
+            else if (players[(int)deadPlayerColor].rank == 2)
                 moneylost = players[(int)deadPlayerColor].currentMoney / 4; //25%
-            else if (players[(int)deadPlayerColor].name == playerRankings[2])
+            else if (players[(int)deadPlayerColor].rank == 3)
                 moneylost = players[(int)deadPlayerColor].currentMoney / 10; //10%
             else
                 moneylost = 0;
@@ -528,9 +564,9 @@ public class Leaderboard : MonoBehaviour
         }
         if (players.Length == 3)
         {
-            if (players[(int)deadPlayerColor].name == playerRankings[0])
+            if (players[(int)deadPlayerColor].rank == 1)
                 moneylost = players[(int)deadPlayerColor].currentMoney / 2; //50%
-            else if (players[(int)deadPlayerColor].name == playerRankings[1])
+            else if (players[(int)deadPlayerColor].rank == 2)
                 moneylost = players[(int)deadPlayerColor].currentMoney / 4; //25%
             else
                 moneylost = players[(int)deadPlayerColor].currentMoney / 10; //10%
@@ -540,7 +576,7 @@ public class Leaderboard : MonoBehaviour
         }
         if (players.Length == 2)
         {
-            if (players[(int)deadPlayerColor].name == playerRankings[0])
+            if (players[(int)deadPlayerColor].rank == 1)
                 moneylost = (int)(players[(int)deadPlayerColor].currentMoney * 0.4f); //40%
             else
                 moneylost = (int)(players[(int)deadPlayerColor].currentMoney * 0.2f); //20%
@@ -554,7 +590,6 @@ public class Leaderboard : MonoBehaviour
 
     public void AssignWinner()
     {
-        //CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
         for (int i = 0; i < players.Length; i++)
         {
             if (players[i].characterReference.dead == false)
@@ -567,33 +602,43 @@ public class Leaderboard : MonoBehaviour
 
     public void AssignUltimateWinnerAndLosers()
     {
-        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        CharacterControl.PlayerTypes playerIDWinner = CharacterControl.PlayerTypes.Red;
-        int mostCoins = 0;
-        //int players = 0;
-        foreach (PlayerStats player in players)
+        ArrangeMoneyRanking();
+        for (int i = 0;i<players.Length;i++)
         {
-            int coins = Leaderboard.singleton.GetMoney(player.characterReference.PlayerID);
-            players++;
-            if (coins > mostCoins)
-            {
-                mostCoins = coins;
-                playerIDWinner = character.PlayerID;
-                winner = character.gameObject;
-            }
+            players[i].characterReference.VictoryOrLose(players[i].rank-1); //highest rank is 1, not 0
         }
-        winnerAndLosers = new GameObject[players];
-        winnerAndLosers[0] = winner;
-        winner.GetComponent<CharacterControl>().VictoryOrLose(0);
-        int LoserIndex = 1;
-        foreach (CharacterControl character in characters)
+    }
+
+    public void ArrangeOnPodium(Transform[] positions)
+    {
+        ArrangeMoneyRanking();
+        for (int i = 0;i<players.Length;i++)
         {
-            if (character.PlayerID != playerIDWinner)
-            {
-                winnerAndLosers[LoserIndex] = character.gameObject;
-                character.GetComponent<CharacterControl>().VictoryOrLose(LoserIndex);
-                LoserIndex++;
-            }
+            players[i].characterReference.enabled = false;
+            players[i].characterReference.bodyPartsGFX[6].SetActive(false); //Hides the player's UI
+            players[i].characterReference.bodyPartsGFX[7].SetActive(false);
+            players[i].characterReference.transform.position = positions[players[i].rank-1].position; //rankings start from 1, positions from 0
+            players[i].characterReference.transform.rotation = positions[players[i].rank-1].rotation;
+        }
+    }
+
+    public void NextRound()
+    {
+        PlayerManager.instance.playerCount = playerCount;
+        for (int i =0;i<players.Length;i++)
+        {
+            players[i].characterReference.NextRound();
+            players[i].transform.position = MapManager.instance.startPositions[i].position;
+        }
+    }
+
+    public void StartWarmupRound()
+    {
+        PlayerManager.instance.playerCount = playerCount;
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].characterReference.WarmupRound();
+            players[i].transform.position = MapManager.instance.startPositions[i].position;
         }
     }
 

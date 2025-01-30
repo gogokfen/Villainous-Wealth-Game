@@ -21,8 +21,8 @@ public class PlayerManager : MonoBehaviour
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     public List<PlayerInput> activePlayers;
-    public static bool roundOver;
-    public static int playerCount;
+    public bool roundOver;
+    public int playerCount;
     int playerIndex = 0;
     //int showcaseIndex = 0;
     int disconnectedPlayers = 0;
@@ -247,6 +247,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    /*
     public void PlayersNextRound()
     {
         playerCount = playerIndex;
@@ -263,7 +264,7 @@ public class PlayerManager : MonoBehaviour
             playerIndex++;
         }
     }
-
+    */
     private void ChangePlayerMaterial(GameObject player, CharacterControl.PlayerTypes playerType)
     {
         Transform bodyGFXTransform = player.transform.Find("charParent/Body/BodyGFX");
@@ -289,7 +290,7 @@ public class PlayerManager : MonoBehaviour
             renderer.material = newMaterial;
         }
     }
-    public static void PlayerCheck()
+    public void PlayerCheck()
     {
         playerCount--;
 

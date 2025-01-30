@@ -8784,13 +8784,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1206977464}
   - component: {fileID: 1206977465}
-  - component: {fileID: 1206977468}
   - component: {fileID: 1206977469}
   - component: {fileID: 1206977470}
   - component: {fileID: 1206977471}
   - component: {fileID: 1206977472}
   - component: {fileID: 1206977473}
-  - component: {fileID: 1206977474}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -8857,18 +8855,6 @@ MonoBehaviour:
   gizmosWidth: 33
   gizmosHight: 10
   gizmosLength: 31
---- !u!114 &1206977468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206977463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ce2fe59aa66b4f49815948d1c320419, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1206977469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8917,6 +8903,17 @@ MonoBehaviour:
   - {fileID: 1871730507}
   - {fileID: 1421838325}
   - {fileID: 386963094}
+  portraits:
+  - {fileID: 21300000, guid: abca50297f7607e4dba24f3d8a7a39dd, type: 3}
+  - {fileID: 21300000, guid: aa767eba11f553948a78f68f59e017e3, type: 3}
+  - {fileID: 21300000, guid: 18feed9785410b644856f7af8aca995e, type: 3}
+  - {fileID: 21300000, guid: d5843bf231ff59b40ad4c0b8562fa602, type: 3}
+  - {fileID: 21300000, guid: 3be4834b1280ff84b81d9c50bb344cf3, type: 3}
+  - {fileID: 21300000, guid: 38ab8db2cb857c74390cb8e1fe4f4017, type: 3}
+  - {fileID: 21300000, guid: c7ed059f33faa934d952e1eefdf3d10d, type: 3}
+  - {fileID: 21300000, guid: 82c6b9ae1b75a754a93eecfa9d3e237f, type: 3}
+  - {fileID: 21300000, guid: f137cb8b7e6006a489fa7b94efe2d76a, type: 3}
+  - {fileID: 21300000, guid: 4327d969f6ca1694e9155df0bbb26cae, type: 3}
   redPlayerName: {fileID: 507835637}
   redPlayerCoins: {fileID: 507835635}
   redPlayerKills: {fileID: 507835634}
@@ -8933,7 +8930,6 @@ MonoBehaviour:
   yellowPlayerCoins: {fileID: 638228544}
   yellowPlayerKills: {fileID: 638228543}
   yellowPlayerPortrait: {fileID: 638228545}
-  characters: []
   playerCount: 0
 --- !u!114 &1206977472
 MonoBehaviour:
@@ -8959,29 +8955,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d879cf99bd89d94a935b9637dace32b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1206977474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206977463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b091c995b9f4e2c488a14df8ab29be17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  portraits:
-  - {fileID: 21300000, guid: abca50297f7607e4dba24f3d8a7a39dd, type: 3}
-  - {fileID: 21300000, guid: aa767eba11f553948a78f68f59e017e3, type: 3}
-  - {fileID: 21300000, guid: 18feed9785410b644856f7af8aca995e, type: 3}
-  - {fileID: 21300000, guid: d5843bf231ff59b40ad4c0b8562fa602, type: 3}
-  - {fileID: 21300000, guid: 3be4834b1280ff84b81d9c50bb344cf3, type: 3}
-  - {fileID: 21300000, guid: 38ab8db2cb857c74390cb8e1fe4f4017, type: 3}
-  - {fileID: 21300000, guid: c7ed059f33faa934d952e1eefdf3d10d, type: 3}
-  - {fileID: 21300000, guid: 82c6b9ae1b75a754a93eecfa9d3e237f, type: 3}
-  - {fileID: 21300000, guid: f137cb8b7e6006a489fa7b94efe2d76a, type: 3}
-  - {fileID: 21300000, guid: 4327d969f6ca1694e9155df0bbb26cae, type: 3}
 --- !u!1 &1208279480
 GameObject:
   m_ObjectHideFlags: 0

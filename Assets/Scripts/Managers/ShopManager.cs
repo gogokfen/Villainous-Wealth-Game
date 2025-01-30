@@ -15,9 +15,9 @@ public class ShopManager : MonoBehaviour
     [SerializeField] GameObject[] playerShopUI;
     int shopUIIndex;
     [SerializeField] Animator animator;
-    private string richestPlayer;
+    //private string richestPlayer;
     private MultiplayerEventSystem richestEventSystem;
-    private PlayerInput richestPI;
+    //private PlayerInput richestPI;
     private List<MultiplayerEventSystem> poorPlayers = new List<MultiplayerEventSystem>();
     [SerializeField] Image wantedPosterPortrait;
     [SerializeField] Image wantedPosterTransition;
@@ -63,7 +63,7 @@ public class ShopManager : MonoBehaviour
         shopUIIndex = 0;
         ResetButtons();
         richestEventSystem = Leaderboard.singleton.FindLeaderEventSystem();
-        richestPI = Leaderboard.singleton.FindLeaderInput();
+        //richestPI = Leaderboard.singleton.FindLeaderInput();
         foreach (PlayerInput player in PlayerManager.instance.activePlayers)
         {
             MultiplayerEventSystem playerEventSystem = player.GetComponentInChildren<MultiplayerEventSystem>();
@@ -137,7 +137,8 @@ public class ShopManager : MonoBehaviour
             }
             yield return null;
         }
-        PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
+
+        PlayerInput[] playerInputs = Leaderboard.singleton.GetPlayerInputs();
         foreach (PlayerInput player in playerInputs)
         {
             player.actions["UI/Submit"].performed -= ctx => OnSubmit(player);
@@ -166,9 +167,9 @@ public class ShopManager : MonoBehaviour
     }
     public void WantedPosters()
     {
-        richestPlayer = Leaderboard.singleton.FindLeaderName();
-        wantedPosterPortrait.sprite = CharacterInfoHandler.instance.Portrait(richestPlayer);
-        wantedPosterTransition.sprite = CharacterInfoHandler.instance.Portrait(richestPlayer);
+        //richestPlayer = Leaderboard.singleton.FindLeaderName();
+        wantedPosterPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
+        wantedPosterTransition.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
 
     }
     private void OnSubmit(PlayerInput player)

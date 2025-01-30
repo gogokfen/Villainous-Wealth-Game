@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CannonTargetChasing : MonoBehaviour
 {
-    GameObject playerToFollow;
+    Transform playerToFollow;
 
     private float switchup;
     void Start()
@@ -30,17 +30,20 @@ public class CannonTargetChasing : MonoBehaviour
 
     }
 
-    public void FollowPlayer(GameObject bombedPlayer)
+    public void FollowPlayer(Transform bombedPlayer)
     {
         playerToFollow = bombedPlayer;
     }
 
     public void FollowPlayer(CharacterControl.PlayerTypes bombedPlayerColor)
     {
-        for (int i=0;i<Leaderboard.singleton.players.Length;i++)
+        playerToFollow = Leaderboard.singleton.FindLeaderInput().transform;
+        /*
+        for (int i=0;i<Leaderboard.singleton.playerCount;i++)
         {
             if (Leaderboard.singleton.players[i].PlayerID == bombedPlayerColor)
                 playerToFollow = Leaderboard.singleton.players[i].gameObject;
         }
+        */
     }
 }

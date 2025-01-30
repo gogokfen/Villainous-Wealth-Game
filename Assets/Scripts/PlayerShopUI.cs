@@ -14,7 +14,7 @@ public class PlayerShopUI : MonoBehaviour
     {   
         //objectName = gameObject.name;
         //SetPlayerShopUI(objectName);
-        portrait.sprite = CharacterInfoHandler.instance.Portrait(gameObject.name);
+        portrait.sprite = Leaderboard.singleton.SetPlayerPortrait(gameObject.name);
     }
     // private void SetPlayerShopUI(string name)
     // {

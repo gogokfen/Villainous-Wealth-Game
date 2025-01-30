@@ -34,6 +34,8 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     [SerializeField] Image yellowPortrait;
     [EndFoldout]
 
+    private CharacterControl.PlayerTypes currentPlayerID;
+
     public enum shopItemType
     {
         Weapon,
@@ -47,24 +49,26 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
 
     public void OnSelect(BaseEventData eventData)
     {
-        if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Red)
+        currentPlayerID = eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID;
+
+        if (currentPlayerID == CharacterControl.PlayerTypes.Red)
         {
-            redPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            redPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.GetPlayerName(currentPlayerID));
             redSelectionIcon.SetActive(true);
         }
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Green)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Green)
         {
-            greenPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            greenPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.GetPlayerName(currentPlayerID));
             greenSelectionIcon.SetActive(true);
         }
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Blue)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Blue)
         {
-            bluePortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            bluePortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.GetPlayerName(currentPlayerID));
             blueSelectionIcon.SetActive(true);
         }
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Yellow)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Yellow)
         {
-            yellowPortrait.sprite = CharacterInfoHandler.instance.Portrait(eventData.currentInputModule.GetComponent<CharacterControl>().HeadGFX.name);
+            yellowPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.GetPlayerName(currentPlayerID));
             yellowSelectionIcon.SetActive(true);
         }
 
@@ -72,13 +76,15 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
 
     public void OnDeselect(BaseEventData eventData)
     {
-        if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Red)
+        currentPlayerID = eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID;
+
+        if (currentPlayerID == CharacterControl.PlayerTypes.Red)
             redSelectionIcon.SetActive(false);
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Green)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Green)
             greenSelectionIcon.SetActive(false);
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Blue)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Blue)
             blueSelectionIcon.SetActive(false);
-        else if (eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID == CharacterControl.PlayerTypes.Yellow)
+        else if (currentPlayerID == CharacterControl.PlayerTypes.Yellow)
             yellowSelectionIcon.SetActive(false);
     }
 

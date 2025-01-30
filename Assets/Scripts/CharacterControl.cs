@@ -216,9 +216,15 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject mouseIndicator;
     [SerializeField] GameObject weaponScripts;
 
-    void Start()
+    private void Awake()
     {
         PI = GetComponent<PlayerInput>();
+        CC = GetComponent<CharacterController>();
+
+    }
+
+    void Start()
+    {
         if (PI.currentControlScheme == "Keyboard & Mouse") //you really tell me it contains a string
         {
             keyboardMouse = true;
@@ -227,7 +233,35 @@ public class CharacterControl : MonoBehaviour
             Mouse.current.WarpCursorPosition(Camera.main.WorldToScreenPoint(transform.position) + (transform.forward * 0.25f));
             mouseIndicator.gameObject.SetActive(true);
         }
+        rFist = weaponList[0].GetComponent<SphereCollider>();
+        lFist.GetComponent<WeaponBase>().playerID = PlayerID;
+        strongFist.GetComponent<WeaponBase>().playerID = PlayerID;
+        startingColor = HeadGFX.GetComponent<Renderer>().material.color;
+        for (int i = 0; i < weaponList.Length; i++)
+        {
+            weaponList[i].GetComponent<WeaponBase>().playerID = PlayerID;
+        }
 
+        if (PlayerID == PlayerTypes.Red)
+        {
+            playerIndicator.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
+        }
+        else if (PlayerID == PlayerTypes.Green)
+        {
+            playerIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
+        }
+        else if (PlayerID == PlayerTypes.Blue)
+        {
+            playerIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
+        }
+        else if (PlayerID == PlayerTypes.Yellow)
+        {
+            playerIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
+            mouseIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
+        }
 
 
         //rightArmGFX.GetComponent<SphereCollider>().enabled = false; //reminder
@@ -239,19 +273,7 @@ public class CharacterControl : MonoBehaviour
         currentMaxSpeed = startingSpeed;
         //weaponID = 0;
 
-        CC = GetComponent<CharacterController>();
-
         //REMINDER//rightArmGFX.GetComponent<WeaponBase>().playerID = PlayerID; //special treatment as he does not act like the other hand
-
-        for (int i = 0; i < weaponList.Length; i++)
-        {
-            weaponList[i].GetComponent<WeaponBase>().playerID = PlayerID;
-        }
-
-        rFist = weaponList[0].GetComponent<SphereCollider>();
-
-        lFist.GetComponent<WeaponBase>().playerID = PlayerID;
-        strongFist.GetComponent<WeaponBase>().playerID = PlayerID;
 
         animState = AS.idle;
 
@@ -259,62 +281,6 @@ public class CharacterControl : MonoBehaviour
 
         //hpText.text = ("HP: " + hp);
         hpBar.fillAmount = 1f;
-
-        if (PlayerID == PlayerTypes.Red)
-        {
-            //playerIndicator.GetComponent<Renderer>().material.color = Color.red;
-
-            //playerIndicator.GetComponent<Image>().color = Color.red;
-            playerIndicator.GetComponent<Image>().color = new Color32(204,67,152,255);
-            mouseIndicator.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
-
-            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
-            {
-                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.red;
-            }
-        }
-        else if (PlayerID == PlayerTypes.Green)
-        {
-            //playerIndicator.GetComponent<Renderer>().material.color = Color.green;
-
-            //playerIndicator.GetComponent<Image>().color = Color.green;
-            playerIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
-            mouseIndicator.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
-
-            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
-            {
-                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.green;
-            }
-        }
-        else if (PlayerID == PlayerTypes.Blue)
-        {
-            //playerIndicator.GetComponent<Renderer>().material.color = Color.blue;
-
-            //playerIndicator.GetComponent<Image>().color = Color.blue;
-
-            playerIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
-            mouseIndicator.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
-
-            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
-            {
-                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.blue;
-            }
-        }
-        else if (PlayerID == PlayerTypes.Yellow)
-        {
-            //playerIndicator.GetComponent<Renderer>().material.color = Color.yellow;
-
-            //playerIndicator.GetComponent<Image>().color = Color.yellow;
-            playerIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
-            mouseIndicator.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
-
-            for (int i = 1; i < bodyPartsGFX.Length - 2; i++) //outline expermint
-            {
-                //bodyPartsGFX[i].GetComponent<Outline>().OutlineColor = Color.yellow;
-            }
-        }
-
-        startingColor = HeadGFX.GetComponent<Renderer>().material.color;
 
         //originalHpBarPos = hpBar.transform.position;
     }
@@ -410,7 +376,7 @@ public class CharacterControl : MonoBehaviour
         //SoundManager.singleton.Death(transform.position);
         SoundManager.singleton.PlayClip("Death", transform.position, 1f, false, true);
 
-        PlayerManager.PlayerCheck();
+        PlayerManager.instance.PlayerCheck();
         if (cameraManagerIsOn)
             CameraManager.instance.RemoveFromCameraGroup(gameObject);
         TimeManager.instance.SlowTime(0.4f, 1f);
