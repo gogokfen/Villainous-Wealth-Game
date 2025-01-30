@@ -36,7 +36,7 @@ public class PickupManager : MonoBehaviour
     [SerializeField] GameObject coinPickup;
     [SerializeField] GameObject coinShot;
     [SerializeField] GameObject coinPickupVFX;
-    GameObject winningPlayer;
+    Transform winningPlayer;
     bool playerWon = false;
     float animTimer;
 
@@ -437,12 +437,12 @@ public class PickupManager : MonoBehaviour
         coins.Add(tempCoinShot);
     }
 
-    public void SetWinningPlayer(GameObject player) //transfer this whole function to leaderboard?
+    public void SetWinningPlayer(CharacterControl player) //transfer this whole function to leaderboard?
     {
         //player.GetComponent<CharacterControl>().winner = true; //transfer after
-        player.GetComponent<CharacterControl>().SetWinner();
+        player.SetWinner();
 
-        winningPlayer = player;
+        winningPlayer = player.transform;
         playerWon = true;
 
         for (int i = 0; i < coins.Count; i++)

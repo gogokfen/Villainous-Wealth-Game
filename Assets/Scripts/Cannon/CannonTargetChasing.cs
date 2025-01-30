@@ -9,7 +9,7 @@ public class CannonTargetChasing : MonoBehaviour
     private float switchup;
     void Start()
     {
-        FollowPlayer(Leaderboard.singleton.characters[0].gameObject);
+        //FollowPlayer(Leaderboard.singleton.characters[0].gameObject);
         //FollowPlayer(CharacterControl.PlayerTypes.Green);
     }
 
@@ -37,10 +37,10 @@ public class CannonTargetChasing : MonoBehaviour
 
     public void FollowPlayer(CharacterControl.PlayerTypes bombedPlayerColor)
     {
-        for (int i=0;i<Leaderboard.singleton.characters.Length;i++)
+        for (int i=0;i<Leaderboard.singleton.players.Length;i++)
         {
-            if (Leaderboard.singleton.characters[i].PlayerID == bombedPlayerColor)
-                playerToFollow = Leaderboard.singleton.characters[i].gameObject;
+            if (Leaderboard.singleton.players[i].PlayerID == bombedPlayerColor)
+                playerToFollow = Leaderboard.singleton.players[i].gameObject;
         }
     }
 }

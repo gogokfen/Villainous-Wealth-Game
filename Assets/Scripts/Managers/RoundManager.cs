@@ -20,8 +20,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField] ShopManager shopManager;
     [SerializeField] StormManager stormManager;
     [SerializeField] ShopStall shopStall;
-    public GameObject winner;
-    public GameObject[] winnerAndLosers;
+
     public GameObject controlsUI;
     public bool areWeWarming;
     bool roundstart;
@@ -48,10 +47,7 @@ public class RoundManager : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton0)) && controlsUI.activeSelf)
         {
             controlsUI.SetActive(false);
-            foreach (CharacterControl character in Leaderboard.singleton.characters)
-            {
-                character.GetComponent<CharacterController>().enabled = true;
-            }
+            Leaderboard.singleton.EnableCharacterController();
         }
         if (SceneManager.GetActiveScene().name == "MainScene" && !roundstart)
         {
@@ -86,7 +82,7 @@ public class RoundManager : MonoBehaviour
             yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             PickupManager.singleton.DropPowerups = false;
-            AssignWinner(); //gives winner of round all money dropped
+            Leaderboard.singleton.AssignWinner(); //gives winner of round all money dropped
             Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
@@ -111,7 +107,7 @@ public class RoundManager : MonoBehaviour
             MapManager.instance.ResetMap(); //resets map elements
             stormManager.ResetStorm(); //resets storm    
         }
-        AssignUltimateWinnerAndLosers(); //Assigns winner with most coins, and losers, changes their animation accordingly
+        Leaderboard.singleton.AssignUltimateWinnerAndLosers(); //Assigns winner with most coins, and losers, changes their animation accordingly
         WinnerManager.instance.WinnerScene(); //setup Winner Scene, moves winner and losers to positions
     }
 
@@ -130,7 +126,7 @@ public class RoundManager : MonoBehaviour
         controlsUI.SetActive(true); //show Controls
         yield return new WaitUntil(() => controlsUI.activeSelf == false);
         yield return new WaitUntil(() => PlayerManager.roundOver == true); //waits until round is over
-        AssignWinner();
+        Leaderboard.singleton.AssignWinner();
         //function to reset kill and money counts
         yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
         PlayerManager.roundOver = false; //resets the bool for the next round
@@ -153,51 +149,4 @@ public class RoundManager : MonoBehaviour
             character.NextRound();
         }
     }
-
-    public void AssignWinner()
-    {
-        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        for (int i = 0; i < characters.Length; i++)
-        {
-            if (characters[i].dead == false)
-            {
-                PickupManager.singleton.SetWinningPlayer(characters[i].gameObject);
-                characters[i].gameObject.GetComponent<CharacterController>().enabled = false;
-            }
-        }
-    }
-
-    public void AssignUltimateWinnerAndLosers()
-    {
-        CharacterControl[] characters = GameObject.FindObjectsOfType<CharacterControl>();
-        CharacterControl.PlayerTypes playerIDWinner = CharacterControl.PlayerTypes.Red;
-        int mostCoins = 0;
-        int players = 0;
-        foreach (CharacterControl character in characters)
-        {
-            int coins = Leaderboard.singleton.GetMoney(character.PlayerID);
-            players++;
-            if (coins > mostCoins)
-            {
-                mostCoins = coins;
-                playerIDWinner = character.PlayerID;
-                winner = character.gameObject;
-            }
-        }
-        winnerAndLosers = new GameObject[players];
-        winnerAndLosers[0] = winner;
-        winner.GetComponent<CharacterControl>().VictoryOrLose(0);
-        int LoserIndex = 1;
-        foreach (CharacterControl character in characters)
-        {
-            if (character.PlayerID != playerIDWinner)
-            {
-                winnerAndLosers[LoserIndex] = character.gameObject;
-                character.GetComponent<CharacterControl>().VictoryOrLose(LoserIndex);
-                LoserIndex++;
-            }
-        }
-    }
-
-
 }
