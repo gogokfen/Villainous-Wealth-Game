@@ -96,7 +96,7 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
                 return MenuManager.instance.showcaseImages[0];
             case "MonopolyDude":
                 return MenuManager.instance.showcaseImages[1];
-            case "TestDummy":
+            case "Raccoon":
                 return MenuManager.instance.showcaseImages[2];
             case "Conquistadorette":
                 return MenuManager.instance.showcaseImages[3];

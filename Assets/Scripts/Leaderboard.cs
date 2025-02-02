@@ -303,10 +303,10 @@ public class Leaderboard : MonoBehaviour
             case "Monopoly Dude":
                 return portraits[1];
 
-            case "Dummy":
+            case "Raccoon":
                 return portraits[2];
 
-            case "Boxhead":
+            case "Conquistadorette":
                 return portraits[3];
 
             case "Orc":
