@@ -156,6 +156,7 @@ MonoBehaviour:
   cannonV2GameObject: {fileID: 2538986767183679319}
   cannonV2Script: {fileID: 8404296267445493686}
   PI: {fileID: 6768303614033711763}
+  price: 5
   collisionMask:
     serializedVersion: 2
     m_Bits: 256
@@ -747,8 +748,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4862375603336690308, guid: 9bf1b8c4fe88ce14493a8d2b4a3ca0ed,
         type: 3}
+      propertyPath: bombIndicatorVFX
+      value: 
+      objectReference: {fileID: 1550132821376808340, guid: a56e61fabb1735748bd01b2fb9f7c74b,
+        type: 3}
+    - target: {fileID: 4862375603336690308, guid: 9bf1b8c4fe88ce14493a8d2b4a3ca0ed,
+        type: 3}
       propertyPath: shootingFrequency
-      value: 0.75
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -6,9 +6,12 @@ public class CannonV2 : MonoBehaviour
 {
     [SerializeField] Transform shootingSpot;
     [SerializeField] GameObject cannonShot;
+    [SerializeField] GameObject bombIndicatorVFX;
 
     [SerializeField] float shootingOffset = 2;
     [SerializeField] float shootingFrequency = 0.5f;
+
+    Vector3 shootLocationModifier;
 
     private Vector3 originalLocation;
 
@@ -24,15 +27,25 @@ public class CannonV2 : MonoBehaviour
     
     void Update()
     {
-        transform.LookAt(shootingSpot);
+        //transform.LookAt(shootingSpot);
 
         if (Time.time>=shotTimer)
         {
-            transform.localPosition = originalLocation + Vector3.forward * Random.Range(-shootingOffset, shootingOffset) + Vector3.right * Random.Range(-shootingOffset, shootingOffset); 
+            shootLocationModifier = Vector3.forward * Random.Range(-shootingOffset, shootingOffset) + Vector3.right * Random.Range(-shootingOffset, shootingOffset);
+
+            //transform.localPosition = originalLocation + shootLocationModifier;
+
+            //Vector3 originalPos
+            shootingSpot.localPosition += shootLocationModifier;
+
+            transform.LookAt(shootingSpot);
 
             GameObject tempCannonShot = Instantiate(cannonShot, transform.position, transform.rotation);
             tempCannonShot.GetComponent<WeaponBase>().playerID = shooterColor;
-            
+
+            Instantiate(bombIndicatorVFX,shootingSpot.position, Quaternion.identity); //shootLocationModifier + shootingSpot.position
+
+            shootingSpot.localPosition = Vector3.zero;
 
             shotTimer = Time.time + Random.Range(shootingFrequency/2f, shootingFrequency);
         }

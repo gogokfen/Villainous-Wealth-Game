@@ -18,11 +18,16 @@ public class Destructable : MonoBehaviour
 
     [SerializeField] GameObject[] debrisList;
 
+    [SerializeField] Animator anim;
+    Collider[] characterSearch;
+    LayerMask LM;
+
     private bool destroyed = false;
 
     void Start()
     {
-        
+        anim = GetComponent<Animator>();
+        LM = 256; //character layer
     }
 
     void Update()
@@ -44,6 +49,15 @@ public class Destructable : MonoBehaviour
 
                 }
             }
+
+            characterSearch = Physics.OverlapSphere(transform.position,10,LM);
+
+            if (characterSearch.Length >= 1) //if a character is nearby the chest it will play the idle animation
+            {
+                anim.enabled = true;
+            }
+            else
+                anim.enabled = false;
         }
         else
         {

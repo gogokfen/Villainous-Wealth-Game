@@ -482,6 +482,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7911378940632116017}
   - component: {fileID: 575839198731083526}
+  - component: {fileID: 8230891149339515985}
   m_Layer: 0
   m_Name: Destructable Barrel
   m_TagString: Untagged
@@ -552,6 +553,28 @@ MonoBehaviour:
   - {fileID: 4237518709753855088}
   - {fileID: 6707810913311390720}
   - {fileID: 1615651170885354987}
+  anim: {fileID: 0}
+--- !u!95 &8230891149339515985
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2983674290256700193}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0ca5406acecb2b84f9fc0ff59dbdfd2b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3088691441728128518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,8 +1784,8 @@ Transform:
   m_GameObject: {fileID: 8287951741526322880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -1.25, z: 0}
+  m_LocalScale: {x: 1.06, y: 0.95, z: 1.06}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8693880563464085113}
@@ -1880,7 +1903,7 @@ PrefabInstance:
     - target: {fileID: 7824368811725033949, guid: da7cd0d06a997e54d81344611b6297a9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.145
+      value: 1.105
       objectReference: {fileID: 0}
     - target: {fileID: 7824368811725033949, guid: da7cd0d06a997e54d81344611b6297a9,
         type: 3}

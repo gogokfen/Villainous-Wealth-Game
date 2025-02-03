@@ -8,6 +8,7 @@ public class Pirate : MonoBehaviour
     [SerializeField] GameObject cannonV2GameObject;
     [SerializeField] CannonV2 cannonV2Script;
     [SerializeField] PlayerInput PI;
+    [SerializeField] int price;
 
     private float payCD;
     private float AttackCD;
@@ -32,16 +33,17 @@ public class Pirate : MonoBehaviour
         {
             for (int i = 0; i < playerSearch.Length; i++)
             {
-                if (Leaderboard.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=5 && Time.time>=payCD)
+                if (Leaderboard.singleton.GetMoney(playerSearch[i].GetComponent<CharacterControl>().PlayerID)>=price && Time.time>=payCD)
                 {
                     cannonV2GameObject.transform.position = transform.position;
 
                     payingPlayerRef = playerSearch[i].GetComponent<CharacterControl>();
+                    //payingPlayerRef.StopAnimator();
                     payingPlayerRef.enabled = false;
                     payingPlayerRef.gameObject.SetActive(false);
 
 
-                    Leaderboard.singleton.ModifyMoney((payingPlayerRef.PlayerID), -5);
+                    Leaderboard.singleton.ModifyMoney((payingPlayerRef.PlayerID), -price);
                     cannonV2GameObject.SetActive(true);
                     cannonV2Script.UpdateShooter(payingPlayerRef.PlayerID);
 
@@ -61,8 +63,10 @@ public class Pirate : MonoBehaviour
         if (Time.time>=AttackCD && payingPlayerRef!=null)
         {
             cannonV2GameObject.SetActive(false);
-            payingPlayerRef.enabled = true;
             payingPlayerRef.gameObject.SetActive(true); //consider making Character Control "Dead Stop" public and use it to fix animation bug
+            payingPlayerRef.enabled = true;
+            //payingPlayerRef.EnableAnimator();
+            //payingPlayerRef.DeadStop();
 
             //considering making the pay available once per round
             gameObject.SetActive(false);

@@ -107,6 +107,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject rightArmGFX;
     //[SerializeField] WeaponConfig[] configs;
     private bool weaponSwap;
+    private bool strongPunchSwap;
     private Weapons originalWeapon;
 
     SphereCollider rFist;
@@ -602,7 +603,7 @@ public class CharacterControl : MonoBehaviour
 
         CharacterCollision();
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Insert)) //unused right now, might change later
             SwapWeapon();
 
         if (shieldInput && blockCD <= 0) //disable for now
@@ -1049,12 +1050,12 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (useWeapon)
+        if (useWeapon && rightPunchAttackState == 0)
         {
             //rArm.localPosition = new Vector3(0.75f, 0, 0); //resets strong punch
             powerPunchWindup = 0;
 
-            if (equippedWeapon == Weapons.Fist) //no punch if other weapon equipped //Attack(equippedWeapon, previousWeapon);
+            if (equippedWeapon == Weapons.Fist)  //no punch if other weapon equipped //Attack(equippedWeapon, previousWeapon);
             {
                 if (animState == AS.idle || animState == AS.Punch3Recovery)
                 {
@@ -1151,7 +1152,7 @@ public class CharacterControl : MonoBehaviour
                     charAnim.SetTrigger("Shoot");
                 */
 
-                Shoot(equippedWeapon);
+                Shoot(equippedWeapon); //                if (rightPunchAttackState ==0)
 
                 //charAnim.Play("Shooting");
 
@@ -1166,7 +1167,7 @@ public class CharacterControl : MonoBehaviour
                 */
             }
         }
-        if (animState != AS.idle)
+        if (animState != AS.idle) //&& rightPunchAttackState == 0
         {
             animTimer += Time.deltaTime;
 
@@ -1221,6 +1222,11 @@ public class CharacterControl : MonoBehaviour
                 if (animTimer >= 0.22f)
                 {
                     strongFist.enabled = false;
+                    if (strongPunchSwap)
+                    {
+                        SwapWeapon();
+                        strongPunchSwap = false;
+                    }
                 }
                 else if (animTimer >= 0.05f)
                 {
@@ -1268,8 +1274,14 @@ public class CharacterControl : MonoBehaviour
             }
         }
 
-        if (rightPunchAttackState == 1 && equippedWeapon == Weapons.Fist && holdTimer <= 0)
+        if (rightPunchAttackState == 1 && holdTimer <= 0) //&& equippedWeapon == Weapons.Fist
         {
+            if (equippedWeapon != Weapons.Fist)
+            {
+                SwapWeapon();
+                strongPunchSwap = true;
+            }
+
             if (animState == 0)
             {
                 if (powerPunchWindup == 0.75f)
@@ -1330,11 +1342,15 @@ public class CharacterControl : MonoBehaviour
                 charAnim.SetBool("StrongPunch", false);
 
                 powerPunchWindup = 0;
-
-
             }
             else
             {
+                if (strongPunchSwap)
+                {
+                    SwapWeapon();
+                    strongPunchSwap = false;
+                }
+
                 //charAnim.Play("StrongPunchRelease");
                 //rArm.localPosition = new Vector3(0.75f, 0, 0);
                 charAnim.SetBool("StrongPunch", false);
