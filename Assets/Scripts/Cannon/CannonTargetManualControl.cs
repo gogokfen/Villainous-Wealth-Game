@@ -31,25 +31,26 @@ public class CannonTargetManualControl : MonoBehaviour
         moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
 
         borderCheck = transform.position + moveDirection *moveSpeed *Time.deltaTime;
-        if (borderCheck.x >25)
+        if (borderCheck.x >25)  //25 on all
         {
-            transform.position = new Vector3(25, transform.position.y, transform.position.z);
+            transform.position = new Vector3(25, 0, transform.position.z);
         }
         else if (borderCheck.x < -25)
         {
-            transform.position = new Vector3(-25, transform.position.y, transform.position.z);
+            transform.position = new Vector3(-25, 0, transform.position.z);
         }
         else if (borderCheck.z > 25)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, 25);
+            transform.position = new Vector3(transform.position.x, 0, 25);
         }
         else if (borderCheck.z < -25)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y, -25);
+            transform.position = new Vector3(transform.position.x, 0, -25);
         }
         else
         {
             transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure waves don't affect the hight of the indicator
         }
 
 

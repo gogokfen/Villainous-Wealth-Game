@@ -1569,7 +1569,23 @@ public class CharacterControl : MonoBehaviour
                     */
 
                     //SoundManager.singleton.Damage(transform.position);
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+
+                    if (identicalDamageCD<0)
+                    {
+                        if (damage<=2)
+                        {
+                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                        }
+                        else if (damage<=4)
+                        {
+                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                        }
+                        else //6
+                        {
+                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                        }
+
+                    }
 
                     if (!(keyboardMouse || isTargetDummy || mouseMovement))
                         RumbleManager.instance.RumblePulse((0.25f + damage * 0.125f), 0.5f, 0.225f, PI);
@@ -1638,7 +1654,19 @@ public class CharacterControl : MonoBehaviour
                 knockbackDirection.y = 0;
                 */
                 //SoundManager.singleton.Damage(transform.position);
-                SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+
+                if (damage <= 2)
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
+                else if (damage <= 4)
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
+                else //6
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse((0.25f + damageBasedOnDistance * 0.125f), 0.5f, 0.225f, PI);

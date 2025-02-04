@@ -18,9 +18,9 @@ public class Destructable : MonoBehaviour
 
     [SerializeField] GameObject[] debrisList;
 
-    [SerializeField] Animator anim;
-    Collider[] characterSearch;
-    LayerMask LM;
+    private Animator anim;
+    private Collider[] characterSearch;
+    private LayerMask LM;
 
     private bool destroyed = false;
 
@@ -28,6 +28,9 @@ public class Destructable : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         LM = 256; //character layer
+
+        anim.enabled = true;
+        anim.speed = Random.Range(0.75f, 1.25f);
     }
 
     void Update()
@@ -50,6 +53,7 @@ public class Destructable : MonoBehaviour
                 }
             }
 
+            /*
             characterSearch = Physics.OverlapSphere(transform.position,10,LM);
 
             if (characterSearch.Length >= 1) //if a character is nearby the chest it will play the idle animation
@@ -58,6 +62,8 @@ public class Destructable : MonoBehaviour
             }
             else
                 anim.enabled = false;
+
+            */
         }
         else
         {
