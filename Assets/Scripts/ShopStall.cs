@@ -10,12 +10,21 @@ public class ShopStall : MonoBehaviour
     [SerializeField] Animator circleFade;
     [SerializeField] GameObject cameraZoom;
     public bool shoppingTime = false;
-    
+
+    bool firstTimeTrigger;
+
     public IEnumerator StallTime()
     {
         circleFade.gameObject.SetActive(true);
         shopStall.SetActive(true);
-        yield return new WaitForSeconds(3.5f);
+
+        if (!firstTimeTrigger) 
+        {
+            yield return new WaitForSeconds(3.5f);
+            firstTimeTrigger = true;
+        }
+        else yield return new WaitForSeconds(1.5f);
+
         CameraManager.instance.ShopStallFocus();
         cameraZoom.SetActive(true);
         circleFade.SetTrigger("FadeIn");

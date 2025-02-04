@@ -1062,7 +1062,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.383f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f;  // 25/60 chanel
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //16 orignally //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 16 : 16; //16 orignally //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.133f; // 8/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1084,7 +1084,7 @@ public class CharacterControl : MonoBehaviour
                 {
                     holdTimer = 0.4166f; //can't move during attack windup & active, full animation is 0.75
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 17 : 17; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1101,7 +1101,7 @@ public class CharacterControl : MonoBehaviour
                     //holdTimer = 0.5166f; //can't move during attack windup & active, full animation is 0.75
                     holdTimer = 0.4166f; // 25/60
                     attackDirection = transform.forward; //moveDirection
-                    attackMoveSpeed = speedBuffTimer > 0 ? 12 : 12; //0 ? 30 : 24;
+                    attackMoveSpeed = speedBuffTimer > 0 ? 17 : 17; //0 ? 30 : 24;
                     //forwardMomentumDelay = 0.233f; // 14/60 osher
                     forwardMomentumDelay = 0.166f; // 10/60 chanel
 
@@ -1325,7 +1325,7 @@ public class CharacterControl : MonoBehaviour
                 animState = AS.StrongPunch;
                 holdTimer = 0.5f; //can't move during attack windup & active, full animation is 0.5
                 attackDirection = transform.forward; //moveDirection
-                attackMoveSpeed = speedBuffTimer > 0 ? 46.25f : 37;
+                attackMoveSpeed = speedBuffTimer > 0 ? 37f : 37; //46.25f
                 strongPunchCharged.Stop();
                 strongPunchPulse.Play("Waiting");
                 //rFist.enabled = true;

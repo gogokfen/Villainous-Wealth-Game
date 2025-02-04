@@ -42,8 +42,8 @@ public class MapManager : MonoBehaviour
     {
         if (!warmupRound)
         {
-            for (int i =0;i<Leaderboard.singleton.playerCount;i++)
-                warmupProtectors[i].SetActive(true);
+            // for (int i =0;i<Leaderboard.singleton.playerCount;i++)
+            //     //warmupProtectors[i].SetActive(true);
 
             Leaderboard.singleton.DisableCharacterController();
 
