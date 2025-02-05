@@ -9,6 +9,8 @@ public class MapManager : MonoBehaviour
     public Transform[] startPositions;
     [SerializeField] GameObject[] warmupProtectors;
     [HideInInspector] public bool warmupRound;
+
+    [SerializeField] GameObject completePiratePackage;
     private void Awake()
     {
         instance = this;
@@ -33,6 +35,11 @@ public class MapManager : MonoBehaviour
 
         int mapVariationSelected = Random.Range(0, 5); //range is 0->4, does not include this V6
         Instantiate(mapElements[mapVariationSelected]);
+
+        
+
+        if (mapVariationSelected == 0 || mapVariationSelected == 2)
+            completePiratePackage.SetActive(true);
 
         //Instantiate(prefabToSpawn, location.position, location.rotation);
 

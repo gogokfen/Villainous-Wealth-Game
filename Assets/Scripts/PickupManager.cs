@@ -198,6 +198,33 @@ public class PickupManager : MonoBehaviour
         //Destroy(tempCoin, 10);
     }
 
+    public void SpawnDeadCharacterCoin(Vector3 deadPlayerPosition,int coinAmount)
+    {
+        GameObject tempGameObject = new GameObject();
+        tempGameObject.transform.position = deadPlayerPosition;
+        tempGameObject.transform.rotation = Quaternion.identity;
+
+        float modifier;
+
+        for (int i =0;i<coinAmount;i++)
+        {
+            modifier = i *0.5f;
+            Vector3 coinPosition = tempGameObject.transform.forward + tempGameObject.transform.forward * modifier;
+            modifier *= 0.25f;
+            GameObject tempCoin = Instantiate(prefabCoin, deadPlayerPosition +tempGameObject.transform.forward+tempGameObject.transform.forward * modifier + Vector3.up*modifier, Quaternion.identity);
+            tempCoin.name = prefabCoin.name;
+            Rigidbody coinRB = tempCoin.GetComponent<Rigidbody>();
+            coinRB.AddForce(coinPosition, ForceMode.Impulse);
+
+            coins.Add(tempCoin);
+
+            tempGameObject.transform.Rotate(0, 720/coinAmount, 0);
+
+        }
+        Destroy(tempGameObject);
+
+    }
+
     private void SpawnPowerUp()
     {
         //Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));

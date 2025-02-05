@@ -351,10 +351,14 @@ public class CharacterControl : MonoBehaviour
         if (moneylost == 0)
             moneylost = 1;
         */
+        /*
         for (int i =0;i<moneylost;i++)
         {
             PickupManager.singleton.SpawnTreasureChestCoin(new Vector3(transform.position.x, transform.position.y + 3f, transform.position.z));
         }
+        */
+        PickupManager.singleton.SpawnDeadCharacterCoin(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), moneylost);
+
         PickupManager.singleton.SpawnPowerUp(new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z));
 
         //Debug.Log(HeadGFX.name);
@@ -451,6 +455,16 @@ public class CharacterControl : MonoBehaviour
             Ghost = false;
             Invisibility = false;
             Teleport = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Leaderboard.singleton.ModifyMoney(PlayerID, 5);
+        }
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            OutTheRound();
+            DeadStop();
         }
 
         if (Input.GetKeyDown(KeyCode.F10))
@@ -1681,6 +1695,71 @@ public class CharacterControl : MonoBehaviour
             lastPlayerID = attackingPlayer;
             identicalDamageCD = 0.1f;
             timeSinceLastPlayerHit = 0;
+        }
+        else if (attackingPlayer == PlayerID)
+        {
+            if (shieldBuffTimer <= 0) //ranges from about 1 to 6
+            {
+                int damageBasedOnDistance;
+                if (Vector3.Distance(transform.position, grenadePos) > 4.5f)
+                {
+                    damageBasedOnDistance = (int)(0.35 * damage);
+                }
+                else if ((Vector3.Distance(transform.position, grenadePos) > 2.0f))
+                {
+                    damageBasedOnDistance = (int)(0.7 * damage);
+                }
+                else
+                    damageBasedOnDistance = damage;
+
+                if (hp > 0 && hp - damageBasedOnDistance <= 0)
+                {
+                    Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
+                    /* no money granted for killing self
+                    if (RoundManager.instance.areWeWarming == false)
+                    {
+                        Leaderboard.singleton.ModifyMoney(attackingPlayer, 5);
+                    }
+                    */
+                    OutTheRound();
+                    DeadStop();
+                }
+
+                damageBasedOnDistance = (int)(damageBasedOnDistance * 0.5f);
+
+                hp = hp - damageBasedOnDistance;
+                hpBar.fillAmount = hp / 10f;
+
+                if (!dead)
+                {
+                    headColor = Color.red;
+                    paintHead = true;
+                }
+
+                knockbackDirection = new Vector2(transform.position.x - grenadePos.x, transform.position.z - grenadePos.z);
+                knockbackDirection.Normalize();
+                knockbackDirection *= 0.15f;
+                knockbackDirection *= (damageBasedOnDistance / 2f);
+
+                if (damage <= 2)
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
+                else if (damage <= 4)
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
+                else //6
+                {
+                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                }
+
+                if (!(keyboardMouse || isTargetDummy || mouseMovement))
+                    RumbleManager.instance.RumblePulse((0.25f + damageBasedOnDistance * 0.125f), 0.5f, 0.225f, PI);
+
+                if (cameraManagerIsOn)
+                    CameraManager.instance.ShakeCamera(0.1f * damage, 0.1f);
+            }
         }
     }
 

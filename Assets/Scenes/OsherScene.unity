@@ -8916,20 +8916,37 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4327d969f6ca1694e9155df0bbb26cae, type: 3}
   redPlayerName: {fileID: 507835637}
   redPlayerCoins: {fileID: 507835635}
+  redPlayerCoinsRanking: {fileID: 0}
   redPlayerKills: {fileID: 507835634}
+  redPlayerRank: {fileID: 0}
   redPlayerPortrait: {fileID: 507835636}
+  redPlayerPortraitRanking: {fileID: 0}
+  redRankingUI: {fileID: 0}
   greenPlayerName: {fileID: 1802063059}
   greenPlayerCoins: {fileID: 1802063057}
+  greenPlayerCoinsRanking: {fileID: 0}
   greenPlayerKills: {fileID: 1802063056}
+  greenPlayerRank: {fileID: 0}
   greenPlayerPortrait: {fileID: 1802063058}
+  greenPlayerPortraitRanking: {fileID: 0}
+  greenRankingUI: {fileID: 0}
   bluePlayerName: {fileID: 734473610}
   bluePlayerCoins: {fileID: 734473608}
+  bluePlayerCoinsRanking: {fileID: 0}
   bluePlayerKills: {fileID: 734473607}
+  bluePlayerRank: {fileID: 0}
   bluePlayerPortrait: {fileID: 734473609}
+  bluePlayerPortraitRanking: {fileID: 0}
+  blueRankingUI: {fileID: 0}
   yellowPlayerName: {fileID: 638228546}
   yellowPlayerCoins: {fileID: 638228544}
+  yellowPlayerCoinsRanking: {fileID: 0}
   yellowPlayerKills: {fileID: 638228543}
+  yellowPlayerRank: {fileID: 0}
   yellowPlayerPortrait: {fileID: 638228545}
+  yellowPlayerPortraitRanking: {fileID: 0}
+  yellowRankingUI: {fileID: 0}
+  rankingTransforms: []
   playerCount: 0
 --- !u!114 &1206977472
 MonoBehaviour:
@@ -18381,6 +18398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pirate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8480051597760634963, guid: 0556bedcb9005f74f8cade17749986c6,
+        type: 3}
+      propertyPath: price
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -26,6 +26,8 @@ public class Pirate : MonoBehaviour
     [SerializeField] GameObject target;
     private Quaternion prevRotation;
 
+    [SerializeField] GameObject completePiratePackage;
+
     void Start()
     {
         PI.enabled = false;
@@ -46,7 +48,7 @@ public class Pirate : MonoBehaviour
         }
 
         //playerSearch = Physics.OverlapBox(transform.position, hitBox, Quaternion.identity, collisionMask); //half extents
-        playerSearch = Physics.OverlapSphere(transform.position, 10, collisionMask);
+        playerSearch = Physics.OverlapSphere(transform.position, 15, collisionMask);
 
         if (playerSearch.Length > 0)
         {
@@ -55,7 +57,7 @@ public class Pirate : MonoBehaviour
                 outlineActive = true;
                 for (int i = 0; i < shipPartsGFX.Length; i++)
                 {
-                    shipPartsGFX[i].GetComponent<Outline>().OutlineWidth = 5;
+                    shipPartsGFX[i].GetComponent<Outline>().OutlineWidth = 1;
                 }
             }
 
@@ -87,8 +89,8 @@ public class Pirate : MonoBehaviour
 
 
 
-                    payCD = Time.time + 12;
-                    AttackCD = Time.time + 7;
+                    payCD = Time.time + 18;
+                    AttackCD = Time.time + 10;
                 }
             }
         }
@@ -108,12 +110,14 @@ public class Pirate : MonoBehaviour
             cannonV2GameObject.SetActive(false);
             payingPlayerRef.gameObject.SetActive(true); //consider making Character Control "Dead Stop" public and use it to fix animation bug
             payingPlayerRef.enabled = true;
+            payingPlayerRef = null;
             //payingPlayerRef.EnableAnimator();
             //payingPlayerRef.DeadStop();
 
 
             //considering making the pay available once per round
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
+            completePiratePackage.SetActive(false);
         }
     }
 }
