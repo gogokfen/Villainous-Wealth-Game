@@ -102,6 +102,7 @@ public class Leaderboard : MonoBehaviour
         public int rank;
         public bool wonThisRound;
     }
+    /*
     PlayerStats redPlayer = new PlayerStats
                     (null,                            //character Reference
                     null,                             //Event System
@@ -116,11 +117,11 @@ public class Leaderboard : MonoBehaviour
                     0,                                //kills
                     0,                                //deaths
                     false,                            //won this round
-                    0);                               //Rank  
-    PlayerStats greenPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Green, "", 0, 0, 0, 0, false, 0);
-    PlayerStats bluePlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Blue, "", 0, 0, 0, 0, false, 0);
-    PlayerStats yellowPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Yellow, "", 0, 0, 0, 0, false, 0);
-
+                    -1);                               //Rank  
+    PlayerStats greenPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Green, "", 0, 0, 0, 0, false, -1);
+    PlayerStats bluePlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Blue, "", 0, 0, 0, 0, false, -1);
+    PlayerStats yellowPlayer = new PlayerStats(null, null, null, null, null, null, CharacterControl.PlayerTypes.Yellow, "", 0, 0, 0, 0, false, -1);
+    */
     private PlayerStats[] players;
 
     private struct Ranking
@@ -137,95 +138,83 @@ public class Leaderboard : MonoBehaviour
         CharacterControl[] characters;
         characters = GameObject.FindObjectsOfType<CharacterControl>();
 
+        players = new PlayerStats[characters.Length];
+        //moneyRankings = new int[playerCount];
+        ranking = new Ranking[characters.Length];
+
         foreach (CharacterControl character in characters)
         {
             if (character.PlayerID == CharacterControl.PlayerTypes.Red)
             {
                 leaderboardPlayerPrefabs[0].SetActive(true);
-                redPlayer.characterReference = character;
-                redPlayer.name = character.HeadGFX.name;
-                redPlayerPortrait.sprite = SetPlayerPortrait(redPlayer.name);
-                redPlayerPortraitRanking.sprite = SetPlayerPortrait(redPlayer.name);
-                redPlayer.portrait = redPlayerPortrait.sprite;
-                redPlayerName.text = redPlayer.name;
-                redPlayer.rank = 1;
-                redPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
-                redPlayer.input = character.gameObject.GetComponent<PlayerInput>();
-                redPlayer.controller = character.gameObject.GetComponent<CharacterController>();
-                redPlayer.transform = character.gameObject.transform;
+                players[0].color = CharacterControl.PlayerTypes.Red;
+                players[0].characterReference = character;
+                players[0].name = character.HeadGFX.name;
+                redPlayerPortrait.sprite = SetPlayerPortrait(players[0].name);
+                redPlayerPortraitRanking.sprite = SetPlayerPortrait(players[0].name);
+                players[0].portrait = redPlayerPortrait.sprite;
+                redPlayerName.text = players[0].name;
+                players[0].rank = -1;
+                players[0].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                players[0].input = character.gameObject.GetComponent<PlayerInput>();
+                players[0].controller = character.gameObject.GetComponent<CharacterController>();
+                players[0].transform = character.gameObject.transform;
                 redRankingUI.gameObject.SetActive(true);
             }
 
             else if (character.PlayerID == CharacterControl.PlayerTypes.Green)
             {
                 leaderboardPlayerPrefabs[1].SetActive(true);
-                greenPlayer.characterReference = character;
-                greenPlayer.name = character.HeadGFX.name;
-                greenPlayerPortrait.sprite = SetPlayerPortrait(greenPlayer.name);
-                greenPlayerPortraitRanking.sprite = SetPlayerPortrait(greenPlayer.name);
-                greenPlayer.portrait = greenPlayerPortrait.sprite;
-                greenPlayerName.text = greenPlayer.name;
-                greenPlayer.rank = 2;
-                greenPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
-                greenPlayer.input = character.gameObject.GetComponent<PlayerInput>();
-                greenPlayer.controller = character.gameObject.GetComponent<CharacterController>();
-                greenPlayer.transform = character.gameObject.transform;
+                players[1].color = CharacterControl.PlayerTypes.Green;
+                players[1].characterReference = character;
+                players[1].name = character.HeadGFX.name;
+                greenPlayerPortrait.sprite = SetPlayerPortrait(players[1].name);
+                greenPlayerPortraitRanking.sprite = SetPlayerPortrait(players[1].name);
+                players[1].portrait = greenPlayerPortrait.sprite;
+                greenPlayerName.text = players[1].name;
+                players[1].rank = -1;
+                players[1].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                players[1].input = character.gameObject.GetComponent<PlayerInput>();
+                players[1].controller = character.gameObject.GetComponent<CharacterController>();
+                players[1].transform = character.gameObject.transform;
                 greenRankingUI.gameObject.SetActive(true);
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Blue)
             {
                 leaderboardPlayerPrefabs[2].SetActive(true);
-                bluePlayer.characterReference = character;
-                bluePlayer.name = character.HeadGFX.name;
-                bluePlayerPortrait.sprite = SetPlayerPortrait(bluePlayer.name);
-                bluePlayerPortraitRanking.sprite = SetPlayerPortrait(bluePlayer.name);
-                bluePlayer.portrait = bluePlayerPortrait.sprite;
-                bluePlayerName.text = bluePlayer.name;
-                bluePlayer.rank = 3;
-                bluePlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
-                bluePlayer.input = character.gameObject.GetComponent<PlayerInput>();
-                bluePlayer.controller = character.gameObject.GetComponent<CharacterController>();
-                bluePlayer.transform = character.gameObject.transform;
+                players[2].color = CharacterControl.PlayerTypes.Blue;
+                players[2].characterReference = character;
+                players[2].name = character.HeadGFX.name;
+                bluePlayerPortrait.sprite = SetPlayerPortrait(players[2].name);
+                bluePlayerPortraitRanking.sprite = SetPlayerPortrait(players[2].name);
+                players[2].portrait = bluePlayerPortrait.sprite;
+                bluePlayerName.text = players[2].name;
+                players[2].rank = -1;
+                players[2].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                players[2].input = character.gameObject.GetComponent<PlayerInput>();
+                players[2].controller = character.gameObject.GetComponent<CharacterController>();
+                players[2].transform = character.gameObject.transform;
                 blueRankingUI.gameObject.SetActive(true);
             }
             else if (character.PlayerID == CharacterControl.PlayerTypes.Yellow)
             {
                 leaderboardPlayerPrefabs[3].SetActive(true);
-                yellowPlayer.characterReference = character;
-                yellowPlayer.name = character.HeadGFX.name;
-                yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
-                yellowPlayerPortraitRanking.sprite = SetPlayerPortrait(yellowPlayer.name);
-                yellowPlayer.portrait = yellowPlayerPortrait.sprite;
-                yellowPlayerName.text = yellowPlayer.name;
-                yellowPlayer.rank = 4;
-                yellowPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
-                yellowPlayer.input = character.gameObject.GetComponent<PlayerInput>();
-                yellowPlayer.controller = character.gameObject.GetComponent<CharacterController>();
-                yellowPlayer.transform = character.gameObject.transform;
+                players[3].color = CharacterControl.PlayerTypes.Yellow;
+                players[3].characterReference = character;
+                players[3].name = character.HeadGFX.name;
+                yellowPlayerPortrait.sprite = SetPlayerPortrait(players[3].name);
+                yellowPlayerPortraitRanking.sprite = SetPlayerPortrait(players[3].name);
+                players[3].portrait = yellowPlayerPortrait.sprite;
+                yellowPlayerName.text = players[3].name;
+                players[3].rank = -1;
+                players[3].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                players[3].input = character.gameObject.GetComponent<PlayerInput>();
+                players[3].controller = character.gameObject.GetComponent<CharacterController>();
+                players[3].transform = character.gameObject.transform;
                 yellowRankingUI.gameObject.SetActive(true);
             }
             playerCount++;
         }
-
-
-        players = new PlayerStats[playerCount];
-        //moneyRankings = new int[playerCount];
-        ranking = new Ranking[playerCount];
-
-        for (int i = 0; i < playerCount; i++) //same order as the charactercontrol.playertypes Red Green Blue Yellow 0 1 2 3
-        {
-            if (i == 0)
-                players[i] = redPlayer;
-            if (i == 1)
-                players[i] = greenPlayer;
-            if (i == 2)
-                players[i] = bluePlayer;
-            if (i == 3)
-                players[i] = yellowPlayer;
-
-            //Debug.Log(players[i].name);
-        }
-
     }
 
     private void Awake()
@@ -294,23 +283,52 @@ public class Leaderboard : MonoBehaviour
 
     public void UpdateRanking()
     {
+        /*
+        Debug.Log(redRankingUI.position);
+        Debug.Log(redRankingUI.rect);
+        Debug.Log(redRankingUI.transform.position);
+
+        Debug.Log(redRankingUI.localPosition);
+
+        Debug.Log(redRankingUI.pivot);
+        Debug.Log(redRankingUI.sizeDelta);
+        Debug.Log(redRankingUI.rect.position);
+
+        */
         if (playerCount > 0)
         {
-        //Red Player
-        redPlayerCoins.text = players[0].currentMoney.ToString();
-        redPlayerCoinsRanking.text = players[0].currentMoney.ToString();
-        redPlayerKills.text = players[0].kills.ToString();
-        redPlayerRank.text = players[0].rank.ToString();
-        redRankingUI.pivot = rankingTransforms[redPlayer.rank-1].pivot;
+            //Red Player
+            redPlayerCoins.text = players[0].currentMoney.ToString();
+            redPlayerCoinsRanking.text = players[0].currentMoney.ToString();
+            redPlayerKills.text = players[0].kills.ToString();
+            redPlayerRank.text = players[0].rank.ToString();
+
+            //Debug.Log("red"+redRankingUI.localPosition);
+            //Debug.Log("Red"+rankingTransforms[redPlayer.rank - 1].localPosition);
+
+            //Debug.Log(players[0].rank);
+            redRankingUI.localPosition = rankingTransforms[(players[0].rank - 1)].localPosition;
+            //redRankingUI.localPosition = rankingTransforms[0].localPosition;
+
+            //Debug.Log("red"+redRankingUI.localPosition);
+            //Debug.Log("Red"+rankingTransforms[redPlayer.rank - 1].localPosition);
         }
         if (playerCount > 1)
         {
-        //Green Player
-        greenPlayerCoins.text = players[1].currentMoney.ToString();
-        greenPlayerCoinsRanking.text = players[1].currentMoney.ToString();
-        greenPlayerKills.text = players[1].kills.ToString();
-        greenPlayerRank.text = players[1].rank.ToString();
-        greenRankingUI.pivot = rankingTransforms[greenPlayer.rank-1].pivot;
+            //Green Player
+            greenPlayerCoins.text = players[1].currentMoney.ToString();
+            greenPlayerCoinsRanking.text = players[1].currentMoney.ToString();
+            greenPlayerKills.text = players[1].kills.ToString();
+            greenPlayerRank.text = players[1].rank.ToString();
+            //Debug.Log("green" + greenRankingUI.localPosition);
+            //Debug.Log("Green" + rankingTransforms[greenPlayer.rank - 1].localPosition);
+
+            //Debug.Log(players[1].rank);
+            greenRankingUI.localPosition = rankingTransforms[(players[1].rank-1)].localPosition;
+            //greenRankingUI.localPosition = rankingTransforms[0].localPosition;
+
+            //Debug.Log("green" + greenRankingUI.localPosition);
+            //Debug.Log("Green" + rankingTransforms[greenPlayer.rank - 1].localPosition);
         }
         if (playerCount > 2)
         {
@@ -319,16 +337,18 @@ public class Leaderboard : MonoBehaviour
             bluePlayerCoinsRanking.text = players[2].currentMoney.ToString();
             bluePlayerKills.text = players[2].kills.ToString();
             bluePlayerRank.text = players[2].rank.ToString();
-            blueRankingUI.pivot = rankingTransforms[bluePlayer.rank-1].pivot;
+
+            blueRankingUI.localPosition = rankingTransforms[(players[2].rank-1)].localPosition;
         }
         if (playerCount > 3) 
         {
-        //Yellow Player
-        yellowPlayerCoins.text = players[3].currentMoney.ToString();
-        yellowPlayerCoinsRanking.text = players[3].currentMoney.ToString();
-        yellowPlayerKills.text = players[3].kills.ToString();
-        yellowPlayerRank.text = players[3].rank.ToString();
-        yellowRankingUI.pivot = rankingTransforms[yellowPlayer.rank-1].pivot;
+            //Yellow Player
+            yellowPlayerCoins.text = players[3].currentMoney.ToString();
+            yellowPlayerCoinsRanking.text = players[3].currentMoney.ToString();
+            yellowPlayerKills.text = players[3].kills.ToString();
+            yellowPlayerRank.text = players[3].rank.ToString();
+
+            yellowRankingUI.localPosition = rankingTransforms[(players[3].rank-1)].localPosition;
         }
     }
     public void EmptyPlayerHands()
@@ -575,6 +595,13 @@ public class Leaderboard : MonoBehaviour
         //CharacterControl.PlayerTypes[] playersRankingColor = null;
         //GameObject[] tempPlayers = new GameObject[moneyRankings.Length];
 
+        //for security:
+        for (int i=0;i<ranking.Length;i++)
+        {
+            ranking[i].money = -10;
+            ranking[i].color = CharacterControl.PlayerTypes.Yellow;
+        }
+
         int indexToRemember = 0;
 
         for (int i = 0; i < ranking.Length; i++)
@@ -600,12 +627,13 @@ public class Leaderboard : MonoBehaviour
                     //playerRankings[i] = tempPlayers[j];
                     indexToRemember = j;
                 }
-                tempArray[indexToRemember].money = 0;
+                tempArray[indexToRemember].money = -1; //move to lower for?
             }
         }
         for (int i = 0; i < ranking.Length; i++)
         {
-            players[(int)ranking[i].color].rank = i + 1; // for instance if if the array ranking contains a yellow player on the first place -> [0] that means that that players[3] = 1 
+            players[(int)ranking[i].color].rank = (i + 1); // for instance if if the array ranking contains a yellow player on the first place -> [0] that means that that players[3] = 1 
+            //Debug.Log(players[(int)ranking[i].color].rank+""+ players[(int)ranking[i].color].color);
         }
 
         //Array.Sort(moneyRankings);
@@ -672,7 +700,7 @@ public class Leaderboard : MonoBehaviour
         ArrangeMoneyRanking();
         for (int i = 0; i < players.Length; i++)
         {
-            players[i].characterReference.VictoryOrLose(players[i].rank - 1); //highest rank is 1, not 0
+            players[i].characterReference.VictoryOrLose((players[i].rank - 1)); //highest rank is 1, not 0
         }
     }
 
@@ -684,8 +712,8 @@ public class Leaderboard : MonoBehaviour
             players[i].characterReference.enabled = false;
             players[i].characterReference.bodyPartsGFX[6].SetActive(false); //Hides the player's UI
             players[i].characterReference.bodyPartsGFX[7].SetActive(false);
-            players[i].characterReference.transform.position = positions[players[i].rank - 1].position; //rankings start from 1, positions from 0
-            players[i].characterReference.transform.rotation = positions[players[i].rank - 1].rotation;
+            players[i].characterReference.transform.position = positions[(players[i].rank - 1)].position; //rankings start from 1, positions from 0
+            players[i].characterReference.transform.rotation = positions[(players[i].rank - 1)].rotation;
         }
     }
 
@@ -708,5 +736,77 @@ public class Leaderboard : MonoBehaviour
             players[i].transform.position = MapManager.instance.startPositions[i].position;
         }
     }
+
+    /**
+     *         foreach (CharacterControl character in characters)
+        {
+            if (character.PlayerID == CharacterControl.PlayerTypes.Red)
+            {
+                leaderboardPlayerPrefabs[0].SetActive(true);
+                redPlayer.characterReference = character;
+                redPlayer.name = character.HeadGFX.name;
+                redPlayerPortrait.sprite = SetPlayerPortrait(redPlayer.name);
+                redPlayerPortraitRanking.sprite = SetPlayerPortrait(redPlayer.name);
+                redPlayer.portrait = redPlayerPortrait.sprite;
+                redPlayerName.text = redPlayer.name;
+                //redPlayer.rank = -1; //1
+                redPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                redPlayer.input = character.gameObject.GetComponent<PlayerInput>();
+                redPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                redPlayer.transform = character.gameObject.transform;
+                redRankingUI.gameObject.SetActive(true);
+            }
+
+            else if (character.PlayerID == CharacterControl.PlayerTypes.Green)
+            {
+                leaderboardPlayerPrefabs[1].SetActive(true);
+                greenPlayer.characterReference = character;
+                greenPlayer.name = character.HeadGFX.name;
+                greenPlayerPortrait.sprite = SetPlayerPortrait(greenPlayer.name);
+                greenPlayerPortraitRanking.sprite = SetPlayerPortrait(greenPlayer.name);
+                greenPlayer.portrait = greenPlayerPortrait.sprite;
+                greenPlayerName.text = greenPlayer.name;
+                //greenPlayer.rank = -1; //2
+                greenPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                greenPlayer.input = character.gameObject.GetComponent<PlayerInput>();
+                greenPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                greenPlayer.transform = character.gameObject.transform;
+                greenRankingUI.gameObject.SetActive(true);
+            }
+            else if (character.PlayerID == CharacterControl.PlayerTypes.Blue)
+            {
+                leaderboardPlayerPrefabs[2].SetActive(true);
+                bluePlayer.characterReference = character;
+                bluePlayer.name = character.HeadGFX.name;
+                bluePlayerPortrait.sprite = SetPlayerPortrait(bluePlayer.name);
+                bluePlayerPortraitRanking.sprite = SetPlayerPortrait(bluePlayer.name);
+                bluePlayer.portrait = bluePlayerPortrait.sprite;
+                bluePlayerName.text = bluePlayer.name;
+                //bluePlayer.rank = -1; //3
+                bluePlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                bluePlayer.input = character.gameObject.GetComponent<PlayerInput>();
+                bluePlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                bluePlayer.transform = character.gameObject.transform;
+                blueRankingUI.gameObject.SetActive(true);
+            }
+            else if (character.PlayerID == CharacterControl.PlayerTypes.Yellow)
+            {
+                leaderboardPlayerPrefabs[3].SetActive(true);
+                yellowPlayer.characterReference = character;
+                yellowPlayer.name = character.HeadGFX.name;
+                yellowPlayerPortrait.sprite = SetPlayerPortrait(yellowPlayer.name);
+                yellowPlayerPortraitRanking.sprite = SetPlayerPortrait(yellowPlayer.name);
+                yellowPlayer.portrait = yellowPlayerPortrait.sprite;
+                yellowPlayerName.text = yellowPlayer.name;
+                //yellowPlayer.rank = -1; //4
+                yellowPlayer.eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
+                yellowPlayer.input = character.gameObject.GetComponent<PlayerInput>();
+                yellowPlayer.controller = character.gameObject.GetComponent<CharacterController>();
+                yellowPlayer.transform = character.gameObject.transform;
+                yellowRankingUI.gameObject.SetActive(true);
+            }
+            playerCount++;
+        }
+*/
 
 }
