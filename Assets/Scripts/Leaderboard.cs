@@ -227,6 +227,10 @@ public class Leaderboard : MonoBehaviour
         if (RoundManager.instance.areWeWarming == true)
             return;
 
+        ModifyMoney(killingPlayer, 5); //giving money to the killer
+
+        players[(int)killingPlayer].characterReference.GetKillingMoney(5);
+
         killsAnnouncer.text = $"<sprite name=\"{players[(int)killingPlayer].name}\">  has killed " + $"<sprite name=\"{players[(int)dyingPlayer].name}\">";
         players[(int)killingPlayer].kills++;
         players[(int)dyingPlayer].deaths++;
@@ -242,6 +246,14 @@ public class Leaderboard : MonoBehaviour
         killsAnnouncerAnimation.Play("Announcement");
     }
 
+    public void ResetPlayersMoney()
+    {
+        for (int i=0;i<players.Length;i++)
+        {
+            players[i].currentMoney = 0;
+            players[i].roundStartMoney = 0;
+        }
+    }
 
     public void UpdateLeaderboard()
     {

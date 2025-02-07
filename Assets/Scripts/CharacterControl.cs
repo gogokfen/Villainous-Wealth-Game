@@ -1522,7 +1522,7 @@ public class CharacterControl : MonoBehaviour
                         Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                         if (RoundManager.instance.areWeWarming == false)
                         {
-                            Leaderboard.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
+                            //Leaderboard.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
                         }
                         OutTheRound();
                     }
@@ -1638,7 +1638,7 @@ public class CharacterControl : MonoBehaviour
                     Leaderboard.singleton.AnnounceKill(attackingPlayer, PlayerID);
                     if (RoundManager.instance.areWeWarming == false)
                     {
-                        Leaderboard.singleton.ModifyMoney(attackingPlayer, 5);
+                        //Leaderboard.singleton.ModifyMoney(attackingPlayer, 5);
                     }
                     OutTheRound();
                     DeadStop();
@@ -1782,7 +1782,7 @@ public class CharacterControl : MonoBehaviour
                         Leaderboard.singleton.AnnounceKill(lastPlayerID, PlayerID);
                         if (RoundManager.instance.areWeWarming == false)
                         {
-                            Leaderboard.singleton.ModifyMoney(lastPlayerID, 5); // giving money to the killer
+                            //Leaderboard.singleton.ModifyMoney(lastPlayerID, 5); // giving money to the killer
                         }
                     }
                     else
@@ -2028,6 +2028,13 @@ public class CharacterControl : MonoBehaviour
             leaderGlow.Stop();
             leaderCrown.SetActive(false);
         }
+    }
+
+    public void GetKillingMoney (int killReward)
+    {
+        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" +killReward;
+        moneyAnim.Play("Player Coin Pickup", -1, 0);
+        PickupManager.singleton.CoinPickupVFX(transform.position);
     }
 
     public void SetWinner()

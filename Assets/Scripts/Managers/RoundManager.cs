@@ -132,6 +132,7 @@ public class RoundManager : MonoBehaviour
         //function to reset kill and money counts
         yield return new WaitForSeconds(3.5f); //waits for AssignWinner to finish
         Leaderboard.singleton.EmptyPlayerHands(); //Osher added
+        Leaderboard.singleton.ResetPlayersMoney();
         PlayerManager.instance.roundOver = false; //resets the bool for the next round
         MapManager.instance.ResetMap(); //resets map elements
         Leaderboard.singleton.NextRound(); //resets "dead" players prefabs, HP, and positions
