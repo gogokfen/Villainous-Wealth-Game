@@ -166,10 +166,16 @@ public class CharacterControl : MonoBehaviour
     [EndFoldout]
 
     //[SerializeField] TextMeshProUGUI hpText;
+    [SerializeField] Sprite[] onCharIcons;
+    [SerializeField] Image weaponSprite;
+    [SerializeField] Image powerupSprite;
+    [SerializeField] Image StaminaL;
+    [SerializeField] Image StaminaR;
     [SerializeField] Image hpBar;
     [SerializeField] Image emptyHpBar;
     [SerializeField] TextMeshProUGUI moneyText;
     [SerializeField] Animator moneyAnim;
+    [SerializeField] TextMeshProUGUI onCharMoneyText;
     [SerializeField] GameObject shieldGFX;
     [SerializeField] GameObject blockBubble;
     private float blockDuration;
@@ -343,6 +349,7 @@ public class CharacterControl : MonoBehaviour
         //int moneylost = (int)(0.25f * Leaderboard.singleton.GetMoney(PlayerID));
         int moneylost = Leaderboard.singleton.DeathMoney(PlayerID);
         moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "-" + moneylost;
+        onCharMoneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
         //Leaderboard.singleton.ModifyMoney(PlayerID, -moneylost); // I update it from the function itself
         moneyAnim.Play("Player Coin Pickup", -1, 0);
 
@@ -395,6 +402,7 @@ public class CharacterControl : MonoBehaviour
         characterGFX.SetActive(true);
         dead = false;
         moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
+        onCharMoneyText.text = moneyText.text;
         coinsAtRoundStart = Leaderboard.singleton.GetMoney(PlayerID);
         Leaderboard.singleton.UpdateRoundMoney(PlayerID, coinsAtRoundStart);
 
@@ -602,9 +610,26 @@ public class CharacterControl : MonoBehaviour
             return;
 
         speedBuffTimer -= Time.deltaTime;
-        shieldBuffTimer -= Time.deltaTime;
-        if (shieldBuffTimer <= 0)
-            shieldGFX.SetActive(false);
+        
+        if (shieldBuffTimer > 0)
+        {
+            shieldBuffTimer -= Time.deltaTime;
+
+            if (shieldBuffTimer<=0)
+            {
+                shieldGFX.SetActive(false);
+                if (speedBuffTimer <= 0)
+                    powerupSprite.sprite = null;
+                else
+                    powerupSprite.sprite = onCharIcons[8];
+            }
+            /*
+            if (speedBuffTimer>0) //in case both buffs are active
+                powerupSprite.sprite = onCharIcons[8];
+            else
+                powerupSprite = null;
+            */
+        }
 
         if (equippedWeapon == Weapons.Blunderbuss)
         {
@@ -630,10 +655,20 @@ public class CharacterControl : MonoBehaviour
             SoundManager.singleton.Shield(transform.position);
         }
 
-        rollCD -= Time.deltaTime;
-        if (rollCD >= 0)
+        
+        if (rollCD > 0)
         {
-            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, Mathf.InverseLerp(2.5f, 0, rollCD));
+            rollCD -= Time.deltaTime;
+
+            //playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, Mathf.InverseLerp(2.5f, 0, rollCD));
+           
+            StaminaL.fillAmount = Mathf.InverseLerp(2.5f, 0, rollCD);
+            StaminaR.fillAmount = Mathf.InverseLerp(2.5f, 0, rollCD);
+            if (StaminaL.fillAmount>=1)
+            {
+                StaminaL.gameObject.SetActive(false);
+                StaminaR.gameObject.SetActive(false);
+            }
         }
 
         if (rollInput && rollCD <= 0 && (animState == AS.idle || animState == AS.Punch1Recovery || animState == AS.Punch2Recovery || animState == AS.Punch3Recovery))
@@ -652,7 +687,10 @@ public class CharacterControl : MonoBehaviour
             //charAnim.Play("SpinDash");
             charAnim.SetTrigger("Roll");
 
-            playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, 0);
+            //playerIndicator.GetComponent<Image>().color = new Color(playerIndicator.GetComponent<Image>().color.r, playerIndicator.GetComponent<Image>().color.g, playerIndicator.GetComponent<Image>().color.b, 0);
+
+            StaminaL.gameObject.SetActive(true);
+            StaminaR.gameObject.SetActive(true);
 
             //SoundManager.singleton.Roll(transform.position);
             SoundManager.singleton.PlayClip("Roll", transform.position, 1f, false, true);
@@ -881,6 +919,11 @@ public class CharacterControl : MonoBehaviour
                 if (moveSpeed > currentMaxSpeed)
                     moveSpeed = currentMaxSpeed;
                 CC.excludeLayers = 0;
+
+                if (shieldBuffTimer > 0)
+                    powerupSprite.sprite = onCharIcons[9];
+                else
+                    powerupSprite.sprite = null;
             }
             if (moveSpeed < currentMaxSpeed)
             {
@@ -1392,6 +1435,8 @@ public class CharacterControl : MonoBehaviour
                     //weaponList[(int)equippedWeapon].SetConfig(WeaponConfigList[(int)equippedWeapon]);
                     //weaponID = (int)equippedWeapon;
 
+                    weaponSprite.sprite = onCharIcons[(int)equippedWeapon];
+
                     Destroy(pickupSearch[i].transform.gameObject);
                     return;
                 }
@@ -1406,6 +1451,7 @@ public class CharacterControl : MonoBehaviour
 
                         moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
                         Leaderboard.singleton.ModifyMoney(PlayerID, 1);
+                        onCharMoneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1415,6 +1461,7 @@ public class CharacterControl : MonoBehaviour
 
                         moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "1";
                         Leaderboard.singleton.ModifyMoney(PlayerID, 1);
+                        onCharMoneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1424,6 +1471,7 @@ public class CharacterControl : MonoBehaviour
 
                         moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" + "3";
                         Leaderboard.singleton.ModifyMoney(PlayerID, 3);
+                        onCharMoneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
                         moneyAnim.Play("Player Coin Pickup", -1, 0);
                         pickupSearch[i].transform.gameObject.SetActive(false);
                         PickupManager.singleton.CoinPickupVFX(pickupSearch[i].transform.position);
@@ -1456,6 +1504,8 @@ public class CharacterControl : MonoBehaviour
                         moneyText.text = "Speed";
                         moneyAnim.Play("Player Powerup Pickup", -1, 0);
 
+                        powerupSprite.sprite = onCharIcons[8];
+
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
                     else if (pickupSearch[i].transform.name == "Shield")
@@ -1465,6 +1515,8 @@ public class CharacterControl : MonoBehaviour
 
                         moneyText.text = "Shield";
                         moneyAnim.Play("Player Powerup Pickup", -1, 0);
+
+                        powerupSprite.sprite = onCharIcons[9];
 
                         Destroy(pickupSearch[i].transform.gameObject);
                     }
@@ -1946,6 +1998,7 @@ public class CharacterControl : MonoBehaviour
             weaponList[(int)equippedWeapon].SetActive(true);
             //weaponID = (int)equippedWeapon;
 
+            weaponSprite.sprite = onCharIcons[(int)equippedWeapon];
 
         }
         else
@@ -2032,7 +2085,10 @@ public class CharacterControl : MonoBehaviour
 
     public void GetKillingMoney (int killReward)
     {
-        moneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString() + "+" +killReward;
+        int money = Leaderboard.singleton.GetMoney(PlayerID);
+        money -= killReward; //the killing money was already added before
+        moneyText.text = money.ToString() + "+" +killReward;
+        onCharMoneyText.text = Leaderboard.singleton.GetMoney(PlayerID).ToString();
         moneyAnim.Play("Player Coin Pickup", -1, 0);
         PickupManager.singleton.CoinPickupVFX(transform.position);
     }

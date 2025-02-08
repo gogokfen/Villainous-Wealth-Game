@@ -1353,10 +1353,16 @@ MonoBehaviour:
   strongFist: {fileID: 0}
   charAnim: {fileID: 0}
   dead: 0
+  onCharIcons: []
+  weaponSprite: {fileID: 0}
+  powerupSprite: {fileID: 0}
+  StaminaL: {fileID: 0}
+  StaminaR: {fileID: 0}
   hpBar: {fileID: 0}
   emptyHpBar: {fileID: 0}
   moneyText: {fileID: 0}
   moneyAnim: {fileID: 0}
+  onCharMoneyText: {fileID: 0}
   shieldGFX: {fileID: 0}
   blockBubble: {fileID: 0}
   windUpBar: {fileID: 0}
@@ -3514,6 +3520,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2353852331797208162, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
@@ -3634,10 +3650,30 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8213661146023656113, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_Name
       value: testdummmmyy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -12758,6 +12794,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1028425750602651232, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: test
@@ -12921,6 +12967,26 @@ PrefabInstance:
     - target: {fileID: 7841318357815598602, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_MinMoveDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
@@ -16551,6 +16617,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 783963081949445885, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2353852331797208162, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
       propertyPath: m_IsActive
@@ -16670,6 +16746,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7983603549289824278, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8359242914001936790, guid: d38b44200e5f111489b849ea54d87ac0,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8529768936932577941, guid: d38b44200e5f111489b849ea54d87ac0,
         type: 3}
@@ -18163,10 +18259,16 @@ MonoBehaviour:
   strongFist: {fileID: 0}
   charAnim: {fileID: 0}
   dead: 0
+  onCharIcons: []
+  weaponSprite: {fileID: 0}
+  powerupSprite: {fileID: 0}
+  StaminaL: {fileID: 0}
+  StaminaR: {fileID: 0}
   hpBar: {fileID: 0}
   emptyHpBar: {fileID: 0}
   moneyText: {fileID: 0}
   moneyAnim: {fileID: 0}
+  onCharMoneyText: {fileID: 0}
   shieldGFX: {fileID: 0}
   blockBubble: {fileID: 0}
   windUpBar: {fileID: 0}
@@ -18398,6 +18500,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pirate
+      objectReference: {fileID: 0}
+    - target: {fileID: 1529197033243106660, guid: 0556bedcb9005f74f8cade17749986c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8480051597760634963, guid: 0556bedcb9005f74f8cade17749986c6,
         type: 3}
