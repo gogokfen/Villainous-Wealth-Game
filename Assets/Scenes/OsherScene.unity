@@ -6673,6 +6673,18 @@ Transform:
   - {fileID: 1612357582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &929220919 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7250674791003852997, guid: 39cc6b7727c6c3c459d821bc73c6fff2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5025964144888705764}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &938844977
 GameObject:
   m_ObjectHideFlags: 0
@@ -8952,37 +8964,41 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4327d969f6ca1694e9155df0bbb26cae, type: 3}
   redPlayerName: {fileID: 507835637}
   redPlayerCoins: {fileID: 507835635}
-  redPlayerCoinsRanking: {fileID: 0}
+  redPlayerCoinsRanking: {fileID: 3551997310285514238}
   redPlayerKills: {fileID: 507835634}
-  redPlayerRank: {fileID: 0}
+  redPlayerRank: {fileID: 3551997310285514238}
   redPlayerPortrait: {fileID: 507835636}
-  redPlayerPortraitRanking: {fileID: 0}
-  redRankingUI: {fileID: 0}
+  redPlayerPortraitRanking: {fileID: 929220919}
+  redRankingUI: {fileID: 2930176194816967338}
   greenPlayerName: {fileID: 1802063059}
   greenPlayerCoins: {fileID: 1802063057}
-  greenPlayerCoinsRanking: {fileID: 0}
+  greenPlayerCoinsRanking: {fileID: 3551997310285514238}
   greenPlayerKills: {fileID: 1802063056}
-  greenPlayerRank: {fileID: 0}
+  greenPlayerRank: {fileID: 3551997310285514238}
   greenPlayerPortrait: {fileID: 1802063058}
-  greenPlayerPortraitRanking: {fileID: 0}
-  greenRankingUI: {fileID: 0}
+  greenPlayerPortraitRanking: {fileID: 929220919}
+  greenRankingUI: {fileID: 2930176194816967338}
   bluePlayerName: {fileID: 734473610}
   bluePlayerCoins: {fileID: 734473608}
-  bluePlayerCoinsRanking: {fileID: 0}
+  bluePlayerCoinsRanking: {fileID: 3551997310285514238}
   bluePlayerKills: {fileID: 734473607}
-  bluePlayerRank: {fileID: 0}
+  bluePlayerRank: {fileID: 3551997310285514238}
   bluePlayerPortrait: {fileID: 734473609}
-  bluePlayerPortraitRanking: {fileID: 0}
-  blueRankingUI: {fileID: 0}
+  bluePlayerPortraitRanking: {fileID: 929220919}
+  blueRankingUI: {fileID: 2930176194816967338}
   yellowPlayerName: {fileID: 638228546}
   yellowPlayerCoins: {fileID: 638228544}
   yellowPlayerCoinsRanking: {fileID: 0}
   yellowPlayerKills: {fileID: 638228543}
-  yellowPlayerRank: {fileID: 0}
+  yellowPlayerRank: {fileID: 3551997310285514238}
   yellowPlayerPortrait: {fileID: 638228545}
-  yellowPlayerPortraitRanking: {fileID: 0}
-  yellowRankingUI: {fileID: 0}
-  rankingTransforms: []
+  yellowPlayerPortraitRanking: {fileID: 929220919}
+  yellowRankingUI: {fileID: 2930176194816967338}
+  rankingTransforms:
+  - {fileID: 2930176194816967338}
+  - {fileID: 1610063525}
+  - {fileID: 1610063525}
+  - {fileID: 1610063525}
   playerCount: 0
 --- !u!114 &1206977472
 MonoBehaviour:
@@ -12006,6 +12022,12 @@ Transform:
   - {fileID: 2132304915}
   m_Father: {fileID: 162726734}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &1610063525 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7490752717302668098, guid: d38b44200e5f111489b849ea54d87ac0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2054139929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1612357581
 GameObject:
   m_ObjectHideFlags: 0
@@ -18504,7 +18526,7 @@ PrefabInstance:
     - target: {fileID: 1529197033243106660, guid: 0556bedcb9005f74f8cade17749986c6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8480051597760634963, guid: 0556bedcb9005f74f8cade17749986c6,
         type: 3}

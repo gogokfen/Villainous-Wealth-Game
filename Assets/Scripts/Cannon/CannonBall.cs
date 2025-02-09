@@ -29,6 +29,7 @@ public class CannonBall : WeaponBase
             SC.enabled = true;
             explosionVFX.transform.position += Vector3.up / 4; 
             explosionVFX.transform.SetParent(null);
+            explosionVFX.transform.rotation = Quaternion.identity;
             explosionVFX.Play();
             Destroy(explosionVFX.gameObject, 3);
 

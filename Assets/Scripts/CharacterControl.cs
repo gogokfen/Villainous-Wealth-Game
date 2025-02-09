@@ -1577,6 +1577,7 @@ public class CharacterControl : MonoBehaviour
                             //Leaderboard.singleton.ModifyMoney(attackingPlayer, 5); // giving money to the killer
                         }
                         OutTheRound();
+                        DeadStop();
                     }
 
                     Leaderboard.singleton.StopForwardMomentum(attackingPlayer);
@@ -1586,12 +1587,15 @@ public class CharacterControl : MonoBehaviour
                     hpBar.fillAmount = hp / 10f;
                     //originalHpBarPos = hpBar.transform.position;
                     charAnim.SetTrigger("DMG");
+                    //charAnim.SetTrigger("Roll");
+                    //charAnim.SetTrigger("Punch1");
+                    //charAnim.Play("Punching");
+                    //charAnim.Play("Death");
 
                     if (!dead)
                     {
                         headColor = Color.red;
                         paintHead = true;
-                        DeadStop();
                     }
 
 
@@ -1700,6 +1704,7 @@ public class CharacterControl : MonoBehaviour
                 hp = hp - damageBasedOnDistance;
                 //hpText.text = ("HP: " + hp);
                 hpBar.fillAmount = hp / 10f;
+                charAnim.SetTrigger("DMG");
 
                 if (!dead)
                 {
@@ -1781,6 +1786,7 @@ public class CharacterControl : MonoBehaviour
 
                 hp = hp - damageBasedOnDistance;
                 hpBar.fillAmount = hp / 10f;
+                charAnim.SetTrigger("DMG");
 
                 if (!dead)
                 {
