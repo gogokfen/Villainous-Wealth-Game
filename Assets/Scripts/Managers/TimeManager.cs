@@ -36,4 +36,17 @@ public class TimeManager : MonoBehaviour
         timer = duration;
         start = true;
     }
+
+    public void StopTime()
+    {
+        Time.timeScale = 0;
+        timer = float.MaxValue;
+        start = true;
+    }
+    public void ResumeTime()
+    {
+        Time.timeScale = 1;
+        timer = 0;
+        start = false;
+    }
 }

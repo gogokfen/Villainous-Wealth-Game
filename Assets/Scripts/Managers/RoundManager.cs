@@ -95,11 +95,13 @@ public class RoundManager : MonoBehaviour
                 StartCoroutine(shopStall.StallTime());
                 shopManager.WantedPosters();
                 yield return new WaitUntil(() => shopStall.shoppingTime == true);
-                TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
+                //TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
+                TimeManager.instance.StopTime();
                 SoundManager.singleton.MaloMart(); //plays Shop Music
                 Leaderboard.singleton.DisableCharacterControl();
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
+                TimeManager.instance.ResumeTime();
                 shopStall.shoppingTime = false;
                 PlayerManager.instance.roundOver = false; //resets the bool for the next round
                 Leaderboard.singleton.NextRound(); //resets "dead" players prefabs, HP, and positions

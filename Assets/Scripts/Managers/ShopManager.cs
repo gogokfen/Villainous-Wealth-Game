@@ -11,6 +11,7 @@ public class ShopManager : MonoBehaviour
     int defaultButtonIndex = 0;
     public GameObject shopUI;
     public float shopTimer;
+    private float internalShopTimer;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] GameObject[] playerShopUI;
     int shopUIIndex;
@@ -21,6 +22,11 @@ public class ShopManager : MonoBehaviour
     private List<MultiplayerEventSystem> poorPlayers = new List<MultiplayerEventSystem>();
     [SerializeField] Image wantedPosterPortrait;
     [SerializeField] Image wantedPosterTransition;
+
+    private bool richShop = false;
+    private bool poorShop = false;
+    private int poorplayersbought = 0;
+    private bool shortenTimer = false;
     private void Start()
     {
         // //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
@@ -55,6 +61,12 @@ public class ShopManager : MonoBehaviour
     //     StartCoroutine(TimerCloseShop(shopTimer));
     // }
 
+    private void Update()
+    {
+        if (shopUI.activeSelf)
+            internalShopTimer -= Time.unscaledDeltaTime;
+    }
+
     public void Shopping()
     {
         shopUI.SetActive(true);
@@ -83,27 +95,36 @@ public class ShopManager : MonoBehaviour
                     poorPlayers.Add(playerEventSystem);
                 }
             }
-            StartCoroutine(RichShopFirst(shopTimer));
         }
+            StartCoroutine(RichShopFirst());
     }
 
-    private IEnumerator RichShopFirst(float delay)
+    private IEnumerator RichShopFirst()
     {
+        internalShopTimer = shopTimer;
         richestEventSystem.SetSelectedGameObject(null);
         richestEventSystem.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
-        float remainingTime = delay;
-        while (remainingTime > 0)
+        richShop = true;
+        while (internalShopTimer > 0)
         {
-            timerText.text = $"Timer: {remainingTime.ToString("F1")}";
-            remainingTime -= Time.unscaledDeltaTime;
-            if (remainingTime <= 5f)
+            if (shortenTimer && internalShopTimer >= 2)
+            {
+                internalShopTimer = 2;
+                shortenTimer = false;
+            }
+
+            timerText.text = $"Timer: {internalShopTimer.ToString("F1")}";
+
+            if (internalShopTimer <= 5f)
             {
                 animator.Play("ShopTimer");
             }
             yield return null;
         }
+        richShop = false;
+        shortenTimer = false;
         richestEventSystem.SetSelectedGameObject(null);
-        StartCoroutine(PoorShopSecond(10f));
+        StartCoroutine(PoorShopSecond());
         //richestPI.actions["UI/Submit"].performed -= ctx => OnSubmit(richestPI);
         //shopUI.SetActive(false);
         //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
@@ -117,8 +138,10 @@ public class ShopManager : MonoBehaviour
         //     }
         // }
     }
-    private IEnumerator PoorShopSecond(float delay)
+    private IEnumerator PoorShopSecond()
     {
+        internalShopTimer = shopTimer;
+        poorShop = true;
         Leaderboard.singleton.AnnounceText("Now the poor");
         foreach (MultiplayerEventSystem player in poorPlayers)
         {
@@ -126,18 +149,21 @@ public class ShopManager : MonoBehaviour
             player.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
             defaultButtonIndex++;
         }
-        float remainingTime = delay;
-        while (remainingTime > 0)
+        while (internalShopTimer > 0)
         {
-            timerText.text = $"Timer: {remainingTime.ToString("F1")}";
-            remainingTime -= Time.unscaledDeltaTime;
-            if (remainingTime <= 5f)
+            timerText.text = $"Timer: {internalShopTimer.ToString("F1")}";
+
+            if (internalShopTimer <= 5f)
             {
                 animator.Play("ShopTimer");
             }
+            if (shortenTimer && internalShopTimer >= 2)
+            {
+                internalShopTimer = 2;
+                shortenTimer = false;
+            }
             yield return null;
         }
-
         PlayerInput[] playerInputs = Leaderboard.singleton.GetPlayerInputs();
         foreach (PlayerInput player in playerInputs)
         {
@@ -148,6 +174,8 @@ public class ShopManager : MonoBehaviour
                 playerEventSystem.SetSelectedGameObject(null);
             }
         }
+        poorShop = false;
+        shortenTimer = false;
         shopUI.SetActive(false);
         poorPlayers.Clear();
     }
@@ -200,6 +228,19 @@ public class ShopManager : MonoBehaviour
                     selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice += 3;
                     selectedButton.GetComponent<ButtonSelectionTracker>().priceText.text = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice.ToString();
                     WantedPosters();
+                    if (richShop)
+                    {
+                        shortenTimer = true;
+                    }
+                    if (poorShop)
+                    {
+                        poorplayersbought++;
+                        if (poorplayersbought == poorPlayers.Count)
+                        {
+                            shortenTimer = true;
+                            poorplayersbought = 0;
+                        }
+                    }
                     //playerEventSystem.SetSelectedGameObject(null);
                 }
             }
