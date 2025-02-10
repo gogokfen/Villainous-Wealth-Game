@@ -45,6 +45,8 @@ public class PlayerManager : MonoBehaviour
     public Material yellowMaterial;
     [EndFoldout]
 
+    [SerializeField] GameObject[] menuPlayerNumberVisual;
+
     private void Awake()
     {
         instance = this;
@@ -76,6 +78,8 @@ public class PlayerManager : MonoBehaviour
                 playerNumber = 1;
                 joinedDevices.Clear();
                 readyPlayers = 0;
+                for (int i = 0; i < menuPlayerNumberVisual.Length; i++)
+                    menuPlayerNumberVisual[i].SetActive(false);
             }
         }
         InputSystem.onDeviceChange += (device, change) =>
@@ -120,6 +124,7 @@ public class PlayerManager : MonoBehaviour
                     defaultCharacterButton.GetComponent<CustomizeCharacter>().FirstTimeSelection(playerNumber);
                     //MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
                     //showcaseIndex++;
+                    menuPlayerNumberVisual[playerNumber-1].SetActive(true);
                     playerNumber++;
                 }
             }

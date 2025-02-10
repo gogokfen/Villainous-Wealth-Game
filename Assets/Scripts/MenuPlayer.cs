@@ -50,6 +50,7 @@ public class MenuPlayer : MonoBehaviour
             selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
             playerEventSystem.SetSelectedGameObject(null);
             selectedButton.GetComponent<CustomizeCharacter>().picked = true;
+            selectedButton.GetComponent<CustomizeCharacter>().CheckIfUnselect();
             if (ready == false)
             {
                 ready = true;

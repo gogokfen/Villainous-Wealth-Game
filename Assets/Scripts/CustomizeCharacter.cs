@@ -21,6 +21,13 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
     {
         button = GetComponent<Button>();
     }
+
+    public void CheckIfUnselect()
+    {
+        if (picked && (!redSelectionIcon.activeSelf && !greenSelectionIcon.activeSelf && !blueSelectionIcon.activeSelf && !yellowSelectionIcon.activeSelf))
+            button.interactable = false;
+    }
+
     public void OnSelect(BaseEventData eventData)
     {
         var menuPlayer = eventData.currentInputModule?.GetComponent<MenuPlayer>();
@@ -31,21 +38,25 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
                 redSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[0].sprite = ChangeShowcase(gameObject.name);
                 MenuManager.instance.selectedCharacterName[0].text = NameSelectedButton(gameObject.name);
+                pickedUI.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
                 break;
             case 2:
                 greenSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[1].sprite = ChangeShowcase(gameObject.name);
                 MenuManager.instance.selectedCharacterName[1].text = NameSelectedButton(gameObject.name);
+                pickedUI.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
                 break;
             case 3:
                 blueSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[2].sprite = ChangeShowcase(gameObject.name);
                 MenuManager.instance.selectedCharacterName[2].text = NameSelectedButton(gameObject.name);
+                pickedUI.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
                 break;
             case 4:
                 yellowSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[3].sprite = ChangeShowcase(gameObject.name);
                 MenuManager.instance.selectedCharacterName[3].text = NameSelectedButton(gameObject.name);
+                pickedUI.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
                 break;
         }
     }
@@ -59,6 +70,9 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
             blueSelectionIcon.SetActive(false);
         else if (eventData.currentInputModule.GetComponent<MenuPlayer>().playerNum == 4)
             yellowSelectionIcon.SetActive(false);
+
+        if (picked && !(redSelectionIcon.activeSelf && greenSelectionIcon.activeSelf && blueSelectionIcon.activeSelf && yellowSelectionIcon.activeSelf))
+            button.interactable = false;
     }
     private void OnDisable()
     {

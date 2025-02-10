@@ -37,6 +37,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField] GameObject optionsMenu;
     [SerializeField] TextMeshProUGUI roundText;
 
+    [SerializeField] Animator readyAnim;
+
     public float holdDuration = 1.5f;
     private float holdTime = 0f;
     public Image holdImage;
@@ -246,11 +248,15 @@ public class MenuManager : MonoBehaviour
         {
             startButton.interactable = true;
             requirementText.text = "Lets do this!";
+            readyAnim.gameObject.SetActive(true);
+            readyAnim.Play("ShopTimer");
         }
         else
         {
             startButton.interactable = false;
             requirementText.text = "Not enough players are ready";
+            readyAnim.StopPlayback();
+            readyAnim.gameObject.SetActive(false);
         }
     }
 
