@@ -30,18 +30,22 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
             case 1:
                 redSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[0].sprite = ChangeShowcase(gameObject.name);
+                MenuManager.instance.selectedCharacterName[0].text = NameSelectedButton(gameObject.name);
                 break;
             case 2:
                 greenSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[1].sprite = ChangeShowcase(gameObject.name);
+                MenuManager.instance.selectedCharacterName[1].text = NameSelectedButton(gameObject.name);
                 break;
             case 3:
                 blueSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[2].sprite = ChangeShowcase(gameObject.name);
+                MenuManager.instance.selectedCharacterName[2].text = NameSelectedButton(gameObject.name);
                 break;
             case 4:
                 yellowSelectionIcon.SetActive(true);
                 MenuManager.instance.playerShowcases[3].sprite = ChangeShowcase(gameObject.name);
+                MenuManager.instance.selectedCharacterName[3].text = NameSelectedButton(gameObject.name);
                 break;
         }
     }
@@ -71,20 +75,24 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
         {
             redSelectionIcon.SetActive(true);
             MenuManager.instance.playerShowcases[0].sprite = ChangeShowcase(gameObject.name);
+            MenuManager.instance.selectedCharacterName[0].text = NameSelectedButton(gameObject.name);
         }
         else if (num == 2)
         {
             greenSelectionIcon.SetActive(true);
             MenuManager.instance.playerShowcases[1].sprite = ChangeShowcase(gameObject.name);
+            MenuManager.instance.selectedCharacterName[1].text = NameSelectedButton(gameObject.name);
         }
         else if (num == 3)
         {
             MenuManager.instance.playerShowcases[2].sprite = ChangeShowcase(gameObject.name);
+            MenuManager.instance.selectedCharacterName[2].text = NameSelectedButton(gameObject.name);
             blueSelectionIcon.SetActive(true);
         }
         else if (num == 4)
         {
             MenuManager.instance.playerShowcases[3].sprite = ChangeShowcase(gameObject.name);
+            MenuManager.instance.selectedCharacterName[3].text = NameSelectedButton(gameObject.name);
             yellowSelectionIcon.SetActive(true);
         }
     }
@@ -94,7 +102,7 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
         {
             case "Dragon":
                 return MenuManager.instance.showcaseImages[0];
-            case "MonopolyDude":
+            case "Capitalist":
                 return MenuManager.instance.showcaseImages[1];
             case "Raccoon":
                 return MenuManager.instance.showcaseImages[2];
@@ -112,6 +120,34 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
                 return MenuManager.instance.showcaseImages[8];
             case "Shark":
                 return MenuManager.instance.showcaseImages[9];
+            default: return null;
+        }
+    }
+
+    private string NameSelectedButton(string name)
+    {
+        switch (name)
+        {
+        case "Dragon":
+                return "Bob";
+            case "Capitalist":
+                return "Cappy Talist";
+            case "Raccoon":
+                return "Robin Banks";
+            case "Conquistadorette":
+                return "Emba Zelment";
+            case "Orc":
+                return "Buzzuz";
+            case "Cat":
+                return "Tabby Treasure";
+            case "Leprechaun":
+                return "Goldie Gone";
+            case "Mafia":
+                return "Tex Avesion";
+            case "Pirate":
+                return "Gol D. Iger";
+            case "Shark":
+                return "Loany";
             default: return null;
         }
     }

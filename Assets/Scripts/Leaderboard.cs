@@ -398,7 +398,7 @@ public class Leaderboard : MonoBehaviour
             case "Dragon":
                 return portraits[0];
 
-            case "Monopoly Dude":
+            case "Capitalist":
                 return portraits[1];
 
             case "Raccoon":

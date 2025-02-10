@@ -16,54 +16,54 @@ public class SoundManager : MonoBehaviour
     private int currentClipIndex = 0;
     bool isPaused = false;
 
-    [Tab("Melee")]
-    [SerializeField] AudioClip melee1;
-    [SerializeField] AudioClip melee2;
-    [SerializeField] AudioClip melee3;
+    // [Tab("Melee")]
+    // [SerializeField] AudioClip melee1;
+    // [SerializeField] AudioClip melee2;
+    // [SerializeField] AudioClip melee3;
 
-    [Tab("Gunshots")]
-    [SerializeField] AudioClip gunShot;
-    [SerializeField] AudioClip lazerGunShot;
-    [SerializeField] AudioClip blunderbussShot;
-    [SerializeField] AudioClip blunderbussReload;
+    // [Tab("Gunshots")]
+    // [SerializeField] AudioClip gunShot;
+    // [SerializeField] AudioClip lazerGunShot;
+    // [SerializeField] AudioClip blunderbussShot;
+    // [SerializeField] AudioClip blunderbussReload;
 
-    [Tab("Boomerang")]
-    [SerializeField] AudioClip boomerangThrow;
-    [SerializeField] AudioClip boomerangCatch;
+    // [Tab("Boomerang")]
+    // [SerializeField] AudioClip boomerangThrow;
+    // [SerializeField] AudioClip boomerangCatch;
 
-    [Tab("Mine")]
-    [SerializeField] AudioClip minePlace;
-    [SerializeField] AudioClip mineExplode;
+    // [Tab("Mine")]
+    // [SerializeField] AudioClip minePlace;
+    // [SerializeField] AudioClip mineExplode;
 
-    [Tab("Bomb")]
-    [SerializeField] AudioClip bombThrow;
-    [SerializeField] AudioClip bombExplode;
+    // [Tab("Bomb")]
+    // [SerializeField] AudioClip bombThrow;
+    // [SerializeField] AudioClip bombExplode;
 
-    [Tab("Taking Damage")]
-    [SerializeField] AudioClip takeDamage1;
-    [SerializeField] AudioClip takeDamage2;
-    [SerializeField] AudioClip takeDamage3;
+    // [Tab("Taking Damage")]
+    // [SerializeField] AudioClip takeDamage1;
+    // [SerializeField] AudioClip takeDamage2;
+    // [SerializeField] AudioClip takeDamage3;
 
-    [Tab("Death")]
-    [SerializeField] AudioClip death;
+    // [Tab("Death")]
+    // [SerializeField] AudioClip death;
 
-    [Tab("Coins")]
-    [SerializeField] AudioClip coinPickup1;
-    [SerializeField] AudioClip coinPickup2;
-    [SerializeField] AudioClip coinPickup3;
+    // [Tab("Coins")]
+    // [SerializeField] AudioClip coinPickup1;
+    // [SerializeField] AudioClip coinPickup2;
+    // [SerializeField] AudioClip coinPickup3;
 
-    [Tab("Menu")]
-    [SerializeField] AudioClip announcerBoxhead;
-    [SerializeField] AudioClip announcerDragon;
-    [SerializeField] AudioClip announcerMonopolyDude;
-    [SerializeField] AudioClip announcerTestDummy;
+    // [Tab("Menu")]
+    // [SerializeField] AudioClip announcerBoxhead;
+    // [SerializeField] AudioClip announcerDragon;
+    // [SerializeField] AudioClip announcerMonopolyDude;
+    // [SerializeField] AudioClip announcerTestDummy;
 
 
-    [Tab("Misc")]
-    [SerializeField] AudioClip roll;
-    [SerializeField] AudioClip shield;
-    [SerializeField] AudioClip chestOpen;
-    [SerializeField] AudioClip cannonShot;
+    // [Tab("Misc")]
+    // [SerializeField] AudioClip roll;
+    // [SerializeField] AudioClip shield;
+    // [SerializeField] AudioClip chestOpen;
+    // [SerializeField] AudioClip cannonShot;
     void Start()
     {
         sfxAS = GetComponent<AudioSource>();
@@ -73,22 +73,22 @@ public class SoundManager : MonoBehaviour
     {
         singleton = this;
     }
-    public void AnnounceBoxhead()
-    {
-        sfxAS.PlayOneShot(announcerBoxhead);
-    }
-    public void AnnounceDragon()
-    {
-        sfxAS.PlayOneShot(announcerDragon);
-    }
-    public void AnnounceTestDummy()
-    {
-        sfxAS.PlayOneShot(announcerTestDummy);
-    }
-    public void AnnounceMonopolyDude()
-    {
-        sfxAS.PlayOneShot(announcerMonopolyDude);
-    }
+    // public void AnnounceBoxhead()
+    // {
+    //     sfxAS.PlayOneShot(announcerBoxhead);
+    // }
+    // public void AnnounceDragon()
+    // {
+    //     sfxAS.PlayOneShot(announcerDragon);
+    // }
+    // public void AnnounceTestDummy()
+    // {
+    //     sfxAS.PlayOneShot(announcerTestDummy);
+    // }
+    // public void AnnounceMonopolyDude()
+    // {
+    //     sfxAS.PlayOneShot(announcerMonopolyDude);
+    // }
 
     // public void Melee1(Vector3 soundLocation)
     // {
@@ -138,16 +138,16 @@ public class SoundManager : MonoBehaviour
     //     sfxAS.PlayOneShot(boomerangCatch);
     //     transform.position = soundLocation;
     // }
-    public void MinePlace(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(minePlace);
-        transform.position = soundLocation;
-    }
-    public void MineExplode(Vector3 soundLocation)
-    {
-        sfxAS.PlayOneShot(mineExplode);
-        transform.position = soundLocation;
-    }
+    // public void MinePlace(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(minePlace);
+    //     transform.position = soundLocation;
+    // }
+    // public void MineExplode(Vector3 soundLocation)
+    // {
+    //     sfxAS.PlayOneShot(mineExplode);
+    //     transform.position = soundLocation;
+    // }
     // public void BombThrow(Vector3 soundLocation)
     // {
     //     sfxAS.PlayOneShot(bombThrow);
@@ -186,11 +186,11 @@ public class SoundManager : MonoBehaviour
     //     if (random == 2)
     //         sfxAS.PlayOneShot(coinPickup3);
     // }
-    public void CannonShot(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        sfxAS.PlayOneShot(cannonShot);
-    }
+    // public void CannonShot(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     sfxAS.PlayOneShot(cannonShot);
+    // }
     // public void ChestOpen(Vector3 soundLocation)
     // {
     //     transform.position = soundLocation;
@@ -201,11 +201,11 @@ public class SoundManager : MonoBehaviour
     //     transform.position = soundLocation;
     //     sfxAS.PlayOneShot(roll);
     // }
-    public void Shield(Vector3 soundLocation)
-    {
-        transform.position = soundLocation;
-        sfxAS.PlayOneShot(shield);
-    }
+    // public void Shield(Vector3 soundLocation)
+    // {
+    //     transform.position = soundLocation;
+    //     sfxAS.PlayOneShot(shield);
+    // }
 
     public void PlayNextClip()
     {

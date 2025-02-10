@@ -5,6 +5,7 @@ using VInspector;
 
 using UnityEngine.UI;
 using TMPro;
+using MelenitasDev.SoundsGood;
 
 
 public class CharacterControl : MonoBehaviour
@@ -222,6 +223,7 @@ public class CharacterControl : MonoBehaviour
     bool keyboardMouse = false;
     [SerializeField] GameObject mouseIndicator;
     [SerializeField] GameObject weaponScripts;
+    private bool chargeSFX;
 
     private void Awake()
     {
@@ -386,7 +388,8 @@ public class CharacterControl : MonoBehaviour
         bodyPartsGFX[6].SetActive(false);
         bodyPartsGFX[7].SetActive(false);
         //SoundManager.singleton.Death(transform.position);
-        SoundManager.singleton.PlayClip("Death", transform.position, 1f, false, true);
+        SoundManager.singleton.PlayClip($"{HeadGFX.name}Death", transform.position, 1f, true, true);
+        //SoundManager.singleton.PlayClip("Death", transform.position, 1f, false, true);
 
         PlayerManager.instance.PlayerCheck();
         if (cameraManagerIsOn)
@@ -652,7 +655,7 @@ public class CharacterControl : MonoBehaviour
             blockCD = 3.5f;
             holdTimer = 0.75f;
 
-            SoundManager.singleton.Shield(transform.position);
+            //SoundManager.singleton.Shield(transform.position);
         }
 
         
@@ -693,7 +696,8 @@ public class CharacterControl : MonoBehaviour
             StaminaR.gameObject.SetActive(true);
 
             //SoundManager.singleton.Roll(transform.position);
-            SoundManager.singleton.PlayClip("Roll", transform.position, 1f, false, true);
+            SoundManager.singleton.PlayClip($"{HeadGFX.name}Dash", transform.position, 1f, true, true);
+
 
             charAnim.SetBool("StrongPunch", false); //making sure you can't strong punch after rolling
             powerPunchWindup = 0;
@@ -1129,8 +1133,8 @@ public class CharacterControl : MonoBehaviour
                     //lArmAnim.Play("Punch1");
                     //charAnim.Play("Punching");
                     charAnim.SetTrigger("Punch1");
-                    //SoundManager.singleton.Melee1(transform.position);
-                    SoundManager.singleton.PlayClip("Melee1", transform.position, 1f, true, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}Melee1", transform.position, 1f, true, true);
+
 
                     /*
                     if (!(mouseMovement || isTargetDummy))
@@ -1151,7 +1155,8 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("PunchingTwo");
                     charAnim.SetTrigger("Punch2");
                     //SoundManager.singleton.Melee2(transform.position);
-                    SoundManager.singleton.PlayClip("Melee2", transform.position, 1f, true, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}Melee2", transform.position, 1f, true, true);
+
                 }
                 else if (animState == AS.Punch2Recovery) //animState == AS.Punch2Active || 
                 {
@@ -1168,7 +1173,8 @@ public class CharacterControl : MonoBehaviour
                     //charAnim.Play("PunchingThree");
                     charAnim.SetTrigger("Punch3");
                     //SoundManager.singleton.Melee3(transform.position);
-                    SoundManager.singleton.PlayClip("Melee3", transform.position, 1f, true, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}Melee3", transform.position, 1f, true, true);
+
                 }
             }
             else if (equippedWeapon == Weapons.Sword)
@@ -1185,7 +1191,8 @@ public class CharacterControl : MonoBehaviour
                     animState = AS.Sword1Windup;
                     charAnim.SetTrigger("Sword1");
                     //SoundManager.singleton.Melee1(transform.position);
-                    SoundManager.singleton.PlayClip("Melee1", transform.position, 1f, true, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}Sword1", transform.position, 1f, true, true);
+
                 }
                 else if (animState == AS.Sword1Recovery) //animState == AS.Punch1Active ||
                 {
@@ -1198,7 +1205,7 @@ public class CharacterControl : MonoBehaviour
                     animState = AS.Sword2Windup;
                     charAnim.SetTrigger("Sword2");
                     //SoundManager.singleton.Melee2(transform.position);
-                    SoundManager.singleton.PlayClip("Melee2", transform.position, 1f, true, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}Sword2", transform.position, 1f, true, true);
                 }
 
             }
@@ -1333,6 +1340,11 @@ public class CharacterControl : MonoBehaviour
 
         if (rightPunchAttackState == 1 && holdTimer <= 0) //&& equippedWeapon == Weapons.Fist
         {
+            if (!chargeSFX)
+            {
+                SoundManager.singleton.PlayClip($"{HeadGFX.name}Charge", transform.position, 1f, true, true);
+                chargeSFX = true;
+            }
             if (equippedWeapon != Weapons.Fist)
             {
                 SwapWeapon();
@@ -1396,9 +1408,11 @@ public class CharacterControl : MonoBehaviour
                 //charAnim.Play("StrongPunchRelease");
 
                 charAnim.SetTrigger("StrongPunchRelease");
+                SoundManager.singleton.PlayClip($"{HeadGFX.name}Throw", transform.position, 1f, true, true);
                 charAnim.SetBool("StrongPunch", false);
 
                 powerPunchWindup = 0;
+                chargeSFX = false;
             }
             else
             {
@@ -1412,6 +1426,7 @@ public class CharacterControl : MonoBehaviour
                 //rArm.localPosition = new Vector3(0.75f, 0, 0);
                 charAnim.SetBool("StrongPunch", false);
                 powerPunchWindup = 0;
+                chargeSFX = false;
             }
         }
 
@@ -1644,15 +1659,18 @@ public class CharacterControl : MonoBehaviour
                     {
                         if (damage<=2)
                         {
-                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                            SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
+
                         }
                         else if (damage<=4)
                         {
-                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                            SoundManager.singleton.PlayClip($"{HeadGFX.name}HitM", transform.position, 1f, true, true);
+
                         }
                         else //6
                         {
-                            SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                            SoundManager.singleton.PlayClip($"{HeadGFX.name}HitL", transform.position, 1f, true, true);
+
                         }
 
                     }
@@ -1728,15 +1746,18 @@ public class CharacterControl : MonoBehaviour
 
                 if (damage <= 2)
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
+
                 }
                 else if (damage <= 4)
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitM", transform.position, 1f, true, true);
+
                 }
                 else //6
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitL", transform.position, 1f, true, true);
+
                 }
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
@@ -1801,15 +1822,18 @@ public class CharacterControl : MonoBehaviour
 
                 if (damage <= 2)
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
+
                 }
                 else if (damage <= 4)
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitM", transform.position, 1f, true, true);
+
                 }
                 else //6
                 {
-                    SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip($"{HeadGFX.name}HitL", transform.position, 1f, true, true);
+
                 }
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
@@ -1862,7 +1886,8 @@ public class CharacterControl : MonoBehaviour
                 }
 
                 //SoundManager.singleton.Damage(transform.position);
-                SoundManager.singleton.PlayClip("Damage", transform.position, 1f, false, true);
+                SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
+
 
                 if (!(keyboardMouse || isTargetDummy || mouseMovement))
                     RumbleManager.instance.RumblePulse(0.25f, 0.5f, 0.225f, PI);
@@ -2102,6 +2127,7 @@ public class CharacterControl : MonoBehaviour
     public void SetWinner()
     {
         winner = true;
+        SoundManager.singleton.PlayClip($"{HeadGFX.name}WinRound", transform.position, 1f, true, false);
     }
 
     /*

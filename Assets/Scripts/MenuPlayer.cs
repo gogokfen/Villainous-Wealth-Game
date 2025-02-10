@@ -1,3 +1,4 @@
+using MelenitasDev.SoundsGood;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -11,6 +12,7 @@ public class MenuPlayer : MonoBehaviour
     public bool ready;
     private PlayerInput PI;
     private GameObject selectedButton;
+    Sound announce;
 
     private void Start() 
     {
@@ -53,6 +55,7 @@ public class MenuPlayer : MonoBehaviour
                 playerEventSystem.GetComponent<MenuPlayer>().ready = true;
                 PlayerManager.instance.readyPlayers++;
             }
+            SoundManager.singleton.PlayClip($"{selectedButton.name}CS", transform.position, 1f, false, false);
         }
     }
 

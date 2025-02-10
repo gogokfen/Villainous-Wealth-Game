@@ -30,6 +30,7 @@ public class Boomerang : WeaponBase
     [SerializeField] Slider windUpSlider;
 
     int attackState = 0;
+    private bool chargeSFX;
 
     private void Start()
     {
@@ -83,9 +84,15 @@ public class Boomerang : WeaponBase
             windUpSlider.value = Mathf.InverseLerp(0, 35, windup * 65f);
 
             charging = true;
+            if (!chargeSFX)
+            {
+                SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Charge", transform.position, 1f, false, true);
+                chargeSFX = true;
+            }
         }
         if (attackState == -1 && canThrow) // use && canThrow
         {
+            chargeSFX = false;
             attackState = 0;
 
             windUpSlider.gameObject.SetActive(false);
@@ -132,9 +139,8 @@ public class Boomerang : WeaponBase
 
             windup = 0;
 
-            //SoundManager.singleton.BoomerangThrow(transform.position);
-            SoundManager.singleton.PlayClip("BoomerangThrow", transform.position, 1f, false, true);
-
+            SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Throw", transform.position, 1f, true, true);
+            
             charging = false;
             releasing = true;
         }

@@ -567,8 +567,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29971445}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.010202837, y: -0, z: -0.074777015, w: 0.99714816}
-  m_LocalPosition: {x: -53.33983, y: 2.2232301, z: -89.69009}
+  m_LocalRotation: {x: -0.0074826265, y: -0, z: -0.060483955, w: 0.99814117}
+  m_LocalPosition: {x: -53.33983, y: 1.1253355, z: -89.69009}
   m_LocalScale: {x: 2.2222226, y: 2.2222223, z: 2.222222}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10730,8 +10730,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611445186}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09869404, y: -0, z: -0.032133557, w: 0.9945989}
-  m_LocalPosition: {x: -49.00006, y: 1.7766564, z: -64.80004}
+  m_LocalRotation: {x: 0.18083523, y: -0, z: -0.05356981, w: 0.9820534}
+  m_LocalPosition: {x: -49.00006, y: 0.58209264, z: -64.80004}
   m_LocalScale: {x: 2.2222226, y: 2.2222223, z: 2.222222}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10882,8 +10882,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 613069563}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.060873915, y: -0, z: -0.016209593, w: 0.99801385}
-  m_LocalPosition: {x: 65.2, y: 2.0290864, z: 31.700005}
+  m_LocalRotation: {x: 0.04405569, y: -0, z: -0.027462903, w: 0.99865156}
+  m_LocalPosition: {x: 65.2, y: 0.9198181, z: 31.700005}
   m_LocalScale: {x: 2.2222223, y: 2.2222223, z: 2.2222223}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15603,8 +15603,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 875782637}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.042577285, y: -0, z: -0.018900419, w: 0.9989144}
-  m_LocalPosition: {x: 38.119987, y: 1.0311538, z: -117.69016}
+  m_LocalRotation: {x: -0.07462368, y: -0, z: 0.038040295, w: 0.99648595}
+  m_LocalPosition: {x: 38.119987, y: 1.4849081, z: -117.69016}
   m_LocalScale: {x: 2.2222226, y: 2.2222226, z: 2.2222223}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26164,8 +26164,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1128876261}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.016718742, y: -0, z: 0.08825444, w: 0.9959577}
-  m_LocalPosition: {x: 105.70001, y: 3.0020938, z: -39.800007}
+  m_LocalRotation: {x: 0.06966615, y: -0, z: -0.020681921, w: 0.997356}
+  m_LocalPosition: {x: 105.70001, y: 2.5429924, z: -39.800007}
   m_LocalScale: {x: 2.2222223, y: 2.2222223, z: 2.2222223}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27423,34 +27423,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e7a18b14c82187147a4089e71d590da7, type: 3}
   - {fileID: 8300000, guid: 1fc3aaa3dabea7a4dae05770e91e5b7c, type: 3}
   maloMart: {fileID: 8300000, guid: fd33395a21e2e804abdff71d3ea012c3, type: 3}
-  melee1: {fileID: 8300000, guid: 214f6690f8dcc05478cbee324f9a88e0, type: 3}
-  melee2: {fileID: 8300000, guid: 7626399fe3b966145905bcc492bfc190, type: 3}
-  melee3: {fileID: 8300000, guid: 83f480ad3b916984c8fa481b4822cf3f, type: 3}
-  gunShot: {fileID: 8300000, guid: b941ba4c7c9ebb64dbca3e05291464a0, type: 3}
-  lazerGunShot: {fileID: 8300000, guid: cfbf112bbe1ef934e8362f44eae19825, type: 3}
-  blunderbussShot: {fileID: 8300000, guid: 099d0d609b0668344a72fcf682372fbc, type: 3}
-  blunderbussReload: {fileID: 8300000, guid: 8751f88d6e25eea4e95746444a9cdf39, type: 3}
-  boomerangThrow: {fileID: 8300000, guid: 136869339d466a848a22ba9342071062, type: 3}
-  boomerangCatch: {fileID: 8300000, guid: cb4d5c09d0a8e4548803b1e36fc615fb, type: 3}
-  minePlace: {fileID: 8300000, guid: d05dc8599e7de8b41877422fe811ab1c, type: 3}
-  mineExplode: {fileID: 8300000, guid: e8920d89a2f62974082b3750dca6086c, type: 3}
-  bombThrow: {fileID: 8300000, guid: d9a4e06304eb9f546b167d05032fa636, type: 3}
-  bombExplode: {fileID: 8300000, guid: 3a2b08715b8ed8d438fd166abcbf965d, type: 3}
-  takeDamage1: {fileID: 8300000, guid: fc466a8b50fbaf64da18b58690cd5d84, type: 3}
-  takeDamage2: {fileID: 8300000, guid: 6ea88438654e7b84196cf56cd4957c50, type: 3}
-  takeDamage3: {fileID: 8300000, guid: 5caf53c21fc0816499122c9a946c3888, type: 3}
-  death: {fileID: 8300000, guid: 83b5054fd71df3945a365843e4270236, type: 3}
-  coinPickup1: {fileID: 8300000, guid: 72288b18559b8da419d59c9c88707eb6, type: 3}
-  coinPickup2: {fileID: 8300000, guid: c9f09fc034d12ad40a123a00413b5369, type: 3}
-  coinPickup3: {fileID: 8300000, guid: f6adde55f456ee54ca0ba81f6de69404, type: 3}
-  announcerBoxhead: {fileID: 0}
-  announcerDragon: {fileID: 0}
-  announcerMonopolyDude: {fileID: 0}
-  announcerTestDummy: {fileID: 0}
-  roll: {fileID: 8300000, guid: df2f5eae5ca1ae143a9b9b0389193f2d, type: 3}
-  shield: {fileID: 8300000, guid: c5d1fda041ffb614fbdb539fa98517d6, type: 3}
-  chestOpen: {fileID: 8300000, guid: 44b985dc6aea62c4995b105082674004, type: 3}
-  cannonShot: {fileID: 8300000, guid: 32d6954fa92fbf94496185b4dfae93ac, type: 3}
 --- !u!82 &1181432863
 AudioSource:
   m_ObjectHideFlags: 0
@@ -29902,8 +29874,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1280023102}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.108839154, y: -0, z: 0.014025162, w: 0.99396044}
-  m_LocalPosition: {x: 19.470015, y: 2.7506435, z: -117.24011}
+  m_LocalRotation: {x: 0.19956398, y: -0, z: -0.12875655, w: 0.9713887}
+  m_LocalPosition: {x: 19.470015, y: 1.9452795, z: -117.24011}
   m_LocalScale: {x: 2.2222223, y: 2.2222223, z: 2.2222226}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36769,8 +36741,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700924363}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.043987773, y: -0, z: -0.061816446, w: 0.99711776}
-  m_LocalPosition: {x: 104.7, y: 1.7977278, z: -70.1}
+  m_LocalRotation: {x: -0.011798762, y: -0, z: -0.08904666, w: 0.9959576}
+  m_LocalPosition: {x: 104.7, y: 0.951962, z: -70.1}
   m_LocalScale: {x: 2.2222223, y: 2.2222226, z: 2.2222223}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -54123,7 +54095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 570}
+  m_AnchoredPosition: {x: 0, y: 600}
   m_SizeDelta: {x: 5250, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &9091535071702235616

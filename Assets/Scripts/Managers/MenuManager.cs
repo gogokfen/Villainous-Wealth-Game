@@ -51,6 +51,7 @@ public class MenuManager : MonoBehaviour
     public Sprite[] showcaseImages;
     public Sprite joinShowcaseImage;
     public Image[] playerShowcases;
+    public TextMeshProUGUI[] selectedCharacterName;
     public EventSystem eventSystem;
 
     [Button("Go To Main Scene")]

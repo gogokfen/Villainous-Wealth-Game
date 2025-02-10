@@ -29,6 +29,7 @@ public class Grenade : WeaponBase
     [SerializeField] GameObject rangeIndicator;
     [SerializeField] GameObject rangeCenter;
     LineRenderer LR;
+    private bool chargeSFX;
 
     private void Start()
     {
@@ -104,6 +105,11 @@ public class Grenade : WeaponBase
             windUpSlider.value = Mathf.InverseLerp(0, 70,windup *90); //(0, 50,windup *75) //latest ver is 125
 
             charging = true;
+            if (!chargeSFX)
+            {
+                SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Charge", transform.position, 1f, true, true);
+                chargeSFX = true;
+            }
         }
         if (attackState == -1 && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
         {
@@ -133,7 +139,7 @@ public class Grenade : WeaponBase
             windup = 0;
 
             //SoundManager.singleton.BombThrow(transform.position);
-            SoundManager.singleton.PlayClip("GrenadeThrow", transform.position, 1f, false, true);
+            SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Throw", transform.position, 1f, true, true);
 
             charging = false;
             releasing = true;

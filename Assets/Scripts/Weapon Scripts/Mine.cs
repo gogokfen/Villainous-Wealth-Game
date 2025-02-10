@@ -78,7 +78,7 @@ public class Mine : WeaponBase
             }
             */
 
-            SoundManager.singleton.MinePlace(transform.position);
+            //SoundManager.singleton.MinePlace(transform.position);
 
             placing = true;
         }

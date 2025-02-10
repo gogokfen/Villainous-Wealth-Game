@@ -36,6 +36,8 @@ public class WinnerManager : MonoBehaviour
         confettiParticle.SetActive(true);
         //Leaderboard.singleton.DisplayPlayerSacks();
         Leaderboard.singleton.ArrangeOnPodium(positions);
+        SoundManager.singleton.PlayClip($"{winnerText.text}WinGame", transform.position, 1f, false, false);
+
 
     }
 }
