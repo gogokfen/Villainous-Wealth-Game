@@ -46,13 +46,13 @@ public class MenuPlayer : MonoBehaviour
             menuPlayer.pickedCharButton = selectedButton;
             playerEventSystem.GetComponent<MenuPlayer>().selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
             PlayerManager.instance.characterPicks[playerEventSystem.GetComponent<MenuPlayer>().selectedChar] = playerEventSystem.GetComponent<MenuPlayer>().playerNum;
-            selectedButton.GetComponent<Button>().interactable = false;
+            //selectedButton.GetComponent<Button>().interactable = false;
             selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
             playerEventSystem.SetSelectedGameObject(null);
             selectedButton.GetComponent<CustomizeCharacter>().picked = true;
-            if (playerEventSystem.GetComponent<MenuPlayer>().ready == false)
+            if (ready == false)
             {
-                playerEventSystem.GetComponent<MenuPlayer>().ready = true;
+                ready = true;
                 PlayerManager.instance.readyPlayers++;
             }
             SoundManager.singleton.PlayClip($"{selectedButton.name}CS", transform.position, 1f, false, false);
@@ -61,22 +61,22 @@ public class MenuPlayer : MonoBehaviour
 
     private void Cancel(PlayerInput player)
     {
-        MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
-        if (menuPlayer.selectedChar > 0)
+        //MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
+        if (selectedChar > -1)
         {
-            GameObject selectedButton = menuPlayer.pickedCharButton;
-            PlayerManager.instance.characterPicks[menuPlayer.selectedChar] = 0;
-            menuPlayer.selectedChar = 0;
+            GameObject selectedButton = pickedCharButton;
+            PlayerManager.instance.characterPicks[selectedChar] = 0;
+            selectedChar = 0;
             selectedButton.GetComponent<Button>().interactable = true;
             selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
             selectedButton.GetComponent<CustomizeCharacter>().picked = false;
             MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
             playerEventSystem.SetSelectedGameObject(null);
             playerEventSystem.SetSelectedGameObject(selectedButton);
-            menuPlayer.pickedCharButton = null;
-            if (playerEventSystem.GetComponent<MenuPlayer>().ready == true)
+            pickedCharButton = null;
+            if (ready == true)
             {
-                playerEventSystem.GetComponent<MenuPlayer>().ready = false;
+                ready = false;
                 PlayerManager.instance.readyPlayers--;
             }
         }
