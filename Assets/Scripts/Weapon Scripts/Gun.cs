@@ -56,10 +56,10 @@ public class Gun : WeaponBase
             
             if (lazerGun)
                 //SoundManager.singleton.LazerGunShot(transform.position);
-                SoundManager.singleton.PlayClip("LaserGunShot", transform.position, 0.25f, true, true);
+                SoundManager.singleton.PlayClip("LaserGunShot", transform.position, 0.15f, true, true);
             else
                 //SoundManager.singleton.GunShot(transform.position);
-                SoundManager.singleton.PlayClip("GunShot", transform.position, 0.15f, true, true);
+                SoundManager.singleton.PlayClip("GunShot", transform.position, 0.125f, true, true);
         }
     }
 }

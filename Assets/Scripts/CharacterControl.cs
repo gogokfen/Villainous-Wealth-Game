@@ -713,7 +713,8 @@ public class CharacterControl : MonoBehaviour
             //transform.Rotate(Vector3.right, Time.deltaTime * 1030); //replaced with animation
 
             float rollingSpeed = (startingSpeed * 4 - (startingSpeed * ((1 - (rollTimer * 2.75f)) * 4)));
-            CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
+            if (CC.enabled)
+                CC.Move(rollDirection * rollingSpeed * Time.deltaTime);
             if (rollTimer <= 0)
             {
                 rolling = false;
@@ -806,7 +807,7 @@ public class CharacterControl : MonoBehaviour
             forwardMomentumDelay -= Time.deltaTime;
             if (forwardMomentumDelay <= 0)
             {
-                if (attackMoveSpeed >= 0)
+                if (attackMoveSpeed >= 0 && CC.enabled)
                     CC.Move(attackDirection * attackMoveSpeed * Time.deltaTime);
 
                 attackMoveSpeed -= Time.deltaTime * 50;
@@ -906,7 +907,8 @@ public class CharacterControl : MonoBehaviour
         //characterGFX.transform.localPosition /= (1 + Time.deltaTime * 10);
 
         //transform.position += knockbackDirection;
-        CC.Move(new Vector3(knockbackDirection.x, 0, knockbackDirection.y));
+        if (CC.enabled)
+            CC.Move(new Vector3(knockbackDirection.x, 0, knockbackDirection.y));
         //CC.SimpleMove(knockbackDirection);
         knockbackDirection /= (1 + Time.deltaTime * 10);
 
@@ -985,8 +987,8 @@ public class CharacterControl : MonoBehaviour
 
                     //strongFist.enabled = false;
                 }
-
-                CC.Move(moveDirection * moveSpeed * Time.deltaTime);
+                if (CC.enabled)
+                    CC.Move(moveDirection * moveSpeed * Time.deltaTime);
             }
             else
             {
@@ -1495,8 +1497,12 @@ public class CharacterControl : MonoBehaviour
                     {
                         if (hp + 3 >= 10)
                         {
-                            hp = 10;
-                            hpBar.fillAmount = 10;
+                            if (RoundManager.instance.areWeWarming == false)
+                            {
+                                hp = 10;
+                                hpBar.fillAmount = 10;
+
+                            }               
                         }
                         else
                         {
@@ -1744,12 +1750,12 @@ public class CharacterControl : MonoBehaviour
                 */
                 //SoundManager.singleton.Damage(transform.position);
 
-                if (damage <= 2)
+                if (damageBasedOnDistance <= 2)
                 {
                     SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
 
                 }
-                else if (damage <= 4)
+                else if (damageBasedOnDistance <= 4)
                 {
                     SoundManager.singleton.PlayClip($"{HeadGFX.name}HitM", transform.position, 1f, true, true);
 
@@ -1820,12 +1826,12 @@ public class CharacterControl : MonoBehaviour
                 knockbackDirection *= 0.15f;
                 knockbackDirection *= (damageBasedOnDistance / 2f);
 
-                if (damage <= 2)
+                if (damageBasedOnDistance <= 2)
                 {
                     SoundManager.singleton.PlayClip($"{HeadGFX.name}HitS", transform.position, 1f, true, true);
 
                 }
-                else if (damage <= 4)
+                else if (damageBasedOnDistance <= 4)
                 {
                     SoundManager.singleton.PlayClip($"{HeadGFX.name}HitM", transform.position, 1f, true, true);
 

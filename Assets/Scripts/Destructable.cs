@@ -71,6 +71,7 @@ public class Destructable : MonoBehaviour
                 PickupManager.singleton.SpawnPowerUp(transform.position);
             explosionEffect.Play();
             explosionEffect.transform.SetParent(null);
+            Destroy(explosionEffect.gameObject, 3);
             for (int i = 0; i<debrisList.Length;i++)
             {
                 if (Random.Range(0, 4) == 0) //randomizing the debris, no need for all of them
