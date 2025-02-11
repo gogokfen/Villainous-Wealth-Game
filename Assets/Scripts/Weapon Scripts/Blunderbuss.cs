@@ -84,7 +84,7 @@ public class Blunderbuss : WeaponBase
             gunShotEffect.Play();
 
             //SoundManager.singleton.BlunderbussShot(transform.position);
-            SoundManager.singleton.PlayClip("BlunderbussShot", transform.position, 1f, false, true);
+            SoundManager.singleton.PlayClip("BlunderbussShot", transform.position, 0.125f, true, true);
 
             /////////////////////////V1
             /*
@@ -136,7 +136,7 @@ public class Blunderbuss : WeaponBase
             attackCooldown = 2 * maxAttackCooldown;
 
             //SoundManager.singleton.BlunderbussReload(transform.position);
-            SoundManager.singleton.PlayClip("BlunderbussReload", transform.position, 1f, false, true);
+            SoundManager.singleton.PlayClip("BlunderbussReload", transform.position, 0.2f, true, true);
 
             for (int i = 0; i < ammo; i++)
             {

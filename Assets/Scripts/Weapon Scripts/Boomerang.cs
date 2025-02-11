@@ -86,7 +86,7 @@ public class Boomerang : WeaponBase
             charging = true;
             if (!chargeSFX)
             {
-                SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Charge", transform.position, 1f, false, true);
+                SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Charge", transform.position, 1f, true, true);
                 chargeSFX = true;
             }
         }
@@ -161,7 +161,7 @@ public class Boomerang : WeaponBase
                                 catchCount++;
                                 Destroy(boomrangSearch[i].gameObject);
                                 //SoundManager.singleton.BoomerangCatch(transform.position);
-                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 1f, false, true);
+                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 0.2f, true, true);
                                 if (catchCount == 3)
                                 {
                                     catchCD = 0;
@@ -184,7 +184,7 @@ public class Boomerang : WeaponBase
                                 boomerangGFX.SetActive(true);
 
                                 //SoundManager.singleton.BoomerangCatch(transform.position);
-                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 1f, false, true);
+                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 0.2f, true, true);
                             }
                         }
                     }

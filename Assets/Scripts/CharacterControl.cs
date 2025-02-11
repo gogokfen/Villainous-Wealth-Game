@@ -1460,7 +1460,7 @@ public class CharacterControl : MonoBehaviour
                     //Debug.Log(HeadGFX.name +" "+ pickupSearch[i].transform.name);
 
                     //SoundManager.singleton.Pickup(transform.position);
-                    SoundManager.singleton.PlayClip("Pickup", transform.position, 1f, false, true);
+                    SoundManager.singleton.PlayClip("Pickup", transform.position, 0.15f, true, true);
                     if (pickupSearch[i].transform.name == "Coin")
                     {
 

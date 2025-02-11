@@ -85,7 +85,7 @@ public class GrenadeShot : WeaponBase
                 explosionEffect.Play();
 
                 //SoundManager.singleton.BombExplode(transform.position);
-                SoundManager.singleton.PlayClip("GrenadeExplode", transform.position, 1f, false, true);
+                SoundManager.singleton.PlayClip("GrenadeExplode", transform.position, 0.15f, true, true);
 
                 Destroy(explosionEffect.gameObject, 3f);
             }

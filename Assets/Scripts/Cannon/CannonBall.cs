@@ -32,9 +32,7 @@ public class CannonBall : WeaponBase
             explosionVFX.transform.rotation = Quaternion.identity;
             explosionVFX.Play();
             Destroy(explosionVFX.gameObject, 3);
-
-            //SoundManager.singleton.PlayClip("GrenadeExplode", transform.position, 1f, false, true);
-
+            SoundManager.singleton.PlayClip("GrenadeExplode", transform.position, 0.125f, true, true);
         }
     }
 }

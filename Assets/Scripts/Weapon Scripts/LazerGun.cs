@@ -117,7 +117,7 @@ public class LazerGun : WeaponBase
             }
             attackCooldown = maxAttackCooldown;
             //SoundManager.singleton.LazerGunShot(transform.position);
-            SoundManager.singleton.PlayClip("LaserGunShot", transform.position, 1f, false, true);
+            SoundManager.singleton.PlayClip("LaserGunShot", transform.position, 0.5f, true, true);
         }
         if (LR.widthMultiplier > 0)
             LR.widthMultiplier -= Time.deltaTime*1.5f;

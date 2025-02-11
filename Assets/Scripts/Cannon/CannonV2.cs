@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MelenitasDev.SoundsGood;
 using UnityEngine;
 
 public class CannonV2 : MonoBehaviour
@@ -44,6 +45,7 @@ public class CannonV2 : MonoBehaviour
             tempCannonShot.GetComponent<WeaponBase>().playerID = shooterColor;
 
             Instantiate(bombIndicatorVFX,shootingSpot.position, Quaternion.identity); //shootLocationModifier + shootingSpot.position
+            SoundManager.singleton.PlayClip("CannonShot", transform.position, 0.5f, true, true);
 
             shootingSpot.localPosition = Vector3.zero;
 

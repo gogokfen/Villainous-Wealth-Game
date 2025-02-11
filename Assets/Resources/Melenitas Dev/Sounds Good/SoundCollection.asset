@@ -30,22 +30,32 @@ MonoBehaviour:
     forceToMono: 0
   - tag: GunShot
     clips:
-    - {fileID: 8300000, guid: b941ba4c7c9ebb64dbca3e05291464a0, type: 3}
+    - {fileID: 8300000, guid: 798fd2d78680a024cbcbcbbe3f212ae0, type: 3}
+    - {fileID: 8300000, guid: f1f2a93289b512c41b5274705fbd7ac3, type: 3}
+    - {fileID: 8300000, guid: fea910d4df5da874dbc481fc42fe15b7, type: 3}
+    - {fileID: 8300000, guid: b1a5835e4c6b40f4093142708dadc0e7, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: LaserGunShot
     clips:
-    - {fileID: 8300000, guid: cfbf112bbe1ef934e8362f44eae19825, type: 3}
+    - {fileID: 8300000, guid: 3b10b6ca18cecbf4ca2af4486345293a, type: 3}
+    - {fileID: 8300000, guid: 01c01deb414e37f41a777cadd9f594de, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: BlunderbussShot
     clips:
-    - {fileID: 8300000, guid: 099d0d609b0668344a72fcf682372fbc, type: 3}
+    - {fileID: 8300000, guid: b1132917f2de91142891cf1bb172253c, type: 3}
+    - {fileID: 8300000, guid: 88ff938c57ca9b44795996d5e045d969, type: 3}
+    - {fileID: 8300000, guid: a81d467ad225e4d4daa03105b705e504, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: BlunderbussReload
     clips:
-    - {fileID: 8300000, guid: 8751f88d6e25eea4e95746444a9cdf39, type: 3}
+    - {fileID: 8300000, guid: 80421648285844b43be376d3afa2d412, type: 3}
+    - {fileID: 8300000, guid: 44388c6cd3f531a46a1d441869dfee66, type: 3}
+    - {fileID: 8300000, guid: 69f272f6717115542b394093a58280d5, type: 3}
+    - {fileID: 8300000, guid: 615b48a7098364b4b953c63078539372, type: 3}
+    - {fileID: 8300000, guid: 0a53891fa3310a542a6db7403ea3f7d5, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: BoomerangThrow
@@ -55,7 +65,18 @@ MonoBehaviour:
     forceToMono: 0
   - tag: BoomerangCatch
     clips:
-    - {fileID: 8300000, guid: cb4d5c09d0a8e4548803b1e36fc615fb, type: 3}
+    - {fileID: 8300000, guid: 08f18d169df075a4299511197673e881, type: 3}
+    - {fileID: 8300000, guid: d2321d7419429f8448ab3486113870bb, type: 3}
+    - {fileID: 8300000, guid: ecf9cef5755756f46bb6f794f75ef002, type: 3}
+    - {fileID: 8300000, guid: 9f90459fb06f73542945b792d99d27ce, type: 3}
+    - {fileID: 8300000, guid: b4c6fb55c46f060429d5bc6ba67d0606, type: 3}
+    - {fileID: 8300000, guid: 25f49d6bd3b36f040a75b22e1f03d676, type: 3}
+    - {fileID: 8300000, guid: a823edb7f3e58304ab04db82005a9e66, type: 3}
+    - {fileID: 8300000, guid: 874b85f2c53079c49b0559daf274dc2f, type: 3}
+    - {fileID: 8300000, guid: 84dfd730fbe2f58449ebecdf9b7091f9, type: 3}
+    - {fileID: 8300000, guid: f77c35101f433b142a00bf2f74fad685, type: 3}
+    - {fileID: 8300000, guid: 4d86350b2f281cf4ba84d8cd827bdeff, type: 3}
+    - {fileID: 8300000, guid: 6d9ef158270dd224392ad1ad4ecd3b8c, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: GrenadeThrow
@@ -65,7 +86,12 @@ MonoBehaviour:
     forceToMono: 0
   - tag: GrenadeExplode
     clips:
-    - {fileID: 8300000, guid: 3a2b08715b8ed8d438fd166abcbf965d, type: 3}
+    - {fileID: 8300000, guid: 8b1788d90cc32134eb074943f237b63b, type: 3}
+    - {fileID: 8300000, guid: 3a89876a55e62e245998a922518323f4, type: 3}
+    - {fileID: 8300000, guid: 2d88a14140d8ebe49b3739b31e3101d9, type: 3}
+    - {fileID: 8300000, guid: 569f51fe2bc9c2f4fa001d10e0a1ca40, type: 3}
+    - {fileID: 8300000, guid: ee8d23f49b70bb743b0eb2bed1a25a65, type: 3}
+    - {fileID: 8300000, guid: 4440a36e94165cb4a9de910883ebc671, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: Damage
@@ -82,14 +108,13 @@ MonoBehaviour:
     forceToMono: 0
   - tag: Pickup
     clips:
-    - {fileID: 8300000, guid: 72288b18559b8da419d59c9c88707eb6, type: 3}
-    - {fileID: 8300000, guid: c9f09fc034d12ad40a123a00413b5369, type: 3}
-    - {fileID: 8300000, guid: f6adde55f456ee54ca0ba81f6de69404, type: 3}
+    - {fileID: 8300000, guid: 23e48409e8f92d8439f4f4b630288c6f, type: 3}
+    - {fileID: 8300000, guid: f025f8b7b7048274a830a701b2bf1a13, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: ChestOpen
     clips:
-    - {fileID: 8300000, guid: 44b985dc6aea62c4995b105082674004, type: 3}
+    - {fileID: 8300000, guid: 213fcf89bd484064c85be02ce184d6cc, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: Roll
@@ -99,7 +124,10 @@ MonoBehaviour:
     forceToMono: 0
   - tag: CannonShot
     clips:
-    - {fileID: 8300000, guid: 32d6954fa92fbf94496185b4dfae93ac, type: 3}
+    - {fileID: 8300000, guid: 5e486a3a4ed38aa46aeba8278c61a053, type: 3}
+    - {fileID: 8300000, guid: bbb0271ece4157d4da0097f457063ef3, type: 3}
+    - {fileID: 8300000, guid: 23880a0327d47c342ab925cab378a936, type: 3}
+    - {fileID: 8300000, guid: 4d0fcca41ceb5b6429dd1ed087130930, type: 3}
     compressionPreset: 1
     forceToMono: 0
   - tag: CapitalistCharge

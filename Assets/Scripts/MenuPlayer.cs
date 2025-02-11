@@ -39,7 +39,7 @@ public class MenuPlayer : MonoBehaviour
     {
         MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
         selectedButton = playerEventSystem.currentSelectedGameObject;
-        if (selectedButton.GetComponent<CustomizeCharacter>().picked == false)
+        if (selectedButton?.GetComponent<CustomizeCharacter>().picked == false)
         {
             MenuPlayer menuPlayer = playerEventSystem.GetComponent<MenuPlayer>();
             menuPlayer.selectedChar = selectedButton.GetComponent<CustomizeCharacter>().characterNum;
@@ -63,7 +63,7 @@ public class MenuPlayer : MonoBehaviour
     private void Cancel(PlayerInput player)
     {
         //MenuPlayer menuPlayer = player.GetComponent<MenuPlayer>();
-        if (selectedChar > -1)
+        if (selectedChar > -1 && selectedButton != null)
         {
             GameObject selectedButton = pickedCharButton;
             PlayerManager.instance.characterPicks[selectedChar] = 0;

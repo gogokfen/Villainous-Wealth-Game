@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] GameObject[] playerPrefabs;
     [SerializeField] GameObject gamepadDisconnectedUI;
 
-    
+
 
     private List<CharacterControl.PlayerTypes> availablePlayerID;
     public List<PlayerInput> activePlayers;
@@ -56,24 +56,25 @@ public class PlayerManager : MonoBehaviour
     }
     private void Update()
     {
-        if (readyPlayers == joinedDevices.Count && readyPlayers >= 2)
-        {
-            MenuManager.instance.weReadyCheck = true;
-            MenuManager.instance.WeReady();
-        }    
-        else 
-        {
-            MenuManager.instance.weReadyCheck = false;
-            MenuManager.instance.WeReady();
-        }
 
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
+            if (readyPlayers == joinedDevices.Count && readyPlayers >= 2)
+            {
+                MenuManager.instance.weReadyCheck = true;
+                MenuManager.instance.WeReady();
+            }
+            else
+            {
+                MenuManager.instance.weReadyCheck = false;
+                MenuManager.instance.WeReady();
+            }
+            
             if (MenuManager.instance.characterSelectionScreen.activeInHierarchy == true)
             {
                 DetectPlayerJoin();
             }
-            else 
+            else
             {
                 playerNumber = 1;
                 joinedDevices.Clear();
@@ -124,7 +125,7 @@ public class PlayerManager : MonoBehaviour
                     defaultCharacterButton.GetComponent<CustomizeCharacter>().FirstTimeSelection(playerNumber);
                     //MenuManager.instance.playerShowcases[showcaseIndex].gameObject.SetActive(true);
                     //showcaseIndex++;
-                    menuPlayerNumberVisual[playerNumber-1].SetActive(true);
+                    menuPlayerNumberVisual[playerNumber - 1].SetActive(true);
                     playerNumber++;
                 }
             }
