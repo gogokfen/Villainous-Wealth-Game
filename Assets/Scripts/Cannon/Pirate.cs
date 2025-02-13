@@ -28,6 +28,8 @@ public class Pirate : MonoBehaviour
 
     [SerializeField] GameObject completePiratePackage;
 
+    [SerializeField] GameObject payingPirate;
+
     void Start()
     {
         PI.enabled = false;
@@ -81,7 +83,7 @@ public class Pirate : MonoBehaviour
 
                     PI.enabled = true;
 
-
+                    CameraManager.instance.RemoveFromCameraGroup(payingPirate);
 
 
                     //PI.user = 0;

@@ -23,7 +23,7 @@ public class WinnerManager : MonoBehaviour
     {
         coinWinner = Leaderboard.singleton.FindLeaderMoney();
         //playerWinner = roundManager.winner;
-        winnerText.text = Leaderboard.singleton.FindLeaderName();
+        winnerText.text = Leaderboard.singleton.NameSelectedButton(Leaderboard.singleton.FindLeaderName()); 
         // playerWinner.GetComponent<CharacterControl>().enabled = false;
         // playerWinner.GetComponent<CharacterControl>().bodyPartsGFX[6].SetActive(false);
         // playerWinner.GetComponent<CharacterControl>().bodyPartsGFX[7].SetActive(false);

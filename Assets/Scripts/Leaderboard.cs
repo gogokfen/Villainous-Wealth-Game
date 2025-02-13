@@ -153,7 +153,7 @@ public class Leaderboard : MonoBehaviour
                 redPlayerPortrait.sprite = SetPlayerPortrait(players[0].name);
                 redPlayerPortraitRanking.sprite = SetPlayerPortrait(players[0].name);
                 players[0].portrait = redPlayerPortrait.sprite;
-                redPlayerName.text = players[0].name;
+                redPlayerName.text = NameSelectedButton(players[0].name);
                 players[0].rank = -1;
                 players[0].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[0].input = character.gameObject.GetComponent<PlayerInput>();
@@ -171,7 +171,7 @@ public class Leaderboard : MonoBehaviour
                 greenPlayerPortrait.sprite = SetPlayerPortrait(players[1].name);
                 greenPlayerPortraitRanking.sprite = SetPlayerPortrait(players[1].name);
                 players[1].portrait = greenPlayerPortrait.sprite;
-                greenPlayerName.text = players[1].name;
+                greenPlayerName.text = NameSelectedButton(players[1].name);
                 players[1].rank = -1;
                 players[1].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[1].input = character.gameObject.GetComponent<PlayerInput>();
@@ -188,7 +188,7 @@ public class Leaderboard : MonoBehaviour
                 bluePlayerPortrait.sprite = SetPlayerPortrait(players[2].name);
                 bluePlayerPortraitRanking.sprite = SetPlayerPortrait(players[2].name);
                 players[2].portrait = bluePlayerPortrait.sprite;
-                bluePlayerName.text = players[2].name;
+                bluePlayerName.text = NameSelectedButton(players[2].name);
                 players[2].rank = -1;
                 players[2].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[2].input = character.gameObject.GetComponent<PlayerInput>();
@@ -205,7 +205,7 @@ public class Leaderboard : MonoBehaviour
                 yellowPlayerPortrait.sprite = SetPlayerPortrait(players[3].name);
                 yellowPlayerPortraitRanking.sprite = SetPlayerPortrait(players[3].name);
                 players[3].portrait = yellowPlayerPortrait.sprite;
-                yellowPlayerName.text = players[3].name;
+                yellowPlayerName.text = NameSelectedButton(players[3].name);
                 players[3].rank = -1;
                 players[3].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[3].input = character.gameObject.GetComponent<PlayerInput>();
@@ -424,6 +424,34 @@ public class Leaderboard : MonoBehaviour
 
             case "Shark":
                 return portraits[9];
+            default: return null;
+        }
+    }
+
+    public string NameSelectedButton(string name)
+    {
+        switch (name)
+        {
+            case "Dragon":
+                return "Bob";
+            case "Capitalist":
+                return "Cappy Talist";
+            case "Raccoon":
+                return "Robin Banks";
+            case "Conquistadorette":
+                return "Emba Zelment";
+            case "Orc":
+                return "Buzzuz";
+            case "Cat":
+                return "Tabby Treasure";
+            case "Leprechaun":
+                return "Goldie Gone";
+            case "Mafia":
+                return "Tex Avesion";
+            case "Pirate":
+                return "Gol D. Iger";
+            case "Shark":
+                return "Loany";
             default: return null;
         }
     }

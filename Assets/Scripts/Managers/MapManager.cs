@@ -36,6 +36,7 @@ public class MapManager : MonoBehaviour
         int mapVariationSelected = Random.Range(0, 5); //range is 0->4, does not include this V6
         Instantiate(mapElements[mapVariationSelected]);
 
+        completePiratePackage.SetActive(false);
         
 
         if (mapVariationSelected == 0 || mapVariationSelected == 2)
@@ -47,6 +48,7 @@ public class MapManager : MonoBehaviour
 
     public void Warmup()
     {
+        //completePiratePackage.SetActive(true);
         if (!warmupRound)
         {
             // for (int i =0;i<Leaderboard.singleton.playerCount;i++)
