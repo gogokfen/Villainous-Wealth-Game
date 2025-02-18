@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Pirate : MonoBehaviour
 {
@@ -83,7 +84,9 @@ public class Pirate : MonoBehaviour
 
                     PI.enabled = true;
 
-                    CameraManager.instance.RemoveFromCameraGroup(payingPirate);
+                    if (SceneManager.GetActiveScene().name != "OsherScene")
+                        CameraManager.instance.RemoveFromCameraGroup(payingPirate);
+
 
 
                     //PI.user = 0;

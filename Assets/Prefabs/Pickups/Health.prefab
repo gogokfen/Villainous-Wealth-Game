@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2c505332326bd469d462385bd37711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCoinPickup: 0
+  isCoinSackPickup: 0
 --- !u!1 &4747802836552301144
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 6871087040021090310}
   - component: {fileID: 8948016951687402405}
   - component: {fileID: 5680757420191829114}
+  - component: {fileID: 6282411585850965209}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -257,6 +258,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6282411585850965209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4747802836552301144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4909766933035643567
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,6 +370,7 @@ GameObject:
   - component: {fileID: 7235693008474429425}
   - component: {fileID: 6637406758835590460}
   - component: {fileID: 7832709685880997709}
+  - component: {fileID: 5402013222084248880}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -423,6 +443,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5402013222084248880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6417219665537697294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0.5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &9164942410832113043
 GameObject:
   m_ObjectHideFlags: 0

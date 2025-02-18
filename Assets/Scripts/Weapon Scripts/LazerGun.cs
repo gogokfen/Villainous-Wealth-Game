@@ -106,6 +106,10 @@ public class LazerGun : WeaponBase
                 tempBullet.GetComponent<WeaponBase>().playerID = playerID;
                 tempBullet.GetComponent<WeaponBase>().damage = damage;
                 tempBullet.GetComponent<WeaponBase>().damageType = damageType;
+
+                //DELETE LATER, JUST FOR TESTING
+                //Debug.Log(rayInfo.transform.gameObject.name);
+                //rayInfo.transform.gameObject.SetActive(false);
             }
             else
             {
