@@ -20,6 +20,7 @@ public class RoundManager : MonoBehaviour
     [SerializeField] ShopManager shopManager;
     [SerializeField] StormManager stormManager;
     [SerializeField] ShopStall shopStall;
+    [SerializeField] RoundStart roundStart;
 
     public GameObject controlsUI;
     public bool areWeWarming;
@@ -60,7 +61,6 @@ public class RoundManager : MonoBehaviour
 
     private IEnumerator RoundLoop()
     { 
-        
         curtain.gameObject.SetActive(true);
         curtain.Play("Curtain");
         stormManager.enabled = true;
@@ -73,12 +73,16 @@ public class RoundManager : MonoBehaviour
         areWeWarming = false;
         while (currentRound != totalRounds)
         {
-            Leaderboard.singleton.EnableCharacterControl();
-            PickupManager.singleton.DropPowerups = true;
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
             Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
+            Leaderboard.singleton.TurnOffPlayersGFX();
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(roundStart.Intro());
+            yield return new WaitUntil(() => roundStart.playing == false);
+            PickupManager.singleton.DropPowerups = true;
+            Leaderboard.singleton.EnableCharacterControl();
             yield return new WaitUntil(() => PlayerManager.instance.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             PickupManager.singleton.DropPowerups = false;
@@ -94,15 +98,18 @@ public class RoundManager : MonoBehaviour
             {
                 StartCoroutine(shopStall.StallTime());
                 shopManager.WantedPosters();
-                yield return new WaitUntil(() => shopStall.shoppingTime == true);
+                yield return new WaitUntil(() => shopStall.fadingFirst == false);
                 //TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 TimeManager.instance.StopTime();
                 SoundManager.singleton.MaloMart(); //plays Shop Music
                 Leaderboard.singleton.DisableCharacterControl();
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
-                yield return new WaitUntil(() => shopManager.shopUI.activeSelf == false); //waits for Shopping to end
+                yield return new WaitUntil(() => shopManager.shopping == false); //waits for Shopping to end
+                StartCoroutine(shopStall.StallTimeOver());
+                yield return new WaitUntil(() => shopStall.fadingSecond == false);
+                shopManager.shopUI.SetActive(false);
                 TimeManager.instance.ResumeTime();
-                shopStall.shoppingTime = false;
+                //shopStall.fading = false;
                 PlayerManager.instance.roundOver = false; //resets the bool for the next round
                 Leaderboard.singleton.NextRound(); //resets "dead" players prefabs, HP, and positions
             }

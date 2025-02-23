@@ -14,6 +14,8 @@ public class Leaderboard : MonoBehaviour
 
     public TextMeshProUGUI killsAnnouncer;
     public Animator killsAnnouncerAnimation;
+    public TextMeshProUGUI roundAnnouncer;
+    public Animator roundAnnouncerAnimation;
 
     [SerializeField] public GameObject leaderboard;
 
@@ -68,7 +70,7 @@ public class Leaderboard : MonoBehaviour
 
     private struct PlayerStats
     {
-        public PlayerStats(CharacterControl characterReference, MultiplayerEventSystem eventSystem, PlayerInput input, CharacterController controller, Sprite portrait, Transform transform, CharacterControl.PlayerTypes color, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound, int rank)
+        public PlayerStats(CharacterControl characterReference, MultiplayerEventSystem eventSystem, PlayerInput input, CharacterController controller, Animator animator, Sprite portrait, Transform transform, CharacterControl.PlayerTypes color, string name, int roundStartMoney, int currentMoney, int kills, int deaths, bool wonThisRound, int rank)
         {
             this.characterReference = characterReference;
             this.eventSystem = eventSystem;
@@ -84,6 +86,7 @@ public class Leaderboard : MonoBehaviour
             this.deaths = deaths;
             this.rank = rank;
             this.wonThisRound = wonThisRound;
+            this.animator = animator;
 
         }
 
@@ -92,6 +95,7 @@ public class Leaderboard : MonoBehaviour
         public MultiplayerEventSystem eventSystem;
         public PlayerInput input;
         public CharacterController controller;
+        public Animator animator;
         public Sprite portrait;
         public Transform transform;
         public string name;
@@ -158,6 +162,7 @@ public class Leaderboard : MonoBehaviour
                 players[0].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[0].input = character.gameObject.GetComponent<PlayerInput>();
                 players[0].controller = character.gameObject.GetComponent<CharacterController>();
+                players[0].animator = character.charAnim;
                 players[0].transform = character.gameObject.transform;
                 redRankingUI.gameObject.SetActive(true);
             }
@@ -176,6 +181,7 @@ public class Leaderboard : MonoBehaviour
                 players[1].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[1].input = character.gameObject.GetComponent<PlayerInput>();
                 players[1].controller = character.gameObject.GetComponent<CharacterController>();
+                players[1].animator = character.charAnim;
                 players[1].transform = character.gameObject.transform;
                 greenRankingUI.gameObject.SetActive(true);
             }
@@ -193,6 +199,7 @@ public class Leaderboard : MonoBehaviour
                 players[2].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[2].input = character.gameObject.GetComponent<PlayerInput>();
                 players[2].controller = character.gameObject.GetComponent<CharacterController>();
+                players[2].animator = character.charAnim;
                 players[2].transform = character.gameObject.transform;
                 blueRankingUI.gameObject.SetActive(true);
             }
@@ -210,6 +217,7 @@ public class Leaderboard : MonoBehaviour
                 players[3].eventSystem = character.gameObject.GetComponent<MultiplayerEventSystem>();
                 players[3].input = character.gameObject.GetComponent<PlayerInput>();
                 players[3].controller = character.gameObject.GetComponent<CharacterController>();
+                players[3].animator = character.charAnim;
                 players[3].transform = character.gameObject.transform;
                 yellowRankingUI.gameObject.SetActive(true);
             }
@@ -371,9 +379,31 @@ public class Leaderboard : MonoBehaviour
         }
     }
 
-    public GameObject GetPlayerReference(CharacterControl.PlayerTypes playerColor)
+    public CharacterControl[] GetPlayerReferences()
     {
-        return players[(int)playerColor].characterReference.gameObject;
+        CharacterControl[] cc = new CharacterControl[playerCount];
+        for (int i = 0; i < playerCount; i++)
+        {
+            cc[i] = players[i].characterReference;
+        }
+        return cc;
+    }
+    public Animator[] GetPlayerAnimators()
+    {
+        Animator[] anim = new Animator[playerCount];
+        for (int i = 0; i < playerCount; i++)
+        {
+            anim[i] = players[i].animator;
+        }
+        return anim;
+    }
+
+    public void TurnOffPlayersGFX()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            players[i].characterReference.characterGFX.SetActive(false);
+        }
     }
 
     public string GetPlayerName(CharacterControl.PlayerTypes playerColor)
@@ -459,6 +489,12 @@ public class Leaderboard : MonoBehaviour
     {
         killsAnnouncer.text = text;
         killsAnnouncerAnimation.Play("Announcement");
+    }
+
+    public void AnnounceTextRoundStart(string text)
+    {
+        roundAnnouncer.text = text;
+        roundAnnouncerAnimation.Play("Round Start", 0, 0.0f);
     }
 
     public void StopForwardMomentum(CharacterControl.PlayerTypes playerColor)

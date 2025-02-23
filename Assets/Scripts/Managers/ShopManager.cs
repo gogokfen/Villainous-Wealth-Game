@@ -27,6 +27,8 @@ public class ShopManager : MonoBehaviour
     private bool poorShop = false;
     private int poorplayersbought = 0;
     private bool shortenTimer = false;
+
+    public bool shopping;
     private void Start()
     {
         // //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
@@ -63,12 +65,13 @@ public class ShopManager : MonoBehaviour
 
     private void Update()
     {
-        if (shopUI.activeSelf)
+        if (shopping)
             internalShopTimer -= Time.unscaledDeltaTime;
     }
 
     public void Shopping()
     {
+        shopping = true;
         shopUI.SetActive(true);
         //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         defaultButtonIndex = 0;
@@ -176,8 +179,9 @@ public class ShopManager : MonoBehaviour
         }
         poorShop = false;
         shortenTimer = false;
-        shopUI.SetActive(false);
+        //shopUI.SetActive(false);
         poorPlayers.Clear();
+        shopping = false;
     }
 
     private void ResetButtons()

@@ -115,7 +115,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] SphereCollider lFist;
     [SerializeField] SphereCollider strongFist;
 
-    [SerializeField] Animator charAnim;
+    public Animator charAnim;
 
     [Foldout("Limb Animators")]
     /* //new animator & animations
@@ -196,7 +196,7 @@ public class CharacterControl : MonoBehaviour
     [SerializeField] GameObject leaderCrown;
     [EndFoldout]
 
-    [SerializeField] GameObject characterGFX;
+    public GameObject characterGFX;
 
     public GameObject HeadGFX;
     Color32 headColor = Color.grey;

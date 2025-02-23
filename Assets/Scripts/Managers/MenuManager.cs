@@ -66,7 +66,7 @@ public class MenuManager : MonoBehaviour
     public IEnumerator LoadYourAsyncScene()
     {
         curtain.Play("CurtainClose");
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
         operation.allowSceneActivation = false;
         while (!operation.isDone)
