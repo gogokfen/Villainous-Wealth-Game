@@ -31,6 +31,8 @@ public class Pirate : MonoBehaviour
 
     [SerializeField] GameObject payingPirate;
 
+    //[SerializeField] GameObject payUI;
+    [SerializeField] Animator payUI;
     void Start()
     {
         PI.enabled = false;
@@ -57,6 +59,9 @@ public class Pirate : MonoBehaviour
         {
             if (!outlineActive)
             {
+                //payUI.SetActive(true);
+                payUI.SetBool("On", true);
+
                 outlineActive = true;
                 for (int i = 0; i < shipPartsGFX.Length; i++)
                 {
@@ -101,6 +106,8 @@ public class Pirate : MonoBehaviour
         }
         else if (outlineActive)
         {
+            //payUI.SetActive(false);
+            payUI.SetBool("On", false);
             outlineActive = false;
             for (int i = 0; i < shipPartsGFX.Length; i++)
             {

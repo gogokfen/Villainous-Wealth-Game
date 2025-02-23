@@ -502,7 +502,7 @@ public class Leaderboard : MonoBehaviour
         players[(int)playerColor].characterReference.StopForwardMomentum();
     }
 
-    public void DisableCharacterControl()
+    public void DisableCharacterWeapons()
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -510,13 +510,30 @@ public class Leaderboard : MonoBehaviour
             players[i].characterReference.DisableWeaponScripts();
         }
     }
-    public void EnableCharacterControl()
+
+    public void EnableCharacterWeapons()
     {
         for (int i = 0; i < players.Length; i++)
         {
             //characters[i].GetComponent<CharacterControl>().enabled = true;
             players[i].characterReference.EnableWeaponScripts();
 
+        }
+    }
+
+    public void EnableCharacterControl()
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].characterReference.enabled = true;
+        }
+    }
+
+    public void DisableCharacterControl()
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].characterReference.enabled = false;
         }
     }
 

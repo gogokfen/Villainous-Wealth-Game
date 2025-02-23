@@ -292,6 +292,10 @@ public class CharacterControl : MonoBehaviour
         hpBar.fillAmount = 1f;
 
         //originalHpBarPos = hpBar.transform.position;
+
+        //charAnim.writeDefaultValuesOnDisable();
+        //charAnim.isHuman
+        charAnim.writeDefaultValuesOnDisable = true;
     }
 
     public void Pause(InputAction.CallbackContext context)
@@ -852,14 +856,14 @@ public class CharacterControl : MonoBehaviour
             {
                 WeaponBase attackWB = projSearch[i].GetComponent<WeaponBase>();
 
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.grenade)
+                if (attackWB.damageType == WeaponBase.damageTypes.grenade)
                     TakeDamage(attackWB.playerID, attackWB.damage, projSearch[i].transform.position);
-                else if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.zone)
+                else if (attackWB.damageType == WeaponBase.damageTypes.zone)
                     TakeDamage(attackWB.damage);
                 else
                     TakeDamage(attackWB.playerID, attackWB.damage, attackWB.damageType, projSearch[i].transform.position);
 
-                if (projSearch[i].GetComponent<WeaponBase>().damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
+                if (attackWB.damageType == WeaponBase.damageTypes.destructableProjectile && attackWB.playerID != PlayerID)
                 {
                     Destroy(projSearch[i].gameObject);
                 }
@@ -1342,9 +1346,9 @@ public class CharacterControl : MonoBehaviour
 
         if (rightPunchAttackState == 1 && holdTimer <= 0) //&& equippedWeapon == Weapons.Fist
         {
-            if (!chargeSFX)
+            if (!chargeSFX && powerPunchWindup >0.25f)
             {
-                SoundManager.singleton.PlayClip($"{HeadGFX.name}Charge", transform.position, 1f, true, true);
+                SoundManager.singleton.PlayClip($"{HeadGFX.name}Charge", transform.position, 1f, true, true); //consider lowering volume to prevent spamming
                 chargeSFX = true;
             }
             if (equippedWeapon != Weapons.Fist)

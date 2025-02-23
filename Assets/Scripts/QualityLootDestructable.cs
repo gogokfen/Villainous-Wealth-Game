@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class QualityLootDestructable : MonoBehaviour
@@ -17,6 +18,7 @@ public class QualityLootDestructable : MonoBehaviour
     float identicalDamageCD;
     private CharacterControl.PlayerTypes lastPlayerID;
 
+    [SerializeField] ParticleSystem hitEffect;
 
     private bool looted = false;
 
@@ -32,6 +34,9 @@ public class QualityLootDestructable : MonoBehaviour
     void Start()
     {
         pickupSlider.value = 1;
+
+        if (SceneManager.GetActiveScene().name != "OsherScene")
+            CameraManager.instance.AddToGroup(gameObject);
     }
 
     
@@ -95,9 +100,12 @@ public class QualityLootDestructable : MonoBehaviour
             identicalDamageCD >= 0)) //making sure lootbox is not taking multiple instances of damage from the same attack
         {
             if (damageType!= WeaponBase.damageTypes.zone)
+            {
                 pickupSlider.value -= (float)(damage / (float)hitsNeeded);
+                animator.Play("ChestGettingHit");
+                hitEffect.Play();
+            }
         }
-
 
         lastPlayerID = attackingPlayer;
         identicalDamageCD = 0.1f;
@@ -113,7 +121,11 @@ public class QualityLootDestructable : MonoBehaviour
     private void DropCoins()
     {
         coinNumber = Random.Range(5,16);
-        animator.SetTrigger("Open");
+        //animator.SetTrigger("Open");
+        animator.Play("ChestOpen");
+
+        if (SceneManager.GetActiveScene().name != "OsherScene")
+            CameraManager.instance.RemoveFromCameraGroup(gameObject);
 
         //SoundManager.singleton.ChestOpen(transform.position);
         SoundManager.singleton.PlayClip("ChestOpen", transform.position, 0.25f, true, true);

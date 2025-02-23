@@ -101,6 +101,7 @@ public class Destructable : MonoBehaviour
             {
                 hp -= damage;
                 hitEffect.Play();
+                anim.Play("ChestGettingHit");
                 if (hp <= 0)
                     destroyed = true;
             }
