@@ -82,7 +82,7 @@ public class RoundManager : MonoBehaviour
             StartCoroutine(roundStart.Intro());
             yield return new WaitUntil(() => roundStart.playing == false);
             PickupManager.singleton.DropPowerups = true;
-            Leaderboard.singleton.EnableCharacterControl();
+            Leaderboard.singleton.EnableCharacterWeapons();
             yield return new WaitUntil(() => PlayerManager.instance.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             PickupManager.singleton.DropPowerups = false;
@@ -102,7 +102,7 @@ public class RoundManager : MonoBehaviour
                 //TimeManager.instance.SlowTime(0f, 10f); //stopping time, to avoid game running when shop is open
                 TimeManager.instance.StopTime();
                 SoundManager.singleton.MaloMart(); //plays Shop Music
-                Leaderboard.singleton.DisableCharacterControl();
+                Leaderboard.singleton.DisableCharacterWeapons();
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopping == false); //waits for Shopping to end
                 StartCoroutine(shopStall.StallTimeOver());
