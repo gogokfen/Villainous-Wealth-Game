@@ -256,7 +256,7 @@ public class Leaderboard : MonoBehaviour
 
     public void ResetPlayersMoney()
     {
-        for (int i=0;i<players.Length;i++)
+        for (int i = 0; i < players.Length; i++)
         {
             players[i].currentMoney = 0;
             players[i].roundStartMoney = 0;
@@ -344,7 +344,7 @@ public class Leaderboard : MonoBehaviour
             //Debug.Log("Green" + rankingTransforms[greenPlayer.rank - 1].localPosition);
 
             //Debug.Log(players[1].rank);
-            greenRankingUI.localPosition = rankingTransforms[(players[1].rank-1)].localPosition;
+            greenRankingUI.localPosition = rankingTransforms[(players[1].rank - 1)].localPosition;
             //greenRankingUI.localPosition = rankingTransforms[0].localPosition;
 
             //Debug.Log("green" + greenRankingUI.localPosition);
@@ -358,9 +358,9 @@ public class Leaderboard : MonoBehaviour
             bluePlayerKills.text = players[2].kills.ToString();
             bluePlayerRank.text = players[2].rank.ToString();
 
-            blueRankingUI.localPosition = rankingTransforms[(players[2].rank-1)].localPosition;
+            blueRankingUI.localPosition = rankingTransforms[(players[2].rank - 1)].localPosition;
         }
-        if (playerCount > 3) 
+        if (playerCount > 3)
         {
             //Yellow Player
             yellowPlayerCoins.text = players[3].currentMoney.ToString();
@@ -368,7 +368,7 @@ public class Leaderboard : MonoBehaviour
             yellowPlayerKills.text = players[3].kills.ToString();
             yellowPlayerRank.text = players[3].rank.ToString();
 
-            yellowRankingUI.localPosition = rankingTransforms[(players[3].rank-1)].localPosition;
+            yellowRankingUI.localPosition = rankingTransforms[(players[3].rank - 1)].localPosition;
         }
     }
     public void EmptyPlayerHands()
@@ -663,6 +663,24 @@ public class Leaderboard : MonoBehaviour
         return players[leaderIndex].name;
     }
 
+    public string DetermineLosers(int index)
+    {
+        List<PlayerStats> losers = new List<PlayerStats>();
+        foreach (var player in players)
+        {
+            if (player.rank >= 1f)
+            {
+                losers.Add(player);
+            }
+        }
+        //if (index >= 0 && index < losers.Count)
+        //{
+            return losers[index].name;
+        //}
+
+        //return null;
+    }
+
     public int FindLeaderMoney()
     {
         return players[(int)FindLeaderColor()].currentMoney; //probably the most bizzare code line I wrote in a while
@@ -689,7 +707,7 @@ public class Leaderboard : MonoBehaviour
         //GameObject[] tempPlayers = new GameObject[moneyRankings.Length];
 
         //for security:
-        for (int i=0;i<ranking.Length;i++)
+        for (int i = 0; i < ranking.Length; i++)
         {
             ranking[i].money = -10;
             ranking[i].color = CharacterControl.PlayerTypes.Yellow;

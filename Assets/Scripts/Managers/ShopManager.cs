@@ -29,6 +29,12 @@ public class ShopManager : MonoBehaviour
     private bool shortenTimer = false;
 
     public bool shopping;
+
+    [SerializeField] Animator crowAnim;
+    [SerializeField] HorizontalLayoutGroup crowSignLayoutGroup;
+    [SerializeField] TextMeshProUGUI crowSignText;
+    [SerializeField] Image firstLoserOrRichGuy;
+    [SerializeField] Image[] crowSignPortraits;
     private void Start()
     {
         // //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
@@ -73,6 +79,7 @@ public class ShopManager : MonoBehaviour
     {
         shopping = true;
         shopUI.SetActive(true);
+        crowAnim.Play("Hello");
         //PlayerInput[] playerInputs = FindObjectsOfType<PlayerInput>();
         defaultButtonIndex = 0;
         shopUIIndex = 0;
@@ -108,6 +115,7 @@ public class ShopManager : MonoBehaviour
         richestEventSystem.SetSelectedGameObject(null);
         richestEventSystem.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
         richShop = true;
+        CrowSign();
         while (internalShopTimer > 0)
         {
             if (shortenTimer && internalShopTimer >= 2)
@@ -145,6 +153,8 @@ public class ShopManager : MonoBehaviour
     {
         internalShopTimer = shopTimer;
         poorShop = true;
+        CrowSign();
+        crowAnim.SetTrigger("IdleToPoor");
         Leaderboard.singleton.AnnounceText("Now the poor");
         foreach (MultiplayerEventSystem player in poorPlayers)
         {
@@ -182,6 +192,7 @@ public class ShopManager : MonoBehaviour
         //shopUI.SetActive(false);
         poorPlayers.Clear();
         shopping = false;
+        crowAnim.SetTrigger("PoorToBye");
     }
 
     private void ResetButtons()
@@ -203,6 +214,41 @@ public class ShopManager : MonoBehaviour
         wantedPosterPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
         wantedPosterTransition.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
 
+    }
+
+    public void CrowSign()
+    {
+        if (richShop)
+        {
+            crowSignLayoutGroup.spacing = 0f;
+            firstLoserOrRichGuy.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
+            crowSignPortraits[0].gameObject.SetActive(true);
+        }
+        else
+        {
+
+            if (poorPlayers.Count == 1)
+            {
+                crowSignLayoutGroup.spacing = 0f;
+                firstLoserOrRichGuy.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(0));
+            }
+            else if (poorPlayers.Count == 2)
+            {
+                crowSignLayoutGroup.spacing = 3f;
+                firstLoserOrRichGuy.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(0));
+                crowSignPortraits[1].sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(1));
+                crowSignPortraits[1].gameObject.SetActive(true);
+            }
+            else if (poorPlayers.Count == 3)
+            {
+                crowSignLayoutGroup.spacing = -13f;
+                firstLoserOrRichGuy.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(0));
+                crowSignPortraits[1].sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(1));
+                crowSignPortraits[2].sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.DetermineLosers(2));
+                crowSignPortraits[1].gameObject.SetActive(true);
+                crowSignPortraits[2].gameObject.SetActive(true);
+            }
+        }
     }
     private void OnSubmit(PlayerInput player)
     {
