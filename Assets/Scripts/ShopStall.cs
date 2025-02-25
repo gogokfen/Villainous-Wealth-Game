@@ -44,20 +44,12 @@ public class ShopStall : MonoBehaviour
     public IEnumerator StallTimeOver()
     {
         fadingSecond = true;
-        Debug.Log("debug1");
         circleFade.gameObject.SetActive(true);
-        Debug.Log("debug2");
         circleFade.SetTrigger("FadeIn");
-        Debug.Log("debug3");
         yield return new WaitForSecondsRealtime(3f);
-        Debug.Log("debug4");
         fadingSecond = false;
-        Debug.Log("debug5");
         circleFade.SetTrigger("FadeOut");
-        Debug.Log("debug6");
         yield return new WaitForSecondsRealtime(1f);
-        Debug.Log("debug7");
         circleFade.gameObject.SetActive(false);
-        Debug.Log("debug8");
     }
 }

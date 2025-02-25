@@ -91,8 +91,8 @@ public class RoundManager : MonoBehaviour
             Leaderboard.singleton.EmptyPlayerHands(); //drops currently equipped weapons, makes them single use
             Leaderboard.singleton.UpdateLeaderboard(); //shows Leaderboard
             PickupManager.singleton.DestroyAllPickups();
-            yield return new WaitForSeconds(3.5f); //time to see leaderboards
-            Leaderboard.singleton.leaderboard.SetActive(false); //waits until leaderboard is deactivated
+            yield return new WaitForSeconds(6f); //time to see leaderboards
+            Leaderboard.singleton.ResetLeaderboard(); //waits until leaderboard is deactivated
             currentRound++; //ups the round counter
             if (currentRound != totalRounds) //if game is only one round, it won't trigger shopping
             {

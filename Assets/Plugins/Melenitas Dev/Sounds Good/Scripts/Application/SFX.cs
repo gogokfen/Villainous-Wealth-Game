@@ -170,6 +170,7 @@ namespace MelenitasDev.SoundsGood
 		ConquistadoretteWinGame,
 		ConquistadoretteWinRound,
 		Footstep,
-		AnnouncerRoundStart
+		AnnouncerRoundStart,
+		WinLeaderboard
 	}
 }

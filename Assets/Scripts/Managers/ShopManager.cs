@@ -111,11 +111,13 @@ public class ShopManager : MonoBehaviour
 
     private IEnumerator RichShopFirst()
     {
+        richShop = true;
+        CrowSign();
+        yield return new WaitUntil(() => crowAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle"));
+        //yield return new WaitUntil(() => crowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && !anim.IsInTransition(0));
         internalShopTimer = shopTimer;
         richestEventSystem.SetSelectedGameObject(null);
         richestEventSystem.SetSelectedGameObject(defaultButtons[defaultButtonIndex]);
-        richShop = true;
-        CrowSign();
         while (internalShopTimer > 0)
         {
             if (shortenTimer && internalShopTimer >= 2)
@@ -151,11 +153,12 @@ public class ShopManager : MonoBehaviour
     }
     private IEnumerator PoorShopSecond()
     {
-        internalShopTimer = shopTimer;
         poorShop = true;
         CrowSign();
         crowAnim.SetTrigger("IdleToPoor");
-        Leaderboard.singleton.AnnounceText("Now the poor");
+        yield return new WaitUntil(() => crowAnim.GetCurrentAnimatorStateInfo(0).IsName("Idle 2"));
+        internalShopTimer = shopTimer;
+        //Leaderboard.singleton.AnnounceText("Now the poor");
         foreach (MultiplayerEventSystem player in poorPlayers)
         {
             player.SetSelectedGameObject(null);
@@ -193,6 +196,10 @@ public class ShopManager : MonoBehaviour
         poorPlayers.Clear();
         shopping = false;
         crowAnim.SetTrigger("PoorToBye");
+        crowSignPortraits[0].gameObject.SetActive(false);
+        crowSignPortraits[1].gameObject.SetActive(false);
+        crowSignPortraits[2].gameObject.SetActive(false);
+        crowSignPortraits[3].gameObject.SetActive(false);
     }
 
     private void ResetButtons()
@@ -223,10 +230,11 @@ public class ShopManager : MonoBehaviour
             crowSignLayoutGroup.spacing = 0f;
             firstLoserOrRichGuy.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.FindLeaderName());
             crowSignPortraits[0].gameObject.SetActive(true);
+            crowSignText.text = "Rich buys 1st";
         }
         else
         {
-
+            crowSignText.text = "poor buys 2nd";
             if (poorPlayers.Count == 1)
             {
                 crowSignLayoutGroup.spacing = 0f;

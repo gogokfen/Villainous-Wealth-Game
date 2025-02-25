@@ -32,6 +32,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image redPlayerPortrait;
     [SerializeField] Image redPlayerPortraitRanking;
     [SerializeField] RectTransform redRankingUI;
+    [SerializeField] Animator redRankingUIAnim;
     [EndFoldout]
     [Foldout("Green Player")]
     [SerializeField] TextMeshProUGUI greenPlayerName;
@@ -42,6 +43,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image greenPlayerPortrait;
     [SerializeField] Image greenPlayerPortraitRanking;
     [SerializeField] RectTransform greenRankingUI;
+    [SerializeField] Animator greenRankingUIAnim;
     [EndFoldout]
     [Foldout("Blue Player")]
     [SerializeField] TextMeshProUGUI bluePlayerName;
@@ -52,6 +54,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image bluePlayerPortrait;
     [SerializeField] Image bluePlayerPortraitRanking;
     [SerializeField] RectTransform blueRankingUI;
+    [SerializeField] Animator blueRankingUIAnim;
     [EndFoldout]
     [Foldout("Yellow Player")]
     [SerializeField] TextMeshProUGUI yellowPlayerName;
@@ -62,6 +65,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] Image yellowPlayerPortrait;
     [SerializeField] Image yellowPlayerPortraitRanking;
     [SerializeField] RectTransform yellowRankingUI;
+    [SerializeField] Animator yellowRankingUIAnim;
     [EndFoldout]
 
     public RectTransform[] rankingTransforms;
@@ -267,7 +271,7 @@ public class Leaderboard : MonoBehaviour
     {
         //leaderboardActive = !leaderboardActive;
         leaderboard.SetActive(true);
-
+        SoundManager.singleton.PlayClip("WinLeaderboard", transform.position, 1f, false, false);
         if (leaderboard.activeSelf)
         {
             /*
@@ -281,24 +285,49 @@ public class Leaderboard : MonoBehaviour
             {
                 redPlayerCoins.text = players[0].currentMoney.ToString();
                 redPlayerKills.text = players[0].kills.ToString();
+                if (players[0].rank == 1)
+                {
+                    redRankingUIAnim.Play("LeadingPlayerLB");
+                }
             }
             if (leaderboardPlayerPrefabs[1].activeSelf)
             {
                 greenPlayerCoins.text = players[1].currentMoney.ToString();
                 greenPlayerKills.text = players[1].kills.ToString();
+                if (players[1].rank == 1)
+                {
+                    greenRankingUIAnim.Play("LeadingPlayerLB");
+                }
 
             }
             if (leaderboardPlayerPrefabs[2].activeSelf)
             {
                 bluePlayerCoins.text = players[2].currentMoney.ToString();
                 bluePlayerKills.text = players[2].kills.ToString();
+                if (players[2].rank == 1)
+                {
+                    blueRankingUIAnim.Play("LeadingPlayerLB");
+                }
             }
             if (leaderboardPlayerPrefabs[3].activeSelf)
             {
                 yellowPlayerCoins.text = players[3].currentMoney.ToString();
                 yellowPlayerKills.text = players[3].kills.ToString();
+                if (players[3].rank == 1)
+                {
+                    yellowRankingUIAnim.Play("LeadingPlayerLB");
+                }
             }
         }
+    }
+
+    public void ResetLeaderboard()
+    {
+        redRankingUIAnim.Play("DefaultLB");
+        greenRankingUIAnim.Play("DefaultLB");
+        blueRankingUIAnim.Play("DefaultLB");
+        yellowRankingUIAnim.Play("DefaultLB");
+        leaderboard.SetActive(false);
     }
 
     public void UpdateRanking()
@@ -668,7 +697,7 @@ public class Leaderboard : MonoBehaviour
         List<PlayerStats> losers = new List<PlayerStats>();
         foreach (var player in players)
         {
-            if (player.rank >= 1f)
+            if (player.rank >= 2)
             {
                 losers.Add(player);
             }
