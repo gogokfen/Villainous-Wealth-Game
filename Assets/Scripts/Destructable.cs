@@ -69,6 +69,7 @@ public class Destructable : MonoBehaviour
         {
             if (Random.Range(0,3) == 0)
                 PickupManager.singleton.SpawnPowerUp(transform.position);
+            SoundManager.singleton.PlayClip($"DestructableDie", transform.position, 0.3f, true, true); //return with sound
             explosionEffect.Play();
             explosionEffect.transform.SetParent(null);
             Destroy(explosionEffect.gameObject, 3);
@@ -102,6 +103,7 @@ public class Destructable : MonoBehaviour
                 hp -= damage;
                 hitEffect.Play();
                 anim.Play("ChestGettingHit");
+                SoundManager.singleton.PlayClip($"DestructableHit", transform.position, 0.15f, true, true); //return with sound
                 if (hp <= 0)
                     destroyed = true;
             }

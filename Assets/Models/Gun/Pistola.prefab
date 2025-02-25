@@ -99,7 +99,104 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: a839a1fb127cba44aa06b01a79bcfaf0, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3849762623622064168, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: 2800250516343163423, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: -8380157826906577798, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: 8700725330082129686, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: -6733177361254619370, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: 8513859187771203891, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: -5568371526223589888, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: 8416272007918961125, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: -516098083770646512, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+    - {fileID: -8391222552659086748, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7eb02257475938d40a7ae5c694a05911,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4806562620341439862}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7eb02257475938d40a7ae5c694a05911,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2204831060152050998}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7eb02257475938d40a7ae5c694a05911,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8797295349313957704}
   m_SourcePrefab: {fileID: 100100000, guid: 7eb02257475938d40a7ae5c694a05911, type: 3}
+--- !u!1 &9168237878649648804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7eb02257475938d40a7ae5c694a05911,
+    type: 3}
+  m_PrefabInstance: {fileID: 8357966327062481909}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &4806562620341439862
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168237878649648804}
+  m_Mesh: {fileID: 2534964839176971238, guid: bd3eaf8a2a833e84aaa462bc8f3f50b0, type: 3}
+--- !u!23 &2204831060152050998
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168237878649648804}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -3846018093981099296, guid: bd3eaf8a2a833e84aaa462bc8f3f50b0, type: 3}
+  - {fileID: -876546973899608171, guid: bd3eaf8a2a833e84aaa462bc8f3f50b0, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8797295349313957704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168237878649648804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0.2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

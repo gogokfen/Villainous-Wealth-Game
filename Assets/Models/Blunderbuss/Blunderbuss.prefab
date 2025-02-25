@@ -109,7 +109,106 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 95df350467907dc4bbc8b09b971dd035, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -7029948723529949830, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: 2800250516343163423, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -8380157826906577798, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: 8700725330082129686, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -6733177361254619370, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: 8513859187771203891, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -5568371526223589888, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -7515429101286732190, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -7146521406498821007, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: 8416272007918961125, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -516098083770646512, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+    - {fileID: -8391222552659086748, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90883cef8c090148b1e96879d3d51d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9174178855763230810}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90883cef8c090148b1e96879d3d51d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7126913292824548327}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e90883cef8c090148b1e96879d3d51d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5876001695312424482}
   m_SourcePrefab: {fileID: 100100000, guid: e90883cef8c090148b1e96879d3d51d8, type: 3}
+--- !u!1 &8360449695242589477 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e90883cef8c090148b1e96879d3d51d8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8702961510302361716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!33 &9174178855763230810
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360449695242589477}
+  m_Mesh: {fileID: -7387706064836869012, guid: c2e62a90d1bfd784f9f056fe533add98, type: 3}
+--- !u!23 &7126913292824548327
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360449695242589477}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: -1444460858095362738, guid: c2e62a90d1bfd784f9f056fe533add98, type: 3}
+  - {fileID: -4973734387028869240, guid: c2e62a90d1bfd784f9f056fe533add98, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5876001695312424482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8360449695242589477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e9b464077a0de44aa54429c61f3d85d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineWidth: 0.2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

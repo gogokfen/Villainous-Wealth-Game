@@ -104,6 +104,7 @@ public class QualityLootDestructable : MonoBehaviour
                 pickupSlider.value -= (float)(damage / (float)hitsNeeded);
                 animator.Play("ChestGettingHit");
                 hitEffect.Play();
+                SoundManager.singleton.PlayClip($"DestructableHit", transform.position, 0.15f, true, true); //return with sound
             }
         }
 

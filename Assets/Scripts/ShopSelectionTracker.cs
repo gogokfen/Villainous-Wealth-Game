@@ -51,6 +51,8 @@ public class ButtonSelectionTracker : MonoBehaviour, ISelectHandler, IDeselectHa
     {
         currentPlayerID = eventData.currentInputModule.GetComponent<CharacterControl>().PlayerID;
 
+        SoundManager.singleton.PlayClip($"UI", transform.position, 1f, false, false); //return with sound
+
         if (currentPlayerID == CharacterControl.PlayerTypes.Red)
         {
             redPortrait.sprite = Leaderboard.singleton.SetPlayerPortrait(Leaderboard.singleton.GetPlayerName(currentPlayerID));

@@ -30,6 +30,7 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
 
     public void OnSelect(BaseEventData eventData)
     {
+        SoundManager.singleton.PlayClip($"UI", transform.position, 1f, false, false); //return with sound
         var menuPlayer = eventData.currentInputModule?.GetComponent<MenuPlayer>();
         if (menuPlayer == null) return;
         switch (menuPlayer.playerNum)

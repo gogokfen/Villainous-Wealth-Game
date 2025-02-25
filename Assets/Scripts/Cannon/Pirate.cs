@@ -76,6 +76,7 @@ public class Pirate : MonoBehaviour
                 {
                     cannonV2GameObject.transform.position = transform.position;
 
+                    SoundManager.singleton.PlayClip($"Pay", transform.position, 0.4f, false, false); //return with sound
 
                     payingPlayerRef = playerSearch[i].GetComponent<CharacterControl>();
                     //payingPlayerRef.StopAnimator();
@@ -91,7 +92,6 @@ public class Pirate : MonoBehaviour
 
                     if (SceneManager.GetActiveScene().name != "OsherScene")
                         CameraManager.instance.RemoveFromCameraGroup(payingPirate);
-
 
 
                     //PI.user = 0;
