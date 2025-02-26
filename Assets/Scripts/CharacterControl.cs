@@ -482,7 +482,34 @@ public class CharacterControl : MonoBehaviour
             DeadStop();
         }
 
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            if (PlayerID == PlayerTypes.Red)
+                Leaderboard.singleton.ModifyMoney(PlayerTypes.Red, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            if (PlayerID == PlayerTypes.Green)
+                Leaderboard.singleton.ModifyMoney(PlayerTypes.Green, 1);
+        }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            if (PlayerID == PlayerTypes.Blue)
+                Leaderboard.singleton.ModifyMoney(PlayerTypes.Blue, 1);
+        }
         if (Input.GetKeyDown(KeyCode.F10))
+        {
+            if (PlayerID == PlayerTypes.Yellow)
+                Leaderboard.singleton.ModifyMoney(PlayerTypes.Yellow, 1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            if (PlayerID == PlayerTypes.Red)
+                Leaderboard.singleton.FindPlayers();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F11))
         {
             if (mouseMovement)
                 mouseIndicator.gameObject.SetActive(false);

@@ -767,8 +767,8 @@ public class Leaderboard : MonoBehaviour
                     //playerRankings[i] = tempPlayers[j];
                     indexToRemember = j;
                 }
-                tempArray[indexToRemember].money = -1; //move to lower for?
             }
+            tempArray[indexToRemember].money = -1; //move to lower for?
         }
         for (int i = 0; i < ranking.Length; i++)
         {
