@@ -3,28 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using VInspector;
 
 public class Mine : WeaponBase
 {
-    [Foldout("Upgrades")]
-    public bool GasCloudUpgrade = false;
-    [EndFoldout]
-
     [SerializeField] GameObject mineGFX;
     [SerializeField] GameObject minePrefab;
     [SerializeField] int startingAmmo;
-    int uses;
+    private int uses;
     [SerializeField] float mineCD = 2f;
     private float mineTimer;
-    //bool placed;
 
     [HideInInspector] public bool placing = false;
 
-    bool weaponActive = false;
+    private bool weaponActive = false;
 
     [SerializeField] Slider windUpSlider;
-
 
     private void Start()
     {
@@ -48,8 +41,6 @@ public class Mine : WeaponBase
     {
         if (context.phase == InputActionPhase.Performed && weaponActive)
         {
-
-            //placed = context.action.triggered;
             PlaceMine();
         }
     }
@@ -65,20 +56,7 @@ public class Mine : WeaponBase
             tempMine.GetComponent<WeaponBase>().damage = damage;
             tempMine.GetComponent<WeaponBase>().damageType = damageType;
 
-            if (GasCloudUpgrade)
-                tempMine.GetComponent<MineShot>().GasCloudUpgrade = true;
-
             mineGFX.SetActive(false);
-
-            /*
-            if (uses <= 0) //out of mines, refill and discard weapon
-            {
-                CharacterControl.DiscardWeapon(playerID);
-                //uses = startingAmmo;
-            }
-            */
-
-            //SoundManager.singleton.MinePlace(transform.position);
 
             placing = true;
         }
@@ -97,27 +75,6 @@ public class Mine : WeaponBase
                 mineGFX.SetActive(true);
                 windUpSlider.gameObject.SetActive(false);
             }
-                
         }
-
-
-        //if (placed)
-        //{
-        //placed = false;
-        // if (uses>0)
-        // {
-        //     uses--;
-        //     GameObject tempMine = Instantiate(minePrefab,new Vector3(transform.position.x,0,transform.position.z),Quaternion.identity,null);
-        //     tempMine.GetComponent<WeaponBase>().playerID = playerID;
-        //     tempMine.GetComponent<WeaponBase>().damage = damage;
-        //     tempMine.GetComponent<WeaponBase>().damageType = damageType;
-        //     if (uses<=0) //out of mines, refill and discard weapon
-        //     {
-        //         uses = startingAmmo;
-        //         CharacterControl.DiscardWeapon();
-        //     }
-        // }
-
-        //}
     }
 }

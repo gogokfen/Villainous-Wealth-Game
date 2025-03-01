@@ -2,28 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using VInspector;
 
 public class Gun : WeaponBase
 {
-    [Foldout("Upgrades")]
-    public bool GunRicochetUpgrade = false;
-    [EndFoldout]
-
     [SerializeField] GameObject gunGFX;
     [SerializeField] GameObject bullet;
     [SerializeField] float maxAttackCooldown = 0.25f;
     [SerializeField] bool lazerGun;
 
     private float attackCooldown;
-    bool use;
-
-    private void Start()
-    {
-        //playerID = CharacterControl.PlayerTypes.Red;
-        //damage = 0;
-        //damageType = damageTypes.destructableProjectile; //also used for the lazer gun
-    }
+    private bool use;
 
     private void OnEnable()
     {
@@ -51,15 +39,7 @@ public class Gun : WeaponBase
             tempBullet.GetComponent<WeaponBase>().damageType = damageType;
             attackCooldown = maxAttackCooldown;
 
-            if (GunRicochetUpgrade)
-                tempBullet.GetComponent<GunShot>().GunRicochetUpgrade = true;
-            
-            if (lazerGun)
-                //SoundManager.singleton.LazerGunShot(transform.position);
-                SoundManager.singleton.PlayClip("LaserGunShot", transform.position, 0.15f, true, true);
-            else
-                //SoundManager.singleton.GunShot(transform.position);
-                SoundManager.singleton.PlayClip("GunShot", transform.position, 0.125f, true, true);
+            SoundManager.singleton.PlayClip("GunShot", transform.position, 0.125f, true, true);
         }
     }
 }

@@ -8,11 +8,9 @@ public class CannonBall : WeaponBase
     [SerializeField] ParticleSystem explosionVFX;
     [SerializeField] ParticleSystem trailVFX;
     [SerializeField] GameObject fakeShadow;
-    SphereCollider SC;
+    private SphereCollider SC;
 
-    Color fakeShadowColor;
-
-    //LayerMask floorMask;
+    private Color fakeShadowColor;
 
     void Start()
     {

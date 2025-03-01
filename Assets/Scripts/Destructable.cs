@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Destructable : MonoBehaviour
 {
-
     [SerializeField] int hp = 5;
 
     [SerializeField] LayerMask collisionMask;
-    Collider[] projSearch;
-    Vector3 hitBox = new Vector3(1.25f, 1f, 1.25f);
-    float identicalDamageCD;
+    private Collider[] projSearch;
+    private Vector3 hitBox = new Vector3(1.25f, 1f, 1.25f);
+    private float identicalDamageCD;
     private CharacterControl.PlayerTypes lastPlayerID;
 
     [SerializeField] ParticleSystem hitEffect;
@@ -19,15 +18,12 @@ public class Destructable : MonoBehaviour
     [SerializeField] GameObject[] debrisList;
 
     private Animator anim;
-    private Collider[] characterSearch;
-    private LayerMask LM;
 
     private bool destroyed = false;
 
     void Start()
     {
         anim = GetComponent<Animator>();
-        LM = 256; //character layer
 
         anim.enabled = true;
         anim.speed = Random.Range(0.75f, 1.25f);
@@ -49,21 +45,8 @@ public class Destructable : MonoBehaviour
                     {
                         Destroy(projSearch[i].gameObject);
                     }
-
                 }
             }
-
-            /*
-            characterSearch = Physics.OverlapSphere(transform.position,10,LM);
-
-            if (characterSearch.Length >= 1) //if a character is nearby the chest it will play the idle animation
-            {
-                anim.enabled = true;
-            }
-            else
-                anim.enabled = false;
-
-            */
         }
         else
         {
@@ -80,16 +63,13 @@ public class Destructable : MonoBehaviour
                     debrisList[i].SetActive(true);
                     debrisList[i].GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-6f, 6f), Random.Range(6f, 9f), Random.Range(-6f, 6f)), ForceMode.Impulse);
                     debrisList[i].GetComponent<Rigidbody>().AddTorque(new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(-7.5f, 7.5f), Random.Range(-7.5f, 7.5f)), ForceMode.Impulse);
-                    //debrisList[i].GetComponent<Rigidbody>().AddTorque(Vector3.up *10, ForceMode.Impulse);
                 }
-
 
                 debrisList[i].transform.SetParent(null);
                 Destroy(debrisList[i], 2);
             }
             Destroy(gameObject);
         }
-
     }
 
     private void TakeDamage(CharacterControl.PlayerTypes attackingPlayer, int damage, WeaponBase.damageTypes damageType)
@@ -107,13 +87,9 @@ public class Destructable : MonoBehaviour
                 if (hp <= 0)
                     destroyed = true;
             }
-
         }
-
-
         lastPlayerID = attackingPlayer;
         identicalDamageCD = 0.1f;
-
     }
 
     private void OnDrawGizmosSelected()

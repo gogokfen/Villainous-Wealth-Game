@@ -5,17 +5,12 @@ using VInspector;
 
 public class MineShot : WeaponBase
 {
-    [Foldout("Upgrades")]
-    [HideInInspector] public bool GasCloudUpgrade = false;
-    [SerializeField] GameObject gasCloud;
-    [EndFoldout]
-
     [SerializeField] GameObject mineBaseGFX;
     [SerializeField] GameObject mineHeadGFX;
     [SerializeField] float timeToArm = 2;
     [SerializeField] GameObject radiusGFX;
     [SerializeField] ParticleSystem explosionEffect;
-    CapsuleCollider CC;
+    private CapsuleCollider CC;
     void Start()
     {
         CC = GetComponent<CapsuleCollider>();
@@ -40,7 +35,6 @@ public class MineShot : WeaponBase
         {
             mineBaseGFX.GetComponent<Renderer>().material.color = Color.yellow;
         }
-
     }
 
     void Update()
@@ -61,16 +55,6 @@ public class MineShot : WeaponBase
     {
         explosionEffect.transform.SetParent(null);
         explosionEffect.Play();
-
-        //SoundManager.singleton.MineExplode(transform.position);
-
-        if (GasCloudUpgrade)
-        {
-            GameObject tempGasCloud = Instantiate(gasCloud, transform.position, transform.rotation);
-            tempGasCloud.GetComponent<WeaponBase>().playerID = playerID;
-            //tempGasCloud.GetComponent<WeaponBase>().damage = damage;
-            //tempGasCloud.GetComponent<WeaponBase>().damageType = damageType;
-        }
 
         Destroy(explosionEffect.gameObject, 2f);
     }

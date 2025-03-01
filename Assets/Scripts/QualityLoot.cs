@@ -54,7 +54,6 @@ public class QualityLoot : MonoBehaviour
         {
             transform.name = pickupNameToAquire;
             gameObject.layer = 6;
-            //fillColor.color = Color.white;
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -77,22 +76,8 @@ public class QualityLoot : MonoBehaviour
         }
     }
 
-    /**
-    private void OnTriggerStay(Collider other)
-    {
-        
-        if (other.gameObject.layer == 8)
-        {
-            pickupChannel.value += Time.deltaTime / 5;
-
-            // other. get player ID check for multiple player IDs if contested
-        }
-        
-    }
-*/
     private void OnTriggerExit(Collider other)
     {
-
         if (other.gameObject.layer == 8)
         {
             playersStandingCount--;
@@ -102,12 +87,5 @@ public class QualityLoot : MonoBehaviour
                 pickupChannel.value = 0;
             }
         }
-
-        /**
-        if (other.gameObject.layer == 8 && !full)
-        {
-            pickupChannel.value = 0;
-        }
-        */
     }
 }

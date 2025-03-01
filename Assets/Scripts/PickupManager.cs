@@ -13,7 +13,6 @@ public class PickupManager : MonoBehaviour
         Speed,
         Shield
     }
-
     public bool DropWeapons = false;
     public bool DropPowerups = false;
 
@@ -29,7 +28,6 @@ public class PickupManager : MonoBehaviour
     [SerializeField] GameObject[] weaponPickups;
 
     List<GameObject> pickups = new List<GameObject>();
-
 
     List<GameObject> coins = new List<GameObject>();
     [SerializeField] GameObject prefabCoin;
@@ -62,36 +60,6 @@ public class PickupManager : MonoBehaviour
 
     void Update()
     {
-        /*
-        foreach (GameObject pickup in pickups) //updating the position of each pickup in the scene
-        {
-            if (pickup.transform.position.y>1) //0
-            {
-                pickup.transform.position = new Vector3(pickup.transform.position.x, pickup.transform.position.y - Time.deltaTime*3, pickup.transform.position.z);
-                if (pickup.transform.position.y<=1)
-                {
-                    pickup.GetComponent<Animator>().enabled = true;
-                    //pickups.Remove(pickup);
-                }
-            }
-        }
-        */
-
-        /* pickup no longer drop from the sky
-        for (int i=0;i<pickups.Count;i++) //updating the position of each pickup in the scene
-        {
-            if (pickups[i].transform.position.y > 1) //0
-            {
-                pickups[i].transform.position = new Vector3(pickups[i].transform.position.x, pickups[i].transform.position.y - Time.deltaTime * 3, pickups[i].transform.position.z);
-                if (pickups[i].transform.position.y <= 1)
-                {
-                    pickups[i].GetComponent<Animator>().enabled = true;
-                    pickups[i].GetComponent<BoxCollider>().enabled = true;
-                    pickups.Remove(pickups[i]);
-                }
-            }
-        }
-        */
         for (int i = 0; i < coins.Count; i++) //updating the position of each pickup in the scene
         {
             if (coins[i].transform.position.y <= 1 && coins[i].name == "Coin")
@@ -124,44 +92,13 @@ public class PickupManager : MonoBehaviour
 
                 Destroy(tempPickup, 20); //prevents scene from bloating
 
-                /*
-                foreach (int index in CharacterControl.Weapons.GetValues(typeof(CharacterControl.Weapons))) 
-                {
-                    weaponName = (CharacterControl.Weapons)index;
-                    tempPickup.name = weaponName.ToString();
-                    //Debug.Log(index);
-                }
-                */
-
-                //tempPickup.name = pickupPrefab.name;
-
                 pickups.Add(tempPickup);
             }
 
             if (DropPowerups)
             {
-                //V2
                 SpawnPowerUp();
-
-                /** V1
-                GameObject tempPickup = Instantiate(pickupPrefab, tempPos, Quaternion.identity);
-
-                int nameRandomlyPicked = Random.Range(0, 4);
-
-                if (nameRandomlyPicked == 0)
-                    tempPickup.name = "Coin";
-                else if (nameRandomlyPicked == 1)
-                    tempPickup.name = "Health";
-                else if (nameRandomlyPicked == 2)
-                    tempPickup.name = "Shield";
-                else if (nameRandomlyPicked == 3)
-                    tempPickup.name = "Speed";
-                */
-                
             }
-
-            //GameObject tempCoin = Instantiate(prefabCoin, transform.position, Quaternion.identity);
-            //coins.Add(tempCoin);
         }
 
         if (playerWon)
@@ -187,7 +124,6 @@ public class PickupManager : MonoBehaviour
 
     public void SpawnTreasureChestCoin(Vector3 treasureChestPosition)
     {
-        //Vector3 coinPosition = new Vector3(Random.Range(-5f, 5f), Random.Range(4, 12f), Random.Range(-5f, 5f));
         Vector3 coinPosition = new Vector3(Random.Range(-7.5f, 7.5f), Random.Range(4, 10f), Random.Range(-7.5f, 7.5f));
         GameObject tempCoin = Instantiate(prefabCoin, treasureChestPosition,Quaternion.identity);
         tempCoin.name = prefabCoin.name;
@@ -195,7 +131,6 @@ public class PickupManager : MonoBehaviour
         coinRB.AddForce(coinPosition, ForceMode.Impulse);
 
         coins.Add(tempCoin);
-        //Destroy(tempCoin, 10);
     }
 
     public void SpawnDeadCharacterCoin(Vector3 deadPlayerPosition,int coinAmount)
@@ -222,14 +157,11 @@ public class PickupManager : MonoBehaviour
 
         }
         Destroy(tempGameObject);
-
     }
 
     private void SpawnPowerUp()
     {
-        //Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), transform.position.y + Random.Range(-gizmosHight / 2, gizmosHight / 2), transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
         Vector3 tempPos = new Vector3(transform.position.x + Random.Range(-gizmosWidth / 2, gizmosWidth / 2), 1, transform.position.z + Random.Range(-gizmosLength / 2, gizmosLength / 2));
-        //Debug.Log("PickupManager alive player" + tempPos);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
@@ -240,15 +172,10 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
-                //pickups.Add(tempPowerup);
-
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
             }
-
-            //Destroy(tempPowerup, 20);
-
         }
         else if (randomPowerup == 1)
         {
@@ -259,26 +186,10 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
-                //pickups.Add(tempPowerup);
-
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
             }
-
-            //Destroy(tempPowerup, 20);
-
-
-            //SpawnPowerUp();
-
-            //disabled health pickup, time for cursed code
-            /*
-            GameObject tempPowerup = Instantiate(healthPowerup, tempPos, Quaternion.identity);
-            tempPowerup.name = "Health";
-
-            pickups.Add(tempPowerup);
-            Destroy(tempPowerup, 20);
-            */
         }
         else if (randomPowerup == 2)
         {
@@ -296,18 +207,13 @@ public class PickupManager : MonoBehaviour
             pickups.Add(tempPowerup);
             Destroy(tempPowerup, 20);
         }
-
     }
 
     public void SpawnPowerUp(Vector3 powerupPosition)
     {
-        
         if (RoundManager.instance.areWeWarming == true) 
             return;
 
-        
-
-        //Debug.Log("PickupManager dead player" + powerupPosition);
         int randomPowerup = Random.Range(0, 4);
         if (randomPowerup == 0)
         {
@@ -325,10 +231,6 @@ public class PickupManager : MonoBehaviour
 
                 currentCoinSackAmount++;
             }
-
-
-
-            //Destroy(tempPowerup, 20);
         }
         else if (randomPowerup == 1)
         {
@@ -346,22 +248,6 @@ public class PickupManager : MonoBehaviour
 
                 currentCoinSackAmount++;
             }
-
-
-            //Destroy(tempPowerup, 20);
-
-
-
-            //SpawnPowerUp();
-
-            //disabled health pickup, time for cursed code
-            /*
-            GameObject tempPowerup = Instantiate(healthPowerup, powerupPosition, Quaternion.identity);
-            tempPowerup.name = "Health";
-            tempPowerup.GetComponent<Animator>().enabled = true;
-            tempPowerup.GetComponent<BoxCollider>().enabled = true;
-            Destroy(tempPowerup, 20);
-            */
         }
         else if (randomPowerup == 2)
         {
@@ -381,12 +267,6 @@ public class PickupManager : MonoBehaviour
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
             Destroy(tempPowerup, 20);
         }
-
-
-        //tempPowerup.GetComponent<Animator>().enabled = true;
-        //tempPowerup.GetComponent<BoxCollider>().enabled = true;
-
-        //Destroy(tempPowerup, 20);
     }
 
     public void SpawnPowerUp(CharacterControl.Weapons weaponToSpawn,Vector3 spawnPos,Transform parentToSpawnUnder)
@@ -399,11 +279,9 @@ public class PickupManager : MonoBehaviour
                 tempPowerup.transform.SetParent(parentToSpawnUnder);
                 tempPowerup.name = weaponPickups[i].name;
                 tempPowerup.GetComponent<Animator>().enabled = true;
-                //tempPowerup.GetComponent<Animator>().Play("Pickup");
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
             }
         }
-
     }
 
     public void SpawnPowerUp(PowerupTypes powerupToSpawn, Vector3 spawnPos, Transform parentToSpawnUnder)
@@ -414,7 +292,6 @@ public class PickupManager : MonoBehaviour
             tempPowerup.transform.SetParent(parentToSpawnUnder);
             tempPowerup.name = "CoinSack";
             tempPowerup.GetComponent<Animator>().enabled = true;
-            //tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
             coins.Add(tempPowerup);
@@ -427,7 +304,6 @@ public class PickupManager : MonoBehaviour
             tempPowerup.transform.SetParent(parentToSpawnUnder);
             tempPowerup.name = "Health";
             tempPowerup.GetComponent<Animator>().enabled = true;
-            //tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
         }
         if (powerupToSpawn == PowerupTypes.Speed)
@@ -436,7 +312,6 @@ public class PickupManager : MonoBehaviour
             tempPowerup.transform.SetParent(parentToSpawnUnder);
             tempPowerup.name = "Speed";
             tempPowerup.GetComponent<Animator>().enabled = true;
-            //tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
         }
         if (powerupToSpawn == PowerupTypes.Shield)
@@ -445,10 +320,8 @@ public class PickupManager : MonoBehaviour
             tempPowerup.transform.SetParent(parentToSpawnUnder);
             tempPowerup.name = "Shield";
             tempPowerup.GetComponent<Animator>().enabled = true;
-            //tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
         }
-        //Destroy(tempPowerup, 20);
     }
 
     public void CoinPickupVFX(Vector3 coinPos)
@@ -466,7 +339,6 @@ public class PickupManager : MonoBehaviour
 
     public void SetWinningPlayer(CharacterControl player) //transfer this whole function to leaderboard?
     {
-        //player.GetComponent<CharacterControl>().winner = true; //transfer after
         player.SetWinner();
 
         winningPlayer = player.transform;

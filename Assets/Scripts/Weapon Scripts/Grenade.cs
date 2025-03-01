@@ -3,32 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using VInspector;
 
 public class Grenade : WeaponBase
 {
     [HideInInspector] public bool charging = false;
     [HideInInspector] public bool releasing = false;
 
-    [Foldout("Upgrades")]
-    public bool ExtraBounceUpgrade = false;
-
-    [EndFoldout]
-
     [SerializeField] GameObject GrenadeGFX;
     [SerializeField] float maxAttackCooldown = 4f;
     private float attackCooldown;
     [SerializeField] GameObject grenade;
-    float windup;
+    private float windup;
 
     [SerializeField] Slider windUpSlider;
     [SerializeField] Slider reloadSlider;
 
-    int attackState = 0;
+    private int attackState = 0;
 
     [SerializeField] GameObject rangeIndicator;
     [SerializeField] GameObject rangeCenter;
-    LineRenderer LR;
+    private LineRenderer LR;
     private bool chargeSFX;
 
     private void Start()
@@ -80,12 +74,11 @@ public class Grenade : WeaponBase
             }
         }
             
-
         if (attackState ==1 && attackCooldown<=0) 
         {
             rangeIndicator.SetActive(true);
 
-            float throwPowerCalc = 5 + windup*90f; //originally 125
+            float throwPowerCalc = 5 + windup*90f;
             if (throwPowerCalc > 75)
                 throwPowerCalc = 75;
 
@@ -95,14 +88,13 @@ public class Grenade : WeaponBase
             LR.SetPosition(0, transform.position);
             Vector3 airPos = (rangeCenter.transform.position + transform.position) / 2f;
             airPos.y = Vector3.Distance(rangeCenter.transform.position, transform.position) / 4.5f;
-            //Vector3 airPos = new Vector3((  transform.position.x - rangeIndicator.transform.position.x) /2, 7.5f, ( transform.position.z - rangeIndicator.transform.position.z) / 2);
             LR.SetPosition(1, airPos);
             LR.SetPosition(2, rangeCenter.transform.position);
 
             windup += Time.deltaTime;
 
             windUpSlider.gameObject.SetActive(true);
-            windUpSlider.value = Mathf.InverseLerp(0, 70,windup *90); //(0, 50,windup *75) //latest ver is 125
+            windUpSlider.value = Mathf.InverseLerp(0, 70,windup *90);
 
             charging = true;
             if (!chargeSFX)
@@ -111,7 +103,7 @@ public class Grenade : WeaponBase
                 chargeSFX = true;
             }
         }
-        if (attackState == -1 && attackCooldown <= 0) //use && attackCooldown <= 0 // Input.GetMouseButtonUp(0)
+        if (attackState == -1 && attackCooldown <= 0)
         {
             LR.enabled = false;
 
@@ -126,19 +118,15 @@ public class Grenade : WeaponBase
             attackCooldown = maxAttackCooldown;
 
 
-            if ((5 + windup * 90f) > 75) //latest 125
+            if ((5 + windup * 90f) > 75)
                 tempGrenade.GetComponent<GrenadeShot>().throwPower = 75;
             else
-                tempGrenade.GetComponent<GrenadeShot>().throwPower = 5 + windup * 90f; //25 + windup * 75f; //125
-
-            if (ExtraBounceUpgrade)
-                tempGrenade.GetComponent<GrenadeShot>().ExtraBounceUpgrade = true;
+                tempGrenade.GetComponent<GrenadeShot>().throwPower = 5 + windup * 90f;
 
             GrenadeGFX.SetActive(false);
 
             windup = 0;
 
-            //SoundManager.singleton.BombThrow(transform.position);
             SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Throw", transform.position, 1f, true, true);
 
             charging = false;

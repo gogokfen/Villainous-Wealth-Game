@@ -12,31 +12,25 @@ public class CannonV2 : MonoBehaviour
     [SerializeField] float shootingOffset = 2;
     [SerializeField] float shootingFrequency = 0.5f;
 
-    Vector3 shootLocationModifier;
+    private Vector3 shootLocationModifier;
 
     private Vector3 originalLocation;
 
     private float shotTimer;
 
-    CharacterControl.PlayerTypes shooterColor;
+    private CharacterControl.PlayerTypes shooterColor;
 
     void Start()
     {
         originalLocation = transform.localPosition;
     }
 
-    
     void Update()
     {
-        //transform.LookAt(shootingSpot);
-
         if (Time.time>=shotTimer)
         {
             shootLocationModifier = Vector3.forward * Random.Range(-shootingOffset, shootingOffset) + Vector3.right * Random.Range(-shootingOffset, shootingOffset);
 
-            //transform.localPosition = originalLocation + shootLocationModifier;
-
-            //Vector3 originalPos
             shootingSpot.localPosition += shootLocationModifier;
 
             transform.LookAt(shootingSpot);
@@ -57,5 +51,4 @@ public class CannonV2 : MonoBehaviour
     {
         this.shooterColor = shooterColor;
     }
-
 }

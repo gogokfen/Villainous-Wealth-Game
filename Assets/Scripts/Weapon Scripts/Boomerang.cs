@@ -11,25 +11,18 @@ public class Boomerang : WeaponBase
     [HideInInspector] public bool releasing = false;
     [HideInInspector] public bool canThrow = true;
 
-    [Foldout("Upgrades")]
-    public bool TripleBoomerangUpgrade = false;
-    private int catchCount;
-
-    [EndFoldout]
-
     [SerializeField] GameObject boomerang;
     [SerializeField] GameObject boomerangGFX;
     private GameObject boomerangReference;
-    //private bool canThrow = true;
     private float windup;
 
     [SerializeField] LayerMask boomerangPickupMask;
-    Collider[] boomrangSearch;
+    private Collider[] boomrangSearch;
     private float catchCD;
 
     [SerializeField] Slider windUpSlider;
 
-    int attackState = 0;
+    private int attackState = 0;
     private bool chargeSFX;
 
     private void Start()
@@ -54,7 +47,6 @@ public class Boomerang : WeaponBase
             boomerangReference = null;
 
             canThrow = true;
-            //boomerangGFX.SetActive(true);
         }
     }
 
@@ -76,7 +68,7 @@ public class Boomerang : WeaponBase
 
     void Update()
     {
-        if (attackState == 1 && canThrow) // use && canThrow
+        if (attackState == 1 && canThrow)
         {
             windup += Time.deltaTime;
 
@@ -90,7 +82,7 @@ public class Boomerang : WeaponBase
                 chargeSFX = true;
             }
         }
-        if (attackState == -1 && canThrow) // use && canThrow
+        if (attackState == -1 && canThrow)
         {
             chargeSFX = false;
             attackState = 0;
@@ -112,31 +104,6 @@ public class Boomerang : WeaponBase
 
             boomerangReference = tempBoomrang;
 
-            if (TripleBoomerangUpgrade)
-            {
-                GameObject tempBoomrangL = Instantiate(boomerang, transform.position, Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y + 45, transform.rotation.z)));
-                tempBoomrangL.name = "Boomerang ShotL";
-                tempBoomrangL.GetComponent<WeaponBase>().playerID = playerID;
-                tempBoomrangL.GetComponent<WeaponBase>().damage = damage;
-                tempBoomrangL.GetComponent<WeaponBase>().damageType = damageType;
-
-                tempBoomrangL.GetComponent<BoomerangShot>().lookAtTarget = transform;
-                tempBoomrangL.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f;
-                if ((5 + windup * 65f) > 40)
-                    tempBoomrangL.GetComponent<BoomerangShot>().flySpeed = 40;
-
-                GameObject tempBoomrangR = Instantiate(boomerang, transform.position, Quaternion.Euler(new Vector3(transform.rotation.x, transform.rotation.y - 45, transform.rotation.z)));
-                tempBoomrangR.name = "Boomerang ShotR";
-                tempBoomrangR.GetComponent<WeaponBase>().playerID = playerID;
-                tempBoomrangR.GetComponent<WeaponBase>().damage = damage;
-                tempBoomrangR.GetComponent<WeaponBase>().damageType = damageType;
-
-                tempBoomrangR.GetComponent<BoomerangShot>().lookAtTarget = transform;
-                tempBoomrangR.GetComponent<BoomerangShot>().flySpeed = 5 + windup * 65f;
-                if ((5 + windup * 65f) > 40)
-                    tempBoomrangR.GetComponent<BoomerangShot>().flySpeed = 40;
-            }
-
             windup = 0;
 
             SoundManager.singleton.PlayClip($"{Leaderboard.singleton.GetPlayerName(playerID)}Throw", transform.position, 1f, true, true);
@@ -154,38 +121,16 @@ public class Boomerang : WeaponBase
                 {
                     for (int i=0;i<boomrangSearch.Length;i++)
                     {
-                        if (TripleBoomerangUpgrade)
+                        if (boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang Shot")
                         {
-                            if (boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang Shot" || boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang ShotL" || boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang ShotR")
-                            {
-                                catchCount++;
-                                Destroy(boomrangSearch[i].gameObject);
-                                //SoundManager.singleton.BoomerangCatch(transform.position);
-                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 0.2f, true, true);
-                                if (catchCount == 3)
-                                {
-                                    catchCD = 0;
-                                    catchCount = 0;
+                            catchCD = 0;
+                            boomerangReference = null;
+                            Destroy(boomrangSearch[i].gameObject);
 
-                                    canThrow = true;
-                                    boomerangGFX.SetActive(true);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (boomrangSearch[i].GetComponent<WeaponBase>().playerID == playerID && boomrangSearch[i].name == "Boomerang Shot")
-                            {
-                                catchCD = 0;
-                                boomerangReference = null;
-                                Destroy(boomrangSearch[i].gameObject);
+                            canThrow = true;
+                            boomerangGFX.SetActive(true);
 
-                                canThrow = true;
-                                boomerangGFX.SetActive(true);
-
-                                //SoundManager.singleton.BoomerangCatch(transform.position);
-                                SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 0.2f, true, true);
-                            }
+                            SoundManager.singleton.PlayClip("BoomerangCatch", transform.position, 0.2f, true, true);
                         }
                     }
                 }

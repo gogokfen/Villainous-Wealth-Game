@@ -125,7 +125,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3580072877283552489}
   - component: {fileID: 7653153377662711713}
-  - component: {fileID: 7710645850954469195}
   - component: {fileID: 5290133953499564935}
   m_Layer: 0
   m_Name: Cannon V2
@@ -263,18 +262,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7710645850954469195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1505580200811096677}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3852784ffa40c146abbe16f7defa123, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5290133953499564935
 MonoBehaviour:
   m_ObjectHideFlags: 0

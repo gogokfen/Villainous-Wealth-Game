@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class NoRotation : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    //late update to prevent jittering
     void LateUpdate()
     {
         transform.rotation = Quaternion.identity;

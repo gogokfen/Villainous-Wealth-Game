@@ -5,11 +5,11 @@ using UnityEngine.InputSystem;
 
 public class CannonTargetManualControl : MonoBehaviour
 {
-    Vector3 moveDirection;
-    Vector2 moveInput;
+    private Vector3 moveDirection;
+    private Vector2 moveInput;
     [SerializeField] float moveSpeed = 10;
 
-    Vector3 borderCheck;
+    private Vector3 borderCheck;
 
     public void Move(InputAction.CallbackContext context)
     {
@@ -19,11 +19,6 @@ public class CannonTargetManualControl : MonoBehaviour
         {
             moveInput = Vector2.zero;
         }
-    }
-
-    void Start()
-    {
-        
     }
 
     void Update()
@@ -52,12 +47,5 @@ public class CannonTargetManualControl : MonoBehaviour
             transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
             transform.position = new Vector3(transform.position.x, 0, transform.position.z); //making sure waves don't affect the hight of the indicator
         }
-
-
-        //float horiz = Input.GetAxisRaw("Horizontal");
-        //float vert = Input.GetAxisRaw("Vertical");
-
-        //transform.Translate((horiz*Vector3.right + vert*Vector3.forward) * moveSpeed * Time.deltaTime);
-
     }
 }
