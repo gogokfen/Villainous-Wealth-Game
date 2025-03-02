@@ -317,8 +317,14 @@ public class Leaderboard : MonoBehaviour
     {
         redRankingUIAnim.Play("DefaultLB");
         greenRankingUIAnim.Play("DefaultLB");
-        blueRankingUIAnim.Play("DefaultLB");
-        yellowRankingUIAnim.Play("DefaultLB");
+        if (playerCount == 3)
+        {
+            blueRankingUIAnim.Play("DefaultLB");
+            if (playerCount == 4)
+            {
+                yellowRankingUIAnim.Play("DefaultLB");
+            }
+        }
         leaderboard.SetActive(false);
     }
 
@@ -650,7 +656,7 @@ public class Leaderboard : MonoBehaviour
                 losers.Add(player);
             }
         }
-            return losers[index].name;
+        return losers[index].name;
     }
 
     public int FindLeaderMoney()

@@ -30,7 +30,7 @@ public class ShopManager : MonoBehaviour
 
     public bool shopping;
 
-    [SerializeField] Animator crowAnim;
+    public Animator crowAnim;
     [SerializeField] HorizontalLayoutGroup crowSignLayoutGroup;
     [SerializeField] TextMeshProUGUI crowSignText;
     [SerializeField] Image firstLoserOrRichGuy;
@@ -199,7 +199,6 @@ public class ShopManager : MonoBehaviour
         crowSignPortraits[0].gameObject.SetActive(false);
         crowSignPortraits[1].gameObject.SetActive(false);
         crowSignPortraits[2].gameObject.SetActive(false);
-        crowSignPortraits[3].gameObject.SetActive(false);
     }
 
     private void ResetButtons()
