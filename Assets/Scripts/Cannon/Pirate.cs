@@ -31,18 +31,43 @@ public class Pirate : MonoBehaviour
     [SerializeField] GameObject payingPirate;
 
     [SerializeField] Animator payUI;
+
+    private Animator anchorAnim;
+
+    [SerializeField] GameObject addToGroup;
+    private float timer;
     void Start()
     {
         PI.enabled = false;
+        anchorAnim = GetComponent<Animator>();
+    }
+    private void OnEnable()
+    {
+        timer = Time.time + 8;
+    }
+
+    private void OnDisable()
+    {
+        addToGroup.SetActive(false);
     }
     void Update()
     {
+        //Debug.Log(Time.time);
+        //Debug.Log("Timer: " + timer);
+
         if (PI.enabled)
         {
             prevRotation = GFX.transform.rotation;
             GFX.transform.LookAt(target.transform);
 
             GFX.transform.rotation = Quaternion.Lerp(prevRotation, GFX.transform.rotation, Time.deltaTime * 0.25f);
+        }
+
+        if (Time.time>timer)
+        {
+            timer = float.MaxValue;
+            addToGroup.SetActive(true);
+            anchorAnim.Play("Anchor Animation");
         }
 
         playerSearch = Physics.OverlapSphere(transform.position, 15, collisionMask);

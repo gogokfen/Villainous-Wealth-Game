@@ -21,7 +21,6 @@ public class Grenade : WeaponBase
     private int attackState = 0;
 
     [SerializeField] GameObject rangeIndicator;
-    [SerializeField] GameObject rangeCenter;
     private LineRenderer LR;
     private bool chargeSFX;
 
@@ -35,6 +34,19 @@ public class Grenade : WeaponBase
     {
         attackState = 0;
         GrenadeGFX.SetActive(true);
+
+        if (playerID == CharacterControl.PlayerTypes.Red)
+            rangeIndicator.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(204, 67, 152, 255));
+
+        else if (playerID == CharacterControl.PlayerTypes.Green)
+            rangeIndicator.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(96, 196, 71, 255));
+
+        else if (playerID == CharacterControl.PlayerTypes.Blue)
+            rangeIndicator.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(54, 111, 218, 255));
+
+        else if (playerID == CharacterControl.PlayerTypes.Yellow)
+            rangeIndicator.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(51, 189, 190, 255));
+
     }
 
     private void OnDisable()
@@ -86,10 +98,10 @@ public class Grenade : WeaponBase
 
             LR.enabled = true;
             LR.SetPosition(0, transform.position);
-            Vector3 airPos = (rangeCenter.transform.position + transform.position) / 2f;
-            airPos.y = Vector3.Distance(rangeCenter.transform.position, transform.position) / 4.5f;
+            Vector3 airPos = (rangeIndicator.transform.position + transform.position) / 2f;
+            airPos.y = Vector3.Distance(rangeIndicator.transform.position, transform.position) / 4.5f;
             LR.SetPosition(1, airPos);
-            LR.SetPosition(2, rangeCenter.transform.position);
+            LR.SetPosition(2, rangeIndicator.transform.position);
 
             windup += Time.deltaTime;
 

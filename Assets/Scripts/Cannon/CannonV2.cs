@@ -41,7 +41,7 @@ public class CannonV2 : MonoBehaviour
             Instantiate(bombIndicatorVFX,shootingSpot.position, Quaternion.identity); //shootLocationModifier + shootingSpot.position
             SoundManager.singleton.PlayClip("CannonShot", transform.position, 0.5f, true, true);
 
-            shootingSpot.localPosition = Vector3.zero;
+            shootingSpot.localPosition = new Vector3(0,0.05f,0);
 
             shotTimer = Time.time + Random.Range(shootingFrequency/2f, shootingFrequency);
         }
@@ -50,5 +50,18 @@ public class CannonV2 : MonoBehaviour
     public void UpdateShooter(CharacterControl.PlayerTypes shooterColor)
     {
         this.shooterColor = shooterColor;
+
+        if (this.shooterColor == CharacterControl.PlayerTypes.Red)
+            shootingSpot.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(204, 67, 152, 255));
+
+        else if (this.shooterColor == CharacterControl.PlayerTypes.Green)
+            shootingSpot.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(96, 196, 71, 255));
+
+        else if (this.shooterColor == CharacterControl.PlayerTypes.Blue)
+            shootingSpot.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(54, 111, 218, 255));
+
+        else if (this.shooterColor == CharacterControl.PlayerTypes.Yellow)
+            shootingSpot.gameObject.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color32(51, 189, 190, 255));
+
     }
 }

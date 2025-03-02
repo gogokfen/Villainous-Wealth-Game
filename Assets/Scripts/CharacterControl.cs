@@ -1518,7 +1518,8 @@ public class CharacterControl : MonoBehaviour
         {
             if (Leaderboard.singleton.GetMoney(PlayerID)!=0) //making sure a player with no money gets the crown
             {
-                leaderGlow.Play();
+                if (!leaderGlow.isPlaying)
+                    leaderGlow.Play();
                 leaderCrown.SetActive(true);
             }
         }

@@ -5998,6 +5998,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.17629977, y: 1.3466743, z: 0.17361303}
   m_Center: {x: 0.0000004767352, y: -0.0020354986, z: -0.0017102179}
+--- !u!1 &4122501837537343850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7649913458098655297}
+  - component: {fileID: 3401260925986717953}
+  m_Layer: 0
+  m_Name: Add To Camera - Pirate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7649913458098655297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4122501837537343850}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 29.48, y: 1.558, z: 24.97}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7310950796953071919}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3401260925986717953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4122501837537343850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 766917c1225efbf4db6c945d5fc15c33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4321106208020287155
 GameObject:
   m_ObjectHideFlags: 0
@@ -6345,6 +6389,7 @@ Transform:
   m_Children:
   - {fileID: 648722682464556945}
   - {fileID: 257451533511750727}
+  - {fileID: 7649913458098655297}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4767198010766020525
@@ -12692,6 +12737,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pirate
       objectReference: {fileID: 0}
+    - target: {fileID: 2538986767183679319, guid: 0556bedcb9005f74f8cade17749986c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2755314011336165047, guid: 0556bedcb9005f74f8cade17749986c6,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 54ea4068dd8333444850e6830f692ecd, type: 2}
     - target: {fileID: 3950614429249100681, guid: 0556bedcb9005f74f8cade17749986c6,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -12717,6 +12772,11 @@ PrefabInstance:
       propertyPath: payUI
       value: 
       objectReference: {fileID: 6906100116143024972}
+    - target: {fileID: 8480051597760634963, guid: 0556bedcb9005f74f8cade17749986c6,
+        type: 3}
+      propertyPath: addToGroup
+      value: 
+      objectReference: {fileID: 4122501837537343850}
     - target: {fileID: 8480051597760634963, guid: 0556bedcb9005f74f8cade17749986c6,
         type: 3}
       propertyPath: payingPirate
