@@ -294,12 +294,14 @@ public class ShopManager : MonoBehaviour
                     }
                     if (poorShop)
                     {
+                        /* bugged RN
                         poorplayersbought++;
                         if (poorplayersbought == poorPlayers.Count)
                         {
                             shortenTimer = true;
                             poorplayersbought = 0;
                         }
+                        */
                     }
                     //playerEventSystem.SetSelectedGameObject(null);
                 }
