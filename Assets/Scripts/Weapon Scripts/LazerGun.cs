@@ -67,8 +67,8 @@ public class LazerGun : WeaponBase
                 LR.SetPosition(1, rayInfo.point);
 
                 LR.widthMultiplier = 0.35f;
-
-                GameObject tempBullet = Instantiate(bullet, rayInfo.point, transform.rotation);
+                //I think it works better with rayinfo.transform rather than point, at least for the damage effect
+                GameObject tempBullet = Instantiate(bullet, rayInfo.transform.position, transform.rotation);
                 tempBullet.GetComponent<WeaponBase>().playerID = playerID;
                 tempBullet.GetComponent<WeaponBase>().damage = damage;
                 tempBullet.GetComponent<WeaponBase>().damageType = damageType;
