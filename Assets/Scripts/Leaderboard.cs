@@ -339,6 +339,17 @@ public class Leaderboard : MonoBehaviour
             redPlayerRank.text = players[0].rank.ToString();
 
             redRankingUI.localPosition = rankingTransforms[(players[0].rank - 1)].localPosition;
+
+            if (players[0].rank == 1)
+            {
+                redRankingUI.localScale = Vector3.one * 1.5f;
+                redRankingUI.GetComponent<Image>().color = new Color(1, 0.75f, 0);
+            }
+            else
+            {
+                redRankingUI.localScale = Vector3.one;
+                redRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+            }
         }
         if (playerCount > 1)
         {
@@ -349,6 +360,17 @@ public class Leaderboard : MonoBehaviour
             greenPlayerRank.text = players[1].rank.ToString();
 
             greenRankingUI.localPosition = rankingTransforms[(players[1].rank - 1)].localPosition;
+
+            if (players[1].rank == 1)
+            {
+                greenRankingUI.localScale = Vector3.one * 1.5f;
+                greenRankingUI.GetComponent<Image>().color = new Color(1, 0.75f, 0);
+            }
+            else
+            {
+                greenRankingUI.localScale = Vector3.one;
+                greenRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+            }
         }
         if (playerCount > 2)
         {
@@ -359,6 +381,17 @@ public class Leaderboard : MonoBehaviour
             bluePlayerRank.text = players[2].rank.ToString();
 
             blueRankingUI.localPosition = rankingTransforms[(players[2].rank - 1)].localPosition;
+
+            if (players[2].rank == 1)
+            {
+                blueRankingUI.localScale = Vector3.one * 1.5f;
+                blueRankingUI.GetComponent<Image>().color = new Color(1, 0.75f, 0);
+            }
+            else
+            {
+                blueRankingUI.localScale = Vector3.one;
+                blueRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+            }
         }
         if (playerCount > 3)
         {
@@ -369,6 +402,17 @@ public class Leaderboard : MonoBehaviour
             yellowPlayerRank.text = players[3].rank.ToString();
 
             yellowRankingUI.localPosition = rankingTransforms[(players[3].rank - 1)].localPosition;
+
+            if (players[3].rank == 1)
+            {
+                yellowRankingUI.localScale = Vector3.one * 1.5f;
+                yellowRankingUI.GetComponent<Image>().color = new Color(1, 0.75f, 0);
+            }
+            else
+            {
+                yellowRankingUI.localScale = Vector3.one;
+                yellowRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+            }
         }
     }
     public void EmptyPlayerHands()
