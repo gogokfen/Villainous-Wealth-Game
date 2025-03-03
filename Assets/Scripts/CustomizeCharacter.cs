@@ -88,17 +88,17 @@ public class CustomizeCharacter : MonoBehaviour, ISelectHandler, IDeselectHandle
     {
         if (num == 1)
         {
-            redSelectionIcon.SetActive(true);
             MenuManager.instance.playerShowcases[0].sprite = ChangeShowcase(gameObject.name);
             MenuManager.instance.selectedCharacterName[0].text = NameSelectedButton(gameObject.name);
             pickedUI.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
+            redSelectionIcon.SetActive(true);
         }
         else if (num == 2)
         {
-            greenSelectionIcon.SetActive(true);
             MenuManager.instance.playerShowcases[1].sprite = ChangeShowcase(gameObject.name);
             MenuManager.instance.selectedCharacterName[1].text = NameSelectedButton(gameObject.name);
             pickedUI.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
+            greenSelectionIcon.SetActive(true);
         }
         else if (num == 3)
         {

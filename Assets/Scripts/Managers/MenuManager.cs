@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using TMPro;
+using MelenitasDev.SoundsGood;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
@@ -46,7 +47,7 @@ public class MenuManager : MonoBehaviour
     public CanvasGroup menuButtons;
     public GameObject characterSelectionScreen;
     public bool weReadyCheck;
-    public Button startButton;
+    //public Button startButton;
     public TextMeshProUGUI requirementText;
     [SerializeField] Animator curtain;
 
@@ -55,6 +56,8 @@ public class MenuManager : MonoBehaviour
     public Image[] playerShowcases;
     public TextMeshProUGUI[] selectedCharacterName;
     public EventSystem eventSystem;
+    [SerializeField] GameObject credits;
+    private bool transitionAnimation;
 
     [Button("Go To Main Scene")]
     public void MainScene()
@@ -66,7 +69,7 @@ public class MenuManager : MonoBehaviour
     public IEnumerator LoadYourAsyncScene()
     {
         curtain.Play("CurtainClose");
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
         AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
         operation.allowSceneActivation = false;
         while (!operation.isDone)
@@ -79,7 +82,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    
+
 
     private void Awake()
     {
@@ -92,6 +95,10 @@ public class MenuManager : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton7)) && weReadyCheck == true)
         {
             MainScene();
+        }
+        if (credits.activeInHierarchy == true && (Input.GetKey(KeyCode.Escape) || Input.GetButton("Cancel")))
+        {
+            credits.SetActive(false);
         }
 
         if (characterSelectionScreen.activeInHierarchy == true)
@@ -106,7 +113,7 @@ public class MenuManager : MonoBehaviour
                     holdImage.fillAmount = 0f;
                     menuButtons.interactable = true;
                     playButton.SetActive(true);
-                    optionsButton.SetActive(true);
+                    //optionsButton.SetActive(true);
                     quitButton.SetActive(true);
                     ResetShowcases();
                     PlayerManager.KillMenuPlayers();
@@ -219,13 +226,12 @@ public class MenuManager : MonoBehaviour
         //SceneManager.LoadScene("MainScene");
         //roundMenu.SetActive(true);
         //backButtonMenu.gameObject.SetActive(true);
-        playButton.SetActive(false);
-        optionsButton.SetActive(false);
-        quitButton.SetActive(false);
-        eventSystem.SetSelectedGameObject(null);
-        eventSystem.gameObject.SetActive(false);
-        characterSelectionScreen.SetActive(true);
         //EventSystem.current.SetSelectedGameObject(defaultRoundMenuButton);
+        if (!transitionAnimation)
+        {
+            StartCoroutine(TransitionAnimation("CC"));
+            SoundManager.singleton.PlayClipSFX(SFX.ButtonPress, transform.position, 0.5f, false, false);
+        }
     }
     public void OptionsButton()
     {
@@ -246,14 +252,14 @@ public class MenuManager : MonoBehaviour
     {
         if (weReadyCheck)
         {
-            startButton.interactable = true;
+            //startButton.interactable = true;
             requirementText.text = "Lets do this!";
             readyAnim.gameObject.SetActive(true);
             readyAnim.Play("ShopTimer");
         }
         else
         {
-            startButton.interactable = false;
+            //startButton.interactable = false;
             requirementText.text = "Not enough players are ready";
             readyAnim.StopPlayback();
             readyAnim.gameObject.SetActive(false);
@@ -266,5 +272,24 @@ public class MenuManager : MonoBehaviour
         {
             image.sprite = joinShowcaseImage;
         }
+    }
+
+    public IEnumerator TransitionAnimation(string screen)
+    {
+        transitionAnimation = true;
+        yield return new WaitForSeconds(0.75f);
+        switch (screen)
+        {
+            case "CC":
+                playButton.SetActive(false);
+                optionsButton.SetActive(false);
+                quitButton.SetActive(false);
+                eventSystem.SetSelectedGameObject(null);
+                eventSystem.gameObject.SetActive(false);
+                characterSelectionScreen.SetActive(true);
+                break;
+        }
+        yield return new WaitForSeconds(0.2f);
+        transitionAnimation = false;
     }
 }

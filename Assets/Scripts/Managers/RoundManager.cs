@@ -11,7 +11,7 @@ public class RoundManager : MonoBehaviour
     public static RoundManager instance;
     [Header("Round Settings")]
     public int totalRounds = 5;
-    private int currentRound = 0;
+    public int currentRound = 0;
 
     [Header("Player Management")]
     public static bool roundActive = false;
@@ -74,7 +74,7 @@ public class RoundManager : MonoBehaviour
         while (currentRound != totalRounds)
         {
             PickupManager.singleton.ResetCoinSackCount(); //resets Amount of Moneybag pickups able to spawn in a round
-            Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
+            //Leaderboard.singleton.AnnounceText($"Round {currentRound + 1} / {totalRounds}"); //announce current round
             SoundManager.singleton.PlayNextClip(); //rotates between songs
             CameraManager.instance.PlayersToCameraGroup(); //add all active players to Camera Group
             Leaderboard.singleton.TurnOffPlayersGFX();

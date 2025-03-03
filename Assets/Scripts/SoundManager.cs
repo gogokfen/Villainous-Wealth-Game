@@ -256,4 +256,17 @@ public class SoundManager : MonoBehaviour
             .SetOutput(Output.SFX)
             .Play();
     }
+
+    public Sound PlayClipTest(string tag, Vector3 soundLocation, float volume, bool addRandomPitch, bool spatialSound)
+    {
+        Sound sound = new (tag);
+        if (addRandomPitch) sound.SetRandomPitch();
+        if (spatialSound) sound.SetSpatialSound(true);
+        sound
+            .SetPosition(soundLocation)
+            .SetVolume(volume, new Vector2(35f, 35f))
+            .SetOutput(Output.SFX)
+            .Play();
+            return sound;
+    }
 }

@@ -56,7 +56,14 @@ public class MenuPlayer : MonoBehaviour
                 ready = true;
                 PlayerManager.instance.readyPlayers++;
             }
-            SoundManager.singleton.PlayClip($"{selectedButton.name}CS", transform.position, 1f, false, false);
+            //SoundManager.singleton.PlayClip($"{selectedButton.name}CS", transform.position, 1f, false, false);
+            // announce = new ($"{selectedButton.name}CS");
+            // announce.SetVolume(1f)
+            //         .SetPosition(transform.position)
+            //         .SetOutput(Output.SFX)
+            //         .SetSpatialSound(false)
+            //         .Play();
+            announce = SoundManager.singleton.PlayClipTest($"{selectedButton.name}CS", transform.position, 1f, false, false);
         }
     }
 
@@ -75,6 +82,7 @@ public class MenuPlayer : MonoBehaviour
             playerEventSystem.SetSelectedGameObject(null);
             playerEventSystem.SetSelectedGameObject(selectedButton);
             pickedCharButton = null;
+            announce.Stop();
             if (ready == true)
             {
                 ready = false;

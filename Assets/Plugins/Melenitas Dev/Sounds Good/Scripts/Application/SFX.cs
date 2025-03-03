@@ -175,6 +175,11 @@ namespace MelenitasDev.SoundsGood
 		Pay,
 		DestructableHit,
 		DestructableDie,
-		UI
+		UI,
+		AnnouncerRound1,
+		AnnouncerRound2,
+		AnnouncerRound3,
+		AnnouncerRound4,
+		ButtonPress
 	}
 }
