@@ -285,7 +285,7 @@ public class ShopManager : MonoBehaviour
                     selectedButton.GetComponent<ButtonSelectionTracker>().soldUI.SetActive(true);
                     selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice += 3;
                     selectedButton.GetComponent<ButtonSelectionTracker>().priceText.text = selectedButton.GetComponent<ButtonSelectionTracker>().itemPrice.ToString();
-                    SoundManager.singleton.PlayClip("Pay", transform.position, 0.4f, false, false); //return with sound
+                    SoundManager.singleton.PlayClip("Pay", Vector3.zero, 0.25f, false, false); //return with sound
                     coinBuyAnim.Play("BuyingSomething");
                     WantedPosters();
                     if (richShop)
