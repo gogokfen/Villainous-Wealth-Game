@@ -13,6 +13,8 @@ public class WinnerManager : MonoBehaviour
     [SerializeField] GameObject confettiParticle;
     [SerializeField] TextMeshProUGUI winnerText;
     [SerializeField] Transform[] positions;
+    [SerializeField] StormManager stormManager;
+    [SerializeField] GameObject storm;
     private int coinWinner;
     //private GameObject playerWinner;
     private void Awake()
@@ -21,6 +23,8 @@ public class WinnerManager : MonoBehaviour
     }
     public void WinnerScene()
     {
+        stormManager.enabled = false;
+        storm.SetActive(false);
         coinWinner = Leaderboard.singleton.FindLeaderMoney();
         //playerWinner = roundManager.winner;
         winnerText.text = Leaderboard.singleton.NameSelectedButton(Leaderboard.singleton.FindLeaderName()); 

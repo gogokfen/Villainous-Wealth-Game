@@ -36,6 +36,9 @@ public class Pirate : MonoBehaviour
 
     [SerializeField] GameObject addToGroup;
     private float timer;
+
+    private InputDevice payingDevice;
+    private string payingScheme;
     void Start()
     {
         PI.enabled = false;
@@ -91,10 +94,14 @@ public class Pirate : MonoBehaviour
                 {
                     cannonV2GameObject.transform.position = transform.position;
 
-                    SoundManager.singleton.PlayClip($"Pay", transform.position, 0.4f, false, false); //return with sound
+                    SoundManager.singleton.PlayClip($"Pay", Vector3.zero, 0.4f, false, false); //return with sound
 
                     payingPlayerRef = playerSearch[i].GetComponent<CharacterControl>();
                     payingPlayerRef.enabled = false;
+                    payingDevice = playerSearch[i].GetComponent<PlayerInput>().devices[0];
+                    payingScheme = playerSearch[i].GetComponent<PlayerInput>().currentControlScheme;
+
+
                     payingPlayerRef.gameObject.SetActive(false);
 
                     Leaderboard.singleton.ModifyMoney((payingPlayerRef.PlayerID), -price);
@@ -102,6 +109,7 @@ public class Pirate : MonoBehaviour
                     cannonV2Script.UpdateShooter(payingPlayerRef.PlayerID);
 
                     PI.enabled = true;
+                    PI.SwitchCurrentControlScheme(payingScheme, payingDevice);
 
                     if (SceneManager.GetActiveScene().name != "OsherScene")
                         CameraManager.instance.RemoveFromCameraGroup(payingPirate);
@@ -128,6 +136,7 @@ public class Pirate : MonoBehaviour
             cannonV2GameObject.SetActive(false);
             payingPlayerRef.gameObject.SetActive(true);
             payingPlayerRef.enabled = true;
+            payingPlayerRef.gameObject.GetComponent<PlayerInput>().SwitchCurrentControlScheme(payingScheme,payingDevice);
             payingPlayerRef = null;
 
             completePiratePackage.SetActive(false);

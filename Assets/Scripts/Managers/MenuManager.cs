@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using TMPro;
 using MelenitasDev.SoundsGood;
+using UnityEngine.Video;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager instance;
@@ -56,7 +57,8 @@ public class MenuManager : MonoBehaviour
     public Image[] playerShowcases;
     public TextMeshProUGUI[] selectedCharacterName;
     public EventSystem eventSystem;
-    [SerializeField] GameObject credits;
+    [SerializeField] VideoPlayer credits;
+    [SerializeField] VideoClip[] clips;
     private bool transitionAnimation;
 
     [Button("Go To Main Scene")]
@@ -96,9 +98,17 @@ public class MenuManager : MonoBehaviour
         {
             MainScene();
         }
-        if (credits.activeInHierarchy == true && (Input.GetKey(KeyCode.Escape) || Input.GetButton("Cancel")))
+
+        if (credits.gameObject.activeInHierarchy == true && (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Cancel")) && credits.clip == clips[1])
         {
-            credits.SetActive(false);
+            credits.gameObject.SetActive(false);
+            credits.clip = clips[0];
+            menuButtons.interactable = enabled;
+        }
+        else if (credits.gameObject.activeInHierarchy == true && (Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Cancel")))
+        {
+            //credits.gameObject.SetActive(true);
+            credits.clip = clips[1];
         }
 
         if (characterSelectionScreen.activeInHierarchy == true)
