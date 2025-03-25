@@ -47,7 +47,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619737104950107808}
   - component: {fileID: 5079496436071119848}
-  - component: {fileID: 3273638606503897812}
+  - component: {fileID: 1358831990524876849}
   m_Layer: 7
   m_Name: Strong Fist Script
   m_TagString: Untagged
@@ -86,8 +86,8 @@ MonoBehaviour:
   damageType: 0
   damage: 3
   fistGFX: {fileID: 4533197814733573981}
---- !u!135 &3273638606503897812
-SphereCollider:
+--- !u!65 &1358831990524876849
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -101,12 +101,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 1.75
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!1 &447300277451310333
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,7 +5490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1600022165718850573
 Transform:
   m_ObjectHideFlags: 0
@@ -6390,6 +6390,76 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &2487157182698394165
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 672848226203204250}
+  - component: {fileID: 1572387526106995626}
+  - component: {fileID: 7791916068505307250}
+  m_Layer: 7
+  m_Name: Spin Attack Script
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &672848226203204250
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487157182698394165}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1703458754760266763}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1572387526106995626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487157182698394165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed934037a0a0da6488a86ba2672c767c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 0
+  damageType: 0
+  damage: 3
+  fistGFX: {fileID: 4533197814733573981}
+--- !u!135 &7791916068505307250
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2487157182698394165}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2561362059136716872
 GameObject:
   m_ObjectHideFlags: 0
@@ -7230,8 +7300,9 @@ MonoBehaviour:
   - {fileID: 3844059538756648551}
   - {fileID: 6791506601488673005}
   rightArmGFX: {fileID: 2698049484238419511}
-  lFist: {fileID: 3400040362266158291}
-  strongFist: {fileID: 3273638606503897812}
+  lFist: {fileID: 16543302843426218}
+  strongFist: {fileID: 1358831990524876849}
+  spinFist: {fileID: 7791916068505307250}
   charAnim: {fileID: 6421145718724427035}
   dead: 0
   staminaR: {fileID: 2089304835933177480}
@@ -12661,7 +12732,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1703458754760266763}
   - component: {fileID: 2198296917110266551}
-  - component: {fileID: 3400040362266158291}
+  - component: {fileID: 16543302843426218}
   m_Layer: 7
   m_Name: Left Fist Script
   m_TagString: Untagged
@@ -12683,6 +12754,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 619737104950107808}
+  - {fileID: 672848226203204250}
   m_Father: {fileID: 5092164981812359650}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2198296917110266551
@@ -12701,8 +12773,8 @@ MonoBehaviour:
   damageType: 0
   damage: 2
   fistGFX: {fileID: 3595187889334117423}
---- !u!135 &3400040362266158291
-SphereCollider:
+--- !u!65 &16543302843426218
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -12716,12 +12788,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!1 &3595187889334117423
 GameObject:
   m_ObjectHideFlags: 0
@@ -15606,7 +15678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5092164981812359650}
   - component: {fileID: 5913954676147022640}
-  - component: {fileID: 7168511562814523214}
+  - component: {fileID: 7836790366106676613}
   m_Layer: 7
   m_Name: Fists Script
   m_TagString: Untagged
@@ -15623,7 +15695,7 @@ Transform:
   m_GameObject: {fileID: 7579864360770621109}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.218, y: 0.184, z: -0.465}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15646,8 +15718,8 @@ MonoBehaviour:
   damageType: 0
   damage: 2
   fistGFX: {fileID: 4533197814733573981}
---- !u!135 &7168511562814523214
-SphereCollider:
+--- !u!65 &7836790366106676613
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -15661,12 +15733,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0, z: 1}
 --- !u!1 &7831711363521446102
 GameObject:
   m_ObjectHideFlags: 0

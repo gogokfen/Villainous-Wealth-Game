@@ -83,6 +83,7 @@ public class RoundManager : MonoBehaviour
             yield return new WaitUntil(() => roundStart.playing == false);
             PickupManager.singleton.DropPowerups = true;
             Leaderboard.singleton.EnableCharacterWeapons();
+            Leaderboard.singleton.EnableCharacterControl();
             yield return new WaitUntil(() => PlayerManager.instance.roundOver == true); //waits until round is over
             stormManager.ResetStorm(); //resets storm, remove after alpha
             PickupManager.singleton.DropPowerups = false;
@@ -103,6 +104,7 @@ public class RoundManager : MonoBehaviour
                 TimeManager.instance.StopTime();
                 SoundManager.singleton.MaloMart(); //plays Shop Music
                 Leaderboard.singleton.DisableCharacterWeapons();
+                Leaderboard.singleton.DisableCharacterControl();
                 shopManager.Shopping(); //activates the Shop UI and starts the shopping timer
                 yield return new WaitUntil(() => shopManager.shopping == false); //waits for Shopping to end
                 StartCoroutine(shopStall.StallTimeOver());

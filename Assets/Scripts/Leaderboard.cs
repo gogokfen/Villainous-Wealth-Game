@@ -348,7 +348,8 @@ public class Leaderboard : MonoBehaviour
             else
             {
                 redRankingUI.localScale = Vector3.one;
-                redRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                //redRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                redRankingUI.GetComponent<Image>().color = new Color32(204, 67, 152, 255);
             }
         }
         if (playerCount > 1)
@@ -369,7 +370,8 @@ public class Leaderboard : MonoBehaviour
             else
             {
                 greenRankingUI.localScale = Vector3.one;
-                greenRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                //greenRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                greenRankingUI.GetComponent<Image>().color = new Color32(96, 196, 71, 255);
             }
         }
         if (playerCount > 2)
@@ -390,7 +392,8 @@ public class Leaderboard : MonoBehaviour
             else
             {
                 blueRankingUI.localScale = Vector3.one;
-                blueRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                //blueRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                blueRankingUI.GetComponent<Image>().color = new Color32(54, 111, 218, 255);
             }
         }
         if (playerCount > 3)
@@ -411,7 +414,8 @@ public class Leaderboard : MonoBehaviour
             else
             {
                 yellowRankingUI.localScale = Vector3.one;
-                yellowRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                //yellowRankingUI.GetComponent<Image>().color = new Color(0.65f, 0.65f, 0.65f);
+                yellowRankingUI.GetComponent<Image>().color = new Color32(51, 189, 190, 255);
             }
         }
     }
@@ -827,6 +831,13 @@ public class Leaderboard : MonoBehaviour
             players[i].characterReference.enabled = false;
             players[i].characterReference.bodyPartsGFX[6].SetActive(false); //Hides the player's UI
             players[i].characterReference.bodyPartsGFX[7].SetActive(false);
+
+            for (int j =0;j<6;j++)
+            {
+                players[i].characterReference.bodyPartsGFX[j].GetComponent<Outline>().OutlineWidth = 2;
+            }
+
+            players[i].characterReference.ResetUI();
             players[i].characterReference.transform.position = positions[(players[i].rank - 1)].position; //rankings start from 1, positions from 0
             players[i].characterReference.transform.rotation = positions[(players[i].rank - 1)].rotation;
         }

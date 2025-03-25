@@ -172,6 +172,8 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
+                tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
@@ -186,6 +188,8 @@ public class PickupManager : MonoBehaviour
                 GameObject tempPowerup = Instantiate(coinSackPowerup, tempPos, Quaternion.identity);
                 tempPowerup.name = "CoinSack";
 
+                tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
@@ -196,6 +200,8 @@ public class PickupManager : MonoBehaviour
             GameObject tempPowerup = Instantiate(shieldPowerup, tempPos, Quaternion.identity);
             tempPowerup.name = "Shield";
 
+            tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
             pickups.Add(tempPowerup);
             Destroy(tempPowerup, 20);
         }
@@ -203,6 +209,8 @@ public class PickupManager : MonoBehaviour
         {
             GameObject tempPowerup = Instantiate(speedPowerup, tempPos, Quaternion.identity);
             tempPowerup.name = "Speed";
+
+            tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
 
             pickups.Add(tempPowerup);
             Destroy(tempPowerup, 20);
@@ -227,6 +235,8 @@ public class PickupManager : MonoBehaviour
                 tempPowerup.GetComponent<Animator>().Play("Pickup");
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
+                tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
@@ -244,6 +254,8 @@ public class PickupManager : MonoBehaviour
                 tempPowerup.GetComponent<Animator>().Play("Pickup");
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
 
+                tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
                 coins.Add(tempPowerup);
 
                 currentCoinSackAmount++;
@@ -256,6 +268,9 @@ public class PickupManager : MonoBehaviour
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
+
+            tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
             Destroy(tempPowerup, 20);
         }
         else if (randomPowerup == 3)
@@ -265,6 +280,9 @@ public class PickupManager : MonoBehaviour
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<Animator>().Play("Pickup");
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
+
+            tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
+
             Destroy(tempPowerup, 20);
         }
     }
@@ -280,6 +298,7 @@ public class PickupManager : MonoBehaviour
                 tempPowerup.name = weaponPickups[i].name;
                 tempPowerup.GetComponent<Animator>().enabled = true;
                 tempPowerup.GetComponent<BoxCollider>().enabled = true;
+                tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
             }
         }
     }
@@ -293,6 +312,7 @@ public class PickupManager : MonoBehaviour
             tempPowerup.name = "CoinSack";
             tempPowerup.GetComponent<Animator>().enabled = true;
             tempPowerup.GetComponent<BoxCollider>().enabled = true;
+            tempPowerup.GetComponent<Animator>().speed = Random.Range(0.9f, 1.1f);
 
             coins.Add(tempPowerup);
 

@@ -18,6 +18,7 @@ public class GrenadeShot : WeaponBase
     private LayerMask wallMask;
     private RaycastHit wallHit;
     [SerializeField] ParticleSystem explosionEffect;
+    [SerializeField] ParticleSystem trail;
 
     private float upwardforce; //for arc movement, aesthetic
     private float startingThrowPower;
@@ -85,5 +86,14 @@ public class GrenadeShot : WeaponBase
 
             transform.position = new Vector3(transform.position.x + tempDirection.x, transform.position.y, transform.position.z + tempDirection.z);
         }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(trail.gameObject, 0.5f);
+        //ParticleSystem.MainModule bulletTrailMain = bulletTrail.main;
+        trail.transform.SetParent(null);
+        //transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        //bulletTrailMain.startSpeed = 0;
     }
 }

@@ -135,6 +135,7 @@ public class Pirate : MonoBehaviour
 
             cannonV2GameObject.SetActive(false);
             payingPlayerRef.gameObject.SetActive(true);
+            payingPlayerRef.DeadStop();
             payingPlayerRef.enabled = true;
             payingPlayerRef.gameObject.GetComponent<PlayerInput>().SwitchCurrentControlScheme(payingScheme,payingDevice);
             payingPlayerRef = null;

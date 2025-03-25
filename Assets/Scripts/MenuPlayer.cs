@@ -50,6 +50,7 @@ public class MenuPlayer : MonoBehaviour
             selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(true);
             playerEventSystem.SetSelectedGameObject(null);
             selectedButton.GetComponent<CustomizeCharacter>().picked = true;
+            MenuManager.instance.lockedIcons[playerNum-1].SetActive(true);
             selectedButton.GetComponent<CustomizeCharacter>().CheckIfUnselect();
             if (ready == false)
             {
@@ -78,6 +79,7 @@ public class MenuPlayer : MonoBehaviour
             selectedButton.GetComponent<Button>().interactable = true;
             selectedButton.GetComponent<CustomizeCharacter>().pickedUI.SetActive(false);
             selectedButton.GetComponent<CustomizeCharacter>().picked = false;
+            MenuManager.instance.lockedIcons[playerNum - 1].SetActive(false);
             MultiplayerEventSystem playerEventSystem = player.GetComponent<MultiplayerEventSystem>();
             playerEventSystem.SetSelectedGameObject(null);
             playerEventSystem.SetSelectedGameObject(selectedButton);

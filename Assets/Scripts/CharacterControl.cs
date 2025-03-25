@@ -87,9 +87,10 @@ public class CharacterControl : MonoBehaviour
     private bool strongPunchSwap;
     private Weapons originalWeapon;
 
-    private SphereCollider rFist;
-    [SerializeField] SphereCollider lFist;
-    [SerializeField] SphereCollider strongFist;
+    private BoxCollider rFist;
+    [SerializeField] BoxCollider lFist;
+    [SerializeField] BoxCollider strongFist;
+    [SerializeField] SphereCollider spinFist;
 
     public Animator charAnim;
 
@@ -193,7 +194,7 @@ public class CharacterControl : MonoBehaviour
             Mouse.current.WarpCursorPosition(Camera.main.WorldToScreenPoint(transform.position) + (transform.forward * 0.25f));
             mouseIndicator.gameObject.SetActive(true);
         }
-        rFist = weaponList[0].GetComponent<SphereCollider>();
+        rFist = weaponList[0].GetComponent<BoxCollider>();
         lFist.GetComponent<WeaponBase>().playerID = PlayerID;
         strongFist.GetComponent<WeaponBase>().playerID = PlayerID;
         startingColor = HeadGFX.GetComponent<Renderer>().material.color;
@@ -361,6 +362,86 @@ public class CharacterControl : MonoBehaviour
                 mouseIndicator.gameObject.SetActive(true);
 
             mouseMovement = !mouseMovement;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Fist;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Gun;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Sword;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Boomerang;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Lazer;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Mine;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Blunderbuss;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            previousWeapon = equippedWeapon;
+            equippedWeapon = Weapons.Grenade;
+            originalWeapon = equippedWeapon;
+
+            weaponList[(int)previousWeapon].SetActive(false);
+            weaponList[(int)equippedWeapon].SetActive(true);
         }
 
         if (winner)
@@ -909,14 +990,16 @@ public class CharacterControl : MonoBehaviour
                 if (animTimer >= 0.4166f) // 31/60 25/60 chanel
                 {
                     animState = AS.Punch3Recovery;
-                    rFist.enabled = false;
-                    lFist.enabled = false;
+                    spinFist.enabled = false;
+                    //rFist.enabled = false;
+                    //lFist.enabled = false;
                 }
                 else if (animTimer >= 0.166f) // 14/60 active 10/60 chanel 
                 {
                     animState = AS.Punch3Active;
-                    rFist.enabled = true;
-                    lFist.enabled = true;
+                    spinFist.enabled = true;
+                    //rFist.enabled = true;
+                    //lFist.enabled = true;
                 }
             }
             if (animState == AS.StrongPunch)
@@ -1003,6 +1086,10 @@ public class CharacterControl : MonoBehaviour
                 {
                     powerPunchWindup += Time.deltaTime;
                     charAnim.SetBool("StrongPunch", true);
+
+                    windUpBar.gameObject.SetActive(true);
+                    windUpBar.value = Mathf.InverseLerp(0, 0.75f, powerPunchWindup);
+
                     if (powerPunchWindup >= 0.75)
                     {
                         strongPunchCharged.Play();
@@ -1031,7 +1118,9 @@ public class CharacterControl : MonoBehaviour
                 charAnim.SetBool("StrongPunch", false);
 
                 powerPunchWindup = 0;
-                chargeSFX = false;
+                windUpBar.value = 0;
+                windUpBar.gameObject.SetActive(false);
+               chargeSFX = false;
             }
             else
             {
@@ -1042,6 +1131,8 @@ public class CharacterControl : MonoBehaviour
                 }
                 charAnim.SetBool("StrongPunch", false);
                 powerPunchWindup = 0;
+                windUpBar.value = 0;
+                windUpBar.gameObject.SetActive(false);
                 chargeSFX = false;
             }
         }
@@ -1457,7 +1548,7 @@ public class CharacterControl : MonoBehaviour
         }
     }
 
-    private void DeadStop()
+    public void DeadStop()
     {
         paintAmount = 0; //making sure head isn't red
         HeadGFX.GetComponent<Renderer>().material.SetColor("_BaseColor", startingColor);
@@ -1487,8 +1578,9 @@ public class CharacterControl : MonoBehaviour
         meleeParticleEffect.Stop();
         speedBuffEffect.Stop();
         healthBuffEffect.Stop();
-        leaderGlow.Stop();
+        //leaderGlow.Stop();
         strongPunchCharged.Stop();
+        ResetUI();
     }
 
     public void BuyWeapon(string shopWeaponName)
@@ -1556,6 +1648,8 @@ public class CharacterControl : MonoBehaviour
 
     public void VictoryOrLose(int result)
     {
+        DeadStop();
+
         if (result == 0) charAnim.Play("Victory");
         else if (result == 1) charAnim.Play("Loser");
         else if (result == 2) charAnim.Play("Loser2");
@@ -1575,6 +1669,14 @@ public class CharacterControl : MonoBehaviour
     public void EnableWeaponScripts()
     {
         weaponScripts.SetActive(true);
+    }
+
+    public void ResetUI()
+    {
+        staminaL.gameObject.SetActive(false);
+        staminaR.gameObject.SetActive(false);
+        reloadBar.gameObject.SetActive(false);
+        windUpBar.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()

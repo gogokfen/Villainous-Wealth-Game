@@ -54,6 +54,7 @@ public class MenuManager : MonoBehaviour
 
     public Sprite[] showcaseImages;
     public Sprite joinShowcaseImage;
+    public GameObject[] lockedIcons;
     public Image[] playerShowcases;
     public TextMeshProUGUI[] selectedCharacterName;
     public EventSystem eventSystem;
